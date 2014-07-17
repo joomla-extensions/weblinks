@@ -4,7 +4,7 @@
 	<packagename>weblinks</packagename>
 	<creationDate>December 2012</creationDate>
 	<packager>Joomla! Project</packager>
-	<copyright>(C) 2005 - 2012 Open Source Matters. All rights reserved.</copyright>
+	<copyright>(C) 2005 - 2014 Open Source Matters. All rights reserved.</copyright>
 	<packageremail>admin@joomla.org</packageremail>
 	<packagerurl>www.joomla.org</packagerurl>
 	<author>Joomla! Project</author>
@@ -25,6 +25,6 @@
 	</languages>
 	<updateservers>
 		<!-- Note: No spaces or linebreaks allowed between the server tags -->
-		<server type="extension" name="Weblinks Update Site">https://github.com/joomla-extensions/weblinks/master/manifest.xml</server>
+		<server type="extension" name="Weblinks Update Site">https://raw.githubusercontent.com/joomla-extensions/weblinks/master/manifest.xml</server>
 	</updateservers>
 </extension>
