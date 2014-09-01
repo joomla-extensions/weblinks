@@ -3,13 +3,13 @@
 	<name>com_weblinks</name>
 	<author>Joomla! Project</author>
 	<creationDate>April 2006</creationDate>
-	<copyright>(C) 2005 - 2014 Open Source Matters. All rights reserved.
-	</copyright>
+	<copyright>(C) 2005 - 2014 Open Source Matters. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>admin@joomla.org</authorEmail>
 	<authorUrl>www.joomla.org</authorUrl>
 	<version>3.0.0</version>
 	<description>COM_WEBLINKS_XML_DESCRIPTION</description>
+	<scriptfile>script.php</scriptfile>
 
 	<install>
 		<sql>
@@ -34,7 +34,6 @@
 	</update>
 
 	<files folder="site">
-		<filename>index.html</filename>
 		<filename>weblinks.php</filename>
 		<filename>controller.php</filename>
 		<filename>router.php</filename>
@@ -63,7 +62,6 @@
 			<filename>access.xml</filename>
 			<filename>config.xml</filename>
 			<filename>controller.php</filename>
-			<filename>index.html</filename>
 			<filename>weblinks.php</filename>
 			<folder>controllers</folder>
 			<folder>helpers</folder>
