@@ -11,11 +11,8 @@
 	<description>PLG_SEARCH_WEBLINKS_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="weblinks">weblinks.php</filename>
+		<folder>language</folder>
 	</files>
-	<languages folder="language">
-		<language tag="en-GB">en-GB/en-GB.plg_search_weblinks.ini</language>
-		<language tag="en-GB">en-GB/en-GB.plg_search_weblinks.sys.ini</language>
-	</languages>
 	<config>
 		<fields name="params">
 

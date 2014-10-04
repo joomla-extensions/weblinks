@@ -10,14 +10,11 @@
 	<version>3.4.0-dev</version>
 	<description>MOD_WEBLINKS_XML_DESCRIPTION</description>
 	<files>
+		<folder>language</folder>
 		<folder>tmpl</folder>
 		<filename module="mod_weblinks">mod_weblinks.php</filename>
 		<filename>helper.php</filename>
 	</files>
-	<languages folder="language">
-		<language tag="en-GB">en-GB/en-GB.mod_weblinks.ini</language>
-		<language tag="en-GB">en-GB/en-GB.mod_weblinks.sys.ini</language>
-	</languages>
 	<help key="JHELP_EXTENSIONS_MODULE_MANAGER_WEBLINKS" />
 	<config>
 		<fields name="params">
