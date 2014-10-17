@@ -60,6 +60,8 @@ class WeblinksViewCategory extends JViewCategory
 	 */
 	protected function prepareDocument()
 	{
+		parent::prepareDocument();
+
 		$app		= JFactory::getApplication();
 		$menus		= $app->getMenu();
 		$pathway	= $app->getPathway();
