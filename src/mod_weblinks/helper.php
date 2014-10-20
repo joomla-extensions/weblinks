@@ -82,7 +82,7 @@ class ModWeblinksHelper
 
 		$model->setState(
 			'list.select',
-			'a.*, c.published AS c_published,' . $case_when1 . ',' . $case_when2 . ',' . 'DATE_FORMAT(a.created, "%Y-%m-%d") AS created'
+			'a., c.published AS c_published,' . $case_when1 . ',' . $case_when2 . ',' . 'convert(char(10), a.created, 120) AS created_date'
 		);
 
 		$model->setState('filter.c.published', 1);
