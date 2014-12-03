@@ -15,15 +15,14 @@ JHtml::_('behavior.formvalidator');
 JHtml::_('formbehavior.chosen', 'select');
 
 JFactory::getDocument()->addScriptDeclaration("
-jQuery(document).ready(function() {
 	Joomla.submitbutton = function(task)
 	{
 		if (task == 'weblink.cancel' || document.formvalidator.isValid(document.getElementById('weblink-form'))) {
 			" . $this->form->getField('description')->save() . "
 			Joomla.submitform(task, document.getElementById('weblink-form'));
 		}
-	}
-});");
+	};
+");
 ?>
 
 <form action="<?php echo JRoute::_('index.php?option=com_weblinks&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="weblink-form" class="form-validate">
