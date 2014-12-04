@@ -12,9 +12,7 @@ defined('_JEXEC') or die;
 /**
  * This models supports retrieving lists of article categories.
  *
- * @package     Joomla.Site
- * @subpackage  com_weblinks
- * @since       1.6
+ * @since  1.6
  */
 class WeblinksModelCategories extends JModelList
 {
@@ -94,18 +92,23 @@ class WeblinksModelCategories extends JModelList
 			$menu = $app->getMenu();
 			$active = $menu->getActive();
 			$params = new JRegistry;
+
 			if ($active)
 			{
 				$params->loadString($active->params);
 			}
+
 			$options = array();
 			$options['countItems'] = $params->get('show_cat_num_links', 1) || !$params->get('show_empty_categories_cat', 0);
 			$categories = JCategories::getInstance('Weblinks', $options);
 			$this->_parent = $categories->get($this->getState('filter.parentId', 'root'));
+
 			if (is_object($this->_parent))
 			{
 				$this->_items = $this->_parent->getChildren();
-			} else {
+			}
+			else
+			{
 				$this->_items = false;
 			}
 		}
