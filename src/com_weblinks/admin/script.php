@@ -21,7 +21,7 @@ class Com_WeblinksInstallerScript
 	/**
 	 * Function to perform changes during install
 	 *
-	 * @param   JInstallerComponent  $parent  The class calling this method
+	 * @param   JInstallerAdapterComponent  $parent  The class calling this method
 	 *
 	 * @return  void
 	 *

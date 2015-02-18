@@ -29,9 +29,9 @@ class WeblinksViewWeblinks extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->state		= $this->get('State');
-		$this->items		= $this->get('Items');
-		$this->pagination	= $this->get('Pagination');
+		$this->state      = $this->get('State');
+		$this->items      = $this->get('Items');
+		$this->pagination = $this->get('Pagination');
 
 		WeblinksHelper::addSubmenu('weblinks');
 
@@ -56,39 +56,46 @@ class WeblinksViewWeblinks extends JViewLegacy
 	{
 		require_once JPATH_COMPONENT . '/helpers/weblinks.php';
 
-		$state	= $this->get('State');
-		$canDo	= JHelperContent::getActions('com_weblinks', 'category', $state->get('filter.category_id'));
-		$user	= JFactory::getUser();
+		$state = $this->get('State');
+		$canDo = JHelperContent::getActions('com_weblinks', 'category', $state->get('filter.category_id'));
+		$user  = JFactory::getUser();
 
 		// Get the toolbar object instance
 		$bar = JToolBar::getInstance('toolbar');
 
 		JToolbarHelper::title(JText::_('COM_WEBLINKS_MANAGER_WEBLINKS'), 'link weblinks');
+
 		if (count($user->getAuthorisedCategories('com_weblinks', 'core.create')) > 0)
 		{
 			JToolbarHelper::addNew('weblink.add');
 		}
+
 		if ($canDo->get('core.edit'))
 		{
 			JToolbarHelper::editList('weblink.edit');
 		}
-		if ($canDo->get('core.edit.state')) {
 
+		if ($canDo->get('core.edit.state'))
+		{
 			JToolbarHelper::publish('weblinks.publish', 'JTOOLBAR_PUBLISH', true);
 			JToolbarHelper::unpublish('weblinks.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 
 			JToolbarHelper::archiveList('weblinks.archive');
 			JToolbarHelper::checkin('weblinks.checkin');
 		}
+
 		if ($state->get('filter.state') == -2 && $canDo->get('core.delete'))
 		{
 			JToolbarHelper::deleteList('', 'weblinks.delete', 'JTOOLBAR_EMPTY_TRASH');
-		} elseif ($canDo->get('core.edit.state'))
+		}
+		elseif ($canDo->get('core.edit.state'))
 		{
 			JToolbarHelper::trash('weblinks.trash');
 		}
+
 		// Add a batch button
-		if ($user->authorise('core.create', 'com_weblinks') && $user->authorise('core.edit', 'com_weblinks') && $user->authorise('core.edit.state', 'com_weblinks'))
+		if ($user->authorise('core.create', 'com_weblinks') && $user->authorise('core.edit', 'com_weblinks')
+			&& $user->authorise('core.edit.state', 'com_weblinks'))
 		{
 			JHtml::_('bootstrap.modal', 'collapseModal');
 			$title = JText::_('JTOOLBAR_BATCH');
@@ -99,6 +106,7 @@ class WeblinksViewWeblinks extends JViewLegacy
 			$dhtml = $layout->render(array('title' => $title));
 			$bar->appendButton('Custom', $dhtml, 'batch');
 		}
+
 		if ($user->authorise('core.admin', 'com_weblinks'))
 		{
 			JToolbarHelper::preferences('com_weblinks');
@@ -133,9 +141,9 @@ class WeblinksViewWeblinks extends JViewLegacy
 		);
 
 		JHtmlSidebar::addFilter(
-		JText::_('JOPTION_SELECT_TAG'),
-		'filter_tag',
-		JHtml::_('select.options', JHtml::_('tag.options', true, true), 'value', 'text', $this->state->get('filter.tag'))
+			JText::_('JOPTION_SELECT_TAG'),
+			'filter_tag',
+			JHtml::_('select.options', JHtml::_('tag.options', true, true), 'value', 'text', $this->state->get('filter.tag'))
 		);
 
 	}

@@ -21,8 +21,7 @@ class WeblinksModelWeblink extends JModelItem
 	/**
 	 * Model context string.
 	 *
-	 * @access	protected
-	 * @var		string
+	 * @var  string
 	 */
 	protected $_context = 'com_weblinks.weblink';
 
@@ -98,7 +97,9 @@ class WeblinksModelWeblink extends JModelItem
 	 * @param	type	The table type to instantiate
 	 * @param	string	A prefix for the table class name. Optional.
 	 * @param	array	Configuration array for model. Optional.
+	 *
 	 * @return	JTable	A database object
+	 *
 	 * @since	1.6
 	 */
 	public function getTable($type = 'Weblink', $prefix = 'WeblinksTable', $config = array())
@@ -121,6 +122,7 @@ class WeblinksModelWeblink extends JModelItem
 		}
 
 		$weblink = $this->getTable('Weblink', 'WeblinksTable');
+
 		return $weblink->hit($id);
 	}
 }

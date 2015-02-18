@@ -27,15 +27,13 @@ abstract class WeblinksHelperAssociation extends CategoryHelperAssociation
 	 *
 	 * @return  array   Array of associations for the item
 	 *
-	 * @since  3.0
+	 * @since   3.0
 	 */
-
 	public static function getAssociations($id = 0, $view = null)
 	{
 		jimport('helper.route', JPATH_COMPONENT_SITE);
 
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
+		$jinput = JFactory::getApplication()->input;
 		$view = is_null($view) ? $jinput->get('view') : $view;
 		$id = empty($id) ? $jinput->getInt('id') : $id;
 
@@ -45,6 +43,5 @@ abstract class WeblinksHelperAssociation extends CategoryHelperAssociation
 		}
 
 		return array();
-
 	}
 }

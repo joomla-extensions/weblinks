@@ -37,15 +37,13 @@ class WeblinksControllerWeblink extends JControllerForm
 			$allow = $user->authorise('core.create', $this->option . '.category.' . $categoryId);
 		}
 
-		if ($allow === null)
-		{
-			// In the absense of better information, revert to the component permissions.
-			return parent::allowAdd($data);
-		}
-		else
+		if ($allow !== null)
 		{
 			return $allow;
 		}
+
+		// In the absense of better information, revert to the component permissions.
+		return parent::allowAdd($data);
 	}
 
 	/**
@@ -73,11 +71,9 @@ class WeblinksControllerWeblink extends JControllerForm
 			// The category has been set. Check the category permissions.
 			return JFactory::getUser()->authorise('core.edit', $this->option . '.category.' . $categoryId);
 		}
-		else
-		{
-			// Since there is no asset tracking, revert to the component permissions.
-			return parent::allowEdit($data, $key);
-		}
+
+		// Since there is no asset tracking, revert to the component permissions.
+		return parent::allowEdit($data, $key);
 	}
 
 	/**

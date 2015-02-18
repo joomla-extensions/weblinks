@@ -16,10 +16,18 @@ defined('_JEXEC') or die;
  */
 class WeblinksCategories extends JCategories
 {
+	/**
+	 * Constructor
+	 *
+	 * @param   array  $options  Array of options
+	 *
+	 * @since   1.6
+	 */
 	public function __construct($options = array())
 	{
 		$options['table'] = '#__weblinks';
 		$options['extension'] = 'com_weblinks';
+
 		parent::__construct($options);
 	}
 }

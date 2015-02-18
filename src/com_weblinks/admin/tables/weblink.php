@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\String\String;
+
 /**
  * Weblink Table class
  *
@@ -28,6 +30,8 @@ class WeblinksTableWeblink extends JTable
 	 * Constructor
 	 *
 	 * @param   JDatabaseDriver  &$db  A database connector object
+	 *
+	 * @since   1.5
 	 */
 	public function __construct(&$db)
 	{
@@ -44,20 +48,22 @@ class WeblinksTableWeblink extends JTable
 	 * Overload the store method for the Weblinks table.
 	 *
 	 * @param   boolean	Toggle whether null values should be updated.
+	 *
 	 * @return  boolean  True on success, false on failure.
+	 *
 	 * @since   1.6
 	 */
 	public function store($updateNulls = false)
 	{
-		$date	= JFactory::getDate();
-		$user	= JFactory::getUser();
+		$date = JFactory::getDate();
+		$user = JFactory::getUser();
 
-		$this->modified		= $date->toSql();
+		$this->modified = $date->toSql();
 
 		if ($this->id)
 		{
 			// Existing item
-			$this->modified_by	= $user->get('id');
+			$this->modified_by = $user->id;
 		}
 		else
 		{
@@ -67,22 +73,23 @@ class WeblinksTableWeblink extends JTable
 			{
 				$this->created = $date->toSql();
 			}
+
 			if (empty($this->created_by))
 			{
-				$this->created_by = $user->get('id');
+				$this->created_by = $user->id;
 			}
 		}
 
 		// Set publish_up to null date if not set
 		if (!$this->publish_up)
 		{
-			$this->publish_up = $this->_db->getNullDate();
+			$this->publish_up = $this->getDbo()->getNullDate();
 		}
 
 		// Set publish_down to null date if not set
 		if (!$this->publish_down)
 		{
-			$this->publish_down = $this->_db->getNullDate();
+			$this->publish_down = $this->getDbo()->getNullDate();
 		}
 
 		// Verify that the alias is unique
@@ -91,6 +98,7 @@ class WeblinksTableWeblink extends JTable
 		if ($table->load(array('alias' => $this->alias, 'catid' => $this->catid)) && ($table->id != $this->id || $this->id == 0))
 		{
 			$this->setError(JText::_('COM_WEBLINKS_ERROR_UNIQUE_ALIAS'));
+
 			return false;
 		}
 
@@ -104,12 +112,15 @@ class WeblinksTableWeblink extends JTable
 	 * Overloaded check method to ensure data integrity.
 	 *
 	 * @return  boolean  True on success.
+	 *
+	 * @since   1.5
 	 */
 	public function check()
 	{
-		if (JFilterInput::checkAttribute(array ('href', $this->url)))
+		if (JFilterInput::checkAttribute(array('href', $this->url)))
 		{
 			$this->setError(JText::_('COM_WEBLINKS_ERR_TABLES_PROVIDE_URL'));
+
 			return false;
 		}
 
@@ -121,17 +132,21 @@ class WeblinksTableWeblink extends JTable
 		}
 
 		// Check for existing name
-		$query = $this->_db->getQuery(true)
-			->select($this->_db->quoteName('id'))
-			->from($this->_db->quoteName('#__weblinks'))
-			->where($this->_db->quoteName('title') . ' = ' . $this->_db->quote($this->title))
-			->where($this->_db->quoteName('catid') . ' = ' . (int) $this->catid);
-		$this->_db->setQuery($query);
+		$db = $this->getDbo();
 
-		$xid = (int) $this->_db->loadResult();
+		$query = $db->getQuery(true)
+			->select($db->quoteName('id'))
+			->from($db->quoteName('#__weblinks'))
+			->where($db->quoteName('title') . ' = ' . $db->quote($this->title))
+			->where($db->quoteName('catid') . ' = ' . (int) $this->catid);
+		$db->setQuery($query);
+
+		$xid = (int) $db->loadResult();
+
 		if ($xid && $xid != (int) $this->id)
 		{
 			$this->setError(JText::_('COM_WEBLINKS_ERR_TABLES_NAME'));
+
 			return false;
 		}
 
@@ -139,36 +154,45 @@ class WeblinksTableWeblink extends JTable
 		{
 			$this->alias = $this->title;
 		}
-		$this->alias = JApplication::stringURLSafe($this->alias);
+
+		$this->alias = JApplicationHelper::stringURLSafe($this->alias);
+
 		if (trim(str_replace('-', '', $this->alias)) == '')
 		{
 			$this->alias = JFactory::getDate()->format("Y-m-d-H-i-s");
 		}
 
 		// Check the publish down date is not earlier than publish up.
-		if ($this->publish_down > $this->_db->getNullDate() && $this->publish_down < $this->publish_up)
+		if ($this->publish_down > $db->getNullDate() && $this->publish_down < $this->publish_up)
 		{
 			$this->setError(JText::_('JGLOBAL_START_PUBLISH_AFTER_FINISH'));
+
 			return false;
 		}
 
-		// clean up keywords -- eliminate extra spaces between phrases
-		// and cr (\r) and lf (\n) characters from string
+		/*
+		 * Clean up keywords -- eliminate extra spaces between phrases
+		 * and cr (\r) and lf (\n) characters from string
+		 */
 		if (!empty($this->metakey))
 		{
-			// only process if not empty
-			$bad_characters = array("\n", "\r", "\"", "<", ">"); // array of characters to remove
-			$after_clean = JString::str_ireplace($bad_characters, "", $this->metakey); // remove bad characters
-			$keys = explode(',', $after_clean); // create array using commas as delimiter
+			// Array of characters to remove
+			$bad_characters = array("\n", "\r", "\"", "<", ">");
+			$after_clean = String::str_ireplace($bad_characters, "", $this->metakey);
+			$keys = explode(',', $after_clean);
 			$clean_keys = array();
 
 			foreach ($keys as $key)
 			{
-				if (trim($key)) {  // ignore blank keywords
+				// Ignore blank keywords
+				if (trim($key))
+				{
 					$clean_keys[] = trim($key);
 				}
 			}
-			$this->metakey = implode(", ", $clean_keys); // put array back together delimited by ", "
+
+			// Put array back together delimited by ", "
+			$this->metakey = implode(", ", $clean_keys);
 		}
 
 		return true;

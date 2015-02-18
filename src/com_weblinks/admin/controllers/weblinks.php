@@ -29,22 +29,6 @@ class WeblinksControllerWeblinks extends JControllerAdmin
 	 */
 	public function getModel($name = 'Weblink', $prefix = 'WeblinksModel', $config = array('ignore_request' => true))
 	{
-		$model = parent::getModel($name, $prefix, $config);
-
-		return $model;
-	}
-
-	/**
-	 * Method to provide child classes the opportunity to process after the delete task.
-	 *
-	 * @param   JModelLegacy  $model  The model for the component
-	 * @param   mixed         $ids    array of ids deleted.
-	 *
-	 * @return  void
-	 *
-	 * @since   3.1
-	 */
-	protected function postDeleteHook(JModelLegacy $model, $ids = null)
-	{
+		return parent::getModel($name, $prefix, $config);
 	}
 }

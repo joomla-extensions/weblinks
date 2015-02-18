@@ -17,9 +17,7 @@ JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_weblinks/models', 'We
 /**
  * Helper for mod_weblinks
  *
- * @package     Joomla.Site
- * @subpackage  mod_weblinks
- * @since       1.5.0
+ * @since  1.5
  */
 class ModWeblinksHelper
 {
@@ -30,7 +28,7 @@ class ModWeblinksHelper
 	 *
 	 * @return  mixed   Null if no weblinks based on input parameters else an array containing all the weblinks.
 	 *
-	 * @since   1.5.0
+	 * @since   1.5
 	 **/
 	public static function getList(&$params)
 	{
@@ -108,9 +106,7 @@ class ModWeblinksHelper
 
 			return $items;
 		}
-		else
-		{
-			return;
-		}
+
+		return;
 	}
 }

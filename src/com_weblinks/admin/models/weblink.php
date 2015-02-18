@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\Registry\Registry;
+use Joomla\String\String;
 
 /**
  * Weblinks model.
@@ -18,12 +19,11 @@ use Joomla\Registry\Registry;
  */
 class WeblinksModelWeblink extends JModelAdmin
 {
-
 	/**
 	 * The type alias for this content type.
 	 *
-	 * @var      string
-	 * @since    3.2
+	 * @var    string
+	 * @since  3.2
 	 */
 	public $typeAlias = 'com_weblinks.weblink';
 
@@ -52,16 +52,13 @@ class WeblinksModelWeblink extends JModelAdmin
 			{
 				return;
 			}
-			$user = JFactory::getUser();
 
 			if ($record->catid)
 			{
-				return $user->authorise('core.delete', 'com_weblinks.category.'.(int) $record->catid);
+				return JFactory::getUser()->authorise('core.delete', 'com_weblinks.category.' . (int) $record->catid);
 			}
-			else
-			{
-				return parent::canDelete($record);
-			}
+
+			return parent::canDelete($record);
 		}
 	}
 
@@ -76,16 +73,12 @@ class WeblinksModelWeblink extends JModelAdmin
 	 */
 	protected function canEditState($record)
 	{
-		$user = JFactory::getUser();
-
 		if (!empty($record->catid))
 		{
-			return $user->authorise('core.edit.state', 'com_weblinks.category.'.(int) $record->catid);
+			return JFactory::getUser()->authorise('core.edit.state', 'com_weblinks.category.' . (int) $record->catid);
 		}
-		else
-		{
-			return parent::canEditState($record);
-		}
+
+		return parent::canEditState($record);
 	}
 
 	/**
@@ -234,11 +227,11 @@ class WeblinksModelWeblink extends JModelAdmin
 		$user = JFactory::getUser();
 
 		$table->title = htmlspecialchars_decode($table->title, ENT_QUOTES);
-		$table->alias = JApplication::stringURLSafe($table->alias);
+		$table->alias = JApplicationHelper::stringURLSafe($table->alias);
 
 		if (empty($table->alias))
 		{
-			$table->alias = JApplication::stringURLSafe($table->title);
+			$table->alias = JApplicationHelper::stringURLSafe($table->title);
 		}
 
 		if (empty($table->id))
@@ -262,7 +255,7 @@ class WeblinksModelWeblink extends JModelAdmin
 			{
 				// Set the values
 				$table->modified    = $date->toSql();
-				$table->modified_by = $user->get('id');
+				$table->modified_by = $user->id;
 			}
 		}
 
@@ -332,10 +325,10 @@ class WeblinksModelWeblink extends JModelAdmin
 		{
 			if ($name == $table->title)
 			{
-				$name = JString::increment($name);
+				$name = String::increment($name);
 			}
 
-			$alias = JString::increment($alias, 'dash');
+			$alias = String::increment($alias, 'dash');
 		}
 
 		return array($name, $alias);

@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 
-require_once JPATH_COMPONENT_ADMINISTRATOR.'/models/weblink.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR . '/models/weblink.php';
 
 /**
  * Weblinks model.
@@ -21,14 +21,16 @@ class WeblinksModelForm extends WeblinksModelWeblink
 	/**
 	 * Model typeAlias string. Used for version history.
 	 *
-	 * @var        string
+	 * @var    string
+	 * @since  3.2
 	 */
 	public $typeAlias = 'com_weblinks.weblink';
 
 	/**
 	 * Get the return URL.
 	 *
-	 * @return  string	The return URL.
+	 * @return  string  The return URL.
+	 *
 	 * @since   1.6
 	 */
 	public function getReturnPage()
@@ -50,10 +52,11 @@ class WeblinksModelForm extends WeblinksModelWeblink
 		// Load state from the request.
 		$pk = $app->input->getInt('w_id');
 		$this->setState('weblink.id', $pk);
+
 		// Add compatibility variable for default naming conventions.
 		$this->setState('form.id', $pk);
 
-		$categoryId	= $app->input->getInt('catid');
+		$categoryId = $app->input->getInt('catid');
 		$this->setState('weblink.catid', $categoryId);
 
 		$return = $app->input->get('return', null, 'base64');
@@ -66,7 +69,7 @@ class WeblinksModelForm extends WeblinksModelWeblink
 		$this->setState('return_page', base64_decode($return));
 
 		// Load the parameters.
-		$params	= $app->getParams();
+		$params = $app->getParams();
 		$this->setState('params', $params);
 
 		$this->setState('layout', $app->input->getString('layout'));

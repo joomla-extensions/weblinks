@@ -17,16 +17,17 @@ defined('_JEXEC') or die;
 class WeblinksModelCategories extends JModelList
 {
 	/**
-	 * Model context string.
+	 * Context string for the model type.  This is used to handle uniqueness
+	 * when dealing with the getStoreId() method and caching data structures.
 	 *
-	 * @var		string
+	 * @var  string
 	 */
-	public $_context = 'com_weblinks.categories';
+	protected $context = 'com_weblinks.categories';
 
 	/**
 	 * The category context (allows other extensions to derived from this model).
 	 *
-	 * @var		string
+	 * @var  string
 	 */
 	protected $_extension = 'com_weblinks';
 
