@@ -68,4 +68,39 @@ class Com_WeblinksInstallerScript
 			$category->rebuildPath($category->id);
 		}
 	}
+	/**
+	 * method to update the component
+	 *
+	 * @return void
+	 */
+	function update($parent) 
+	{
+		$tasks = array(
+			'0' => 'sid',
+			'1' => 'date',
+			'2' => 'archived',
+			'3' => 'approved',
+		);
+
+		foreach $tasks as $column)
+		{
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true);
+
+			$query->select(*);
+			$query->from($db->quoteName('information_schema.columns'));
+			$query->where($db->quoteName('table_name') . ' = '. $db->quote('#__weblinks'));
+			$query->where($db->quoteName('column_name') . ' = '. $db->quote($column));
+			
+			$numrows = $query->getNumRows();
+			$db->clean();
+
+			if ($numrows != 0)
+			{
+				$sql = "ALTER TABLE `#__weblinks` DROP COLUMN `' . $column . '`";
+				$db->setQuery($sql);
+				$db->execute();
+			}
+		}
+	}
 }
