@@ -68,12 +68,15 @@ class Com_WeblinksInstallerScript
 			$category->rebuildPath($category->id);
 		}
 	}
+
 	/**
-	 * method to update the component
+	 * method to run after an install/downloads/uninstall method
 	 *
 	 * @return void
+	 *
+	 * @since  3.4.1
 	 */
-	function update($parent) 
+	function postflight($type, $parent)
 	{
 		$tasks = array(
 			'0' => 'sid',
@@ -84,7 +87,7 @@ class Com_WeblinksInstallerScript
 
 		foreach $tasks as $column)
 		{
-			$db = JFactory::getDbo();
+			$db    = JFactory::getDbo();
 			$query = $db->getQuery(true);
 
 			$query->select(*);
