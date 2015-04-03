@@ -85,24 +85,20 @@ class Com_WeblinksInstallerScript
 			'3' => 'approved',
 		);
 
-		foreach $tasks as $column)
+		$db    = JFactory::getDbo();
+		$table = $db->getTableColumns('#__weblinks');
+
+		foreach ($tasks as $column)
 		{
-			$db    = JFactory::getDbo();
-			$query = $db->getQuery(true);
-
-			$query->select(*);
-			$query->from($db->quoteName('information_schema.columns'));
-			$query->where($db->quoteName('table_name') . ' = '. $db->quote('#__weblinks'));
-			$query->where($db->quoteName('column_name') . ' = '. $db->quote($column));
-			
-			$numrows = $query->getNumRows();
-			$db->clean();
-
-			if ($numrows != 0)
+			foreach ($table as $columName => $columType)
 			{
-				$sql = "ALTER TABLE `#__weblinks` DROP COLUMN `' . $column . '`";
-				$db->setQuery($sql);
-				$db->execute();
+				if ($columName == $column)
+				{
+					$sql = "ALTER TABLE `#__weblinks` DROP COLUMN `" . $column . "`";
+					$db->clean();
+					$db->setQuery($sql);
+					$db->execute();
+				}
 			}
 		}
 	}
