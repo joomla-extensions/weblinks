@@ -78,28 +78,23 @@ class Com_WeblinksInstallerScript
 	 */
 	function postflight($type, $parent)
 	{
-		$tasks = array(
-			'0' => 'sid',
-			'1' => 'date',
-			'2' => 'archived',
-			'3' => 'approved',
+		$oldColumns = array(
+			'sid',
+			'date',
+			'archived',
+			'approved',
 		);
 
 		$db    = JFactory::getDbo();
 		$table = $db->getTableColumns('#__weblinks');
 
-		foreach ($tasks as $column)
+		$columns = array_intersect($oldColumns, array_keys($table));
+
+		foreach ($columns as $column)
 		{
-			foreach ($table as $columName => $columType)
-			{
-				if ($columName == $column)
-				{
-					$sql = "ALTER TABLE `#__weblinks` DROP COLUMN `" . $column . "`";
-					$db->clean();
-					$db->setQuery($sql);
-					$db->execute();
-				}
-			}
+			$sql = 'ALTER TABLE ' . $db->qn('#__weblinks') . ' DROP COLUMN ' . $db->qn($column);
+			$db->setQuery($sql);
+			$db->execute();
 		}
 	}
 }
