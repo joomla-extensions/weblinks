@@ -28,10 +28,12 @@ if($params->get('groupby', 0)) :
             if ($item->catid == $cat['catid'])
                 $items[] = $item;
 
-        if($k % $cols == 0) : ?>
-            <div class="row row-fluid">
-        <?php endif; ?>
+        if($cols > 1) :
+            if($k % $cols == 0) : ?>
+                <div class="row row-fluid">
+            <?php endif; ?>
                 <div class="span<?php echo (12 / $cols); ?>">
+        <?php endif; ?>
                     <?php if($params->get('groupby_showtitle', 1)) : ?>
                         <h4><?php echo htmlspecialchars($cat['title']); ?></h4>
                     <?php endif; ?>
@@ -79,10 +81,12 @@ if($params->get('groupby', 0)) :
                             endforeach;
                             ?>
                         </ul>
+        <?php if($cols > 1) : ?>
                 </div>
-        <?php if(($k + 1) % $cols == 0 || $k == count($cats) - 1) : ?>
+            <?php if(($k + 1) % $cols == 0 || $k == count($cats) - 1) : ?>
             </div>
         <?php endif;
+        endif;
     endforeach;
 else : ?>
     <ul class="weblinks<?php echo $moduleclass_sfx; ?>">

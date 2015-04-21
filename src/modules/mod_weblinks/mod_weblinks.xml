@@ -79,6 +79,8 @@
 					label="MOD_WEBLINKS_FIELD_COLUMNS_LABEL"
 					description="MOD_WEBLINKS_FIELD_COLUMNS_DESC">
 					<option
+					    value="1">1</option>
+                    <option
 					    value="2">2</option>
 					<option
 					    value="3">3</option>
