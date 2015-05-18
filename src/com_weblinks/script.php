@@ -78,6 +78,9 @@ class Com_WeblinksInstallerScript
 	 */
 	function postflight($type, $parent)
 	{
+		// Add Missing Table Colums if needed
+		$this->addColumnsIfNeeded();
+
 		// Drop the Table Colums if needed
 		$this->dropColumnsIfNeeded();
 
@@ -191,6 +194,33 @@ class Com_WeblinksInstallerScript
 		foreach ($columns as $column)
 		{
 			$sql = 'ALTER TABLE ' . $db->qn('#__weblinks') . ' DROP COLUMN ' . $db->qn($column);
+			$db->setQuery($sql);
+			$db->execute();
+		}
+	}
+
+	/**
+	 * Method to add colums from #__weblinks if they are missing.
+	 *
+	 * @return  void
+	 *
+	 * @since   3.4.1
+	 */
+	private function addColumnsIfNeeded()
+	{
+		$db    = JFactory::getDbo();
+		$table = $db->getTableColumns('#__weblinks');
+
+		if (!array_key_exists('version', $table))
+		{
+			$sql = 'ALTER TABLE ' . $db->qn('#__weblinks') . ' ADD COLUMN ' . $db->qn('version') . ' int(10) unsigned NOT NULL DEFAULT '1';
+			$db->setQuery($sql);
+			$db->execute();
+		}
+
+		if (!array_key_exists('images', $table))
+		{
+			$sql = 'ALTER TABLE ' . $db->qn('#__weblinks') . ' ADD COLUMN ' . $db->qn('images') . ' text NOT NULL';
 			$db->setQuery($sql);
 			$db->execute();
 		}
