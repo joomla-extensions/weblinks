@@ -6,6 +6,7 @@
 		<element>pkg_weblinks</element>
 		<type>package</type>
 		<version>3.4.0</version>
+		<client>site</client>
 		<infourl title="Weblinks Extension Package">https://github.com/joomla-extensions/weblinks</infourl>
 		<downloads>
 			<downloadurl type="full" format="zip">https://github.com/joomla-extensions/weblinks/releases/download/3.4.0/pkg_weblinks_3.4.0.zip</downloadurl>
