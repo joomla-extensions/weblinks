@@ -1,0 +1,14 @@
+{
+    "name"       : "joomla-extensions/weblinks",
+    "description": "The Open Source PHP Framework for creating complex Joomla extensions",
+    "license"    : "GPL-2.0+",
+    "require"    : {
+        "php": ">=5.3.10"
+    },
+    "require-dev": {
+        "codeception/codeception": "2.0.13",
+        "joomla-projects/joomla-browser": "dev-develop",
+        "codegyre/robo": "~0.5",
+        "redcomponent/robo": "dev-master"
+    }
+}

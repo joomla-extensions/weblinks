@@ -1,0 +1,24 @@
+language: php
+php:
+- 5.4
+before_script:
+- sudo apt-get update -qq
+# Install Apache
+- sudo apt-get install -y --force-yes apache2 libapache2-mod-php5 php5-curl php5-mysql php5-intl php5-gd > /dev/null
+- sudo chmod 777 -R /home/travis/build/joomla-extensions/weblinks/
+- sudo ln -s /home/travis/build/joomla-extensions/weblinks/tests/ /var/www/tests
+- sudo sed -i -e "s,AllowOverride[ ]None,AllowOverride All,g" /etc/apache2/sites-available/default
+- sudo /etc/init.d/apache2 restart
+- composer install --dev --prefer-dist
+- "export DISPLAY=:99.0"
+- "sh -e /etc/init.d/xvfb start"
+- sleep 3 # give xvfb some time to start
+- sudo apt-get install fluxbox -y --force-yes
+- fluxbox &
+- sleep 3 # give fluxbox some time to start
+
+script:
+- mv tests/acceptance.suite.dist.yml tests/acceptance.suite.yml
+- php vendor/bin/robo test:prepare-acceptance
+- sudo chmod 777 -R $TRAVIS_BUILD_DIR # Adds permissions to be able to install joomla and create configuration.php
+- php vendor/bin/robo test:acceptance
