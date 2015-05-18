@@ -101,7 +101,7 @@ class Com_WeblinksInstallerScript
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName('type_id'))
 			->from($db->quoteName('#__content_types'))
-			>where($db->quoteName('type_alias') . ' = ' . $db->quote('com_weblinks.weblink'));
+			->where($db->quoteName('type_alias') . ' = ' . $db->quote('com_weblinks.weblink'));
 		$db->setQuery($query);
 
 		$weblinkTypeId = $db->loadResult();
