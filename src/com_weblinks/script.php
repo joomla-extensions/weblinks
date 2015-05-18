@@ -193,7 +193,7 @@ class Com_WeblinksInstallerScript
 
 		foreach ($columns as $column)
 		{
-			$sql = 'ALTER TABLE ' . $db->qn('#__weblinks') . ' DROP COLUMN ' . $db->qn($column);
+			$sql = 'ALTER TABLE ' . $db->quoteName('#__weblinks') . ' DROP COLUMN ' . $db->quoteName($column);
 			$db->setQuery($sql);
 			$db->execute();
 		}
@@ -213,14 +213,14 @@ class Com_WeblinksInstallerScript
 
 		if (!array_key_exists('version', $table))
 		{
-			$sql = 'ALTER TABLE ' . $db->qn('#__weblinks') . ' ADD COLUMN ' . $db->qn('version') . ' int(10) unsigned NOT NULL DEFAULT '1';
+			$sql = 'ALTER TABLE ' . $db->quoteName('#__weblinks') . ' ADD COLUMN ' . $db->quoteName('version') . ' int(10) unsigned NOT NULL DEFAULT '1';
 			$db->setQuery($sql);
 			$db->execute();
 		}
 
 		if (!array_key_exists('images', $table))
 		{
-			$sql = 'ALTER TABLE ' . $db->qn('#__weblinks') . ' ADD COLUMN ' . $db->qn('images') . ' text NOT NULL';
+			$sql = 'ALTER TABLE ' . $db->quoteName('#__weblinks') . ' ADD COLUMN ' . $db->quoteName('images') . ' text NOT NULL';
 			$db->setQuery($sql);
 			$db->execute();
 		}
