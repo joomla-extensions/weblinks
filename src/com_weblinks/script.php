@@ -213,7 +213,7 @@ class Com_WeblinksInstallerScript
 
 		if (!array_key_exists('version', $table))
 		{
-			$sql = 'ALTER TABLE ' . $db->quoteName('#__weblinks') . ' ADD COLUMN ' . $db->quoteName('version') . ' int(10) unsigned NOT NULL DEFAULT '1';
+			$sql = 'ALTER TABLE ' . $db->quoteName('#__weblinks') . ' ADD COLUMN ' . $db->quoteName('version') . " int(10) unsigned NOT NULL DEFAULT '1'";
 			$db->setQuery($sql);
 			$db->execute();
 		}
