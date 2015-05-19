@@ -10,6 +10,6 @@ To run the tests please execute the following commands (for the moment only work
 ```bash
 $ composer update
 $ vendor/bin/robo
-$ vendor/bin/robo testprepare-acceptance
+$ vendor/bin/robo test:prepare-acceptance
 $ vendor/bin/robo test:acceptance
 ```
