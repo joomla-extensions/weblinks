@@ -84,6 +84,9 @@ class Com_WeblinksInstallerScript
 
 		if (strpos($dbName, 'mysql') !== false)
 		{
+			// Add Missing Table Colums if needed
+			$this->addColumnsIfNeeded();
+
 			// Drop the Table Colums if needed
 			$this->dropColumnsIfNeeded();
 		}
@@ -198,6 +201,33 @@ class Com_WeblinksInstallerScript
 		foreach ($columns as $column)
 		{
 			$sql = 'ALTER TABLE ' . $db->quoteName('#__weblinks') . ' DROP COLUMN ' . $db->quoteName($column);
+			$db->setQuery($sql);
+			$db->execute();
+		}
+	}
+
+	/**
+	 * Method to add colums from #__weblinks if they are missing.
+	 *
+	 * @return  void
+	 *
+	 * @since   3.4.1
+	 */
+	private function addColumnsIfNeeded()
+	{
+		$db    = JFactory::getDbo();
+		$table = $db->getTableColumns('#__weblinks');
+
+		if (!array_key_exists('version', $table))
+		{
+			$sql = 'ALTER TABLE ' . $db->quoteName('#__weblinks') . ' ADD COLUMN ' . $db->quoteName('version') . " int(10) unsigned NOT NULL DEFAULT '1'";
+			$db->setQuery($sql);
+			$db->execute();
+		}
+
+		if (!array_key_exists('images', $table))
+		{
+			$sql = 'ALTER TABLE ' . $db->quoteName('#__weblinks') . ' ADD COLUMN ' . $db->quoteName('images') . ' text NOT NULL';
 			$db->setQuery($sql);
 			$db->execute();
 		}
