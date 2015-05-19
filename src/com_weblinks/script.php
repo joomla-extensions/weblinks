@@ -12,9 +12,7 @@ defined('_JEXEC') or die;
 /**
  * Installation class to perform additional changes during install/uninstall/update
  *
- * @package     Joomla.Administrator
- * @subpackage  com_weblinks
- * @since       3.4
+ * @since  3.4
  */
 class Com_WeblinksInstallerScript
 {
@@ -70,16 +68,25 @@ class Com_WeblinksInstallerScript
 	}
 
 	/**
-	 * method to run after an install/downloads/uninstall method
+	 * Method to run after the install routine.
 	 *
-	 * @return void
+	 * @param   string                      $type    The action being performed
+	 * @param   JInstallerAdapterComponent  $parent  The class calling this method
 	 *
-	 * @since  3.4.1
+	 * @return  void
+	 *
+	 * @since   3.4.1
 	 */
-	function postflight($type, $parent)
+	public function postflight($type, $parent)
 	{
-		// Drop the Table Colums if needed
-		$this->dropColumnsIfNeeded();
+		// Only execute database changes on MySQL databases
+		$dbName = JFactory::getDbo()->name;
+
+		if (strpos($dbName, 'mysql') !== false)
+		{
+			// Drop the Table Colums if needed
+			$this->dropColumnsIfNeeded();
+		}
 
 		// Insert missing UCM Records if needed
 		$this->insertMissingUcmRecords();
@@ -92,7 +99,7 @@ class Com_WeblinksInstallerScript
 	 *
 	 * @since   3.4.1
 	 */
-	public function insertMissingUcmRecords()
+	private function insertMissingUcmRecords()
 	{
 		// Insert the rows in the #__content_types table if they don't exist already
 		$db = JFactory::getDbo();
@@ -190,7 +197,7 @@ class Com_WeblinksInstallerScript
 
 		foreach ($columns as $column)
 		{
-			$sql = 'ALTER TABLE ' . $db->qn('#__weblinks') . ' DROP COLUMN ' . $db->qn($column);
+			$sql = 'ALTER TABLE ' . $db->quoteName('#__weblinks') . ' DROP COLUMN ' . $db->quoteName($column);
 			$db->setQuery($sql);
 			$db->execute();
 		}
