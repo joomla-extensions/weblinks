@@ -12,9 +12,7 @@ defined('_JEXEC') or die;
 /**
  * Installation class to perform additional changes during install/uninstall/update
  *
- * @package     Joomla.Administrator
- * @subpackage  com_weblinks
- * @since       3.4
+ * @since  3.4
  */
 class Com_WeblinksInstallerScript
 {
@@ -70,19 +68,28 @@ class Com_WeblinksInstallerScript
 	}
 
 	/**
-	 * method to run after an install/downloads/uninstall method
+	 * Method to run after the install routine.
 	 *
-	 * @return void
+	 * @param   string                      $type    The action being performed
+	 * @param   JInstallerAdapterComponent  $parent  The class calling this method
 	 *
-	 * @since  3.4.1
+	 * @return  void
+	 *
+	 * @since   3.4.1
 	 */
-	function postflight($type, $parent)
+	public function postflight($type, $parent)
 	{
-		// Add Missing Table Colums if needed
-		$this->addColumnsIfNeeded();
+		// Only execute database changes on MySQL databases
+		$dbName = JFactory::getDbo()->name;
 
-		// Drop the Table Colums if needed
-		$this->dropColumnsIfNeeded();
+		if (strpos($dbName, 'mysql') !== false)
+		{
+			// Add Missing Table Colums if needed
+			$this->addColumnsIfNeeded();
+
+			// Drop the Table Colums if needed
+			$this->dropColumnsIfNeeded();
+		}
 
 		// Insert missing UCM Records if needed
 		$this->insertMissingUcmRecords();
@@ -95,16 +102,16 @@ class Com_WeblinksInstallerScript
 	 *
 	 * @since   3.4.1
 	 */
-	public function insertMissingUcmRecords()
+	private function insertMissingUcmRecords()
 	{
 		// Insert the rows in the #__content_types table if they don't exist already
 		$db = JFactory::getDbo();
 
 		// Get the type ID for a Weblink
 		$query = $db->getQuery(true);
-		$query->select($db->quoteName('type_id'));
-		$query->from($db->quoteName('#__content_types'));
-		$query->where($db->quoteName('type_alias') . ' = ' . $db->quote('com_weblinks.weblink'));
+		$query->select($db->quoteName('type_id'))
+			->from($db->quoteName('#__content_types'))
+			->where($db->quoteName('type_alias') . ' = ' . $db->quote('com_weblinks.weblink'));
 		$db->setQuery($query);
 
 		$weblinkTypeId = $db->loadResult();
@@ -193,7 +200,7 @@ class Com_WeblinksInstallerScript
 
 		foreach ($columns as $column)
 		{
-			$sql = 'ALTER TABLE ' . $db->qn('#__weblinks') . ' DROP COLUMN ' . $db->qn($column);
+			$sql = 'ALTER TABLE ' . $db->quoteName('#__weblinks') . ' DROP COLUMN ' . $db->quoteName($column);
 			$db->setQuery($sql);
 			$db->execute();
 		}
