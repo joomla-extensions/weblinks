@@ -14,22 +14,23 @@ class AdministratorWeblinksCest
 	public function administratorCreateWebLink(AcceptanceTester $I)
 	{
 		$I->am('Administrator');
-		$I->wantToTest('Category creation in /administrator/');
+		$I->wantToTest('Weblink creation in /administrator/');
 
 		$I->doAdministratorLogin();
 
-		$I->amGoingTo('Navigate to Categories page in /administrator/');
-		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
-		$I->waitForText('Category Manager: Weblinks','5',['css' => 'h1']);
-		$I->expectTo('see categories page');
+		$I->amGoingTo('Navigate to Weblinks page in /administrator/');
+		$I->amOnPage('administrator/index.php?option=com_weblinks');
+		$I->waitForText('Web Links Manager: Web Links','5',['css' => 'h1']);
+		$I->expectTo('see weblinks page');
 		$I->checkForPhpNoticesOrWarnings();
 
-		$I->amGoingTo('try to save a category with a filled title');
-		$I->click(['xpath'=> "//button[@onclick=\"Joomla.submitbutton('category.add')\"]"]);
-		$I->waitForText('Category Manager: Add A New Weblinks Category','5',['css' => 'h1']);
+		$I->amGoingTo('try to save a weblink with a filled title and URL');
+		$I->click(['xpath'=> "//button[@onclick=\"Joomla.submitbutton('weblink.add')\"]"]);
+		$I->waitForText('Web Links Manager: Web Link','5',['css' => 'h1']);
 		$I->fillField(['id' => 'jform_title'],'automated testing' . rand(1,100));
-		$I->click(['xpath'=> "//button[@onclick=\"Joomla.submitbutton('category.apply')\"]"]);
-		$I->expectTo('see a success message after saving the category');
-		$I->see('Category successfully saved',['id' => 'system-message-container']);
+		$I->fillField(['id' => 'jform_url'],'http://example.com/automated_testing' . rand(1,100));
+		$I->click(['xpath'=> "//button[@onclick=\"Joomla.submitbutton('weblink.apply')\"]"]);
+		$I->expectTo('see a success message after saving the weblink');
+		$I->see('Web link successfully saved',['id' => 'system-message-container']);
 	}
 }
