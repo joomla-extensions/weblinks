@@ -21,7 +21,7 @@ class RoboFile extends \Robo\Tasks
 	* Set the Executeextension
 	*
 	* @return void
-	*/	
+	*/
 	public function setExecExtension()
 	{
 		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
@@ -85,7 +85,7 @@ class RoboFile extends \Robo\Tasks
 		// Make sure we have Composer
 		if (!file_exists('./composer.phar'))
 		{
-			$this->_exec('curl'.$this->extension.' -sS https://getcomposer.org/installer | php');
+			$this->_exec('curl' . $this->extension . ' -sS https://getcomposer.org/installer | php');
 		}
 
 		$this->taskComposerUpdate()->run();
@@ -105,7 +105,7 @@ class RoboFile extends \Robo\Tasks
 		}
 
 		// Loading Symfony Command and running with passed argument
-		$this->_exec('php'.$this->extension.' vendor/bin/codecept build');
+		$this->_exec('php' . $this->extension . ' vendor/bin/codecept build');
 
 		$this->taskCodecept()
 			->suite('acceptance')
