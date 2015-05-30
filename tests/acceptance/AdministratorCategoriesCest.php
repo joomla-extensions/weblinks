@@ -76,12 +76,7 @@ class AdministratorCategoriesCest
 		$I->see('Category successfully saved',['id' => 'system-message-container']);
 
 		$I->amGoingTo('Search for automated testing');
-		$I->fillField(['xpath'=> "//input[@id=\"filter_search\"]"], "automated testing pub");
-
-		// Not so nice workaround: $I->executeJS("jQuery('#adminForm').submit();");
-
-		// TODO We need an id for the search button in com_categories (or find a better way addressing it)
-		$I->click(['xpath'=> "//input[@id=\"search_button\"]"]);
+		$I->fillField(['xpath'=> "//input[@id=\"filter_search\"]"], "automated testing pub" . "\n");
 
 		$I->waitForText('Category Manager: Weblinks','5',['css' => 'h1']);
 		$I->amGoingTo('Select the first weblink');
