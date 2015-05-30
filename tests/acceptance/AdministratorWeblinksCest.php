@@ -44,6 +44,11 @@ class AdministratorWeblinksCest
 		$I->see($this->title,['id' => 'weblinkList']);
 	}
 
+	/**
+	 * @after administratorCreateWeblink
+	 *
+	 * @param AcceptanceTester $I
+	 */
 	public function administratorCreateWeblinkTrash(AcceptanceTester $I)
 	{
 		$I->am('Administrator');
