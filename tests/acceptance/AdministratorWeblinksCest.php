@@ -45,7 +45,7 @@ class AdministratorWeblinksCest
 	}
 
 	/**
-	 * @after administratorCreateWeblink
+	 * @depends administratorCreateWeblink
 	 *
 	 * @param AcceptanceTester $I
 	 */
