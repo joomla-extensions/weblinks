@@ -8,7 +8,7 @@ To prepare the system tests (Selenium) to be run in your local machine you are a
 To run the tests please execute the following commands (for the moment only working in Linux and MacOS, for more information see: https://docs.joomla.org/Testing_Joomla_Extensions_with_Codeception):
 
 ```bash
-$ composer update
+$ composer install
 $ vendor/bin/robo
 $ vendor/bin/robo test:acceptance
 ```
