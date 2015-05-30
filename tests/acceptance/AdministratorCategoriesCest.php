@@ -52,4 +52,45 @@ class AdministratorCategoriesCest
         $I->expectTo('see an error when trying to save a category without title');
         $I->see('Invalid field:  Title',['id' => 'system-message-container']);
     }
+
+	public function administratorPublishWeblink(AcceptanceTester $I)
+	{
+		$I->am('Administrator');
+		$I->wantToTest('Category creation in /administrator/');
+
+		$I->doAdministratorLogin();
+
+		$I->amGoingTo('Navigate to Categories page in /administrator/');
+		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
+		$I->waitForText('Category Manager: Weblinks','5',['css' => 'h1']);
+		$I->expectTo('see categories page');
+		$I->checkForPhpNoticesOrWarnings();
+
+		$I->amGoingTo('try to save a category with a filled title');
+		$I->click(['xpath'=> "//button[@onclick=\"Joomla.submitbutton('category.add')\"]"]);
+		$I->waitForText('Category Manager: Add A New Weblinks Category','5',['css' => 'h1']);
+		$I->fillField(['id' => 'jform_title'],'automated testing pub' . rand(1,100));
+		$I->click(['xpath'=> "//button[@onclick=\"Joomla.submitbutton('category.save')\"]"]);
+
+		$I->expectTo('see a success message after saving the category');
+		$I->see('Category successfully saved',['id' => 'system-message-container']);
+
+		$I->amGoingTo('Search for automated testing');
+		$I->fillField(['xpath'=> "//input[@id=\"filter_search\"]"], "automated testing pub");
+
+		// Not so nice workaround: $I->executeJS("jQuery('#adminForm').submit();");
+
+		// TODO We need an id for the search button in com_categories (or find a better way addressing it)
+		$I->click(['xpath'=> "//input[@id=\"search_button\"]"]);
+
+		$I->waitForText('Category Manager: Weblinks','5',['css' => 'h1']);
+		$I->amGoingTo('Select the first weblink');
+		$I->click(['xpath'=> "//input[@id=\"cb0\"]"]);
+
+		$I->amGoingTo('try to publish a weblink category');
+		$I->click(['xpath'=> "//button[@onclick=\"if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list');}else{ Joomla.submitbutton('categories.publish')}\"]"]);
+		$I->waitForText('Category Manager: Weblinks','5',['css' => 'h1']);
+		$I->expectTo('see a success message after saving the category');
+		$I->see('1 category successfully published.',['id' => 'system-message-container']);
+	}
 }
