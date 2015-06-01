@@ -1,4 +1,4 @@
-# Weblinks for Joomla!
+# Weblinks for Joomla! [![Build Status](https://travis-ci.org/joomla-extensions/weblinks.svg?branch=master)](https://travis-ci.org/joomla-extensions/weblinks)
 
 This repo is meant to hold the decoupled com_weblinks component and related code.
 
