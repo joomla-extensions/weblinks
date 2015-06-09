@@ -52,7 +52,7 @@ class AdministratorWeblinksCest
 	public function administratorCreateWeblinkTrash(AcceptanceTester $I)
 	{
 		$I->am('Administrator');
-		$I->wantToTest('Weblink creation in /administrator/');
+		$I->wantToTest('Weblink removal in /administrator/');
 
 		$I->doAdministratorLogin();
 
@@ -80,7 +80,7 @@ class AdministratorWeblinksCest
 	public function administratorCreateWeblinkWithoutTitleFails(AcceptanceTester $I)
 	{
 		$I->am('Administrator');
-		$I->wantToTest('Weblink creation in /administrator/');
+		$I->wantToTest('Weblink creation without title fails in /administrator/');
 
 		$I->doAdministratorLogin();
 
