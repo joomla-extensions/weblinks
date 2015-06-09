@@ -141,8 +141,10 @@ class RoboFile extends \Robo\Tasks
 	 */
 	public function runTest($seleniumPath = null, $pathToTestFile = null, $suite = 'acceptance')
 	{
-		if (!$seleniumPath) {
-			if (!file_exists('selenium-server-standalone.jar')) {
+		if (!$seleniumPath)
+		{
+			if (!file_exists('selenium-server-standalone.jar'))
+			{
 				$this->say('Downloading Selenium Server, this may take a while.');
 				$this->taskExec('wget')
 				     ->arg('http://selenium-release.storage.googleapis.com/2.45/selenium-server-standalone-2.45.0.jar')
@@ -150,11 +152,13 @@ class RoboFile extends \Robo\Tasks
 				     ->printed(false)
 				     ->run();
 			}
+
 			$seleniumPath = 'selenium-server-standalone.jar';
 		}
 
 		// Make sure we have Composer
-		if (!file_exists('./composer.phar')) {
+		if (!file_exists('./composer.phar'))
+		{
 			$this->_exec('curl -sS https://getcomposer.org/installer | php');
 		}
 		$this->taskComposerUpdate()->run();
@@ -174,8 +178,8 @@ class RoboFile extends \Robo\Tasks
 			$tests = array();
 			$this->say('Available tests in the system:');
 			$filesInSuite = scandir(getcwd() . '/tests/' . $suite);
-
 			$i = 1;
+
 			foreach ($filesInSuite as $file)
 			{
 				// Make sure the file is a Test file
@@ -186,8 +190,9 @@ class RoboFile extends \Robo\Tasks
 					$i++;
 				}
 			}
+
 			$this->say('');
-			$testNumber = $this->ask('Type the number of the test  in the list that you want to run...');
+			$testNumber     = $this->ask('Type the number of the test  in the list that you want to run...');
 			$pathToTestFile = "tests/$suite/" . $tests[$testNumber];
 		}
 
@@ -204,10 +209,13 @@ class RoboFile extends \Robo\Tasks
 		$this->say('Printing Selenium Log files');
 		$this->say('------ selenium-errors.log (start) ---------');
 		$seleniumErrors = file_get_contents('selenium-errors.log');
-		if ($seleniumErrors) {
+
+		if ($seleniumErrors)
+		{
 			$this->say(file_get_contents('selenium-errors.log'));
 		}
-		else {
+		else
+		{
 			$this->say('no errors were found');
 		}
 		$this->say('------ selenium-errors.log (end) -----------');
