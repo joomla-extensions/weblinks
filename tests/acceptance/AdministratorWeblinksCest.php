@@ -63,7 +63,8 @@ class AdministratorWeblinksCest
 		$I->checkForPhpNoticesOrWarnings();
 
 		$I->amGoingTo('Search the just saved weblink');
-		$I->fillField(['id' => 'filter_search'], $this->title . "\n");
+		$I->fillField(['id' => 'filter_search'],$this->title);
+		$I->pressKey(['id' => 'filter_search'],WebDriverKeys::ENTER);
 		$I->waitForText('Web Links Manager: Web Links','5',['css' => 'h1']);
 		$I->expectTo('see weblinks page');
 		$I->checkForPhpNoticesOrWarnings();
