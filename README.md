@@ -30,7 +30,7 @@ Go in the folder of weblinks, for example:
 cd C:\Users\Nicolas\Documents\GitHub\weblinks
 
 Then, run the command:
-composer update
+composer install
 
 That will add all the dependencies for the testing of weblinks
 You can then run the command:
