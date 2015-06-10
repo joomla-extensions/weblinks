@@ -11,18 +11,18 @@ use \AcceptanceTester;
 
 class InstallWeblinksCest
 {
-    // tests
-    public function installWeblinks(AcceptanceTester $I)
-    {
-        $I->am('Administrator');
-        $I->installJoomla();
-        $I->doAdministratorLogin();
-        $I->setErrorReportingToDevelopment();
+	// tests
+	public function installWeblinks(AcceptanceTester $I)
+	{
+		$I->am('Administrator');
+		$I->installJoomla();
+		$I->doAdministratorLogin();
+		$I->setErrorReportingToDevelopment();
 
-        $I->comment('get Weblinks repository folder from acceptance.suite.yml (see _support/AcceptanceHelper.php)');
-        $path = $I->getConfiguration('repo_folder');
-        $I->installExtensionFromDirectory($path . 'src/com_weblinks/');
-        $I->doAdministratorLogout();
+		$I->comment('get Weblinks repository folder from acceptance.suite.yml (see _support/AcceptanceHelper.php)');
+		$path = $I->getConfiguration('repo_folder');
+		$I->installExtensionFromDirectory($path . 'src/com_weblinks/');
+		$I->doAdministratorLogout();
 
-    }
+	}
 }
