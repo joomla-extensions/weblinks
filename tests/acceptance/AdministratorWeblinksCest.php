@@ -47,7 +47,7 @@ class AdministratorWeblinksCest
 	/**
 	 * @depends administratorCreateWeblink
 	 *
-	 * @param AcceptanceTester $I
+	 * @param  AcceptanceTester $I
 	 */
 	public function administratorCreateWeblinkTrash(AcceptanceTester $I)
 	{
