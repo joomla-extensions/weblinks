@@ -18,11 +18,11 @@ class RoboFile extends \Robo\Tasks
 	private $extension = '';
 
 	/**
-	* Set the Executeextension
+	* Set the Execute extension for Windows Operating System
 	*
 	* @return void
 	*/
-	public function setExecExtension()
+	private function setExecExtension()
 	{
 		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
 		{
