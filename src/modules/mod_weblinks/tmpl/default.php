@@ -27,9 +27,9 @@ if($params->get('groupby', 0)) :
         foreach ($list as $item)
             if ($item->catid == $cat['catid'])
                 $items[] = $item;
-
-        if($cols > 1) :
-            if($k % $cols == 0) : ?>
+?>
+        <?php if($cols > 1) : ?>
+            <?php if($k % $cols == 0) : ?>
                 <div class="row row-fluid">
             <?php endif; ?>
                 <div class="span<?php echo (12 / $cols); ?>">
@@ -38,9 +38,7 @@ if($params->get('groupby', 0)) :
                         <h4><?php echo htmlspecialchars($cat['title']); ?></h4>
                     <?php endif; ?>
                         <ul class="weblinks<?php echo $moduleclass_sfx; ?>">
-                            <?php
-                            foreach ($items as $item) :
-                                ?>
+                            <?php foreach ($items as $item) : ?>
                                 <li>
                                     <?php
                                     $link = $item->link;
@@ -77,22 +75,18 @@ if($params->get('groupby', 0)) :
                                     }
                                     ?>
                                 </li>
-                            <?php
-                            endforeach;
-                            ?>
+                            <?php endforeach; ?>
                         </ul>
         <?php if($cols > 1) : ?>
                 </div>
             <?php if(($k + 1) % $cols == 0 || $k == count($cats) - 1) : ?>
             </div>
-        <?php endif;
-        endif;
-    endforeach;
-else : ?>
+            <?php endif; ?>
+        <?php endif; ?>
+    <?php endforeach; ?>
+<?php else : ?>
     <ul class="weblinks<?php echo $moduleclass_sfx; ?>">
-        <?php
-        foreach ($list as $item) :
-            ?>
+        <?php foreach ($list as $item) : ?>
             <li>
                 <?php
                 $link = $item->link;
@@ -129,8 +123,6 @@ else : ?>
                 }
                 ?>
             </li>
-        <?php
-        endforeach;
-        ?>
+        <?php endforeach; ?>
     </ul>
 <?php endif; ?>
