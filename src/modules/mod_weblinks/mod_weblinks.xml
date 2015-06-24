@@ -30,7 +30,7 @@
 					name="groupby"
 					type="radio"
 					class="btn-group btn-group-yesno"
-					default="1"
+					default="0"
 					label="MOD_WEBLINKS_FIELD_GROUPBY_LABEL"
 					description="MOD_WEBLINKS_FIELD_GROUPBY_DESC">
 					<option
