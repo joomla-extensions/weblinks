@@ -107,7 +107,7 @@ class WeblinksViewWeblinks extends JViewLegacy
 			$bar->appendButton('Custom', $dhtml, 'batch');
 		}
 
-		if ($user->authorise('core.admin', 'com_weblinks'))
+		if ($user->authorise('core.admin', 'com_weblinks') || $user->authorise('core.options', 'com_weblinks'))
 		{
 			JToolbarHelper::preferences('com_weblinks');
 		}
