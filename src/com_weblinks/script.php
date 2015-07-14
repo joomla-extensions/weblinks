@@ -42,7 +42,7 @@ class Com_WeblinksInstallerScript
 			$category->params = '{"category_layout":"","image":""}';
 			$category->metadata = '{"author":"","robots":""}';
 			$category->language = '*';
-			$category->checked_out_time = JFactory::getDbo()->quote(JFactory::getDbo()->getNullDate());
+			$category->checked_out_time = JFactory::getDbo()->getNullDate();
 
 			// Set the location in the tree
 			$category->setLocation(1, 'last-child');
