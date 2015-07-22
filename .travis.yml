@@ -31,4 +31,4 @@ before_script:
 
 script:
 - mv tests/acceptance.suite.dist.yml tests/acceptance.suite.yml
-- php vendor/bin/robo test:acceptance
+- vendor/bin/robo run:tests
