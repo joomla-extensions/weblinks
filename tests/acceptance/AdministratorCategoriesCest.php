@@ -20,7 +20,7 @@ class AdministratorCategoriesCest
 
         $I->amGoingTo('Navigate to Categories page in /administrator/');
         $I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
-        $I->waitForText('Category Manager: Weblinks','5',['css' => 'h1']);
+        $I->waitForText('Weblinks: Categories','5',['css' => 'h1']);
         $I->expectTo('see categories page');
         $I->checkForPhpNoticesOrWarnings();
 
@@ -42,7 +42,7 @@ class AdministratorCategoriesCest
 
         $I->amGoingTo('Navigate to Categories page in /administrator/');
         $I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
-        $I->waitForText('Category Manager: Weblinks','5',['css' => 'h1']);
+        $I->waitForText('Weblinks: Categories','5',['css' => 'h1']);
         $I->expectTo('see categories page');
 
         $I->amGoingTo('try to save a category with empty title and it should fail');
@@ -62,7 +62,7 @@ class AdministratorCategoriesCest
 
 		$I->amGoingTo('Navigate to Categories page in /administrator/');
 		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
-		$I->waitForText('Category Manager: Weblinks','5',['css' => 'h1']);
+		$I->waitForText('Weblinks: Categories','5',['css' => 'h1']);
 		$I->expectTo('see categories page');
 		$I->checkForPhpNoticesOrWarnings();
 
@@ -78,13 +78,13 @@ class AdministratorCategoriesCest
 		$I->amGoingTo('Search for automated testing');
 		$I->fillField(['xpath'=> "//input[@id=\"filter_search\"]"], "automated testing pub" . "\n");
 
-		$I->waitForText('Category Manager: Weblinks','5',['css' => 'h1']);
+		$I->waitForText('Weblinks: Categories','5',['css' => 'h1']);
 		$I->amGoingTo('Select the first weblink');
 		$I->click(['xpath'=> "//input[@id=\"cb0\"]"]);
 
 		$I->amGoingTo('try to publish a weblink category');
 		$I->click(['xpath'=> "//button[@onclick=\"if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list');}else{ Joomla.submitbutton('categories.publish')}\"]"]);
-		$I->waitForText('Category Manager: Weblinks','5',['css' => 'h1']);
+		$I->waitForText('Weblinks: Categories','5',['css' => 'h1']);
 		$I->expectTo('see a success message after publishing the category');
 		$I->see('1 category successfully published.',['id' => 'system-message-container']);
 	}
@@ -98,7 +98,7 @@ class AdministratorCategoriesCest
 
 		$I->amGoingTo('Navigate to Categories page in /administrator/');
 		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
-		$I->waitForText('Category Manager: Weblinks','5',['css' => 'h1']);
+		$I->waitForText('Weblinks: Categories','5',['css' => 'h1']);
 		$I->expectTo('see categories page');
 		$I->checkForPhpNoticesOrWarnings();
 
@@ -114,24 +114,24 @@ class AdministratorCategoriesCest
 		$I->amGoingTo('Search for automated testing');
 		$I->fillField(['xpath'=> "//input[@id=\"filter_search\"]"], "automated testing unpub" . "\n");
 
-		$I->waitForText('Category Manager: Weblinks','5',['css' => 'h1']);
+		$I->waitForText('Weblinks: Categories','5',['css' => 'h1']);
 		$I->amGoingTo('Select the first weblink');
 		$I->click(['xpath'=> "//input[@id=\"cb0\"]"]);
 
 		$I->amGoingTo('Try to publish a weblink category');
 		$I->click(['xpath'=> "//button[@onclick=\"if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list');}else{ Joomla.submitbutton('categories.publish')}\"]"]);
-		$I->waitForText('Category Manager: Weblinks','5',['css' => 'h1']);
+		$I->waitForText('Weblinks: Categories','5',['css' => 'h1']);
 		$I->expectTo('See a success message after publishing the category');
 		$I->see('1 category successfully published.',['id' => 'system-message-container']);
 
 		// Unpublish it again
-		$I->waitForText('Category Manager: Weblinks','5',['css' => 'h1']);
+		$I->waitForText('Weblinks: Categories','5',['css' => 'h1']);
 		$I->amGoingTo('Select the first weblink');
 		$I->click(['xpath'=> "//input[@id=\"cb0\"]"]);
 
 		$I->amGoingTo('Try to unpublish a weblink category');
 		$I->click(['xpath'=> "//button[@onclick=\"if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list');}else{ Joomla.submitbutton('categories.unpublish')}\"]"]);
-		$I->waitForText('Category Manager: Weblinks','5',['css' => 'h1']);
+		$I->waitForText('Weblinks: Categories','5',['css' => 'h1']);
 		$I->expectTo('See a success message after unpublishing the category');
 		$I->see('1 category successfully unpublished',['id' => 'system-message-container']);
 	}
