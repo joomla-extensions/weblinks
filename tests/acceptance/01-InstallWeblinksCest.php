@@ -17,6 +17,7 @@ class InstallWeblinksCest
 		$I->installJoomla();
 		$I->doAdministratorLogin();
 		$I->setErrorReportingToDevelopment();
+		$I->doAdministratorLogout();
 	}
 
 	// tests
