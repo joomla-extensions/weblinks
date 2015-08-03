@@ -10,7 +10,7 @@ To run the tests please execute the following commands (for the moment only work
 ```bash
 $ composer install
 $ vendor/bin/robo
-$ vendor/bin/robo test:acceptance
+$ vendor/bin/robo run:test acceptance
 ```
 
 
@@ -18,15 +18,15 @@ $ vendor/bin/robo test:acceptance
 
 You need to install:
 - Git for windows (https://msysgit.github.io/)
-- GitHub for windows (https://windows.github.com/) 
-- Curl for windows if necesssary. 
+- GitHub for windows (https://windows.github.com/)
+- Curl for windows if necesssary.
 
-Note: For commands line is better if you use the 'Git shell' program. 
+Note: For commands line is better if you use the 'Git shell' program.
 
 Create a symbolic link from your tests\joomla-cms3 to a subfolder of your web server. For example, I'm creating a link between the tests folder of my weblinks folder and the tests folder of my web server:
 mklink /J C:\wamp\www\tests\joomla-cms3 C:\Users\Nicolas\Documents\GitHub\weblinks\tests\joomla-cms3
 
-Go in the folder of weblinks, for example: 
+Go in the folder of weblinks, for example:
 cd C:\Users\Nicolas\Documents\GitHub\weblinks
 
 Then, run the command:
