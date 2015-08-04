@@ -10,7 +10,7 @@ To run the tests please execute the following commands (for the moment only work
 ```bash
 $ composer install
 $ vendor/bin/robo
-$ vendor/bin/robo run:test acceptance
+$ vendor/bin/robo run:tests
 ```
 
 
