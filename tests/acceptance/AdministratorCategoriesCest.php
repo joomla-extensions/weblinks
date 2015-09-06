@@ -83,7 +83,7 @@ class AdministratorCategoriesCest
 		$I->click(['xpath'=> "//input[@id=\"cb0\"]"]);
 
 		$I->amGoingTo('try to publish a weblink category');
-		$I->click(['xpath'=> "//button[@onclick=\"if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list');}else{ Joomla.submitbutton('categories.publish')}\"]"]);
+		$I->click(['xpath'=> "//button[@onclick=\"if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list.');}else{ Joomla.submitbutton('categories.publish')}\"]"]);
 		$I->waitForText('Weblinks: Categories','30',['css' => 'h1']);
 		$I->expectTo('see a success message after publishing the category');
 		$I->see('1 category successfully published.',['id' => 'system-message-container']);
@@ -119,7 +119,7 @@ class AdministratorCategoriesCest
 		$I->click(['xpath'=> "//input[@id=\"cb0\"]"]);
 
 		$I->amGoingTo('Try to publish a weblink category');
-		$I->click(['xpath'=> "//button[@onclick=\"if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list');}else{ Joomla.submitbutton('categories.publish')}\"]"]);
+		$I->click(['xpath'=> "//button[@onclick=\"if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list.');}else{ Joomla.submitbutton('categories.publish')}\"]"]);
 		$I->waitForText('Weblinks: Categories','30',['css' => 'h1']);
 		$I->expectTo('See a success message after publishing the category');
 		$I->see('1 category successfully published.',['id' => 'system-message-container']);
@@ -130,7 +130,7 @@ class AdministratorCategoriesCest
 		$I->click(['xpath'=> "//input[@id=\"cb0\"]"]);
 
 		$I->amGoingTo('Try to unpublish a weblink category');
-		$I->click(['xpath'=> "//button[@onclick=\"if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list');}else{ Joomla.submitbutton('categories.unpublish')}\"]"]);
+		$I->click(['xpath'=> "//button[@onclick=\"if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list.');}else{ Joomla.submitbutton('categories.unpublish')}\"]"]);
 		$I->waitForText('Weblinks: Categories','30',['css' => 'h1']);
 		$I->expectTo('See a success message after unpublishing the category');
 		$I->see('1 category successfully unpublished',['id' => 'system-message-container']);

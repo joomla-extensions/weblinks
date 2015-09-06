@@ -67,7 +67,7 @@ class AdministratorWeblinksCest
 
 		$I->amGoingTo('Delete the just saved weblink');
 		$I->checkAllResults();
-		$I->click(['xpath'=> "//button[@onclick=\"if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list');}else{ Joomla.submitbutton('weblinks.trash')}\"]"]);
+		$I->click(['xpath'=> "//button[@onclick=\"if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list.');}else{ Joomla.submitbutton('weblinks.trash')}\"]"]);
 		$I->waitForText('Web Links','30',['css' => 'h1']);
 		$I->expectTo('see a success message and the weblink removed from the list');
 		$I->see('Web link successfully trashed',['id' => 'system-message-container']);
