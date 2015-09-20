@@ -19,13 +19,13 @@ class InstallWeblinksCest
 		$I->setErrorReportingToDevelopment();
 	}
 
-    // tests
-    public function installWeblinks(AcceptanceTester $I)
-    {
-	    $I->doAdministratorLogin();
-	    $I->comment('get Weblinks repository folder from acceptance.suite.yml (see _support/AcceptanceHelper.php)');
-        $path = $I->getConfiguration('repo_folder');
-        $I->installExtensionFromDirectory($path . 'src/com_weblinks/');
-        $I->doAdministratorLogout();
-    }
+	// tests
+	public function installWeblinks(AcceptanceTester $I)
+	{
+		$I->doAdministratorLogin();
+		$I->comment('get Weblinks repository folder from acceptance.suite.yml (see _support/AcceptanceHelper.php)');
+		$path = $I->getConfiguration('repo_folder');
+		$I->installExtensionFromFolder($path . 'src/com_weblinks/');
+		$I->doAdministratorLogout();
+	}
 }
