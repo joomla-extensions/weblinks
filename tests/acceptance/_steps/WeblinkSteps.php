@@ -20,11 +20,6 @@ class WeblinkSteps extends \AcceptanceTester
 	{
 		$I = $this;
 
-		$I->am('Administrator');
-		$I->wantToTest('Weblink creation in /administrator/');
-
-		$I->doAdministratorLogin();
-
 		$I->amGoingTo('Navigate to Weblinks page in /administrator/');
 		$I->amOnPage('administrator/index.php?option=com_weblinks');
 		$I->waitForText('Web Links', '30', ['css' => 'h1']);
