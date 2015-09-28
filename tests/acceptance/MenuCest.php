@@ -29,9 +29,10 @@ class MenuCest
 		$I->wantToTest('Frontend menu creation in /administrator/');
 
 		$I->doAdministratorLogin();
-
 		$title = 'automated testing ' . uniqid();
 		$I->createMenuItem($title, 'Weblinks', 'List All Web Link Categories');
+		$I->expectTo('see a success message after saving the menu item');
+		$I->checkForPhpNoticesOrWarnings();
 	}
 
 	/**
@@ -47,8 +48,9 @@ class MenuCest
 		$I->wantToTest('Frontend category menu creation in /administrator/');
 
 		$I->doAdministratorLogin();
-
 		$title = 'automated testing ' . uniqid();
 		$I->createMenuItem($title, 'Weblinks', 'List Web Links in a Category');
+		$I->expectTo('see a success message after saving the menu item');
+		$I->checkForPhpNoticesOrWarnings();
 	}
 }
