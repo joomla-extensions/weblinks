@@ -27,7 +27,7 @@ class WeblinkSteps extends \AcceptanceTester
 		$I->checkForPhpNoticesOrWarnings();
 
 		$I->amGoingTo('try to save a weblink with a filled title and URL');
-		$I->click(['xpath' => "//button[@onclick=\"Joomla.submitbutton('weblink.add')\"]"]);
+		$I->click('New');
 		$I->waitForText('Web Link: New', '30', ['css' => 'h1']);
 		$I->fillField(['id' => 'jform_title'], $title);
 		$I->fillField(['id' => 'jform_url'], 'http://example.com/automated_testing' . $title);

@@ -22,11 +22,8 @@ class FrontendWeblinksCest
 	/**
 	 * Create a weblink in the backend and confirm it exists and is visible in the Frontend
 	 *
-	 * @  depends \AdministratorWeblinksCest::administratorCreateWeblink
-	 *
-	 * @param   \AcceptanceTester $I
-	 *
-	 * @return  void
+	 * @param   AcceptanceTester       $I
+	 * @param   \Codeception\Scenario  $scenario  DI - is needed for Weblink Step
 	 */
 	public function createWeblinkAndConfirmFrontend(AcceptanceTester $I, $scenario)
 	{
@@ -35,7 +32,7 @@ class FrontendWeblinksCest
 
 		$I->doAdministratorLogin();
 
-		// Create Weblink with Weblink StepObject
+		// Get weblink StepObject
 		$weblinkStep = new AcceptanceTester\WeblinkSteps($scenario);
 		$weblinkStep->createWeblink($this->title);
 

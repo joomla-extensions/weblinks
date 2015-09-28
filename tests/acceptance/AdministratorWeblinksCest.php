@@ -22,8 +22,8 @@ class AdministratorWeblinksCest
 	/**
 	 * Create a weblink in the backend
 	 *
-	 * @param   \AcceptanceTester      $I
-	 * @param   \Codeception\Scenario  $scenario   - DI $scenario is need for Weblink Step
+	 * @param   AcceptanceTester       $I
+	 * @param   \Codeception\Scenario  $scenario  DI - is needed for Weblink Step
 	 */
 	public function administratorCreateWeblink(AcceptanceTester $I, $scenario)
 	{
@@ -32,9 +32,9 @@ class AdministratorWeblinksCest
 
 		$I->doAdministratorLogin();
 
-		// Get our Weblink Weblink StepObject
-		$weblinkStep = new AcceptanceTester\WeblinkSteps($scenario);
-		$weblinkStep->createWeblink($this->title);
+		// Get the weblink StepObject
+		$I = new AcceptanceTester\WeblinkSteps($scenario);
+		$I->createWeblink($this->title);
 	}
 
 	/**
