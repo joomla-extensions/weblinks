@@ -7,25 +7,16 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-use \AcceptanceTester;
-
 class AdministratorWeblinksCest
 {
-	private $title;
-
 	public function __construct()
 	{
-		// This way works just fine, but not 100% sure if that is the recommended way:
-		$this->title = 'automated testing' . uniqid();
+		$this->faker = Faker\Factory::create();
+		$this->title  = 'Weblink' . $this->faker->randomNumber();
+		$this->url  = $this->faker->url();
 	}
 
-	/**
-	 * Create a weblink in the backend
-	 *
-	 * @param   AcceptanceTester       $I
-	 * @param   \Codeception\Scenario  $scenario  DI - is needed for Weblink Step
-	 */
-	public function administratorCreateWeblink(AcceptanceTester $I, $scenario)
+	public function administratorCreateWeblink(\Step\Acceptance\Weblink $I)
 	{
 		$I->am('Administrator');
 		$I->wantToTest('Weblink creation in /administrator/');
@@ -33,14 +24,26 @@ class AdministratorWeblinksCest
 		$I->doAdministratorLogin();
 
 		// Get the weblink StepObject
-		$I = new AcceptanceTester\WeblinkSteps($scenario);
-		$I->createWeblink($this->title);
+		$I->amGoingTo('Navigate to Weblinks page in /administrator/');
+		$I->amOnPage('administrator/index.php?option=com_weblinks');
+		$I->waitForText('Web Links', '30', ['css' => 'h1']);
+		$I->expectTo('see weblinks page');
+		$I->checkForPhpNoticesOrWarnings();
+
+		$I->amGoingTo('try to save a weblink with a filled title and URL');
+		$I->click('New');
+		$I->waitForText('Web Link: New', '30', ['css' => 'h1']);
+		$I->fillField(['id' => 'jform_title'], $this->title);
+		$I->fillField(['id' => 'jform_url'], $this->url);
+		$I->click(['xpath' => "//button[@onclick=\"Joomla.submitbutton('weblink.save')\"]"]);
+		$I->waitForText('Web Links', '30', ['css' => 'h1']);
+		$I->expectTo('see a success message and the weblink added after saving the weblink');
+		$I->see('Web link successfully saved', ['id' => 'system-message-container']);
+		$I->see($this->title, ['id' => 'weblinkList']);
 	}
 
 	/**
 	 * @depends administratorCreateWeblink
-	 *
-	 * @param AcceptanceTester $I
 	 */
 	public function administratorTrashWeblink(AcceptanceTester $I)
 	{
@@ -68,9 +71,7 @@ class AdministratorWeblinksCest
 	}
 
 	/**
-	 * @depends administratorCreateWeblink
-	 *
-	 * @param AcceptanceTester $I
+	 * @depends administratorTrashWeblink
 	 */
 	public function administratorDeleteWeblink(AcceptanceTester $I)
 	{

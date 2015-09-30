@@ -42,76 +42,37 @@ class RoboFile extends \Robo\Tasks
 	{
 		$this->setExecExtension();
 
-		// Get Joomla Clean Testing sites
-		if (is_dir('tests/joomla-cms3'))
-		{
-			$this->taskDeleteDir('tests/joomla-cms3')->run();
-		}
+		$this->createTestingSite();
 
-		$this->_exec('git' . $this->extension . ' clone -b staging --single-branch --depth 1 https://github.com/joomla/joomla-cms.git tests/joomla-cms3');
-		$this->say('Joomla CMS site created at tests/joomla-cms3');
+		$this->getComposer();
 
-		if (!$seleniumPath)
-		{
-			if (!file_exists('selenium-server-standalone.jar'))
-			{
-				$this->say('Downloading Selenium Server, this may take a while.');
+		$this->taskComposerInstall()->run();
 
-				if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
-				{
-					$this->_exec('curl.exe -sS http://selenium-release.storage.googleapis.com/2.45/selenium-server-standalone-2.45.0.jar > selenium-server-standalone.jar');
-				}
-				else
-				{
-					$this->taskExec('wget')
-					->arg('http://selenium-release.storage.googleapis.com/2.45/selenium-server-standalone-2.45.0.jar')
-					->arg('-O selenium-server-standalone.jar')
-					->printed(false)
-					->run();
-				}
-			}
+		$this->runSelenium();
 
-			$seleniumPath = 'selenium-server-standalone.jar';
-		}
-
-		if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN')
-		{
-			$seleniumPath = "java -jar $seleniumPath >> selenium.log 2>&1 &";
-		}
-		else
-		{
-			$seleniumPath = "START java.exe -jar .\\" . $seleniumPath;
-		}
-	
-		// Make sure we have Composer
-		if (!file_exists('./composer.phar'))
-		{
-			$this->_exec('curl' . $this->extension . ' -sS https://getcomposer.org/installer | php');
-		}
-
-		$this->taskComposerUpdate()->run();
-
-		// Running Selenium server
-		$this->_exec($seleniumPath);
-
-		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
-		{
-			sleep(10);
-		}
-		else
-		{
-			$this->taskWaitForSeleniumStandaloneServer()
-			->run()
-			->stopOnFail();
-		}
-
-		// Loading Symfony Command and running with passed argument
 		$this->_exec('php' . $this->extension . ' vendor/bin/codecept build');
 
 		$this->taskCodecept()
-			->suite($suite)
 			->arg('--steps')
 			->arg('--debug')
+			->arg('--fail-fast')
+			->arg('tests/acceptance/install/')
+			->run()
+			->stopOnFail();
+
+		$this->taskCodecept()
+			->arg('--steps')
+			->arg('--debug')
+			->arg('--fail-fast')
+			->arg('tests/acceptance/administrator/')
+			->run()
+			->stopOnFail();
+
+		$this->taskCodecept()
+			->arg('--steps')
+			->arg('--debug')
+			->arg('--fail-fast')
+			->arg('tests/acceptance/frontend/')
 			->run()
 			->stopOnFail();
 
@@ -139,62 +100,49 @@ class RoboFile extends \Robo\Tasks
 	 *
 	 * @return mixed
 	 */
-	public function runTest($seleniumPath = null, $pathToTestFile = null, $suite = 'acceptance')
+	public function runTest($pathToTestFile = null, $suite = 'acceptance')
 	{
-		if (!$seleniumPath)
-		{
-			if (!file_exists('selenium-server-standalone.jar'))
-			{
-				$this->say('Downloading Selenium Server, this may take a while.');
-				$this->taskExec('wget')
-				     ->arg('http://selenium-release.storage.googleapis.com/2.46/selenium-server-standalone-2.46.0.jar')
-				     ->arg('-O selenium-server-standalone.jar')
-				     ->printed(false)
-				     ->run();
-			}
-
-			$seleniumPath = 'selenium-server-standalone.jar';
-		}
-
-		// Make sure we have Composer
-		if (!file_exists('./composer.phar'))
-		{
-			$this->_exec('curl -sS https://getcomposer.org/installer | php');
-		}
-		$this->taskComposerUpdate()->run();
-
-		// Running Selenium server
-		$this->_exec("java -jar $seleniumPath > selenium-errors.log 2>selenium.log &");
-
-		$this->taskWaitForSeleniumStandaloneServer()
-		     ->run()
-		     ->stopOnFail();
+		$this->runSelenium();
 
 		// Make sure to Run the Build Command to Generate AcceptanceTester
 		$this->_exec("php vendor/bin/codecept build");
 
 		if (!$pathToTestFile)
 		{
-			$tests = array();
 			$this->say('Available tests in the system:');
-			$filesInSuite = scandir(getcwd() . '/tests/' . $suite);
+
+			$iterator = new RecursiveIteratorIterator(
+				new RecursiveDirectoryIterator(
+					'tests/' . $suite,
+					RecursiveDirectoryIterator::SKIP_DOTS
+				),
+				RecursiveIteratorIterator::SELF_FIRST
+			);
+
+			$tests = array();
+
+			$iterator->rewind();
 			$i = 1;
 
-			foreach ($filesInSuite as $file)
+			while ($iterator->valid())
 			{
-				// Make sure the file is a Test file
-				if (strripos($file, 'cept.php') || strripos($file, 'cest.php'))
+				if (strripos($iterator->getSubPathName(), 'cept.php')
+					|| strripos($iterator->getSubPathName(), 'cest.php'))
 				{
-					$tests[$i] = $file;
-					$this->say('[' . $i . '] ' . $file);
+					$this->say('[' . $i . '] ' . $iterator->getSubPathName());
+					$tests[$i] = $iterator->getSubPathName();
 					$i++;
 				}
+
+				$iterator->next();
 			}
 
 			$this->say('');
-			$testNumber     = $this->ask('Type the number of the test  in the list that you want to run...');
-			$pathToTestFile = "tests/$suite/" . $tests[$testNumber];
+			$testNumber	= $this->ask('Type the number of the test  in the list that you want to run...');
+			$test = $tests[$testNumber];
 		}
+
+		$pathToTestFile = 'tests/' . $suite . '/' . $test;
 
 		$this->taskCodecept()
 		     ->test($pathToTestFile)
@@ -205,28 +153,6 @@ class RoboFile extends \Robo\Tasks
 
 		// Kill selenium server
 		// $this->_exec('curl http://localhost:4444/selenium-server/driver/?cmd=shutDownSeleniumServer');
-
-		$this->say('Printing Selenium Log files');
-		$this->say('------ selenium-errors.log (start) ---------');
-		$seleniumErrors = file_get_contents('selenium-errors.log');
-
-		if ($seleniumErrors)
-		{
-			$this->say(file_get_contents('selenium-errors.log'));
-		}
-		else
-		{
-			$this->say('no errors were found');
-		}
-		$this->say('------ selenium-errors.log (end) -----------');
-
-		/*
-		// Uncomment if you need to debug issues in selenium
-		$this->say('');
-		$this->say('------ selenium.log (start) -----------');
-		$this->say(file_get_contents('selenium.log'));
-		$this->say('------ selenium.log (end) -----------');
-		*/
 	}
 
 	/**
@@ -242,5 +168,47 @@ class RoboFile extends \Robo\Tasks
 
 		$this->_exec('git' . $this->extension . ' clone -b staging --single-branch --depth 1 https://github.com/joomla/joomla-cms.git tests/joomla-cms3');
 		$this->say('Joomla CMS site created at tests/joomla-cms3');
+	}
+
+	/**
+	 * Runs Selenium Standalone Server.
+	 *
+	 * @return void
+	 */
+	public function runSelenium()
+	{
+		if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN')
+		{
+			$this->_exec("vendor/bin/selenium-server-standalone >> selenium.log 2>&1 &");
+		}
+		else
+		{
+			$this->_exec("START java.exe -jar .\\vendor\\joomla-projects\\selenium-server-standalone\\bin\\selenium-server-standalone.jar");
+		}
+
+		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
+		{
+			sleep(10);
+		}
+		else
+		{
+			$this->taskWaitForSeleniumStandaloneServer()
+				->run()
+				->stopOnFail();
+		}
+	}
+
+	/**
+	 * Downloads Composer
+	 *
+	 * @return void
+	 */
+	private function getComposer()
+	{
+		// Make sure we have Composer
+		if (!file_exists('./composer.phar'))
+		{
+			$this->_exec('curl --retry 3 --retry-delay 5 -sS https://getcomposer.org/installer | php');
+		}
 	}
 }
