@@ -51,7 +51,7 @@ class AdministratorCategoriesCest
 		$I->see('Invalid field:  Title', ['id' => 'system-message-container']);
 	}
 
-	public function administratorPublishWeblink(AcceptanceTester $I)
+	public function administratorPublishCategory(AcceptanceTester $I)
 	{
 		$I->am('Administrator');
 		$I->wantToTest('Category publishing in /administrator/');
@@ -87,7 +87,7 @@ class AdministratorCategoriesCest
 		$I->see('1 category successfully published.', ['id' => 'system-message-container']);
 	}
 
-	public function administratorUnpublishWeblink(AcceptanceTester $I)
+	public function administratorUnpublishCategory(AcceptanceTester $I)
 	{
 		$I->am('Administrator');
 		$I->wantToTest('Category unpublishing in /administrator/');
