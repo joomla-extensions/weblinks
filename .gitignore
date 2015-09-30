@@ -49,6 +49,7 @@ robo.phar
 # Test related files
 tests/acceptance.suite.yml
 tests/*/*Tester.php
+tests/_support/_generated/*TesterActions.php
 tests/joomla-cms3*
 tests/_output*
 selenium-server-standalone.jar
