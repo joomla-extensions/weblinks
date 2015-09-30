@@ -6,9 +6,11 @@
         "php": ">=5.3.10"
     },
     "require-dev": {
-        "codeception/codeception": "2.0.13",
+        "codeception/codeception": "~2.1",
         "joomla-projects/joomla-browser": "dev-develop",
         "codegyre/robo": "~0.5",
-        "joomla-projects/robo": "dev-master"
+        "joomla-projects/robo": "dev-master",
+        "joomla-projects/selenium-server-standalone": "v2.47.1",
+        "fzaninotto/faker": "^1.5"
     }
 }
