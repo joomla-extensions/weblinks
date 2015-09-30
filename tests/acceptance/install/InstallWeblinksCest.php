@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package     Joomla.Administrator
  * @subpackage  com_weblinks
@@ -7,11 +8,10 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-use \AcceptanceTester;
 
 class InstallWeblinksCest
 {
-	public function installJoomla(AcceptanceTester $I)
+	public function installJoomla(\AcceptanceTester $I)
 	{
 		$I->am('Administrator');
 		$I->installJoomla();
@@ -19,8 +19,10 @@ class InstallWeblinksCest
 		$I->setErrorReportingToDevelopment();
 	}
 
-	// tests
-	public function installWeblinks(AcceptanceTester $I)
+	/**
+	 * @depends installJoomla
+	 */
+	public function installWeblinks(\AcceptanceTester $I)
 	{
 		$I->doAdministratorLogin();
 		$I->comment('get Weblinks repository folder from acceptance.suite.yml (see _support/AcceptanceHelper.php)');
