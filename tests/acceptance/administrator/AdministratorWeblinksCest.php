@@ -16,7 +16,7 @@ class AdministratorWeblinksCest
 		$this->url  = $this->faker->url();
 	}
 
-	public function administratorCreateWeblink(\Step\Acceptance\Weblink $I)
+	public function administratorCreateWeblink(\Step\Acceptance\weblink $I)
 	{
 		$I->am('Administrator');
 		$I->wantToTest('Weblink creation in /administrator/');

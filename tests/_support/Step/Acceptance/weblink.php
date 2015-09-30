@@ -11,7 +11,7 @@ namespace Step\Acceptance;
  * @package Step\Acceptance
  * @see http://codeception.com/docs/06-ReusingTestCode#StepObjects
  */
-class Weblink extends \AcceptanceTester
+class weblink extends \AcceptanceTester
 {
 	/**
 	 * Creates a weblink

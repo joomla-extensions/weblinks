@@ -24,7 +24,7 @@ class FrontendWeblinksCest
 	 *
 	 * @param   \Step\Acceptance\Weblink  $I
 	 */
-	public function createWeblinkAndConfirmFrontend(\Step\Acceptance\Weblink $I)
+	public function createWeblinkAndConfirmFrontend(\Step\Acceptance\weblink $I)
 	{
 		$I->am('Administrator');
 		$I->wantToTest('Listing a category of Weblinks in frontend');
