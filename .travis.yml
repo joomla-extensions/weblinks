@@ -27,7 +27,7 @@ before_script:
 - sudo apt-get install fluxbox -y --force-yes
 - fluxbox &
 - sleep 3 # give fluxbox some time to start
-- composer update
+- composer install
 
 script:
 - mv tests/acceptance.suite.dist.yml tests/acceptance.suite.yml
