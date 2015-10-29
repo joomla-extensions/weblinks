@@ -19,6 +19,8 @@ class RoboFile extends \Robo\Tasks
 
 	private $configuration = array();
 
+	private $cmsPath = '';
+
 	/**
 	* Set the Execute extension for Windows Operating System
 	*
@@ -43,6 +45,8 @@ class RoboFile extends \Robo\Tasks
 	public function runTests($seleniumPath = null, $suite = 'acceptance')
 	{
 		$this->configuration = $this->getConfiguration();
+
+		$this->cmsPath = $this->getCmsPath();
 
 		$this->setExecExtension();
 
@@ -165,18 +169,18 @@ class RoboFile extends \Robo\Tasks
 	public function createTestingSite()
 	{
 		if (!empty($this->configuration->skipClone)) {
-			$this->say('Reusing Joomla CMS site already present at tests/joomla-cms3');
+			$this->say('Reusing Joomla CMS site already present at ' . $this->cmsPath);
 			return;
 		}
 
 		// Get Joomla Clean Testing sites
-		if (is_dir('tests/joomla-cms3'))
+		if (is_dir($this->cmsPath))
 		{
-			$this->taskDeleteDir('tests/joomla-cms3')->run();
+			$this->taskDeleteDir($this->cmsPath)->run();
 		}
 
-		$this->_exec('git' . $this->extension . ' clone -b staging --single-branch --depth 1 https://github.com/joomla/joomla-cms.git tests/joomla-cms3');
-		$this->say('Joomla CMS site created at tests/joomla-cms3');
+		$this->_exec('git' . $this->extension . ' clone -b staging --single-branch --depth 1 https://github.com/joomla/joomla-cms.git ' . $this->cmsPath);
+		$this->say('Joomla CMS site created at ' . $this->cmsPath);
 	}
 
 	/**
@@ -200,6 +204,25 @@ class RoboFile extends \Robo\Tasks
 		}
 
 		return json_decode(json_encode($configuration));
+	}
+
+	/**
+	 * Get the correct CMS root path
+	 *
+	 * @return string
+	 */
+	private function getCmsPath()
+	{
+		if (empty($this->configuration->cmsPath)) {
+			return 'tests/joomla-cms3';
+		}
+
+		if (!file_exists(dirname($this->configuration->cmsPath))) {
+			$this->say("Cms path written in local configuration does not exists or is not readable");
+			return 'tests/joomla-cms3';
+		}
+
+		return $this->configuration->cmsPath;
 	}
 
 	/**
