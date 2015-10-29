@@ -133,4 +133,33 @@ class AdministratorCategoriesCest
 		$I->expectTo('See a success message after unpublishing the category');
 		$I->see('1 category successfully unpublished', ['id' => 'system-message-container']);
 	}
+
+	public function administratorCreateAndDeleteCategory(AcceptanceTester $I)
+	{
+		$I->am('Administrator');
+		$I->wantToTest('Category creation in /administrator/');
+		$categoryName = 'automated testing' . rand(1, 100);
+		$I->doAdministratorLogin();
+
+		$I->amGoingTo('Navigate to Categories page in /administrator/');
+		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
+		$I->waitForText('Weblinks: Categories', '30', ['css' => 'h1']);
+		$I->expectTo('see categories page');
+		$I->checkForPhpNoticesOrWarnings();
+
+		$I->amGoingTo('try to save a category with a filled title');
+		$I->click(['xpath' => "//button[@onclick=\"Joomla.submitbutton('category.add')\"]"]);
+		$I->waitForText('Weblinks: New Category', '30', ['css' => 'h1']);
+		$I->fillField(['id' => 'jform_title'], $categoryName);
+		$I->click(['xpath' => "//button[@onclick=\"Joomla.submitbutton('category.apply')\"]"]);
+		$I->expectTo('see a success message after saving the category');
+		$I->see('Category successfully saved', ['id' => 'system-message-container']);
+		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
+		$I->waitForText('Weblinks: Categories', '30', ['css' => 'h1']);
+		$I->searchForItem($categoryName);
+		$I->amGoingTo('Select the weblink result');
+		$I->checkAllResults();
+		$I->click(['xpath' => "//div[@id='toolbar-trash']//button"]);
+		$I->see('category successfully trashed.', ['id' => 'system-message-container']);
+	}
 }
