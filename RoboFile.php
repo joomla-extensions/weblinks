@@ -174,13 +174,20 @@ class RoboFile extends \Robo\Tasks
 			return;
 		}
 
+		// Caching cloned installations locally
+		if (!is_dir('tests/cache') || (time() - filemtime('tests/cache') > 60 * 60 * 24))
+		{
+			$this->_exec('git' . $this->extension . ' clone -b staging --single-branch --depth 1 https://github.com/joomla/joomla-cms.git tests/cache');
+		}
+
 		// Get Joomla Clean Testing sites
 		if (is_dir($this->cmsPath))
 		{
 			$this->taskDeleteDir($this->cmsPath)->run();
 		}
 
-		$this->_exec('git' . $this->extension . ' clone -b staging --single-branch --depth 1 https://github.com/joomla/joomla-cms.git ' . $this->cmsPath);
+		// Copy cache to the testing folder
+		$this->_copyDir('tests/cache', $this->cmsPath);
 		$this->say('Joomla CMS site created at ' . $this->cmsPath);
 	}
 
