@@ -168,7 +168,8 @@ class RoboFile extends \Robo\Tasks
 	 */
 	public function createTestingSite()
 	{
-		if (!empty($this->configuration->skipClone)) {
+		if (!empty($this->configuration->skipClone))
+		{
 			$this->say('Reusing Joomla CMS site already present at ' . $this->cmsPath);
 			return;
 		}
@@ -192,13 +193,15 @@ class RoboFile extends \Robo\Tasks
 	{
 		$configurationFile = __DIR__ . '/RoboFile.ini';
 
-		if (!file_exists($configurationFile)) {
+		if (!file_exists($configurationFile))
+		{
 			$this->say("No local configuration file");
 			return null;
 		}
 
 		$configuration = parse_ini_file($configurationFile);
-		if ($configuration === false) {
+		if ($configuration === false)
+		{
 			$this->say('Local configuration file is empty or wrong (check is it in correct .ini format');
 			return null;
 		}
@@ -213,11 +216,13 @@ class RoboFile extends \Robo\Tasks
 	 */
 	private function getCmsPath()
 	{
-		if (empty($this->configuration->cmsPath)) {
+		if (empty($this->configuration->cmsPath))
+		{
 			return 'tests/joomla-cms3';
 		}
 
-		if (!file_exists(dirname($this->configuration->cmsPath))) {
+		if (!file_exists(dirname($this->configuration->cmsPath)))
+		{
 			$this->say("Cms path written in local configuration does not exists or is not readable");
 			return 'tests/joomla-cms3';
 		}
