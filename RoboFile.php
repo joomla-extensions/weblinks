@@ -17,6 +17,8 @@ class RoboFile extends \Robo\Tasks
 
 	private $extension = '';
 
+	private $configuration = array();
+
 	/**
 	* Set the Execute extension for Windows Operating System
 	*
@@ -40,6 +42,8 @@ class RoboFile extends \Robo\Tasks
 	*/
 	public function runTests($seleniumPath = null, $suite = 'acceptance')
 	{
+		$this->configuration = $this->getConfiguration();
+
 		$this->setExecExtension();
 
 		$this->createTestingSite();
@@ -160,6 +164,11 @@ class RoboFile extends \Robo\Tasks
 	 */
 	public function createTestingSite()
 	{
+		if (!empty($this->configuration->skipClone)) {
+			$this->say('Reusing Joomla CMS site already present at tests/joomla-cms3');
+			return;
+		}
+
 		// Get Joomla Clean Testing sites
 		if (is_dir('tests/joomla-cms3'))
 		{
@@ -168,6 +177,29 @@ class RoboFile extends \Robo\Tasks
 
 		$this->_exec('git' . $this->extension . ' clone -b staging --single-branch --depth 1 https://github.com/joomla/joomla-cms.git tests/joomla-cms3');
 		$this->say('Joomla CMS site created at tests/joomla-cms3');
+	}
+
+	/**
+	 * Get (optional) configuration from an external file
+	 *
+	 * @return \stdClass|null
+	 */
+	public function getConfiguration()
+	{
+		$configurationFile = __DIR__ . '/RoboFile.ini';
+
+		if (!file_exists($configurationFile)) {
+			$this->say("No local configuration file");
+			return null;
+		}
+
+		$configuration = parse_ini_file($configurationFile);
+		if ($configuration === false) {
+			$this->say('Local configuration file is empty or wrong (check is it in correct .ini format');
+			return null;
+		}
+
+		return json_decode(json_encode($configuration));
 	}
 
 	/**

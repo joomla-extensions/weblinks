@@ -45,6 +45,7 @@ vendor/*
 
 # Robo
 robo.phar
+RoboFile.ini
 
 # Test related files
 tests/acceptance.suite.yml
