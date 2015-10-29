@@ -133,4 +133,32 @@ class AdministratorCategoriesCest
 		$I->expectTo('See a success message after unpublishing the category');
 		$I->see('1 category successfully unpublished', ['id' => 'system-message-container']);
 	}
+	public function administratorArchiveCategory(AcceptanceTester $I)
+	{
+		$I->am('Administrator');
+		$I->wantToTest('Archiving Category in /administrator/');
+		$I->doAdministratorLogin();
+		$I->amGoingTo('Navigate to Categories page in /administrator/');
+		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
+		$I->waitForText('Weblinks: Categories', '30', ['css' => 'h1']);
+		$I->expectTo('see categories page');
+		$I->checkForPhpNoticesOrWarnings();
+		$I->amGoingTo('try to save a category with a filled title');
+		$I->click(['xpath' => "//button[@onclick=\"Joomla.submitbutton('category.add')\"]"]);
+		$I->waitForText('Weblinks: New Category', '30', ['css' => 'h1']);
+		$I->fillField(['id' => 'jform_title'], 'automated testing arch' . rand(1, 100));
+		$I->click(['xpath' => "//button[@onclick=\"Joomla.submitbutton('category.save')\"]"]);
+		$I->expectTo('see a success message after saving the category');
+		$I->see('Category successfully saved', ['id' => 'system-message-container']);
+		$I->amGoingTo('Search for automated testing');
+		$I->fillField(['xpath' => "//input[@id=\"filter_search\"]"], "automated testing arch" . "\n");
+		$I->waitForText('Weblinks: Categories', '30', ['css' => 'h1']);
+		$I->amGoingTo('Select the first weblink');
+		$I->click(['xpath' => "//input[@id=\"cb0\"]"]);
+		$I->amGoingTo('try to archive a weblink category');
+		$I->click(['xpath' => "//button[@onclick=\"if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list.');}else{ Joomla.submitbutton('categories.archive')}\"]"]);
+		$I->waitForText('Weblinks: Categories', '30', ['css' => 'h1']);
+		$I->expectTo('see a success message after Archiving the category');
+		$I->see('1 category successfully archived.', ['id' => 'system-message-container']);
+	}
 }
