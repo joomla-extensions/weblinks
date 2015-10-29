@@ -158,6 +158,7 @@ class RoboFile extends \Robo\Tasks
 		// Kill selenium server
 		// $this->_exec('curl http://localhost:4444/selenium-server/driver/?cmd=shutDownSeleniumServer');
 	}
+
 	/**
 	 * Creates a testing Joomla site for running the tests (use it before run:test)
 	 */
