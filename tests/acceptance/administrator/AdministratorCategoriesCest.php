@@ -24,7 +24,7 @@ class AdministratorCategoriesCest
 
 		$I->amGoingTo('try to save a category with a filled title');
 		$I->click(['xpath' => "//button[@onclick=\"Joomla.submitbutton('category.add')\"]"]);
-		$I->waitForText('Category Manager: Add A New Weblinks Category', '30', ['css' => 'h1']);
+		$I->waitForText('Weblinks: New Category', '30', ['css' => 'h1']);
 		$I->fillField(['id' => 'jform_title'], 'automated testing' . rand(1, 100));
 		$I->click(['xpath' => "//button[@onclick=\"Joomla.submitbutton('category.apply')\"]"]);
 		$I->expectTo('see a success message after saving the category');
@@ -45,7 +45,7 @@ class AdministratorCategoriesCest
 
 		$I->amGoingTo('try to save a category with empty title and it should fail');
 		$I->click(['xpath' => "//button[@onclick=\"Joomla.submitbutton('category.add')\"]"]);
-		$I->waitForText('Category Manager: Add A New Weblinks Category', '30', ['css' => 'h1']);
+		$I->waitForText('Weblinks: New Category', '30', ['css' => 'h1']);
 		$I->click(['xpath' => "//button[@onclick=\"Joomla.submitbutton('category.apply')\"]"]);
 		$I->expectTo('see an error when trying to save a category without title');
 		$I->see('Invalid field:  Title', ['id' => 'system-message-container']);
@@ -66,7 +66,7 @@ class AdministratorCategoriesCest
 
 		$I->amGoingTo('try to save a category with a filled title');
 		$I->click(['xpath' => "//button[@onclick=\"Joomla.submitbutton('category.add')\"]"]);
-		$I->waitForText('Category Manager: Add A New Weblinks Category', '30', ['css' => 'h1']);
+		$I->waitForText('Weblinks: New Category', '30', ['css' => 'h1']);
 		$I->fillField(['id' => 'jform_title'], 'automated testing pub' . rand(1, 100));
 		$I->click(['xpath' => "//button[@onclick=\"Joomla.submitbutton('category.save')\"]"]);
 
@@ -102,7 +102,7 @@ class AdministratorCategoriesCest
 
 		$I->amGoingTo('try to save a category with a filled title');
 		$I->click(['xpath' => "//button[@onclick=\"Joomla.submitbutton('category.add')\"]"]);
-		$I->waitForText('Category Manager: Add A New Weblinks Category', '30', ['css' => 'h1']);
+		$I->waitForText('Weblinks: New Category', '30', ['css' => 'h1']);
 		$I->fillField(['id' => 'jform_title'], 'automated testing unpub' . rand(1, 100));
 		$I->click(['xpath' => "//button[@onclick=\"Joomla.submitbutton('category.save')\"]"]);
 
