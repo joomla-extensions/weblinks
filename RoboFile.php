@@ -164,9 +164,10 @@ class RoboFile extends \Robo\Tasks
 	 */
 	public function createTestingSite()
 	{
-		if (!empty($this->configuration->skipClone)) {
-			$this->say('Reusing Joomla CMS site already present at tests/joomla-cms3');
-			return;
+		// Caching cloned installations locally
+		if (!is_dir('tests/cache') || (time() - filemtime('tests/cache') > 60 * 60 * 24))
+		{
+			$this->_exec('git' . $this->extension . ' clone -b staging --single-branch --depth 1 https://github.com/joomla/joomla-cms.git tests/cache');
 		}
 
 		// Get Joomla Clean Testing sites
@@ -175,7 +176,9 @@ class RoboFile extends \Robo\Tasks
 			$this->taskDeleteDir('tests/joomla-cms3')->run();
 		}
 
-		$this->_exec('git' . $this->extension . ' clone -b staging --single-branch --depth 1 https://github.com/joomla/joomla-cms.git tests/joomla-cms3');
+		// Copy cache to the testing folder
+		$this->_copyDir('tests/cache', 'tests/joomla-cms3');
+
 		$this->say('Joomla CMS site created at tests/joomla-cms3');
 	}
 
