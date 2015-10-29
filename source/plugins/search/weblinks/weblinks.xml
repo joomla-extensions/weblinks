@@ -2,17 +2,19 @@
 <extension version="3.1" type="plugin" group="search" method="upgrade">
 	<name>plg_search_weblinks</name>
 	<author>Joomla! Project</author>
-	<creationDate>November 2005</creationDate>
+	<creationDate>##DATE##</creationDate>
 	<copyright>Copyright (C) 2005 - 2015 Open Source Matters. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>admin@joomla.org</authorEmail>
 	<authorUrl>www.joomla.org</authorUrl>
-	<version>3.4.1</version>
+	<version>##VERSION##</version>
 	<description>PLG_SEARCH_WEBLINKS_XML_DESCRIPTION</description>
 	<files>
-		<filename plugin="weblinks">weblinks.php</filename>
-		<folder>language</folder>
+		##FILES##
 	</files>
+	<languages folder="administrator/language">
+		##LANGUAGE_FILES##
+	</languages>
 	<config>
 		<fields name="params">
 

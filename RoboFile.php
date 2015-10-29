@@ -10,10 +10,16 @@
 
 require_once 'vendor/autoload.php';
 
+if (!defined('JPATH_BASE'))
+{
+	define('JPATH_BASE', __DIR__);
+}
+
 class RoboFile extends \Robo\Tasks
 {
 	// Load tasks from composer, see composer.json
 	use \joomla_projects\robo\loadTasks;
+	use \JBuild\Tasks\loadTasks;
 
 	private $extension = '';
 
@@ -175,7 +181,7 @@ class RoboFile extends \Robo\Tasks
 			$this->taskDeleteDir('tests/joomla-cms3')->run();
 		}
 
-		$this->_exec('git' . $this->extension . ' clone -b staging --single-branch --depth 1 https://github.com/joomla/joomla-cms.git tests/joomla-cms3');
+		$this->_exec('git' . $this->extension . ' clone -b staging --single-branch --depth 1 https://github.com/joomla/joomla-cms.git tests/weblinksnew');
 		$this->say('Joomla CMS site created at tests/joomla-cms3');
 	}
 
@@ -242,5 +248,250 @@ class RoboFile extends \Robo\Tasks
 		{
 			$this->_exec('curl --retry 3 --retry-delay 5 -sS https://getcomposer.org/installer | php');
 		}
+	}
+
+	/**
+	 * Build the joomla extension package
+	 *
+	 * @param   array  $params  Additional params
+	 *
+	 * @return  void
+	 */
+	public function build($params = ['dev' => false])
+	{
+		$this->taskBuild($params)->run();
+	}
+
+	/**
+	 * Tags and Creates a new release in Github
+	 */
+	public function release()
+	{
+		$bump = $this->confirm('Have you already bumped the extension version', false);
+
+		if (!$bump)
+		{
+			$this->yell('please bump the extension version of the XML manifest before running this function');
+			exit(1);
+		}
+
+		$this->buildPackage('extension_packager.xml'); //TODO-Niels what is when we only have a component without package
+
+		$remote = $this->askDefault("What is the git remote where you want to do the release?", 'origin');
+
+		$version = $this->getExtensionVersion();
+		$this->changelogUpdate();
+		$this->taskGitStack()
+			->add('CHANGELOG.md')
+			->commit("Prepare for release version $version")
+			->push($remote,'develop') //TODO-Niels develop or master or what
+			->run();
+
+		$this->say("Creating github tag: $version");
+		$githubRepository = $this->getGithubRepo();
+		$githubToken = $this->getGithubToken();
+
+		$this->taskGitStack()
+			->stopOnFail()
+			->tag($version)
+			->push($remote, $version)
+			->run();
+		$this->say("Tag created: $version and published at $githubRepository->owner/$githubRepository->name");
+
+		$this->say("Creating the release at: https://github.com/$githubRepository->owner/$githubRepository->name/releases/tag/$version");
+		$github = $this->getGithub();
+		$changesInRelease = "# Changelog: \n\n" . implode("\n* ", $this->changelogGetPullsInLatestRelease());
+		$response = $github->repositories->releases->create(
+			$githubRepository->owner,
+			$githubRepository->name,
+			(string) $version,
+			'',
+			"redSHOPB $version", //TODO-Niels best way
+			$changesInRelease,
+			false,
+			true
+		);
+
+		$this->say("Uploading the Extension package to the Github release: $version");
+		$uploadUrl = str_replace("{?name}", "?access_token=$githubToken&name=redslider-v${version}_fullpackage-unzipfirst.zip", $response->upload_url); //TODO-Niels redslider
+
+		$http    = new Http();
+		$data    = array("file" => "@.dist/redslider-v${version}_fullpackage-unzipfirst.zip"); //TODO-Niels redslider
+		$headers = array("Content-Type" => "application/zip");
+		$http->post($uploadUrl, $data, $headers);
+	}
+
+	private function changelogGetPullsInLatestRelease()
+	{
+		$github           = $this->getGithub();
+
+		$latestRelease = $github->repositories->releases->get(
+			$this->getGithubRepo()->owner,
+			$this->getGithubRepo()->name,
+			'latest'
+		);
+
+		$pulls = $this->getAllRepoPulls();
+
+
+		$changes = array();
+
+		foreach ($pulls as $pull)
+		{
+			if (strtotime($pull->merged_at) > strtotime($latestRelease->published_at))
+			{
+				$changes[] = $pull->title;
+			}
+		}
+
+		return $changes;
+	}
+
+	/**
+	 * @param   string  $release1  You can use Release Tag, for example tags/2.0.24. Or use Release Id, for example: 1643513
+	 * @param   string  $release2
+	 *
+	 * @return array
+	 */
+	public function changelogGetPullsBetweenTwoVersions($release1, $release2)
+	{
+		$github           = $this->getGithub();
+		$githubRepository = $this->getGithubRepo();
+
+		$release1 = $github->repositories->releases->get($githubRepository->owner, $githubRepository->name, $release1);
+		$release2 = $github->repositories->releases->get($githubRepository->owner, $githubRepository->name, $release2);
+		$pulls = $this->getAllRepoPulls();
+
+		$changes = array();
+
+		foreach ($pulls as $pull)
+		{
+			if (
+				(strtotime($pull->merged_at) > strtotime($release1->published_at))
+				&& strtotime($pull->merged_at) < strtotime($release2->published_at)
+			)
+			{
+				$changes[] = $pull->title;
+			}
+		}
+
+		return $changes;
+	}
+
+	/**
+	 * Updates changelog with the changes since the last release
+	 */
+	public function changelogUpdate()
+	{
+		$version = $this->getExtensionVersion();
+
+		$changes = $this->changelogGetPullsInLatestRelease();
+
+		if (!empty($changes))
+		{
+			$this->taskChangelog()
+				->changes($changes)
+				->version($version)
+				->run();
+		}
+	}
+
+	/**
+	 * Creates the full Changelog file
+	 */
+	public function changelogCreate()
+	{
+		$github           = $this->getGithub();
+		$githubRepository = $this->getGithubRepo();
+
+		$releases = array_values($github->repositories->releases->getList($githubRepository->owner, $githubRepository->name));
+
+		for ($i = 0, $j = count($releases);$i<$j;$i++)
+		{
+			if(!array_key_exists($i+1, $releases))
+			{
+				break;
+			}
+
+			$version = $releases[$i]->tag_name;
+			$tag = 'tags/' . $releases[$i]->tag_name;
+			$previousTag = 'tags/' . $releases[$i+1]->tag_name;
+
+			$changes = $this->changelogGetPullsBetweenTwoVersions($previousTag,$tag);
+
+			if ($changes)
+			{
+				$this->taskChangelog()
+					->changes($this->changelogGetPullsBetweenTwoVersions($previousTag,$tag))
+					->version($version)
+					->run();
+			}
+		}
+	}
+
+	private function getGithub()
+	{
+		$githubToken = $this->getGithubToken();
+
+		$options = new Registry;
+		$options->set('api.url', 'https://api.github.com');
+		$options->set('gh.token', (string) $githubToken);
+
+		return new Github($options);
+	}
+
+	private function getGithubRepo()
+	{
+		if (!isset($this->githubRepository))
+		{
+			$this->githubRepository = new stdClass;
+			$this->githubRepository->owner = $this->askDefault("What is the reporitory user?", 'redCOMPONENT-COM'); //TODO-Niels default
+			$this->githubRepository->name = $this->askDefault("What is the reporitory project?", 'redSHOPB2B'); //TODO-Niels default
+		}
+
+		return $this->githubRepository;
+	}
+
+	private function getExtensionVersion()
+	{
+		if (!isset($this->extensionVersion))
+		{
+			$componentManifest      = simplexml_load_file('redshopb.xml'); //TODO-Niels config?
+			$this->extensionVersion = $componentManifest->version;
+		}
+
+		return $this->extensionVersion;
+	}
+
+	private function getGithubToken()
+	{
+		if (!isset($this->githubToken))
+		{
+			$this->githubToken = $this->askHidden("What is your Github Auth token? get it at https://github.com/settings/tokens");
+		}
+
+		return $this->githubToken;
+	}
+
+	/**
+	 * Packages the extension to .dist/redshopb-version.zip
+	 *
+	 * @param $buildFile Name of the XML build PHING file
+	 */
+	public function buildPackage($buildFile)
+	{
+		$this->_exec("vendor/bin/phing -f $buildFile autopack");
+	}
+
+	private function getAllRepoPulls($state = 'closed')
+	{
+		$github = $this->getGithub();
+
+		if (!isset($this->allClosedPulls))
+		{
+			$this->allClosedPulls = $github->pulls->getList($this->getGithubRepo()->owner, $this->getGithubRepo()->name, $state);
+		}
+
+		return $this->allClosedPulls;
 	}
 }
