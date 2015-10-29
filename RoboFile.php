@@ -172,7 +172,16 @@ class RoboFile extends \Robo\Tasks
 		// Get Joomla Clean Testing sites
 		if (is_dir('tests/joomla-cms3'))
 		{
-			$this->taskDeleteDir('tests/joomla-cms3')->run();
+			try
+			{
+				$this->taskDeleteDir('tests/joomla-cms3')->run();
+			}
+			catch (Exception $e)
+			{
+				// Sorry, we tried :(
+				$this->say('Sorry, you will have to delete ' . realpath(dirname(__FILE__) . '/tests/joomla-cms3'). ' manually. ');
+				exit(1);
+			}
 		}
 
 		$this->_exec('git' . $this->extension . ' clone -b staging --single-branch --depth 1 https://github.com/joomla/joomla-cms.git tests/joomla-cms3');
