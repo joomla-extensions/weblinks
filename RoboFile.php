@@ -164,7 +164,7 @@ class RoboFile extends \Robo\Tasks
 	 */
 	public function createTestingSite()
 	{
-		if (!empty($this->configuration['skipClone'])) {
+		if (!empty($this->configuration->skipClone)) {
 			$this->say('Reusing Joomla CMS site already present at tests/joomla-cms3');
 			return;
 		}
@@ -182,30 +182,24 @@ class RoboFile extends \Robo\Tasks
 	/**
 	 * Get (optional) configuration from an external file
 	 *
-	 * @return array
+	 * @return \stdClass|null
 	 */
 	public function getConfiguration()
 	{
 		$configurationFile = __DIR__ . '/RoboFile.ini';
+
 		if (!file_exists($configurationFile)) {
 			$this->say("No local configuration file");
-			return array();
+			return null;
 		}
 
-		try {
-			require_once $configurationFile;
-			if (!is_array($configuration)) {
-				$this->say('Local configuration file is empty or wrong (it must contain a $configuration array');
-				return array();
-			}
+		$configuration = parse_ini_file($configurationFile);
+		if ($configuration === false) {
+			$this->say('Local configuration file is empty or wrong (check is it in correct .ini format');
+			return null;
+		}
 
-			return $configuration;
-		}
-		catch (Exception $ex)
-		{
-			$this->say('Exception reading local configuration file: ' . $ex->getMessage());
-			return array();
-		}
+		return json_decode(json_encode($configuration));
 	}
 
 	/**
