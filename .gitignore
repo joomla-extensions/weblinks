@@ -55,3 +55,4 @@ tests/_output*
 selenium-server-standalone.jar
 codecept.phar
 selenium.log
+tests/cache
