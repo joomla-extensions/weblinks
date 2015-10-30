@@ -45,9 +45,9 @@ class category extends \AcceptanceTester
 	}
 
 	/**
-	 * Function to Delete a Category in Joomla!
+	 * Function to Trash a Category in Joomla!
 	 *
-	 * @param  String  $categoryName  Name of the category which is to be deleted
+	 * @param  String  $categoryName  Name of the category which is to be trashed
 	 *
 	 * @return void
 	 */
@@ -61,5 +61,25 @@ class category extends \AcceptanceTester
 		$I->checkAllResults();
 		$I->clickToolbarButton("Trash");
 		$I->see('category successfully trashed.', ['id' => 'system-message-container']);
+	}
+
+	/**
+	 * Function to Delete a Category in Joomla!
+	 *
+	 * @param  String  $categoryName  Name of the category which is to be deleted
+	 *
+	 * @return void
+	 */
+	public function deleteCategory($categoryName)
+	{
+		$I = $this;
+		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
+		$I->waitForText('Weblinks: Categories', '30', ['css' => 'h1']);
+		$I->setFilter('select status', 'Trashed');
+		$I->searchForItem($categoryName);
+		$I->amGoingTo('Select the weblink result');
+		$I->checkAllResults();
+		$I->clickToolbarButton("empty trash");
+		$I->see('category successfully deleted.', ['id' => 'system-message-container']);
 	}
 }
