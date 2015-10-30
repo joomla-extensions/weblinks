@@ -19,6 +19,8 @@ class RoboFile extends \Robo\Tasks
 
 	private $configuration = array();
 
+	private $cmsPath = '';
+
 	/**
 	* Set the Execute extension for Windows Operating System
 	*
@@ -43,6 +45,8 @@ class RoboFile extends \Robo\Tasks
 	public function runTests($seleniumPath = null, $suite = 'acceptance')
 	{
 		$this->configuration = $this->getConfiguration();
+
+		$this->cmsPath = $this->getCmsPath();
 
 		$this->setExecExtension();
 
@@ -164,6 +168,12 @@ class RoboFile extends \Robo\Tasks
 	 */
 	public function createTestingSite()
 	{
+		if (!empty($this->configuration->skipClone))
+		{
+			$this->say('Reusing Joomla CMS site already present at ' . $this->cmsPath);
+			return;
+		}
+
 		// Caching cloned installations locally
 		if (!is_dir('tests/cache') || (time() - filemtime('tests/cache') > 60 * 60 * 24))
 		{
@@ -171,15 +181,14 @@ class RoboFile extends \Robo\Tasks
 		}
 
 		// Get Joomla Clean Testing sites
-		if (is_dir('tests/joomla-cms3'))
+		if (is_dir($this->cmsPath))
 		{
-			$this->taskDeleteDir('tests/joomla-cms3')->run();
+			$this->taskDeleteDir($this->cmsPath)->run();
 		}
 
 		// Copy cache to the testing folder
-		$this->_copyDir('tests/cache', 'tests/joomla-cms3');
-
-		$this->say('Joomla CMS site created at tests/joomla-cms3');
+		$this->_copyDir('tests/cache', $this->cmsPath);
+		$this->say('Joomla CMS site created at ' . $this->cmsPath);
 	}
 
 	/**
@@ -191,18 +200,41 @@ class RoboFile extends \Robo\Tasks
 	{
 		$configurationFile = __DIR__ . '/RoboFile.ini';
 
-		if (!file_exists($configurationFile)) {
+		if (!file_exists($configurationFile))
+		{
 			$this->say("No local configuration file");
 			return null;
 		}
 
 		$configuration = parse_ini_file($configurationFile);
-		if ($configuration === false) {
+		if ($configuration === false)
+		{
 			$this->say('Local configuration file is empty or wrong (check is it in correct .ini format');
 			return null;
 		}
 
 		return json_decode(json_encode($configuration));
+	}
+
+	/**
+	 * Get the correct CMS root path
+	 *
+	 * @return string
+	 */
+	private function getCmsPath()
+	{
+		if (empty($this->configuration->cmsPath))
+		{
+			return 'tests/joomla-cms3';
+		}
+
+		if (!file_exists(dirname($this->configuration->cmsPath)))
+		{
+			$this->say("Cms path written in local configuration does not exists or is not readable");
+			return 'tests/joomla-cms3';
+		}
+
+		return $this->configuration->cmsPath;
 	}
 
 	/**
