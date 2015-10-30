@@ -45,14 +45,13 @@ Then run the command:
 $ composer install
 ```
 
-That will add all the dependencies for the testing of weblinks. You can then run the command:
+You can then run the following command to start the tests:
 
 ```bash
-$ php.exe vendor/codeception/codeception/codecept build
 $ vendor/bin/robo run:tests
 ```
 
-Once all tests are executed, you may also run a specific test:
+Once all tests were executed, you may also run a specific test:
 
 ```bash
 $ vendor/bin/robo run:test // Then select the test you want to run!
