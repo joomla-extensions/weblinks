@@ -133,7 +133,7 @@ class AdministratorCategoriesCest
 		$I->expectTo('See a success message after unpublishing the category');
 		$I->see('1 category successfully unpublished', ['id' => 'system-message-container']);
 	}
-	public function administratorArchiveCategory(AcceptanceTester $I)
+	public function administratorArchiveCategory(\Step\Acceptance\category $I)
 	{
 		$I->am('Administrator');
 		$I->wantToTest('Archiving Category in /administrator/');
