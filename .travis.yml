@@ -41,4 +41,4 @@ script:
 - mv tests/acceptance.suite.dist.yml tests/acceptance.suite.yml
 - vendor/bin/robo run:tests true
 - ls tests/_output/
-- vendor/bin/robo dump:
+- vendor/bin/robo dump:php-version

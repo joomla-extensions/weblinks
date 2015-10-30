@@ -258,6 +258,6 @@ class RoboFile extends \Robo\Tasks
 	public function dumpPhpVersion()
 	{
 		$error_page = strip_tags(file_get_contents('./tests/_output/InstallWeblinksCest.installJoomla.fail.html'));
-		var_dump($error_page);
+		$this->say($error_page);
 	}
 }
