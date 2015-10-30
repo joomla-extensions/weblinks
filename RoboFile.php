@@ -75,10 +75,6 @@ class RoboFile extends \Robo\Tasks
 			->arg('tests/acceptance/frontend/')
 			->run()
 			->stopOnFail();
-
-		// Kill selenium server
-		// $this->_exec('curl http://localhost:4444/selenium-server/driver/?cmd=shutDownSeleniumServer');
-
 		/*
 		// Uncomment this lines if you need to debug selenium errors
 		$seleniumErrors = file_get_contents('selenium.log');
