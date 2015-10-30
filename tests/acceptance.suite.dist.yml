@@ -37,4 +37,5 @@ modules:
             language: 'English (United Kingdom)'   # Language in which you want the Application to be Installed
         AcceptanceHelper:
             repo_folder: '/home/travis/build/joomla-extensions/weblinks/dist/pkg-weblinks-current.zip' # Path to the Extension repository. To be used by tests to install via Install from folder
+            url: 'http://localhost/tests/joomla-cms3'     # the url that points to the joomla installation at /tests/system/joomla-cms
 error_level: "E_ALL & ~E_STRICT & ~E_DEPRECATED"
