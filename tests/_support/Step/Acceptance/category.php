@@ -47,7 +47,7 @@ class category extends \AcceptanceTester
 	/**
 	 * Function to Trash a Category in Joomla!
 	 *
-	 * @param  String  $categoryName  Name of the category which is to be Trashed
+	 * @param  String  $categoryName  Name of the category which is to be trashed
 	 *
 	 * @return void
 	 */
