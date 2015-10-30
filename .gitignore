@@ -56,3 +56,7 @@ tests/_output*
 selenium-server-standalone.jar
 codecept.phar
 selenium.log
+
+# Build related stuff
+/dist
+jbuild.ini
