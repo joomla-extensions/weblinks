@@ -20,7 +20,7 @@ class AdministratorCategoriesCest
 		$I->amGoingTo('Navigate to Categories page in /administrator/ and create a Category');
 		$I->createCategory($categoryName);
 		$I->amGoingTo('Delete the Category which was created');
-		$I->deleteCategory($categoryName);
+		$I->trashCategory($categoryName);
 	}
 
 	public function administratorCreateCategoryWithoutTitleFails(AcceptanceTester $I)
@@ -67,7 +67,7 @@ class AdministratorCategoriesCest
 		$I->see('1 category successfully published.', ['id' => 'system-message-container']);
 
 		$I->amGoingTo('Delete the Category which was created');
-		$I->deleteCategory($categoryName);
+		$I->trashCategory($categoryName);
 	}
 
 	public function administratorUnpublishCategory(\Step\Acceptance\category $I)
@@ -106,6 +106,6 @@ class AdministratorCategoriesCest
 
 		//delete the category
 		$I->amGoingTo('Delete the Category which was created');
-		$I->deleteCategory($categoryName);
+		$I->trashCategory($categoryName);
 	}
 }
