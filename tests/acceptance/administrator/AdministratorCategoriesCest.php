@@ -9,6 +9,26 @@
  */
 class AdministratorCategoriesCest
 {
+	/**
+	 * Array of tabs present on this page
+	 */
+	private  $tabs = array('Category', 'Publishing', 'Permissions', 'Options');
+
+	public function administratorVerifyTabs(\Step\Acceptance\category $I)
+	{
+		$I->am('Administrator');
+		$I->wantToTest('Category Edit View Tabs');
+
+		$I->doAdministratorLogin();
+
+		$I->amGoingTo('Navigate to Categories page in /administrator/ and verify the Tabs');
+		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
+		$I->clickToolbarButton('New');
+		$I->waitForText('Weblinks: New Category', '30', ['css' => 'h1']);
+		$actualArrayOfTabs = $I->grabMultiple(['xpath' => "//ul[@id='myTabTabs']/li/a"]);
+		$I->verifyTabs($actualArrayOfTabs, $this->tabs, 'Category Weblinks');
+	}
+
 	public function administratorCreateCategory(\Step\Acceptance\category $I)
 	{
 		$I->am('Administrator');
