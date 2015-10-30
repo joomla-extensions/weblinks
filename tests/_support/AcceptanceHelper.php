@@ -22,4 +22,18 @@ class AcceptanceHelper extends \Codeception\Module
 
 		return $this->config[$element];
 	}
+
+	/**
+	 * Function to Verify the Tabs on a Joomla! screen
+	 *
+	 * @param $actualTabs
+	 * @param $expectedTabs
+	 * @param $pageName
+	 *
+	 * @return void
+	 */
+	public function verifyTabs($actualTabs, $expectedTabs, $pageName)
+	{
+		$this->assertEquals($expectedTabs, $actualTabs, "Tab Labels should match on edit view of" . $pageName);
+	}
 }
