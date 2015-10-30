@@ -36,5 +36,5 @@ modules:
             admin email: 'admin@mydomain.com'      # email Id of the Admin
             language: 'English (United Kingdom)'   # Language in which you want the Application to be Installed
         AcceptanceHelper:
-            repo_folder: '/home/travis/build/joomla-extensions/weblinks/' # Path to the Extension repository. To be used by tests to install via Install from folder
+            repo_folder: '/home/travis/build/joomla-extensions/weblinks/dist/pkg-weblinks-current.zip' # Path to the Extension repository. To be used by tests to install via Install from folder
 error_level: "E_ALL & ~E_STRICT & ~E_DEPRECATED"
