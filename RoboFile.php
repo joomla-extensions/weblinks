@@ -150,9 +150,6 @@ class RoboFile extends \Robo\Tasks
 		     ->arg('--debug')
 		     ->run()
 		     ->stopOnFail();
-
-		// Kill selenium server
-		// $this->_exec('curl http://localhost:4444/selenium-server/driver/?cmd=shutDownSeleniumServer');
 	}
 
 	/**
