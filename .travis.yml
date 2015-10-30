@@ -2,23 +2,28 @@ language: php
 php:
 - 5.5
 - 5.6
-- 7.0
 matrix:
   allow_failures:
     - php: 5.6
-    - php: 7.0
 before_script:
 - sudo apt-get update -qq
-# Install Apache
-- sudo apt-get install -y --force-yes apache2 libapache2-mod-php5 php5-curl php5-mysql php5-intl php5-gd > /dev/null
-- sudo /etc/init.d/apache2 stop
-- sudo sed -i -e "s,APACHE_RUN_USER=www-data,APACHE_RUN_USER=$USER,g" /etc/apache2/envvars
-- sudo sed -i -e "s,APACHE_RUN_GROUP=www-data,APACHE_RUN_GROUP=$USER,g" /etc/apache2/envvars
-- sudo chown -R $USER /var/lock/apache2
-- sudo chown -R $USER:$USER /var/www
-- ln -s $TRAVIS_BUILD_DIR/tests/ /var/www/tests
-- sudo sed -i -e "s,AllowOverride[ ]None,AllowOverride All,g" /etc/apache2/sites-available/default
-- sudo /etc/init.d/apache2 start
+- sudo apt-get install -y --force-yes apache2 libapache2-mod-fastcgi php5-curl php5-mysql php5-intl php5-gd > /dev/null
+- sudo mkdir $(pwd)/.run
+- sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+- sudo sed -e "s,listen = 127.0.0.1:9000,listen = /tmp/php5-fpm.sock,g" --in-place ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+- sudo sed -e "s,;listen.owner = nobody,listen.owner = $USER,g" --in-place ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+- sudo sed -e "s,;listen.group = nobody,listen.group = $USER,g" --in-place ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+- sudo sed -e "s,;listen.mode = 0660,listen.mode = 0666,g" --in-place ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+- sudo sed -e "s,user = nobody,;user = $USER,g" --in-place ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+- sudo sed -e "s,group = nobody,;group = $USER,g" --in-place ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+- cat ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+- sudo a2enmod rewrite actions fastcgi alias
+- echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+- ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
+- sudo cp -f tests/travis-ci-apache.conf /etc/apache2/sites-available/default
+- sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
+- git submodule update --init --recursive
+- sudo service apache2 restart
 # Xvfb
 - "export DISPLAY=:99.0"
 - "sh -e /etc/init.d/xvfb start"
@@ -27,8 +32,9 @@ before_script:
 - sudo apt-get install fluxbox -y --force-yes
 - fluxbox &
 - sleep 3 # give fluxbox some time to start
+# Composer
 - composer install
 
 script:
 - mv tests/acceptance.suite.dist.yml tests/acceptance.suite.yml
-- vendor/bin/robo run:tests
+- vendor/bin/robo run:tests true
