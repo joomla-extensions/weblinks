@@ -211,4 +211,16 @@ class RoboFile extends \Robo\Tasks
 			$this->_exec('curl --retry 3 --retry-delay 5 -sS https://getcomposer.org/installer | php');
 		}
 	}
+
+	/**
+	 * Kills the selenium server running
+	 *
+	 * @param   string  $host  Web host of the remote server.
+	 * @param   string  $port  Server port.
+	 */
+	public function killSelenium($host = 'localhost', $port = '4444')
+	{
+		$this->say('Trying to kill the selenium server.');
+		$this->_exec("curl http://$host:$port/selenium-server/driver/?cmd=shutDownSeleniumServer");
+	}
 }
