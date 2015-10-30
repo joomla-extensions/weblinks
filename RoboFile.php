@@ -28,7 +28,7 @@ class RoboFile extends \Robo\Tasks
 	*/
 	private function setExecExtension()
 	{
-		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
+		if ($this->isWindows())
 		{
 			$this->extension = '.exe';
 		}
@@ -177,7 +177,7 @@ class RoboFile extends \Robo\Tasks
 		// Caching cloned installations locally
 		if (!is_dir('tests/cache') || (time() - filemtime('tests/cache') > 60 * 60 * 24))
 		{
-			$this->_exec('git' . $this->extension . ' clone -b staging --single-branch --depth 1 https://github.com/joomla/joomla-cms.git tests/cache');
+			$this->_exec($this->buildGitCloneCommand());
 		}
 
 		// Get Joomla Clean Testing sites
@@ -214,6 +214,29 @@ class RoboFile extends \Robo\Tasks
 		}
 
 		return json_decode(json_encode($configuration));
+	}
+
+	/**
+	 * Build correct git clone command according to local configuration and OS
+	 *
+	 * @return string
+	 */
+	private function buildGitCloneCommand()
+	{
+		$branch = empty($this->configuration->branch) ? 'staging' : $this->configuration->branch;
+		$insecure = $this->isWindows() ? ' --insecure' : '';
+
+		return "git" . $this->extension . " clone -b $branch $insecure --single-branch --depth 1 https://github.com/joomla/joomla-cms.git tests/cache";
+	}
+
+	/**
+	 * Check if local OS is Windows
+	 *
+	 * @return bool
+	 */
+	private function isWindows()
+	{
+		return strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
 	}
 
 	/**
