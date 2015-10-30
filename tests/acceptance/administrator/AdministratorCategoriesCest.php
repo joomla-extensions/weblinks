@@ -21,6 +21,7 @@ class AdministratorCategoriesCest
 		$I->createCategory($categoryName);
 		$I->amGoingTo('Delete the Category which was created');
 		$I->trashCategory($categoryName);
+		$I->deleteCategory($categoryName);
 	}
 
 	public function administratorCreateCategoryWithoutTitleFails(AcceptanceTester $I)
@@ -68,6 +69,7 @@ class AdministratorCategoriesCest
 
 		$I->amGoingTo('Delete the Category which was created');
 		$I->trashCategory($categoryName);
+		$I->deleteCategory($categoryName);
 	}
 
 	public function administratorUnpublishCategory(\Step\Acceptance\category $I)
@@ -107,5 +109,6 @@ class AdministratorCategoriesCest
 		//delete the category
 		$I->amGoingTo('Delete the Category which was created');
 		$I->trashCategory($categoryName);
+		$I->deleteCategory($categoryName);
 	}
 }
