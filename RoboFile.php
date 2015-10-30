@@ -35,18 +35,17 @@ class RoboFile extends \Robo\Tasks
 	/**
 	* Executes all the Selenium System Tests in a suite on your machine
 	*
-	* @param string $seleniumPath Optional path to selenium-standalone-server-x.jar
-	* @param string $suite        Optional, the name of the tests suite
+	* @param   bool  $use_htaccess  Renames and enable embedded Joomla .htaccess file
 	*
 	* @return mixed
 	*/
-	public function runTests($seleniumPath = null, $suite = 'acceptance')
+	public function runTests($use_htaccess = false)
 	{
 		$this->configuration = $this->getConfiguration();
 
 		$this->setExecExtension();
 
-		$this->createTestingSite();
+		$this->createTestingSite($use_htaccess);
 
 		$this->getComposer();
 
@@ -161,8 +160,10 @@ class RoboFile extends \Robo\Tasks
 
 	/**
 	 * Creates a testing Joomla site for running the tests (use it before run:test)
+	 *
+	 * @param   bool  $use_htaccess  (1/0) Rename and enable embedded Joomla .htaccess file
 	 */
-	public function createTestingSite()
+	public function createTestingSite($use_htaccess = false)
 	{
 		// Caching cloned installations locally
 		if (!is_dir('tests/cache') || (time() - filemtime('tests/cache') > 60 * 60 * 24))
@@ -180,6 +181,13 @@ class RoboFile extends \Robo\Tasks
 		$this->_copyDir('tests/cache', 'tests/joomla-cms3');
 
 		$this->say('Joomla CMS site created at tests/joomla-cms3');
+
+		// Optionally uses Joomla default htaccess file
+		if ($use_htaccess == true)
+		{
+			$this->_copy('tests/joomla-cms3/htaccess.txt', 'tests/joomla-cms3/.htaccess');
+			$this->_exec('sed -e "s,# RewriteBase /,RewriteBase /tests/joomla-cms3/,g" --in-place tests/joomla-cms3/.htaccess');
+		}
 	}
 
 	/**
