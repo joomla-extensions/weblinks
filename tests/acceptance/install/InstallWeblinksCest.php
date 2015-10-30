@@ -27,7 +27,11 @@ class InstallWeblinksCest
 		$I->doAdministratorLogin();
 		$I->comment('get Weblinks repository folder from acceptance.suite.yml (see _support/AcceptanceHelper.php)');
 		$path = $I->getConfiguration('repo_folder');
-		$I->installExtensionFromUrl($path . 'src/com_weblinks/');
+		// $I->installExtensionFromUrl($path . 'dist/com_weblinks/pkg-weblinks-current.zip');
+
+		$url = $I->getConfiguration('url');
+
+		$I->installExtensionFromUrl($url . "/pkg-weblinks-current.zip");
 		$I->doAdministratorLogout();
 	}
 }
