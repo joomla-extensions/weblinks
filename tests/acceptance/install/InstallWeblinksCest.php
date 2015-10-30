@@ -16,6 +16,11 @@ class InstallWeblinksCest
 		$I->am('Administrator');
 		$I->installJoomla();
 		$I->doAdministratorLogin();
+// Debug PHP in TravisCI
+$I->amOnPage('/administrator/index.php?option=com_admin&view=sysinfo');
+$I->waitForElement(['link' => 'PHP Information']);
+$I->click('PHP Information');
+$I->click('clicking unexisting element to make the test fail');
 		$I->setErrorReportingToDevelopment();
 	}
 
