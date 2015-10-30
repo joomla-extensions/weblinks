@@ -51,7 +51,7 @@ class category extends \AcceptanceTester
 	 *
 	 * @return void
 	 */
-	public function deleteCategory($categoryName)
+	public function trashCategory($categoryName)
 	{
 		$I = $this;
 		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
