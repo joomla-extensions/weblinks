@@ -58,8 +58,8 @@ class RoboFile extends \Robo\Tasks
 
 		$this->runSelenium();
 
-		// Make sure to Run the Build Command to Generate AcceptanceTester
-		$this->_exec('php' . $this->extension . ' vendor/codeception/codeception/codecept build');
+		// Make sure to tun the build command to generate AcceptanceTester
+		$this->_exec($this->isWindows() ? 'vendor/bin/codecept.bat build' : 'php vendor/bin/codecept build');
 
 		$this->taskCodecept()
 			->arg('--steps')
@@ -113,8 +113,8 @@ class RoboFile extends \Robo\Tasks
 	{
 		$this->runSelenium();
 
-		// Make sure to Run the Build Command to Generate AcceptanceTester
-		$this->_exec('php' . $this->extension . ' vendor/codeception/codeception/codecept build');
+		// Make sure to tun the build command to generate AcceptanceTester
+		$this->_exec($this->isWindows() ? 'vendor/bin/codecept.bat build' : 'php vendor/bin/codecept build');
 
 		if (!$pathToTestFile)
 		{
