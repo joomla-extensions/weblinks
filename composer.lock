@@ -90,16 +90,16 @@
         },
         {
             "name": "codegyre/robo",
-            "version": "0.5.4",
+            "version": "0.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codegyre/Robo.git",
-                "reference": "10aa223f6d1db182dc81d723bf1545dfc6ff380d"
+                "reference": "d18185f0494c854d36aa5ee0ad931ee23bbef552"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codegyre/Robo/zipball/10aa223f6d1db182dc81d723bf1545dfc6ff380d",
-                "reference": "10aa223f6d1db182dc81d723bf1545dfc6ff380d",
+                "url": "https://api.github.com/repos/Codegyre/Robo/zipball/d18185f0494c854d36aa5ee0ad931ee23bbef552",
+                "reference": "d18185f0494c854d36aa5ee0ad931ee23bbef552",
                 "shasum": ""
             },
             "require": {
@@ -113,6 +113,7 @@
             "require-dev": {
                 "codeception/aspect-mock": "0.5.*",
                 "codeception/base": "~2.1",
+                "codeception/codeception": "2.1",
                 "codeception/verify": "0.2.*",
                 "natxet/cssmin": "~3.0",
                 "patchwork/jsqueeze": "~1.0"
@@ -137,7 +138,7 @@
                 }
             ],
             "description": "Modern task runner",
-            "time": "2015-08-31 17:35:30"
+            "time": "2015-10-30 11:29:52"
         },
         {
             "name": "doctrine/instantiator",
@@ -524,12 +525,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-projects/joomla-browser.git",
-                "reference": "0b43acdf38d9322efdfc4ee9730f7bd1cf96b2f9"
+                "reference": "0999fe673c34fbcf252957b6bc96bbf48956d70e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joomla-projects/joomla-browser/zipball/0b43acdf38d9322efdfc4ee9730f7bd1cf96b2f9",
-                "reference": "0b43acdf38d9322efdfc4ee9730f7bd1cf96b2f9",
+                "url": "https://api.github.com/repos/joomla-projects/joomla-browser/zipball/0999fe673c34fbcf252957b6bc96bbf48956d70e",
+                "reference": "0999fe673c34fbcf252957b6bc96bbf48956d70e",
                 "shasum": ""
             },
             "require": {
@@ -567,7 +568,7 @@
                 "acceptance testing",
                 "joomla"
             ],
-            "time": "2015-10-29 14:44:24"
+            "time": "2015-10-30 13:37:14"
         },
         {
             "name": "joomla-projects/robo",
