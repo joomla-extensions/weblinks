@@ -191,6 +191,13 @@ class RoboFile extends \Robo\Tasks
 		}
 
 		$this->_copyDir('tests/cache', $this->cmsPath);
+
+		// Optionally change owner to fix permissions issues
+		if (!empty($this->configuration->localUser) && !$this->isWindows())
+		{
+			$this->_exec('chown -R ' . $this->configuration->localUser . ' ' . $this->cmsPath);
+		}
+
 		$this->say('Joomla CMS site created at ' . $this->cmsPath);
 
 		// Optionally uses Joomla default htaccess file. Used by TravisCI
