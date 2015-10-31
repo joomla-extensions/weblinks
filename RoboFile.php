@@ -185,7 +185,7 @@ class RoboFile extends \Robo\Tasks
 			catch (Exception $e)
 			{
 				// Sorry, we tried :(
-				$this->say('Sorry, you will have to delete ' . $this->cmsPath). ' manually. ');
+				$this->say('Sorry, you will have to delete ' . $this->cmsPath. ' manually. ');
 				exit(1);
 			}
 			$this->taskDeleteDir($this->cmsPath)->run();
