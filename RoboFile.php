@@ -222,6 +222,37 @@ class RoboFile extends \Robo\Tasks
 	}
 
 	/**
+	 * Run the specified checker tool. Valid options are phpmd, phpcs, phpcpd
+	 *
+	 * @param string $tool
+	 *
+	 * @return bool
+	 */
+	public function runChecker($tool = null)
+	{
+		if ($tool === null) {
+			$this->say('You have to specify a tool name as argument. Valid tools are phpmd, phpcs, phpcpd.');
+			return false;
+		}
+
+		if (!in_array($tool, array('phpmd', 'phpcs', 'phpcpd') )) {
+			$this->say('The tool you required is not known. Valid tools are phpmd, phpcs, phpcpd.');
+			return false;
+		}
+
+		switch ($tool) {
+			case 'phpmd':
+				return $this->runPhpmd();
+
+			case 'phpcs':
+				return $this->runPhpcs();
+
+			case 'phpcpd':
+				return $this->runPhpcpd();
+		}
+	}
+
+	/**
 	 * Creates a testing Joomla site for running the tests (use it before run:test)
 	 *
 	 * @param   bool  $use_htaccess  (1/0) Rename and enable embedded Joomla .htaccess file
@@ -394,5 +425,29 @@ class RoboFile extends \Robo\Tasks
 	{
 		$this->say('Trying to kill the selenium server.');
 		$this->_exec("curl http://$host:$port/selenium-server/driver/?cmd=shutDownSeleniumServer");
+	}
+
+	/**
+	 * Run the phpmd tool
+	 */
+	private function runPhpmd()
+	{
+		return $this->_exec('phpmd' . $this->extension . ' ' . __DIR__ . '/src xml cleancode,codesize,controversial,design,naming,unusedcode');
+	}
+
+	/**
+	 * Run the phpcs tool
+	 */
+	private function runPhpcs()
+	{
+		$this->_exec('phpcs' . $this->extension . ' ' . __DIR__ . '/src');
+	}
+
+	/**
+	 * Run the phpcpd tool
+	 */
+	private function runPhpcpd()
+	{
+		$this->_exec('phpcpd' . $this->extension . ' ' . __DIR__ . '/src');
 	}
 }
