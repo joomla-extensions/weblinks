@@ -499,16 +499,18 @@
             ],
             "authors": [
                 {
-                    "name": "Yaroslav Kiliba",
-                    "email": "om.dattaya@gmail.com"
+                    "name": "Henrik Bjornskov",
+                    "email": "henrik@bjrnskov.dk",
+                    "homepage": "http://henrik.bjrnskov.dk"
                 },
                 {
                     "name": "Konstantin Kudryashov",
-                    "email": "ever.zet@gmail.com"
+                    "email": "ever.zet@gmail.com",
+                    "homepage": "http://everzet.com"
                 },
                 {
-                    "name": "Henrik Bjrnskov",
-                    "email": "henrik@bjrnskov.dk"
+                    "name": "Yaroslav Kiliba",
+                    "email": "om.dattaya@gmail.com"
                 }
             ],
             "description": "Resource Watcher.",
@@ -525,12 +527,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-projects/joomla-browser.git",
-                "reference": "0999fe673c34fbcf252957b6bc96bbf48956d70e"
+                "reference": "b0056ff0018c529cc2a143f6d78004bce8f9d5b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joomla-projects/joomla-browser/zipball/0999fe673c34fbcf252957b6bc96bbf48956d70e",
-                "reference": "0999fe673c34fbcf252957b6bc96bbf48956d70e",
+                "url": "https://api.github.com/repos/joomla-projects/joomla-browser/zipball/b0056ff0018c529cc2a143f6d78004bce8f9d5b0",
+                "reference": "b0056ff0018c529cc2a143f6d78004bce8f9d5b0",
                 "shasum": ""
             },
             "require": {
@@ -568,7 +570,7 @@
                 "acceptance testing",
                 "joomla"
             ],
-            "time": "2015-10-30 13:37:14"
+            "time": "2015-10-31 11:00:18"
         },
         {
             "name": "joomla-projects/robo",
