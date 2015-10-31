@@ -9,6 +9,70 @@
  */
 class AdministratorCategoriesCest
 {
+	/**
+	 * Function to delete the menuItem
+	 *
+	 * @param  string  $menuItem  Title of the menuItem which is to be deleted
+	 * @return void
+	 */
+	private function deleteMenuItem(AcceptanceTester $I, $menuItem)
+	{
+		$I->amGoingTo('Delete the just saved MenuItem');
+		$I->amOnPage('/administrator/index.php?option=com_menus&view=items');
+		$I->searchForItem($menuItem);
+		$I->checkAllResults();
+		$I->click(['xpath'=> "//button[@onclick=\"if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list.');}else{ Joomla.submitbutton('items.trash')}\"]"]);
+		$I->expectTo('see a success message and the menuItem removed from the list');
+		$I->see('1 menu item successfully trashed.',['id' => 'system-message-container']);
+		$I->searchForItem($menuItem);
+		$I->setFilter('select status','Trashed');
+		$I->checkAllResults();
+		$I->click(['xpath' => "//button[@onclick=\"if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list.');}else{ Joomla.submitbutton('items.delete')}\"]"]);
+		$I->see("1 menu item successfully deleted.",['id' => 'system-message-container']);
+	}
+
+	/**
+	 * Creates a weblink with category
+	 *
+	 * @param   string  $title The title for the weblink
+	 * @param   string  $url   The url for the
+	 * @param   string  $cat   The category of the weblink
+	 *
+	 */
+	private function createWeblinkWithCategory(AcceptanceTester $I, $title, $url, $cat)
+	{
+		$I->comment('I navigate to Weblinks page in /administrator/');
+		$I->amOnPage('administrator/index.php?option=com_weblinks');
+		$I->waitForText('Web Links', '30', ['css' => 'h1']);
+		$I->comment('I see weblinks page');
+		$I->comment('I try to save a weblink with a filled title and URL');
+		$I->click('New');
+		$I->waitForText('Web Link: New', '30', ['css' => 'h1']);
+		$I->fillField(['id' => 'jform_title'], $title);
+		$I->fillField(['id' => 'jform_url'], $url);
+		//$I->fillField(['' => ''], $cat);
+		$I->selectOptionInChosen('Category',"- ".$cat);
+		$I->click(['xpath' => "//button[@onclick=\"Joomla.submitbutton('weblink.save')\"]"]);
+		$I->waitForText('Web link successfully saved', '30', ['id' => 'system-message-container']);
+	}
+
+	private function deleteWeblink(AcceptanceTester $I, $weblinkTitle)
+	{
+		$I->amGoingTo('Delete the just saved Weblink');
+		$I->amOnPage('/administrator/index.php?option=com_weblinks');
+		$I->searchForItem($weblinkTitle);
+		$I->checkAllResults();
+		$I->click(['xpath'=> "//button[@onclick=\"if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list.');}else{ Joomla.submitbutton('weblinks.trash')}\"]"]);
+		$I->expectTo('see a success message and the weblink removed from the list');
+		$I->see('1 web link successfully trashed.',['id' => 'system-message-container']);
+		$I->selectOptionInChosen('- Select Status -','Trashed');
+		$I->searchForItem($weblinkTitle);
+
+		$I->checkAllResults();
+		$I->click(['xpath' => "//button[@onclick=\"if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list.');}else{ Joomla.submitbutton('weblinks.delete')}\"]"]);
+		$I->see("1 web link successfully deleted.",['id' => 'system-message-container']);
+	}
+
 	public function administratorCreateCategory(\Step\Acceptance\category $I)
 	{
 		$I->am('Administrator');
@@ -107,5 +171,36 @@ class AdministratorCategoriesCest
 		//delete the category
 		$I->amGoingTo('Delete the Category which was created');
 		$I->trashCategory($categoryName);
+	}
+	
+	public function administratorMenuWeblinkCategory(\Step\Acceptance\category $I)
+	{
+		$I->am('Administrator');
+		$salt = rand(1, 100);
+		$categoryName = 'automated testing' . $salt;
+
+		$I->doAdministratorLogin();
+		$I->amGoingTo('Navigate to Categories page in /administrator/ and create a Category');
+		$I->createCategory($categoryName);
+		$title = 'weblink'.$salt;
+		$url = 'www.google.com';
+		$this->createWeblinkWithCategory($I, $title, $url, $categoryName);
+		$menuTitle = 'menuItem'.$salt;
+		$I->createMenuItem($menuTitle, $menuCategory = 'Weblinks', $menuItem = 'List Web Links in a Category', $menu = 'Main Menu', $language = 'All');
+		$I->selectOptionInChosen('Select a Category',$categoryName);
+		$I->click('Save & Close');
+
+		// Go to the frontend
+		$I->comment('I want to check if the menu entry exists in the frontend');
+		$I->amOnPage('index.php/');
+		$I->click(['link' => $menuTitle]);
+		$I->waitForText($categoryName,60,['css' => 'h2']);
+		$I->seeElement(['xpath' => "//a[contains(text(),'" . $title . "')]"]);
+
+		//Go to backend
+		$I->amOnPage('/administrator/');
+		$this->deleteWeblink($I, $title);
+		$I->trashCategory($categoryName);
+		$this->deleteMenuItem($I, $menuTitle);
 	}
 }
