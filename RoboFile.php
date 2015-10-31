@@ -22,6 +22,19 @@ class RoboFile extends \Robo\Tasks
 	private $cmsPath = '';
 
 	/**
+	 * Constructor
+	 */
+	public function __construct()
+	{
+		$this->configuration = $this->getConfiguration();
+
+		$this->cmsPath = $this->getCmsPath();
+
+		// TODO make this coherent with the above initializations
+		$this->setExecExtension();
+	}
+
+	/**
 	* Set the Execute extension for Windows Operating System
 	*
 	* @return void
@@ -43,12 +56,6 @@ class RoboFile extends \Robo\Tasks
 	*/
 	public function runTests($use_htaccess = false)
 	{
-		$this->configuration = $this->getConfiguration();
-
-		$this->cmsPath = $this->getCmsPath();
-
-		$this->setExecExtension();
-
 		$this->createTestingSite($use_htaccess);
 
 		$this->getComposer();
