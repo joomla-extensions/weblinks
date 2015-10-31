@@ -111,4 +111,23 @@ class AdministratorCategoriesCest
 		$I->trashCategory($categoryName);
 		$I->deleteCategory($categoryName);
 	}
+	public function administratorArchiveCategory(\Step\Acceptance\category $I)
+	{
+		$I->am('Administrator');
+		$I->wantToTest('Archiving Category in /administrator/');
+		$I->doAdministratorLogin();
+		$salt = rand(1,100);
+		$I->createCategory('automated testing arch'.$salt);
+		$I->amGoingTo('Search for automated testing');
+		$I->fillField(['xpath' => "//input[@id=\"filter_search\"]"], "automated testing arch".$salt. "\n");
+		$I->waitForText('Weblinks: Categories', '30', ['css' => 'h1']);
+		$I->amGoingTo('Select the first weblink');
+		$I->click(['xpath' => "//input[@id=\"cb0\"]"]);
+		$I->amGoingTo('try to archive a weblink category');
+		$I->click(['xpath' => "//button[@onclick=\"if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list.');}else{ Joomla.submitbutton('categories.archive')}\"]"]);
+		$I->waitForText('Weblinks: Categories', '30', ['css' => 'h1']);
+		$I->expectTo('see a success message after Archiving the category');$I->see('1 category successfully archived.', ['id' => 'system-message-container']);
+		$I->setFilter('select status','Archived');
+		$I->trashCategory('automated testing arch'.$salt);
+	}
 }
