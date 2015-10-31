@@ -156,6 +156,13 @@ class RoboFile extends \Robo\Tasks
 		     ->stopOnFail();
 	}
 
+	/**
+	 * Run the specified checker tool. Valid options are phpmd, phpcs, phpcpd
+	 *
+	 * @param string $tool
+	 *
+	 * @return bool
+	 */
 	public function runChecker($tool = null)
 	{
 		if ($tool === null) {
