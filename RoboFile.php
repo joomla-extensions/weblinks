@@ -19,6 +19,8 @@ class RoboFile extends \Robo\Tasks
 
 	private $configuration = array();
 
+	private $cmsPath = '';
+
 	/**
 	* Set the Execute extension for Windows Operating System
 	*
@@ -26,7 +28,7 @@ class RoboFile extends \Robo\Tasks
 	*/
 	private function setExecExtension()
 	{
-		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
+		if ($this->isWindows())
 		{
 			$this->extension = '.exe';
 		}
@@ -35,18 +37,19 @@ class RoboFile extends \Robo\Tasks
 	/**
 	* Executes all the Selenium System Tests in a suite on your machine
 	*
-	* @param string $seleniumPath Optional path to selenium-standalone-server-x.jar
-	* @param string $suite        Optional, the name of the tests suite
+	* @param   bool  $use_htaccess  Renames and enable embedded Joomla .htaccess file
 	*
 	* @return mixed
 	*/
-	public function runTests($seleniumPath = null, $suite = 'acceptance')
+	public function runTests($use_htaccess = false)
 	{
 		$this->configuration = $this->getConfiguration();
 
+		$this->cmsPath = $this->getCmsPath();
+
 		$this->setExecExtension();
 
-		$this->createTestingSite();
+		$this->createTestingSite($use_htaccess);
 
 		$this->getComposer();
 
@@ -54,7 +57,8 @@ class RoboFile extends \Robo\Tasks
 
 		$this->runSelenium();
 
-		$this->_exec('php' . $this->extension . ' vendor/bin/codecept build');
+		// Make sure to run the build command to generate AcceptanceTester
+		$this->_exec($this->isWindows() ? 'vendor\bin\codecept.bat build' : 'php vendor/bin/codecept build');
 
 		$this->taskCodecept()
 			->arg('--steps')
@@ -79,10 +83,6 @@ class RoboFile extends \Robo\Tasks
 			->arg('tests/acceptance/frontend/')
 			->run()
 			->stopOnFail();
-
-		// Kill selenium server
-		// $this->_exec('curl http://localhost:4444/selenium-server/driver/?cmd=shutDownSeleniumServer');
-
 		/*
 		// Uncomment this lines if you need to debug selenium errors
 		$seleniumErrors = file_get_contents('selenium.log');
@@ -108,8 +108,8 @@ class RoboFile extends \Robo\Tasks
 	{
 		$this->runSelenium();
 
-		// Make sure to Run the Build Command to Generate AcceptanceTester
-		$this->_exec("php vendor/bin/codecept build");
+		// Make sure to run the build command to generate AcceptanceTester
+		$this->_exec($this->isWindows() ? 'vendor\bin\codecept.bat build' : 'php vendor/bin/codecept build');
 
 		if (!$pathToTestFile)
 		{
@@ -154,38 +154,52 @@ class RoboFile extends \Robo\Tasks
 		     ->arg('--debug')
 		     ->run()
 		     ->stopOnFail();
-
-		// Kill selenium server
-		// $this->_exec('curl http://localhost:4444/selenium-server/driver/?cmd=shutDownSeleniumServer');
 	}
 
 	/**
 	 * Creates a testing Joomla site for running the tests (use it before run:test)
+	 *
+	 * @param   bool  $use_htaccess  (1/0) Rename and enable embedded Joomla .htaccess file
 	 */
-	public function createTestingSite()
+	public function createTestingSite($use_htaccess = false)
 	{
-		if (!empty($this->configuration->skipClone)) {
-			$this->say('Reusing Joomla CMS site already present at tests/joomla-cms3');
+		if (!empty($this->configuration->skipClone))
+		{
+			$this->say('Reusing Joomla CMS site already present at ' . $this->cmsPath);
 			return;
 		}
 
+		// Caching cloned installations locally
+		if (!is_dir('tests/cache') || (time() - filemtime('tests/cache') > 60 * 60 * 24))
+		{
+			$this->_exec($this->buildGitCloneCommand());
+		}
+
 		// Get Joomla Clean Testing sites
-		if (is_dir('tests/joomla-cms3'))
+		if (is_dir($this->cmsPath))
 		{
 			try
 			{
-				$this->taskDeleteDir('tests/joomla-cms3')->run();
+				$this->taskDeleteDir($this->cmsPath)->run();
 			}
 			catch (Exception $e)
 			{
 				// Sorry, we tried :(
-				$this->say('Sorry, you will have to delete ' . realpath(dirname(__FILE__) . '/tests/joomla-cms3'). ' manually. ');
+				$this->say('Sorry, you will have to delete ' . $this->cmsPath). ' manually. ');
 				exit(1);
 			}
+			$this->taskDeleteDir($this->cmsPath)->run();
 		}
 
-		$this->_exec('git' . $this->extension . ' clone -b staging --single-branch --depth 1 https://github.com/joomla/joomla-cms.git tests/joomla-cms3');
-		$this->say('Joomla CMS site created at tests/joomla-cms3');
+		$this->_copyDir('tests/cache', $this->cmsPath);
+		$this->say('Joomla CMS site created at ' . $this->cmsPath);
+
+		// Optionally uses Joomla default htaccess file. Used by TravisCI
+		if ($use_htaccess == true)
+		{
+			$this->_copy('/tests/joomla-cms3/htaccess.txt', 'tests/joomla-cms3/.htaccess');
+			$this->_exec('sed -e "s,# RewriteBase /,RewriteBase /tests/joomla-cms3/,g" --in-place tests/joomla-cms3/.htaccess');
+		}
 	}
 
 	/**
@@ -197,18 +211,64 @@ class RoboFile extends \Robo\Tasks
 	{
 		$configurationFile = __DIR__ . '/RoboFile.ini';
 
-		if (!file_exists($configurationFile)) {
+		if (!file_exists($configurationFile))
+		{
 			$this->say("No local configuration file");
 			return null;
 		}
 
 		$configuration = parse_ini_file($configurationFile);
-		if ($configuration === false) {
+		if ($configuration === false)
+		{
 			$this->say('Local configuration file is empty or wrong (check is it in correct .ini format');
 			return null;
 		}
 
 		return json_decode(json_encode($configuration));
+	}
+
+	/**
+	 * Build correct git clone command according to local configuration and OS
+	 *
+	 * @return string
+	 */
+	private function buildGitCloneCommand()
+	{
+		$branch = empty($this->configuration->branch) ? 'staging' : $this->configuration->branch;
+		$insecure = $this->isWindows() ? ' --insecure' : '';
+
+		return "git" . $this->extension . " clone -b $branch $insecure --single-branch --depth 1 https://github.com/joomla/joomla-cms.git tests/cache";
+	}
+
+	/**
+	 * Check if local OS is Windows
+	 *
+	 * @return bool
+	 */
+	private function isWindows()
+	{
+		return strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
+	}
+
+	/**
+	 * Get the correct CMS root path
+	 *
+	 * @return string
+	 */
+	private function getCmsPath()
+	{
+		if (empty($this->configuration->cmsPath))
+		{
+			return 'tests/joomla-cms3';
+		}
+
+		if (!file_exists(dirname($this->configuration->cmsPath)))
+		{
+			$this->say("Cms path written in local configuration does not exists or is not readable");
+			return 'tests/joomla-cms3';
+		}
+
+		return $this->configuration->cmsPath;
 	}
 
 	/**
@@ -251,5 +311,17 @@ class RoboFile extends \Robo\Tasks
 		{
 			$this->_exec('curl --retry 3 --retry-delay 5 -sS https://getcomposer.org/installer | php');
 		}
+	}
+
+	/**
+	 * Kills the selenium server running
+	 *
+	 * @param   string  $host  Web host of the remote server.
+	 * @param   string  $port  Server port.
+	 */
+	public function killSelenium($host = 'localhost', $port = '4444')
+	{
+		$this->say('Trying to kill the selenium server.');
+		$this->_exec("curl http://$host:$port/selenium-server/driver/?cmd=shutDownSeleniumServer");
 	}
 }
