@@ -9,6 +9,20 @@
  */
 class AdministratorCategoriesCest
 {
+	public function administratorVerifyAvailableTabs(\Step\Acceptance\category $I)
+	{
+		$I->am('Administrator');
+		$I->wantToTest('Category Edit View Tabs');
+
+		$I->doAdministratorLogin();
+
+		$I->amGoingTo('Navigate to Categories page in /administrator/ and verify the Tabs');
+		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
+		$I->clickToolbarButton('New');
+		$I->waitForText('Weblinks: New Category', '30', ['css' => 'h1']);
+		$I->verifyAvailableTabs(['Category', 'Publishing', 'Permissions', 'Options']);
+	}
+
 	public function administratorCreateCategory(\Step\Acceptance\category $I)
 	{
 		$I->am('Administrator');
