@@ -83,10 +83,6 @@ class RoboFile extends \Robo\Tasks
 			->arg('tests/acceptance/frontend/')
 			->run()
 			->stopOnFail();
-
-		// Kill selenium server
-		// $this->_exec('curl http://localhost:4444/selenium-server/driver/?cmd=shutDownSeleniumServer');
-
 		/*
 		// Uncomment this lines if you need to debug selenium errors
 		$seleniumErrors = file_get_contents('selenium.log');
@@ -158,9 +154,6 @@ class RoboFile extends \Robo\Tasks
 		     ->arg('--debug')
 		     ->run()
 		     ->stopOnFail();
-
-		// Kill selenium server
-		// $this->_exec('curl http://localhost:4444/selenium-server/driver/?cmd=shutDownSeleniumServer');
 	}
 
 	/**
@@ -308,5 +301,17 @@ class RoboFile extends \Robo\Tasks
 		{
 			$this->_exec('curl --retry 3 --retry-delay 5 -sS https://getcomposer.org/installer | php');
 		}
+	}
+
+	/**
+	 * Kills the selenium server running
+	 *
+	 * @param   string  $host  Web host of the remote server.
+	 * @param   string  $port  Server port.
+	 */
+	public function killSelenium($host = 'localhost', $port = '4444')
+	{
+		$this->say('Trying to kill the selenium server.');
+		$this->_exec("curl http://$host:$port/selenium-server/driver/?cmd=shutDownSeleniumServer");
 	}
 }
