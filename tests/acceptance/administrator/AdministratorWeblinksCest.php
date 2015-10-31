@@ -16,6 +16,20 @@ class AdministratorWeblinksCest
 		$this->url  = $this->faker->url();
 	}
 
+	public function administratorVerifyAvailableTabs(\Step\Acceptance\weblink $I)
+	{
+		$I->am('Administrator');
+		$I->wantToTest('Weblinks Edit View Tabs');
+
+		$I->doAdministratorLogin();
+
+		$I->amGoingTo('Navigate to Weblinks page in /administrator/ and verify the Tabs');
+		$I->amOnPage('administrator/index.php?option=com_weblinks&view=weblinks');
+		$I->clickToolbarButton('New');
+		$I->waitForText('Web Link: New', '30', ['css' => 'h1']);
+		$I->verifyAvailableTabs(['New Web Link', 'Images', 'Publishing', 'Options', 'Metadata']);
+	}
+
 	public function administratorCreateWeblink(\Step\Acceptance\weblink $I)
 	{
 		$I->am('Administrator');
@@ -31,11 +45,11 @@ class AdministratorWeblinksCest
 		$I->checkForPhpNoticesOrWarnings();
 
 		$I->amGoingTo('try to save a weblink with a filled title and URL');
-		$I->click('New');
+		$I->clickToolbarButton('New');
 		$I->waitForText('Web Link: New', '30', ['css' => 'h1']);
 		$I->fillField(['id' => 'jform_title'], $this->title);
 		$I->fillField(['id' => 'jform_url'], $this->url);
-		$I->click(['xpath' => "//button[@onclick=\"Joomla.submitbutton('weblink.save')\"]"]);
+		$I->clickToolbarButton('Save & Close');
 		$I->waitForText('Web Links', '30', ['css' => 'h1']);
 		$I->expectTo('see a success message and the weblink added after saving the weblink');
 		$I->see('Web link successfully saved', ['id' => 'system-message-container']);
@@ -63,7 +77,7 @@ class AdministratorWeblinksCest
 
 		$I->amGoingTo('Delete the just saved weblink');
 		$I->checkAllResults();
-		$I->click(['xpath'=> "//button[@onclick=\"if (document.adminForm.boxchecked.value==0){alert('Please first make a selection from the list.');}else{ Joomla.submitbutton('weblinks.trash')}\"]"]);
+		$I->clickToolbarButton('Trash');
 		$I->waitForText('Web Links','30',['css' => 'h1']);
 		$I->expectTo('see a success message and the weblink removed from the list');
 		$I->see('Web link successfully trashed',['id' => 'system-message-container']);
