@@ -55,7 +55,7 @@ class FrontendWeblinksCest
 	public function hitsAreNotIncrementedIfCountClicksIsOff(\Step\Acceptance\weblink $I)
 	{
 		$title  = 'Weblink' . $this->faker->randomNumber();
-		$url  = $this->faker->url();
+		$url = $I->getConfiguration('counter_test_url');
 
 		$I->am('Administrator');
 		$I->wantToTest('Hits are not incremented if Count Clicks is off');
@@ -89,7 +89,7 @@ class FrontendWeblinksCest
 	public function hitsAreIncrementedIfCountClicksIsOn(\Step\Acceptance\weblink $I)
 	{
 		$title  = 'Weblink' . $this->faker->randomNumber();
-		$url  = $this->faker->url();
+		$url = $I->getConfiguration('counter_test_url');
 
 		$I->am('Administrator');
 		$I->wantToTest('Hits are incremented if Count Clicks is on');
