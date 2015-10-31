@@ -40,18 +40,20 @@ phing-latest.phar
 /Gemfile.lock
 
 # composer
-composer.lock
 composer.phar
 vendor/*
 
 # Robo
 robo.phar
+RoboFile.ini
 
 # Test related files
 tests/acceptance.suite.yml
 tests/*/*Tester.php
+tests/_support/_generated/*TesterActions.php
 tests/joomla-cms3*
 tests/_output*
 selenium-server-standalone.jar
 codecept.phar
 selenium.log
+tests/cache
