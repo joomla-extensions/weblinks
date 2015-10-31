@@ -225,9 +225,8 @@ class RoboFile extends \Robo\Tasks
 	private function buildGitCloneCommand()
 	{
 		$branch = empty($this->configuration->branch) ? 'staging' : $this->configuration->branch;
-		$insecure = $this->isWindows() ? ' --insecure' : '';
 
-		return "git" . $this->extension . " clone -b $branch $insecure --single-branch --depth 1 https://github.com/joomla/joomla-cms.git tests/cache";
+		return "git" . $this->extension . " clone -b $branch --single-branch --depth 1 https://github.com/joomla/joomla-cms.git tests/cache";
 	}
 
 	/**
@@ -299,7 +298,8 @@ class RoboFile extends \Robo\Tasks
 		// Make sure we have Composer
 		if (!file_exists('./composer.phar'))
 		{
-			$this->_exec('curl --retry 3 --retry-delay 5 -sS https://getcomposer.org/installer | php');
+			$insecure = $this->isWindows() ? ' --insecure' : '';
+			$this->_exec('curl ' . $insecure . ' --retry 3 --retry-delay 5 -sS https://getcomposer.org/installer | php');
 		}
 	}
 
