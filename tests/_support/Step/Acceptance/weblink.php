@@ -16,11 +16,12 @@ class weblink extends \AcceptanceTester
 	/**
 	 * Creates a weblink
 	 *
-	 * @param   string  $title The title for the weblink
-	 * @param   string  $url   The url for the
+	 * @param   string  $title          The title for the weblink
+	 * @param   string  $url            The url for the weblink
+	 * @param   string  $countClicks    If not null, we set the "Count Clicks" weblink property to the given value.
 	 *
 	 */
-	public function createWeblink($title, $url)
+	public function createWeblink($title, $url, $countClicks = null)
 	{
 		$I = $this;
 
@@ -34,7 +35,13 @@ class weblink extends \AcceptanceTester
 		$I->waitForText('Web Link: New', '30', ['css' => 'h1']);
 		$I->fillField(['id' => 'jform_title'], $title);
 		$I->fillField(['id' => 'jform_url'], $url);
-		$I->click(['xpath' => "//button[@onclick=\"Joomla.submitbutton('weblink.save')\"]"]);
+
+		if ($countClicks !== null) {
+			$I->click(['link' => 'Options']);
+			$I->selectOptionInChosen("Count Clicks", $countClicks);
+		}
+
+		$I->clickToolbarButton('Save & Close');
 		$I->waitForText('Web link successfully saved', '30', ['id' => 'system-message-container']);
 	}
 }
