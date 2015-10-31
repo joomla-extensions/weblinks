@@ -14,7 +14,7 @@ class InstallWeblinksCest
 	public function installJoomla(\AcceptanceTester $I)
 	{
 		$I->am('Administrator');
-		$I->installJoomla();
+		$I->installJoomlaRemovingInstallationFolder();
 		$I->doAdministratorLogin();
 		$I->setErrorReportingToDevelopment();
 	}
