@@ -15,10 +15,25 @@ class RoboFile extends \Robo\Tasks
 	// Load tasks from composer, see composer.json
 	use \joomla_projects\robo\loadTasks;
 
-	private $extension = '';
+	/**
+	 * File extension for executables
+	 *
+	 * @var string
+	 */
+	private $executableExtension = '';
 
+	/**
+	 * Local configuration parameters
+	 *
+	 * @var array
+	 */
 	private $configuration = array();
 
+	/**
+	 * Path to the local CMS root
+	 *
+	 * @var string
+	 */
 	private $cmsPath = '';
 
 	/**
@@ -30,30 +45,31 @@ class RoboFile extends \Robo\Tasks
 
 		$this->cmsPath = $this->getCmsPath();
 
-		// TODO make this coherent with the above initializations
-		$this->setExecExtension();
+		$this->executableExtension = $this->getExecutableExtension();
 	}
 
 	/**
-	* Set the Execute extension for Windows Operating System
-	*
-	* @return void
-	*/
-	private function setExecExtension()
+	 * Get the executable extension according to Operating System
+	 *
+	 * @return void
+	 */
+	private function getExecutableExtension()
 	{
 		if ($this->isWindows())
 		{
-			$this->extension = '.exe';
+			return '.exe';
 		}
+
+		return '';
 	}
 
 	/**
-	* Executes all the Selenium System Tests in a suite on your machine
-	*
-	* @param   bool  $use_htaccess  Renames and enable embedded Joomla .htaccess file
-	*
-	* @return mixed
-	*/
+	 * Executes all the Selenium System Tests in a suite on your machine
+	 *
+	 * @param   bool  $use_htaccess  Renames and enable embedded Joomla .htaccess file
+	 *
+	 * @return mixed
+	 */
 	public function runTests($use_htaccess = false)
 	{
 		$this->createTestingSite($use_htaccess);
@@ -156,11 +172,11 @@ class RoboFile extends \Robo\Tasks
 		$pathToTestFile = 'tests/' . $suite . '/' . $test;
 
 		$this->taskCodecept()
-		     ->test($pathToTestFile)
-		     ->arg('--steps')
-		     ->arg('--debug')
-		     ->run()
-		     ->stopOnFail();
+			->test($pathToTestFile)
+			->arg('--steps')
+			->arg('--debug')
+			->run()
+			->stopOnFail();
 	}
 
 	/**
@@ -243,7 +259,7 @@ class RoboFile extends \Robo\Tasks
 		$branch = empty($this->configuration->branch) ? 'staging' : $this->configuration->branch;
 		$insecure = $this->isWindows() ? ' --insecure' : '';
 
-		return "git" . $this->extension . " clone -b $branch $insecure --single-branch --depth 1 https://github.com/joomla/joomla-cms.git tests/cache";
+		return "git" . $this->executableExtension . " clone -b $branch $insecure --single-branch --depth 1 https://github.com/joomla/joomla-cms.git tests/cache";
 	}
 
 	/**
