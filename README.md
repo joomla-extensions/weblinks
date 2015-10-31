@@ -3,6 +3,8 @@
 This repo is meant to hold the decoupled com_weblinks component and related code.
 
 # Tests
+Tests in weblinks use Codeception Testing Framework, if you want to know more about the technology used for testing com_weblinks extension please check: https://docs.joomla.org/Testing_Joomla_Extensions_with_Codeception#Always_add_Strict_Locators_to_your_tests
+
 To prepare the system tests (Selenium) to be run in your local machine you are asked to rename the file `tests/acceptance.suite.dist.yml` to `tests/acceptance.suite.yml`. Afterwards, please edit the file according to your system needs.
 
 ## Optional: extra configuration for RoboFile
