@@ -9,7 +9,7 @@
  */
 class AdministratorCategoriesCest
 {
-	public function administratorVerifyTabs(\Step\Acceptance\category $I)
+	public function administratorVerifyAvailableTabs(\Step\Acceptance\category $I)
 	{
 		$I->am('Administrator');
 		$I->wantToTest('Category Edit View Tabs');
@@ -20,8 +20,7 @@ class AdministratorCategoriesCest
 		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
 		$I->clickToolbarButton('New');
 		$I->waitForText('Weblinks: New Category', '30', ['css' => 'h1']);
-		$actualArrayOfTabs = $I->grabMultiple(['xpath' => "//ul[@id='myTabTabs']/li/a"]);
-		$I->verifyTabs($actualArrayOfTabs, ['Category', 'Publishing', 'Permissions', 'Options'], 'Category Weblinks');
+		$I->verifyAvailableTabs(['Category', 'Publishing', 'Permissions', 'Options']);
 	}
 
 	public function administratorCreateCategory(\Step\Acceptance\category $I)
