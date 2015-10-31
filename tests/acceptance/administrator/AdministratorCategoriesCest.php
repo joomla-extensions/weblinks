@@ -9,11 +9,6 @@
  */
 class AdministratorCategoriesCest
 {
-	/**
-	 * Array of tabs present on this page
-	 */
-	private  $tabs = array('Category', 'Publishing', 'Permissions', 'Options');
-
 	public function administratorVerifyTabs(\Step\Acceptance\category $I)
 	{
 		$I->am('Administrator');
@@ -26,7 +21,7 @@ class AdministratorCategoriesCest
 		$I->clickToolbarButton('New');
 		$I->waitForText('Weblinks: New Category', '30', ['css' => 'h1']);
 		$actualArrayOfTabs = $I->grabMultiple(['xpath' => "//ul[@id='myTabTabs']/li/a"]);
-		$I->verifyTabs($actualArrayOfTabs, $this->tabs, 'Category Weblinks');
+		$I->verifyTabs($actualArrayOfTabs, ['Category', 'Publishing', 'Permissions', 'Options'], 'Category Weblinks');
 	}
 
 	public function administratorCreateCategory(\Step\Acceptance\category $I)
