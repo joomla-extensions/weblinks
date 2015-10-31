@@ -178,6 +178,16 @@ class RoboFile extends \Robo\Tasks
 		// Get Joomla Clean Testing sites
 		if (is_dir($this->cmsPath))
 		{
+			try
+			{
+				$this->taskDeleteDir($this->cmsPath)->run();
+			}
+			catch (Exception $e)
+			{
+				// Sorry, we tried :(
+				$this->say('Sorry, you will have to delete ' . $this->cmsPath. ' manually. ');
+				exit(1);
+			}
 			$this->taskDeleteDir($this->cmsPath)->run();
 		}
 
