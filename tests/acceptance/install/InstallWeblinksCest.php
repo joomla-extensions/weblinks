@@ -30,7 +30,6 @@ class InstallWeblinksCest
 		// URL where the package file to install is located (mostly the same as joomla-cms)
 		$url = $I->getConfiguration('url');
 		$I->installExtensionFromUrl($url . "/pkg-weblinks-current.zip");
-
 		$I->doAdministratorLogout();
 	}
 }
