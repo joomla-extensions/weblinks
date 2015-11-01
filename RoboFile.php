@@ -66,13 +66,14 @@ class RoboFile extends \Robo\Tasks
 	/**
 	 * Executes all the Selenium System Tests in a suite on your machine
 	 *
-	 * @param   bool  $use_htaccess  Renames and enable embedded Joomla .htaccess file
-	 *
+	 * @param   array $opts Array of configuration options:
+	 *          - 'use-htaccess': renames and enable embedded Joomla .htaccess file
+	 *          - 'env': set a specific environment to get configuration from
 	 * @return mixed
 	 */
-	public function runTests($use_htaccess = false)
+	public function runTests($opts = ['use-htaccess' => false, 'env' => 'desktop'])
 	{
-		$this->createTestingSite($use_htaccess);
+		$this->createTestingSite($opts['use-htaccess']);
 
 		$this->getComposer();
 
@@ -87,6 +88,7 @@ class RoboFile extends \Robo\Tasks
 			->arg('--steps')
 			->arg('--debug')
 			->arg('--fail-fast')
+			->arg('--env ' . $opts['env'])
 			->arg('tests/acceptance/install/')
 			->run()
 			->stopOnFail();
@@ -95,6 +97,7 @@ class RoboFile extends \Robo\Tasks
 			->arg('--steps')
 			->arg('--debug')
 			->arg('--fail-fast')
+			->arg('--env ' . $opts['env'])
 			->arg('tests/acceptance/administrator/')
 			->run()
 			->stopOnFail();
@@ -103,9 +106,11 @@ class RoboFile extends \Robo\Tasks
 			->arg('--steps')
 			->arg('--debug')
 			->arg('--fail-fast')
+			->arg('--env ' . $opts['env'])
 			->arg('tests/acceptance/frontend/')
 			->run()
 			->stopOnFail();
+
 		/*
 		// Uncomment this lines if you need to debug selenium errors
 		$seleniumErrors = file_get_contents('selenium.log');

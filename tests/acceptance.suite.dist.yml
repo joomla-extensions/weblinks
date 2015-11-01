@@ -39,3 +39,15 @@ modules:
             repo_folder: '/home/travis/build/joomla-extensions/weblinks/' # Path to the Extension repository. To be used by tests to install via Install from folder
             counter_test_url: 'http://localhost/tests/joomla-cms3' # the url for the weblink item used to test hits counter
 error_level: "E_ALL & ~E_STRICT & ~E_DEPRECATED"
+env:
+    desktop: ~
+    tablet:
+        modules:
+            config:
+                JoomlaBrowser:
+                    window_size: 768x1024
+    phone:
+        modules:
+            config:
+                JoomlaBrowser:
+                    window_size: 480x640
