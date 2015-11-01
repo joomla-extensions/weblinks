@@ -32,7 +32,7 @@ class FrontendWeblinksCest
 
 		$I->doAdministratorLogin();
 
-		$I->createWeblink($this->title, $this->url);
+		$I->createWeblink($this->title, $this->url, "No");
 
 		// Menu link
 		$I->createMenuItem($this->menuItem, 'Weblinks', 'List All Web Link Categories', 'Main Menu');
