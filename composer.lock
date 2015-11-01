@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6bdc2f28a4dc50007a44c209ec9765b4",
-    "content-hash": "629f8d58e39474936d1b09907aec5936",
+    "hash": "a8a7b0841ddc3e3a0bd3342685dec2c7",
+    "content-hash": "6960f421ca42c77ad244335fb8fb3ee3",
     "packages": [],
     "packages-dev": [
         {
@@ -559,12 +559,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-projects/joomla-browser.git",
-                "reference": "cdc02b3e3d7c112d83d625db7ea410dac4ce3142"
+                "reference": "e3c0462b76b960639835ffad5b42b744522b7ac6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joomla-projects/joomla-browser/zipball/cdc02b3e3d7c112d83d625db7ea410dac4ce3142",
-                "reference": "cdc02b3e3d7c112d83d625db7ea410dac4ce3142",
+                "url": "https://api.github.com/repos/joomla-projects/joomla-browser/zipball/e3c0462b76b960639835ffad5b42b744522b7ac6",
+                "reference": "e3c0462b76b960639835ffad5b42b744522b7ac6",
                 "shasum": ""
             },
             "require": {
@@ -602,7 +602,59 @@
                 "acceptance testing",
                 "joomla"
             ],
-            "time": "2015-10-31 15:09:12"
+            "time": "2015-11-01 10:09:29"
+        },
+        {
+            "name": "joomla-projects/jorobo",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joomla-projects/jorobo.git",
+                "reference": "61ab3dd576bbcc6e48a31eeb0364a5d37caa59ec"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joomla-projects/jorobo/zipball/61ab3dd576bbcc6e48a31eeb0364a5d37caa59ec",
+                "reference": "61ab3dd576bbcc6e48a31eeb0364a5d37caa59ec",
+                "shasum": ""
+            },
+            "require": {
+                "codegyre/robo": "0.5.*",
+                "greencape/joomla-cs": "~0.2",
+                "joomla-projects/robo": "dev-master",
+                "joomla/github": "~1.3",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "codeception/aspect-mock": "~0.5",
+                "codeception/base": "~2.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "JBuild\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Yves Hoppe",
+                    "email": "yves@compojoom.com"
+                },
+                {
+                    "name": "Niels Nübel",
+                    "email": "info@nn-medienagentur.de"
+                },
+                {
+                    "name": "Niels Braczek",
+                    "email": "nbraczek@bsds.de"
+                }
+            ],
+            "description": "Tool and Task based on Robo.li to manage Joomla Extension Development and Releases",
+            "time": "2015-11-01 12:52:30"
         },
         {
             "name": "joomla-projects/robo",
@@ -2512,46 +2564,6 @@
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
             "time": "2015-10-11 09:39:48"
-        },
-        {
-            "name": "yvesh/jbuild",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/yvesh/jbuild.git",
-                "reference": "78fa09a4334f3c9b4e5b9d7e1d6c51a67d6dfb7b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/yvesh/jbuild/zipball/78fa09a4334f3c9b4e5b9d7e1d6c51a67d6dfb7b",
-                "reference": "78fa09a4334f3c9b4e5b9d7e1d6c51a67d6dfb7b",
-                "shasum": ""
-            },
-            "require": {
-                "codegyre/robo": "0.5.*",
-                "greencape/joomla-cs": "~0.2",
-                "joomla-projects/robo": "dev-master",
-                "joomla/github": "~1.3",
-                "php": ">=5.4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "JBuild\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Yves Hoppe",
-                    "email": "yves@compojoom.com"
-                }
-            ],
-            "description": "Robo.li tasks for Joomla! extensions (build, map and generate)",
-            "time": "2015-10-31 18:37:31"
         }
     ],
     "aliases": [],
@@ -2559,7 +2571,7 @@
     "stability-flags": {
         "joomla-projects/joomla-browser": 20,
         "joomla-projects/robo": 20,
-        "yvesh/jbuild": 20
+        "joomla-projects/jorobo": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
