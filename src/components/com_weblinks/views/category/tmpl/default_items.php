@@ -38,7 +38,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 	<fieldset class="filters btn-toolbar">
 		<?php if ($this->params->get('filter_field') != 'hide') :?>
 			<div class="btn-group">
-				<label class="filter-search-lbl element-invisible" for="filter-search"><span class="label label-warning"><?php echo JText::_('JUNPUBLISHED'); ?></span><?php echo JText::_('COM_WEBLINKS_FILTER_LABEL') . '&#160;'; ?></label>
+				<label class="filter-search-lbl element-invisible" for="filter-search"><?php echo JText::_('COM_WEBLINKS_FILTER_LABEL') . '&#160;'; ?></label>
 				<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('list.filter')); ?>" class="inputbox" onchange="document.adminForm.submit();" title="<?php echo JText::_('COM_WEBLINKS_FILTER_SEARCH_DESC'); ?>" placeholder="<?php echo JText::_('COM_WEBLINKS_FILTER_SEARCH_DESC'); ?>" />
 			</div>
 		<?php endif; ?>
@@ -96,7 +96,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 								$height	= 500;
 							}
 							if ($this->items[$i]->state == 0) : ?>
-								<span class="label label-warning">Unpublished</span>
+								<span class="label label-warning"><?php echo JText::_('JUNPUBLISHED'); ?></span>
 							<?php endif; ?>
 
 							<?php switch ($item->params->get('target', $this->params->get('target')))
