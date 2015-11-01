@@ -10,10 +10,16 @@
 
 require_once 'vendor/autoload.php';
 
+if (!defined('JPATH_BASE'))
+{
+	define('JPATH_BASE', __DIR__);
+}
+
 class RoboFile extends \Robo\Tasks
 {
 	// Load tasks from composer, see composer.json
 	use \joomla_projects\robo\loadTasks;
+	use \JBuild\Tasks\loadTasks;
 
 	private $extension = '';
 
@@ -236,6 +242,14 @@ class RoboFile extends \Robo\Tasks
 			$this->_exec('chown -R ' . $this->configuration->localUser . ' ' . $this->cmsPath);
 		}
 
+		// Copy current package
+		if (!file_exists('dist/pkg-weblinks-current.zip'))
+		{
+			$this->build(true);
+		}
+
+		$this->_copy('dist/pkg-weblinks-current.zip', $this->cmsPath . "/pkg-weblinks-current.zip");
+
 		$this->say('Joomla CMS site created at ' . $this->cmsPath);
 
 		// Optionally uses Joomla default htaccess file. Used by TravisCI
@@ -391,5 +405,22 @@ class RoboFile extends \Robo\Tasks
 	private function runPhpcpd()
 	{
 		$this->_exec('phpcpd' . $this->extension . ' ' . __DIR__ . '/src');
+	}
+
+	/**
+	 * Build the joomla extension package
+	 *
+	 * @param   array  $params  Additional params
+	 *
+	 * @return  void
+	 */
+	public function build($params = ['dev' => false])
+	{
+		if (!file_exists('jbuild.ini'))
+		{
+			$this->_copy('jbuild.dist.ini', 'jbuild.ini');
+		}
+
+		$this->taskBuild($params)->run();
 	}
 }

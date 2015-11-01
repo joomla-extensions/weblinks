@@ -11,6 +11,7 @@
         "codegyre/robo": "~0.5",
         "joomla-projects/robo": "dev-master",
         "joomla-projects/selenium-server-standalone": "v2.47.1",
-        "fzaninotto/faker": "^1.5"
+        "fzaninotto/faker": "^1.5",
+        "yvesh/jbuild": "dev-master"
     }
 }

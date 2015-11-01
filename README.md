@@ -2,6 +2,13 @@
 
 This repo is meant to hold the decoupled com_weblinks component and related code.
 
+# Building
+
+```bash
+$ composer install
+$ vendor/bin/robo build
+```
+
 # Tests
 To prepare the system tests (Selenium) to be run in your local machine you are asked to rename the file `tests/acceptance.suite.dist.yml` to `tests/acceptance.suite.yml`. Afterwards, please edit the file according to your system needs.
 

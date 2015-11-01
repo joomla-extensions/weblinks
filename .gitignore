@@ -57,3 +57,8 @@ selenium-server-standalone.jar
 codecept.phar
 selenium.log
 tests/cache
+
+# Package building related
+/dist
+jbuild.ini
+
