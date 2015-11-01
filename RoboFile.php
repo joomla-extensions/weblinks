@@ -204,37 +204,18 @@ class RoboFile extends \Robo\Tasks
 			$methodNumber = $this->ask('Please choose the method in the test that you would want to run...');
 			$method = $methods[$methodNumber];
 		}
-		if(isset($method))
-		{
-			if($method != 'All')
-			{
-				$this->taskCodecept()
-					->test($pathToTestFile . ':' . $method)
-					->arg('--steps')
-					->arg('--debug')
-					->run()
-					->stopOnFail();
-			}
-			else
-			{
-				$this->taskCodecept()
-					->test($pathToTestFile)
-					->arg('--steps')
-					->arg('--debug')
-					->run()
-					->stopOnFail();
-			}
 
-		}
-		else
+		if(isset($method) && $method != 'All')
 		{
-			$this->taskCodecept()
-		     ->test($pathToTestFile)
-		     ->arg('--steps')
-		     ->arg('--debug')
-		     ->run()
-		     ->stopOnFail();
+			$pathToTestFile = $pathToTestFile . ':' . $method;
 		}
+
+		$this->taskCodecept()
+			->test($pathToTestFile)
+			->arg('--steps')
+			->arg('--debug')
+			->run()
+			->stopOnFail();
 	}
 
 	/**
