@@ -2,6 +2,13 @@
 
 This repo is meant to hold the decoupled com_weblinks component and related code.
 
+# Building
+
+```bash
+$ composer install
+$ vendor/bin/robo build
+```
+
 # Tests
 The tests in Weblinks Extension use Codeception Testing Framework, if you want to know more about the technology used for testing please check: [Testing Joomla Extensions with Codeception](https://docs.joomla.org/Testing_Joomla_Extensions_with_Codeception).
 
