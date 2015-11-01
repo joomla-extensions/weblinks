@@ -37,4 +37,4 @@ before_script:
 
 script:
 - mv tests/acceptance.suite.dist.yml tests/acceptance.suite.yml
-- vendor/bin/robo run:tests true
+- vendor/bin/robo run:tests --use-htaccess
