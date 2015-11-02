@@ -52,6 +52,9 @@ class RoboFile extends \Robo\Tasks
 		$this->cmsPath = $this->getCmsPath();
 
 		$this->executableExtension = $this->getExecutableExtension();
+
+		// Set default timezone (so no warnings are generated if it is not set)
+		date_default_timezone_set('UTC');
 	}
 
 	/**
