@@ -36,5 +36,8 @@ before_script:
 - composer install
 
 script:
+# Build
+- mv jbuild.dist.ini jbuild.ini
+- vendor/bin/robo build
 - mv tests/acceptance.suite.dist.yml tests/acceptance.suite.yml
 - vendor/bin/robo run:tests true

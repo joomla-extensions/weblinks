@@ -25,6 +25,7 @@ class AdministratorWeblinksCest
 
 		$I->amGoingTo('Navigate to Weblinks page in /administrator/ and verify the Tabs');
 		$I->amOnPage('administrator/index.php?option=com_weblinks&view=weblinks');
+		$I->waitForText('Web Links', '30', ['css' => 'h1']);
 		$I->clickToolbarButton('New');
 		$I->waitForText('Web Link: New', '30', ['css' => 'h1']);
 		$I->verifyAvailableTabs(['New Web Link', 'Images', 'Publishing', 'Options', 'Metadata']);
