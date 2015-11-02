@@ -90,16 +90,22 @@
         },
         {
             "name": "codegyre/robo",
-            "version": "0.6.0",
+            "version": "0.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codegyre/Robo.git",
-                "reference": "d18185f0494c854d36aa5ee0ad931ee23bbef552"
+                "reference": "10aa223f6d1db182dc81d723bf1545dfc6ff380d"
             },
             "dist": {
                 "type": "zip",
+<<<<<<< HEAD
                 "url": "https://api.github.com/repos/Codegyre/Robo/zipball/d18185f0494c854d36aa5ee0ad931ee23bbef552",
                 "reference": "d18185f0494c854d36aa5ee0ad931ee23bbef552",
+=======
+                "url": "https://api.github.com/repos/Codegyre/Robo/zipball/10aa223f6d1db182dc81d723bf1545dfc6ff380d",
+                "reference": "10aa223f6d1db182dc81d723bf1545dfc6ff380d",
+                "shasum": ""
+>>>>>>> 6a2955b3884815bec9ff7c797e7755700fe9f9eb
             },
             "require": {
                 "henrikbjorn/lurker": "1.0.*@dev",
@@ -112,7 +118,6 @@
             "require-dev": {
                 "codeception/aspect-mock": "0.5.*",
                 "codeception/base": "~2.1",
-                "codeception/codeception": "2.1",
                 "codeception/verify": "0.2.*",
                 "natxet/cssmin": "~3.0",
                 "patchwork/jsqueeze": "~1.0"
@@ -137,11 +142,15 @@
                 }
             ],
             "description": "Modern task runner",
+<<<<<<< HEAD
 <<<<<<< 6e3b42ea0e93d4674bd4e7812c0e5a9f3ae2f161
             "time": "2015-10-30 11:29:52"
 =======
             "time": "2015-08-31 17:35:30"
 >>>>>>> Added composer.lock file
+=======
+            "time": "2015-08-31 17:35:30"
+>>>>>>> 6a2955b3884815bec9ff7c797e7755700fe9f9eb
         },
         {
             "name": "doctrine/instantiator",
@@ -751,8 +760,11 @@
             "time": "2015-09-30 10:26:45"
         },
         {
+<<<<<<< HEAD
 <<<<<<< 6e3b42ea0e93d4674bd4e7812c0e5a9f3ae2f161
 =======
+=======
+>>>>>>> 6a2955b3884815bec9ff7c797e7755700fe9f9eb
             "name": "joomla/compat",
             "version": "1.2.0",
             "source": {
@@ -1113,7 +1125,10 @@
             "time": "2015-03-28 17:52:43"
         },
         {
+<<<<<<< HEAD
 >>>>>>> Added composer.lock file
+=======
+>>>>>>> 6a2955b3884815bec9ff7c797e7755700fe9f9eb
             "name": "phpdocumentor/reflection-docblock",
             "version": "2.0.4",
             "source": {
