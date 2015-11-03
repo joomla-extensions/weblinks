@@ -42,7 +42,9 @@ $ vendor/bin/robo run:tests
 You need to install:
 - Git for windows (https://msysgit.github.io/)
 - GitHub for windows (https://windows.github.com/)
-- Curl for Windows if necesssary.
+- Curl for Windows if necessary.
+- for complete list of necessary software and tips check this [wiki page](https://github.com/joomla-extensions/weblinks/wiki/Programs-needed-on-Windows-to-get-the-tests-running)
+
 
 Note: For commands line is better if you use the 'Git shell' program.
 
