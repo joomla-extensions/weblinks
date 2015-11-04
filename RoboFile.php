@@ -10,10 +10,16 @@
 
 require_once 'vendor/autoload.php';
 
+if (!defined('JPATH_BASE'))
+{
+	define('JPATH_BASE', __DIR__);
+}
+
 class RoboFile extends \Robo\Tasks
 {
 	// Load tasks from composer, see composer.json
 	use \joomla_projects\robo\loadTasks;
+	use \JBuild\Tasks\loadTasks;
 
 	/**
 	 * File extension for executables
@@ -46,6 +52,9 @@ class RoboFile extends \Robo\Tasks
 		$this->cmsPath = $this->getCmsPath();
 
 		$this->executableExtension = $this->getExecutableExtension();
+
+		// Set default timezone (so no warnings are generated if it is not set)
+		date_default_timezone_set('UTC');
 	}
 
 	/**
@@ -176,6 +185,45 @@ class RoboFile extends \Robo\Tasks
 
 		$pathToTestFile = 'tests/' . $suite . '/' . $test;
 
+		//loading the class to display the methods in the class
+		require 'tests/' . $suite . '/' . $test;
+
+		//logic to fetch the class name from the file name
+		$fileName = explode("/", $test);
+		$className = explode(".", $fileName[1]);
+
+		//if the selected file is cest only than we will give the option to execute individual methods, we don't need this in cept file
+		$i = 1;
+		if (strripos($className[0], 'cest'))
+		{
+			$class_methods = get_class_methods($className[0]);
+			$this->say('[' . $i . '] ' . 'All');
+			$methods[$i] = 'All';
+			$i++;
+			foreach ($class_methods as $method_name)
+			{
+
+				$reflect = new ReflectionMethod($className[0], $method_name);
+				if(!$reflect->isConstructor())
+				{
+					if ($reflect->isPublic())
+					{
+						$this->say('[' . $i . '] ' . $method_name);
+						$methods[$i] = $method_name;
+						$i++;
+					}
+				}
+			}
+			$this->say('');
+			$methodNumber = $this->ask('Please choose the method in the test that you would want to run...');
+			$method = $methods[$methodNumber];
+		}
+
+		if(isset($method) && $method != 'All')
+		{
+			$pathToTestFile = $pathToTestFile . ':' . $method;
+		}
+
 		$this->taskCodecept()
 			->test($pathToTestFile)
 			->arg('--steps')
@@ -231,6 +279,11 @@ class RoboFile extends \Robo\Tasks
 		// Caching cloned installations locally
 		if (!is_dir('tests/cache') || (time() - filemtime('tests/cache') > 60 * 60 * 24))
 		{
+			if (file_exists('tests/cache'))
+			{
+				$this->taskDeleteDir('tests/cache')->run();
+			}
+
 			$this->_exec($this->buildGitCloneCommand());
 		}
 
@@ -256,6 +309,14 @@ class RoboFile extends \Robo\Tasks
 		{
 			$this->_exec('chown -R ' . $this->configuration->localUser . ' ' . $this->cmsPath);
 		}
+
+		// Copy current package
+		if (!file_exists('dist/pkg-weblinks-current.zip'))
+		{
+			$this->build(true);
+		}
+
+		$this->_copy('dist/pkg-weblinks-current.zip', $this->cmsPath . "/pkg-weblinks-current.zip");
 
 		$this->say('Joomla CMS site created at ' . $this->cmsPath);
 
@@ -412,5 +473,22 @@ class RoboFile extends \Robo\Tasks
 	private function runPhpcpd()
 	{
 		$this->_exec('phpcpd' . $this->extension . ' ' . __DIR__ . '/src');
+	}
+
+	/**
+	 * Build the joomla extension package
+	 *
+	 * @param   array  $params  Additional params
+	 *
+	 * @return  void
+	 */
+	public function build($params = ['dev' => false])
+	{
+		if (!file_exists('jbuild.ini'))
+		{
+			$this->_copy('jbuild.dist.ini', 'jbuild.ini');
+		}
+
+		$this->taskBuild($params)->run();
 	}
 }

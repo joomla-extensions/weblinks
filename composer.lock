@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a92f2be1ccb2397e6cc71bcb0287cff5",
-    "content-hash": "48d3e6cb6a82e49be6cf95b54abd5364",
+    "hash": "a8a7b0841ddc3e3a0bd3342685dec2c7",
+    "content-hash": "6960f421ca42c77ad244335fb8fb3ee3",
     "packages": [],
     "packages-dev": [
         {
@@ -195,6 +195,62 @@
             "time": "2015-06-14 21:17:01"
         },
         {
+            "name": "edgedesign/phpqa",
+            "version": "v1.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EdgedesignCZ/phpqa.git",
+                "reference": "37513a9fc3e4aab6f9e9d925289f2dcb67bceeb6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EdgedesignCZ/phpqa/zipball/37513a9fc3e4aab6f9e9d925289f2dcb67bceeb6",
+                "reference": "37513a9fc3e4aab6f9e9d925289f2dcb67bceeb6",
+                "shasum": ""
+            },
+            "require": {
+                "codegyre/robo": "*",
+                "halleck45/phpmetrics": "*",
+                "pdepend/pdepend": "*",
+                "phploc/phploc": "*",
+                "phpmd/phpmd": "*",
+                "sebastian/phpcpd": "*",
+                "squizlabs/php_codesniffer": "*"
+            },
+            "require-dev": {
+                "hamcrest/hamcrest-php": "*",
+                "phpunit/phpunit": "*"
+            },
+            "bin": [
+                "phpqa"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/IgnoredPaths.php",
+                    "src/CodeAnalysisTasks.php",
+                    "src/Options.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Zdenek Drahos",
+                    "email": "drahoszdenek@gmail.com"
+                }
+            ],
+            "description": "Analyze PHP code with one command.",
+            "keywords": [
+                "code analysis",
+                "qa",
+                "static analysis"
+            ],
+            "time": "2015-09-14 06:29:44"
+        },
+        {
             "name": "facebook/webdriver",
             "version": "1.0.2",
             "source": {
@@ -288,6 +344,39 @@
                 "fixtures"
             ],
             "time": "2015-05-29 06:29:14"
+        },
+        {
+            "name": "greencape/joomla-cs",
+            "version": "0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/GreenCape/coding-standards.git",
+                "reference": "8d7c65416c2494063d55c3be66ea317fa9d8ef32"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/GreenCape/coding-standards/zipball/8d7c65416c2494063d55c3be66ea317fa9d8ef32",
+                "reference": "8d7c65416c2494063d55c3be66ea317fa9d8ef32",
+                "shasum": ""
+            },
+            "require": {
+                "squizlabs/php_codesniffer": "~1.5"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Niels Braczek",
+                    "email": "nbraczek@bsds.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "Composer installable Coding Standards Definition.",
+            "homepage": "https://github.com/GreenCape/coding-standards",
+            "time": "2015-07-03 12:01:28"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -461,6 +550,65 @@
             "time": "2015-08-15 19:32:36"
         },
         {
+            "name": "halleck45/phpmetrics",
+            "version": "v1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Halleck45/PhpMetrics.git",
+                "reference": "9c8113b502c1803ad08a5ce547717843b31db00b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Halleck45/PhpMetrics/zipball/9c8113b502c1803ad08a5ce547717843b31db00b",
+                "reference": "9c8113b502c1803ad08a5ce547717843b31db00b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "hoa/ruler": "~1.0",
+                "symfony/config": "~2.4",
+                "symfony/console": "~2.5",
+                "symfony/yaml": "~2.4",
+                "twig/twig": "~1.15"
+            },
+            "replace": {
+                "halleck45/php-metrics": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.1"
+            },
+            "bin": [
+                "bin/phpmetrics"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Hal\\": "./src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jean-François Lépine",
+                    "email": "lepinejeanfrancois@yahoo.fr",
+                    "homepage": "http://www.lepine.pro",
+                    "role": "Copyright Holder"
+                }
+            ],
+            "description": "Static analyzis tool for PHP : Coupling, Cyclomatic complexity, Maintainability Index, Halstead's metrics... and more !",
+            "homepage": "http://www.phpmetrics.org",
+            "keywords": [
+                "analysis",
+                "qa",
+                "quality",
+                "testing"
+            ],
+            "time": "2015-08-20 16:35:22"
+        },
+        {
             "name": "henrikbjorn/lurker",
             "version": "1.0.0",
             "source": {
@@ -499,18 +647,16 @@
             ],
             "authors": [
                 {
-                    "name": "Henrik Bjornskov",
-                    "email": "henrik@bjrnskov.dk",
-                    "homepage": "http://henrik.bjrnskov.dk"
+                    "name": "Yaroslav Kiliba",
+                    "email": "om.dattaya@gmail.com"
                 },
                 {
                     "name": "Konstantin Kudryashov",
-                    "email": "ever.zet@gmail.com",
-                    "homepage": "http://everzet.com"
+                    "email": "ever.zet@gmail.com"
                 },
                 {
-                    "name": "Yaroslav Kiliba",
-                    "email": "om.dattaya@gmail.com"
+                    "name": "Henrik Bjrnskov",
+                    "email": "henrik@bjrnskov.dk"
                 }
             ],
             "description": "Resource Watcher.",
@@ -522,17 +668,621 @@
             "time": "2013-05-24 06:47:29"
         },
         {
+            "name": "hoa/compiler",
+            "version": "2.15.10.29",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hoaproject/Compiler.git",
+                "reference": "ec0849fd3c1472fbcd86c3c961981f0cfe1f8d39"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hoaproject/Compiler/zipball/ec0849fd3c1472fbcd86c3c961981f0cfe1f8d39",
+                "reference": "ec0849fd3c1472fbcd86c3c961981f0cfe1f8d39",
+                "shasum": ""
+            },
+            "require": {
+                "hoa/core": "~2.0",
+                "hoa/file": "~0.0",
+                "hoa/iterator": "~1.0",
+                "hoa/math": "~0.0",
+                "hoa/regex": "~0.0",
+                "hoa/visitor": "~1.0"
+            },
+            "require-dev": {
+                "hoa/json": "~1.0",
+                "hoa/test": "~1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Hoa\\Compiler\\": "."
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Enderlin",
+                    "email": "ivan.enderlin@hoa-project.net"
+                },
+                {
+                    "name": "Hoa community",
+                    "homepage": "http://hoa-project.net/"
+                }
+            ],
+            "description": "The Hoa\\Compiler library.",
+            "homepage": "http://hoa-project.net/",
+            "keywords": [
+                "algebraic",
+                "ast",
+                "compiler",
+                "context-free",
+                "coverage",
+                "exhaustive",
+                "grammar",
+                "isotropic",
+                "language",
+                "lexer",
+                "library",
+                "ll1",
+                "llk",
+                "parser",
+                "pp",
+                "random",
+                "regular",
+                "rule",
+                "sampler",
+                "syntax",
+                "token",
+                "trace",
+                "uniform"
+            ],
+            "time": "2015-10-29 21:35:12"
+        },
+        {
+            "name": "hoa/core",
+            "version": "2.15.09.03",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hoaproject/Core.git",
+                "reference": "305a881847478d635f3cf565fd5e8ef382c21a70"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hoaproject/Core/zipball/305a881847478d635f3cf565fd5e8ef382c21a70",
+                "reference": "305a881847478d635f3cf565fd5e8ef382c21a70",
+                "shasum": ""
+            },
+            "require": {
+                "ext-spl": "*",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "hoa/test": "~1.0"
+            },
+            "suggest": {
+                "ext-mbstring": "ext/mbstring must be present (or a third implementation).",
+                "hoa/cli": "To use the `hoa` script."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Hoa\\Core\\": "."
+                },
+                "files": [
+                    "Core.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Enderlin",
+                    "email": "ivan.enderlin@hoa-project.net"
+                },
+                {
+                    "name": "Hoa community",
+                    "homepage": "http://hoa-project.net/"
+                }
+            ],
+            "description": "The Hoa\\Core library.",
+            "homepage": "http://hoa-project.net/",
+            "keywords": [
+                "consistency",
+                "core",
+                "data",
+                "event",
+                "library",
+                "listener",
+                "parameter",
+                "protocol"
+            ],
+            "time": "2015-09-03 08:28:53"
+        },
+        {
+            "name": "hoa/file",
+            "version": "0.15.05.27",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hoaproject/File.git",
+                "reference": "bd82aff5e81f16971c5fc99301a5c5717b1fd4da"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hoaproject/File/zipball/bd82aff5e81f16971c5fc99301a5c5717b1fd4da",
+                "reference": "bd82aff5e81f16971c5fc99301a5c5717b1fd4da",
+                "shasum": ""
+            },
+            "require": {
+                "hoa/core": "~2.0",
+                "hoa/iterator": "~1.0",
+                "hoa/stream": "~0.0"
+            },
+            "require-dev": {
+                "hoa/test": "~1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Hoa\\File\\": "."
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Enderlin",
+                    "email": "ivan.enderlin@hoa-project.net"
+                },
+                {
+                    "name": "Hoa community",
+                    "homepage": "http://hoa-project.net/"
+                }
+            ],
+            "description": "The Hoa\\File library.",
+            "homepage": "http://hoa-project.net/",
+            "keywords": [
+                "Socket",
+                "directory",
+                "file",
+                "finder",
+                "library",
+                "link",
+                "temporary"
+            ],
+            "time": "2015-05-27 09:18:31"
+        },
+        {
+            "name": "hoa/iterator",
+            "version": "1.15.10.29",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hoaproject/Iterator.git",
+                "reference": "a64ed9fd62579a34e4450134d6d1abdf77d54435"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hoaproject/Iterator/zipball/a64ed9fd62579a34e4450134d6d1abdf77d54435",
+                "reference": "a64ed9fd62579a34e4450134d6d1abdf77d54435",
+                "shasum": ""
+            },
+            "require": {
+                "hoa/core": "~2.0"
+            },
+            "require-dev": {
+                "hoa/test": "~1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Hoa\\Iterator\\": "."
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Enderlin",
+                    "email": "ivan.enderlin@hoa-project.net"
+                },
+                {
+                    "name": "Hoa community",
+                    "homepage": "http://hoa-project.net/"
+                }
+            ],
+            "description": "The Hoa\\Iterator library.",
+            "homepage": "http://hoa-project.net/",
+            "keywords": [
+                "iterator",
+                "library"
+            ],
+            "time": "2015-10-29 21:37:16"
+        },
+        {
+            "name": "hoa/math",
+            "version": "0.15.10.26",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hoaproject/Math.git",
+                "reference": "62631c65d9a4f1b8bb4c4a3d6cdff0e8971d684e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hoaproject/Math/zipball/62631c65d9a4f1b8bb4c4a3d6cdff0e8971d684e",
+                "reference": "62631c65d9a4f1b8bb4c4a3d6cdff0e8971d684e",
+                "shasum": ""
+            },
+            "require": {
+                "hoa/compiler": "~2.0",
+                "hoa/core": "~2.0",
+                "hoa/iterator": "~1.0"
+            },
+            "require-dev": {
+                "hoa/test": "~1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Hoa\\Math\\": "."
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Enderlin",
+                    "email": "ivan.enderlin@hoa-project.net"
+                },
+                {
+                    "name": "Hoa community",
+                    "homepage": "http://hoa-project.net/"
+                }
+            ],
+            "description": "The Hoa\\Math library.",
+            "homepage": "http://hoa-project.net/",
+            "keywords": [
+                "arrangement",
+                "combination",
+                "combinatorics",
+                "counting",
+                "library",
+                "math",
+                "permutation",
+                "sampler",
+                "set"
+            ],
+            "time": "2015-10-26 15:22:52"
+        },
+        {
+            "name": "hoa/regex",
+            "version": "0.15.08.13",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hoaproject/Regex.git",
+                "reference": "2ef8a77ef3885ca202fcd9c31a8e54c44cd04232"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hoaproject/Regex/zipball/2ef8a77ef3885ca202fcd9c31a8e54c44cd04232",
+                "reference": "2ef8a77ef3885ca202fcd9c31a8e54c44cd04232",
+                "shasum": ""
+            },
+            "require": {
+                "hoa/core": "~2.0",
+                "hoa/math": "~0.0",
+                "hoa/ustring": "~3.0",
+                "hoa/visitor": "~1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Hoa\\Regex\\": "."
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Enderlin",
+                    "email": "ivan.enderlin@hoa-project.net"
+                },
+                {
+                    "name": "Hoa community",
+                    "homepage": "http://hoa-project.net/"
+                }
+            ],
+            "description": "The Hoa\\Regex library.",
+            "homepage": "http://hoa-project.net/",
+            "keywords": [
+                "compiler",
+                "library",
+                "regex"
+            ],
+            "time": "2015-08-13 06:48:47"
+        },
+        {
+            "name": "hoa/ruler",
+            "version": "1.15.09.22",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hoaproject/Ruler.git",
+                "reference": "7e82ede5ebbe6eaf0f2241c0310fda37b8e5c351"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hoaproject/Ruler/zipball/7e82ede5ebbe6eaf0f2241c0310fda37b8e5c351",
+                "reference": "7e82ede5ebbe6eaf0f2241c0310fda37b8e5c351",
+                "shasum": ""
+            },
+            "require": {
+                "hoa/compiler": "~2.0",
+                "hoa/core": "~2.0",
+                "hoa/file": "~0.0",
+                "hoa/visitor": "~1.0"
+            },
+            "require-dev": {
+                "hoa/test": "~1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Hoa\\Ruler\\": "."
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Enderlin",
+                    "email": "ivan.enderlin@hoa-project.net"
+                },
+                {
+                    "name": "Hoa community",
+                    "homepage": "http://hoa-project.net/"
+                }
+            ],
+            "description": "The Hoa\\Ruler library.",
+            "homepage": "http://hoa-project.net/",
+            "keywords": [
+                "library",
+                "ruler"
+            ],
+            "time": "2015-09-22 16:29:58"
+        },
+        {
+            "name": "hoa/stream",
+            "version": "0.15.10.26",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hoaproject/Stream.git",
+                "reference": "011ab91d942f1d7096deade4c8a10fe57d51c5b3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hoaproject/Stream/zipball/011ab91d942f1d7096deade4c8a10fe57d51c5b3",
+                "reference": "011ab91d942f1d7096deade4c8a10fe57d51c5b3",
+                "shasum": ""
+            },
+            "require": {
+                "hoa/core": "~2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Hoa\\Stream\\": "."
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Enderlin",
+                    "email": "ivan.enderlin@hoa-project.net"
+                },
+                {
+                    "name": "Hoa community",
+                    "homepage": "http://hoa-project.net/"
+                }
+            ],
+            "description": "The Hoa\\Stream library.",
+            "homepage": "http://hoa-project.net/",
+            "keywords": [
+                "Context",
+                "bucket",
+                "composite",
+                "filter",
+                "in",
+                "library",
+                "out",
+                "protocol",
+                "stream",
+                "wrapper"
+            ],
+            "time": "2015-10-22 06:30:43"
+        },
+        {
+            "name": "hoa/ustring",
+            "version": "3.15.08.03",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hoaproject/Ustring.git",
+                "reference": "261d5bfc53df8e895793d330f0fb96929fca355d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hoaproject/Ustring/zipball/261d5bfc53df8e895793d330f0fb96929fca355d",
+                "reference": "261d5bfc53df8e895793d330f0fb96929fca355d",
+                "shasum": ""
+            },
+            "require": {
+                "hoa/core": "~2.0"
+            },
+            "require-dev": {
+                "hoa/test": "~1.0"
+            },
+            "suggest": {
+                "ext-iconv": "ext/iconv must be present (or a third implementation) to use Hoa\\Ustring::transcode().",
+                "ext-intl": "To get a better Hoa\\Ustring::toAscii() and Hoa\\Ustring::compareTo()."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Hoa\\Ustring\\": "."
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Enderlin",
+                    "email": "ivan.enderlin@hoa-project.net"
+                },
+                {
+                    "name": "Hoa community",
+                    "homepage": "http://hoa-project.net/"
+                }
+            ],
+            "description": "The Hoa\\Ustring library.",
+            "homepage": "http://hoa-project.net/",
+            "keywords": [
+                "library",
+                "search",
+                "string",
+                "unicode"
+            ],
+            "time": "2015-08-03 07:49:50"
+        },
+        {
+            "name": "hoa/visitor",
+            "version": "1.15.08.17",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hoaproject/Visitor.git",
+                "reference": "e30bfff741f71979f6476a41548e34afe8053c67"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hoaproject/Visitor/zipball/e30bfff741f71979f6476a41548e34afe8053c67",
+                "reference": "e30bfff741f71979f6476a41548e34afe8053c67",
+                "shasum": ""
+            },
+            "require": {
+                "hoa/core": "~2.0"
+            },
+            "require-dev": {
+                "hoa/test": "~1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Hoa\\Visitor\\": "."
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Enderlin",
+                    "email": "ivan.enderlin@hoa-project.net"
+                },
+                {
+                    "name": "Hoa community",
+                    "homepage": "http://hoa-project.net/"
+                }
+            ],
+            "description": "The Hoa\\Visitor library.",
+            "homepage": "http://hoa-project.net/",
+            "keywords": [
+                "library",
+                "structure",
+                "visit",
+                "visitor"
+            ],
+            "time": "2015-08-17 06:30:58"
+        },
+        {
             "name": "joomla-projects/joomla-browser",
             "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-projects/joomla-browser.git",
-                "reference": "b0056ff0018c529cc2a143f6d78004bce8f9d5b0"
+                "reference": "e3c0462b76b960639835ffad5b42b744522b7ac6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joomla-projects/joomla-browser/zipball/b0056ff0018c529cc2a143f6d78004bce8f9d5b0",
-                "reference": "b0056ff0018c529cc2a143f6d78004bce8f9d5b0",
+                "url": "https://api.github.com/repos/joomla-projects/joomla-browser/zipball/e3c0462b76b960639835ffad5b42b744522b7ac6",
+                "reference": "e3c0462b76b960639835ffad5b42b744522b7ac6",
                 "shasum": ""
             },
             "require": {
@@ -570,7 +1320,60 @@
                 "acceptance testing",
                 "joomla"
             ],
-            "time": "2015-10-31 11:00:18"
+            "time": "2015-11-01 10:09:29"
+        },
+        {
+            "name": "joomla-projects/jorobo",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joomla-projects/jorobo.git",
+                "reference": "079dde49d68b791435ad464a235a3fbb6ba06fe5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joomla-projects/jorobo/zipball/079dde49d68b791435ad464a235a3fbb6ba06fe5",
+                "reference": "079dde49d68b791435ad464a235a3fbb6ba06fe5",
+                "shasum": ""
+            },
+            "require": {
+                "codegyre/robo": "0.6.*",
+                "edgedesign/phpqa": "^1.0",
+                "greencape/joomla-cs": "~0.2",
+                "joomla-projects/robo": "dev-master",
+                "joomla/github": "~1.3",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "codeception/aspect-mock": "~0.5",
+                "codeception/base": "~2.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "JBuild\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Yves Hoppe",
+                    "email": "yves@compojoom.com"
+                },
+                {
+                    "name": "Niels Nübel",
+                    "email": "info@nn-medienagentur.de"
+                },
+                {
+                    "name": "Niels Braczek",
+                    "email": "nbraczek@bsds.de"
+                }
+            ],
+            "description": "Tool and Task based on Robo.li to manage Joomla Extension Development and Releases",
+            "time": "2015-11-02 07:34:41"
         },
         {
             "name": "joomla-projects/robo",
@@ -650,6 +1453,406 @@
             "time": "2015-09-30 10:26:45"
         },
         {
+            "name": "joomla/compat",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joomla-framework/compat.git",
+                "reference": "f23565fe0184517778996226eb4b2333deb369c4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joomla-framework/compat/zipball/f23565fe0184517778996226eb4b2333deb369c4",
+                "reference": "f23565fe0184517778996226eb4b2333deb369c4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.10"
+            },
+            "type": "joomla-package",
+            "autoload": {
+                "classmap": [
+                    "src/JsonSerializable.php",
+                    "src/CallbackFilterIterator.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Joomla Compat Package",
+            "homepage": "https://github.com/joomla-framework/compat",
+            "keywords": [
+                "compat",
+                "framework",
+                "joomla"
+            ],
+            "time": "2015-02-24 00:21:06"
+        },
+        {
+            "name": "joomla/date",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joomla-framework/date.git",
+                "reference": "b985dc1a4ed41ea14c90fc09347c6bb44470aeaa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joomla-framework/date/zipball/b985dc1a4ed41ea14c90fc09347c6bb44470aeaa",
+                "reference": "b985dc1a4ed41ea14c90fc09347c6bb44470aeaa",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.10"
+            },
+            "type": "joomla-package",
+            "autoload": {
+                "psr-4": {
+                    "Joomla\\Date\\": "src/",
+                    "Joomla\\Date\\Tests\\": "Tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Joomla Date Package",
+            "homepage": "https://github.com/joomla-framework/date",
+            "keywords": [
+                "date",
+                "framework",
+                "joomla"
+            ],
+            "time": "2014-02-09 01:27:57"
+        },
+        {
+            "name": "joomla/github",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joomla-framework/github-api.git",
+                "reference": "39b4ad1221ce7d87b63c49a35df948b55b20d9c3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joomla-framework/github-api/zipball/39b4ad1221ce7d87b63c49a35df948b55b20d9c3",
+                "reference": "39b4ad1221ce7d87b63c49a35df948b55b20d9c3",
+                "shasum": ""
+            },
+            "require": {
+                "joomla/date": "~1.0",
+                "joomla/http": "~1.0",
+                "joomla/registry": "~1.0",
+                "joomla/uri": "~1.0",
+                "php": ">=5.3.10"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*",
+                "squizlabs/php_codesniffer": "1.*"
+            },
+            "type": "joomla-package",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Joomla\\Github\\": "src/",
+                    "Joomla\\Github\\Tests\\": "Tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Joomla Github Package",
+            "homepage": "https://github.com/joomla-framework/github-api",
+            "keywords": [
+                "framework",
+                "github",
+                "joomla"
+            ],
+            "time": "2015-02-03 12:13:36"
+        },
+        {
+            "name": "joomla/http",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joomla-framework/http.git",
+                "reference": "09f5ba9d1e3003e53f0b32d12e87fcf860b8c552"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joomla-framework/http/zipball/09f5ba9d1e3003e53f0b32d12e87fcf860b8c552",
+                "reference": "09f5ba9d1e3003e53f0b32d12e87fcf860b8c552",
+                "shasum": ""
+            },
+            "require": {
+                "joomla/uri": "~1.0",
+                "php": ">=5.3.10"
+            },
+            "require-dev": {
+                "joomla/test": "~1.0",
+                "phpunit/phpunit": "4.*",
+                "squizlabs/php_codesniffer": "1.*"
+            },
+            "suggest": {
+                "joomla/registry": "Registry can be used as an alternative to using an array for the package options."
+            },
+            "type": "joomla-package",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Joomla\\Http\\": "src/",
+                    "Joomla\\Http\\Tests\\": "Tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Joomla HTTP Package",
+            "homepage": "https://github.com/joomla-framework/http",
+            "keywords": [
+                "framework",
+                "http",
+                "joomla"
+            ],
+            "time": "2015-09-19 17:57:40"
+        },
+        {
+            "name": "joomla/registry",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joomla-framework/registry.git",
+                "reference": "db55cf426bd27524557affbe95b18d6a2f959657"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joomla-framework/registry/zipball/db55cf426bd27524557affbe95b18d6a2f959657",
+                "reference": "db55cf426bd27524557affbe95b18d6a2f959657",
+                "shasum": ""
+            },
+            "require": {
+                "joomla/compat": "~1.0",
+                "joomla/string": "~1.3",
+                "joomla/utilities": "~1.0",
+                "php": ">=5.3.10"
+            },
+            "require-dev": {
+                "joomla/test": "~1.0",
+                "phpunit/phpunit": "4.*",
+                "squizlabs/php_codesniffer": "1.*",
+                "symfony/yaml": "~2.0"
+            },
+            "suggest": {
+                "symfony/yaml": "Install 2.* if you require YAML support."
+            },
+            "type": "joomla-package",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Joomla\\Registry\\": "src/",
+                    "Joomla\\Registry\\Tests\\": "Tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Joomla Registry Package",
+            "homepage": "https://github.com/joomla-framework/registry",
+            "keywords": [
+                "framework",
+                "joomla",
+                "registry"
+            ],
+            "time": "2015-10-14 17:01:46"
+        },
+        {
+            "name": "joomla/string",
+            "version": "1.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joomla-framework/string.git",
+                "reference": "1a61294f887a95ec3eb2e4dac12ba18ab6b2bf5a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joomla-framework/string/zipball/1a61294f887a95ec3eb2e4dac12ba18ab6b2bf5a",
+                "reference": "1a61294f887a95ec3eb2e4dac12ba18ab6b2bf5a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.10"
+            },
+            "require-dev": {
+                "joomla/test": "~1.0",
+                "phpunit/phpunit": "4.*",
+                "squizlabs/php_codesniffer": "1.*"
+            },
+            "type": "joomla-package",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Joomla\\String\\": "src/",
+                    "Joomla\\String\\Tests\\": "Tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Joomla String Package",
+            "homepage": "https://github.com/joomla-framework/string",
+            "keywords": [
+                "framework",
+                "joomla",
+                "string"
+            ],
+            "time": "2015-05-03 16:08:20"
+        },
+        {
+            "name": "joomla/uri",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joomla-framework/uri.git",
+                "reference": "980e532e4235bb8f1ada15b28822abbeb171da3f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joomla-framework/uri/zipball/980e532e4235bb8f1ada15b28822abbeb171da3f",
+                "reference": "980e532e4235bb8f1ada15b28822abbeb171da3f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.10"
+            },
+            "type": "joomla-package",
+            "autoload": {
+                "psr-4": {
+                    "Joomla\\Uri\\": "src/",
+                    "Joomla\\Uri\\Tests\\": "Tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Joomla Uri Package",
+            "homepage": "https://github.com/joomla-framework/uri",
+            "keywords": [
+                "framework",
+                "joomla",
+                "uri"
+            ],
+            "time": "2014-02-09 02:57:17"
+        },
+        {
+            "name": "joomla/utilities",
+            "version": "1.3.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joomla-framework/utilities.git",
+                "reference": "3e43b0806c194a92b58a176b73d6cc2dc6c9c3a4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joomla-framework/utilities/zipball/3e43b0806c194a92b58a176b73d6cc2dc6c9c3a4",
+                "reference": "3e43b0806c194a92b58a176b73d6cc2dc6c9c3a4",
+                "shasum": ""
+            },
+            "require": {
+                "joomla/string": "~1.3",
+                "php": ">=5.3.10"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*",
+                "squizlabs/php_codesniffer": "1.*"
+            },
+            "type": "joomla-package",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Joomla\\Utilities\\": "src/",
+                    "Joomla\\Utilities\\Tests\\": "Tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "description": "Joomla Utilities Package",
+            "homepage": "https://github.com/joomla-framework/utilities",
+            "keywords": [
+                "framework",
+                "joomla",
+                "utilities"
+            ],
+            "time": "2015-03-28 17:52:43"
+        },
+        {
+            "name": "pdepend/pdepend",
+            "version": "2.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pdepend/pdepend.git",
+                "reference": "d3ae0d084d526cdc6c3f1b858fb7148de77b41c5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pdepend/pdepend/zipball/d3ae0d084d526cdc6c3f1b858fb7148de77b41c5",
+                "reference": "d3ae0d084d526cdc6c3f1b858fb7148de77b41c5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.7",
+                "symfony/config": "^2.3.0",
+                "symfony/dependency-injection": "^2.3.0",
+                "symfony/filesystem": "^2.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0.0,<4.8",
+                "squizlabs/php_codesniffer": "^2.0.0"
+            },
+            "bin": [
+                "src/bin/pdepend"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PDepend\\": "src/main/php/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Official version of pdepend to be handled with Composer",
+            "time": "2015-10-16 08:49:58"
+        },
+        {
             "name": "phpdocumentor/reflection-docblock",
             "version": "2.0.4",
             "source": {
@@ -697,6 +1900,124 @@
                 }
             ],
             "time": "2015-02-03 12:10:50"
+        },
+        {
+            "name": "phploc/phploc",
+            "version": "2.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/phploc.git",
+                "reference": "50e063abd41833b3a5d29a2e8fbef5859ac28bdc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/phploc/zipball/50e063abd41833b3a5d29a2e8fbef5859ac28bdc",
+                "reference": "50e063abd41833b3a5d29a2e8fbef5859ac28bdc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "sebastian/finder-facade": "~1.1",
+                "sebastian/git": "~2.0",
+                "sebastian/version": "~1.0.3",
+                "symfony/console": "~2.5"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4"
+            },
+            "bin": [
+                "phploc"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "A tool for quickly measuring the size of a PHP project.",
+            "homepage": "https://github.com/sebastianbergmann/phploc",
+            "time": "2015-10-22 13:44:19"
+        },
+        {
+            "name": "phpmd/phpmd",
+            "version": "2.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpmd/phpmd.git",
+                "reference": "08b5bcd454a7148579b68931fc500d824afd3bb5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpmd/phpmd/zipball/08b5bcd454a7148579b68931fc500d824afd3bb5",
+                "reference": "08b5bcd454a7148579b68931fc500d824afd3bb5",
+                "shasum": ""
+            },
+            "require": {
+                "pdepend/pdepend": "~2.0",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0",
+                "squizlabs/php_codesniffer": "^2.0"
+            },
+            "bin": [
+                "src/bin/phpmd"
+            ],
+            "type": "project",
+            "autoload": {
+                "psr-0": {
+                    "PHPMD\\": "src/main/php"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Manuel Pichler",
+                    "email": "github@manuel-pichler.de",
+                    "homepage": "https://github.com/manuelpichler",
+                    "role": "Project Founder"
+                },
+                {
+                    "name": "Other contributors",
+                    "homepage": "https://github.com/phpmd/phpmd/graphs/contributors",
+                    "role": "Contributors"
+                },
+                {
+                    "name": "Marc Würth",
+                    "email": "ravage@bluewin.ch",
+                    "homepage": "https://github.com/ravage84",
+                    "role": "Project Maintainer"
+                }
+            ],
+            "description": "PHPMD is a spin-off project of PHP Depend and aims to be a PHP equivalent of the well known Java tool PMD.",
+            "homepage": "http://phpmd.org/",
+            "keywords": [
+                "mess detection",
+                "mess detector",
+                "pdepend",
+                "phpmd",
+                "pmd"
+            ],
+            "time": "2015-09-24 14:37:49"
         },
         {
             "name": "phpspec/prophecy",
@@ -1408,6 +2729,90 @@
             "time": "2015-06-21 07:55:53"
         },
         {
+            "name": "sebastian/finder-facade",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/finder-facade.git",
+                "reference": "a520dcc3dd39160eea480daa3426f4fd419a327b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/finder-facade/zipball/a520dcc3dd39160eea480daa3426f4fd419a327b",
+                "reference": "a520dcc3dd39160eea480daa3426f4fd419a327b",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/finder": "~2.3",
+                "theseer/fdomdocument": "~1.3"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "FinderFacade is a convenience wrapper for Symfony's Finder component.",
+            "homepage": "https://github.com/sebastianbergmann/finder-facade",
+            "time": "2015-06-04 08:11:58"
+        },
+        {
+            "name": "sebastian/git",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/git.git",
+                "reference": "2d5c139d0eedcb9e67e0e9ca08023be6e9b7b47b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/git/zipball/2d5c139d0eedcb9e67e0e9ca08023be6e9b7b47b",
+                "reference": "2d5c139d0eedcb9e67e0e9ca08023be6e9b7b47b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de"
+                }
+            ],
+            "description": "Simple wrapper for Git",
+            "homepage": "http://www.github.com/sebastianbergmann/git",
+            "keywords": [
+                "git"
+            ],
+            "time": "2015-04-06 16:23:43"
+        },
+        {
             "name": "sebastian/global-state",
             "version": "1.1.1",
             "source": {
@@ -1457,6 +2862,57 @@
                 "global state"
             ],
             "time": "2015-10-12 03:26:01"
+        },
+        {
+            "name": "sebastian/phpcpd",
+            "version": "2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/phpcpd.git",
+                "reference": "d3ad100fdf15805495f6ff19f473f4314c99390c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpcpd/zipball/d3ad100fdf15805495f6ff19f473f4314c99390c",
+                "reference": "d3ad100fdf15805495f6ff19f473f4314c99390c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "phpunit/php-timer": "~1.0",
+                "sebastian/finder-facade": "~1.1",
+                "sebastian/version": "~1.0",
+                "symfony/console": "~2.2",
+                "theseer/fdomdocument": "~1.4"
+            },
+            "bin": [
+                "phpcpd"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "Copy/Paste Detector (CPD) for PHP code.",
+            "homepage": "https://github.com/sebastianbergmann/phpcpd",
+            "time": "2015-03-26 14:47:38"
         },
         {
             "name": "sebastian/recursion-context",
@@ -1829,6 +3285,65 @@
             "time": "2015-10-11 09:39:48"
         },
         {
+            "name": "symfony/dependency-injection",
+            "version": "v2.7.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/dependency-injection.git",
+                "reference": "af284e795ec8a08c80d1fc47518fd23004b89847"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/af284e795ec8a08c80d1fc47518fd23004b89847",
+                "reference": "af284e795ec8a08c80d1fc47518fd23004b89847",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "conflict": {
+                "symfony/expression-language": "<2.6"
+            },
+            "require-dev": {
+                "symfony/config": "~2.2",
+                "symfony/expression-language": "~2.6",
+                "symfony/yaml": "~2.1"
+            },
+            "suggest": {
+                "symfony/config": "",
+                "symfony/proxy-manager-bridge": "Generate service proxies to lazy load them",
+                "symfony/yaml": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.7-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\DependencyInjection\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony DependencyInjection Component",
+            "homepage": "https://symfony.com",
+            "time": "2015-10-27 15:38:06"
+        },
+        {
             "name": "symfony/dom-crawler",
             "version": "v2.7.6",
             "source": {
@@ -2120,13 +3635,115 @@
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
             "time": "2015-10-11 09:39:48"
+        },
+        {
+            "name": "theseer/fdomdocument",
+            "version": "1.6.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/theseer/fDOMDocument.git",
+                "reference": "d9ad139d6c2e8edf5e313ffbe37ff13344cf0684"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/theseer/fDOMDocument/zipball/d9ad139d6c2e8edf5e313ffbe37ff13344cf0684",
+                "reference": "d9ad139d6c2e8edf5e313ffbe37ff13344cf0684",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "lib-libxml": "*",
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Arne Blankerts",
+                    "email": "arne@blankerts.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "The classes contained within this repository extend the standard DOM to use exceptions at all occasions of errors instead of PHP warnings or notices. They also add various custom methods and shortcuts for convenience and to simplify the usage of DOM.",
+            "homepage": "https://github.com/theseer/fDOMDocument",
+            "time": "2015-05-27 22:58:02"
+        },
+        {
+            "name": "twig/twig",
+            "version": "v1.23.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/twigphp/Twig.git",
+                "reference": "5868cd822fd6cf626d5f805439575f9c323cee2a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/5868cd822fd6cf626d5f805439575f9c323cee2a",
+                "reference": "5868cd822fd6cf626d5f805439575f9c323cee2a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.7"
+            },
+            "require-dev": {
+                "symfony/debug": "~2.7",
+                "symfony/phpunit-bridge": "~2.7"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.23-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Twig_": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Armin Ronacher",
+                    "email": "armin.ronacher@active-4.com",
+                    "role": "Project Founder"
+                },
+                {
+                    "name": "Twig Team",
+                    "homepage": "http://twig.sensiolabs.org/contributors",
+                    "role": "Contributors"
+                }
+            ],
+            "description": "Twig, the flexible, fast, and secure template language for PHP",
+            "homepage": "http://twig.sensiolabs.org",
+            "keywords": [
+                "templating"
+            ],
+            "time": "2015-10-29 23:29:01"
         }
     ],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
         "joomla-projects/joomla-browser": 20,
-        "joomla-projects/robo": 20
+        "joomla-projects/robo": 20,
+        "joomla-projects/jorobo": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
