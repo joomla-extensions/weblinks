@@ -274,6 +274,11 @@ class RoboFile extends \Robo\Tasks
 		// Caching cloned installations locally
 		if (!is_dir('tests/cache') || (time() - filemtime('tests/cache') > 60 * 60 * 24))
 		{
+			if (file_exists('tests/cache'))
+			{
+				$this->taskDeleteDir('tests/cache')->run();
+			}
+
 			$this->_exec($this->buildGitCloneCommand());
 		}
 
