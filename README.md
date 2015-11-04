@@ -37,6 +37,20 @@ $ vendor/bin/robo
 $ vendor/bin/robo run:tests
 ```
 
+## Additional options
+
+You can run the tests against different resolutions. The default acceptance YAML configuration file provides three options:
+
+* "desktop": default, 1024x768px
+* "tablet": tablet in portrait mode, 768x1024px
+* "phone": phone in portrait mode, 480x640px
+
+To set a specific resolution, set is as an option of the command:
+
+`$ vendor/bin/robo run:tests --env=tablet`
+
+Note: the first parameter is used by Travis and you should always set it to "0" when you run your tests locally.
+
 ##For Windows:
 
 You need to install:
