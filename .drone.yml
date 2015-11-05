@@ -1,0 +1,20 @@
+build:
+  image: yveshoppe/joomla-systemtests
+  commands:
+    - chmod a+x .drone/build.sh
+    - ./.drone/build.sh
+    - cd /tests/www
+    - export DISPLAY=:0
+    - Xvfb -screen 0 1024x768x24 -ac +extension GLX +render -noreset > /dev/null 2>&1 &
+    - sleep 4
+    - fluxbox &
+    - vendor/bin/robo run:tests
+  clone:
+    depth: 1
+    path: repo
+  notify:
+    email:
+      recipients:
+        - yves@compojoom.com
+        - robert@rdeutz.de
+        - javier.gomez@community.joomla.org
