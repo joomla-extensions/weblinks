@@ -66,9 +66,17 @@ class RoboFile extends \Robo\Tasks
 	{
 		if ($this->isWindows())
 		{
-			return '.exe';
+			// check wehter git.exe or git as command should be used,
+			// as on window both is possible
+			if(!$this->_exec('git.exe --version')->getMessage())
+			{
+				return '';
+			}
+			else
+			{
+				return '.exe';
+			}
 		}
-
 		return '';
 	}
 
