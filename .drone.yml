@@ -9,6 +9,7 @@ build:
     - sleep 4
     - fluxbox &
     - vendor/bin/robo run:tests
+    - echo "Finished tests at $(date)"
   clone:
     depth: 1
     path: repo
