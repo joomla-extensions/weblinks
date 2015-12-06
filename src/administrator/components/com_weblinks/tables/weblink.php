@@ -9,8 +9,6 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\String\String;
-
 /**
  * Weblink Table class
  *
@@ -178,7 +176,7 @@ class WeblinksTableWeblink extends JTable
 		{
 			// Array of characters to remove
 			$bad_characters = array("\n", "\r", "\"", "<", ">");
-			$after_clean = String::str_ireplace($bad_characters, "", $this->metakey);
+			$after_clean = JString::str_ireplace($bad_characters, "", $this->metakey);
 			$keys = explode(',', $after_clean);
 			$clean_keys = array();
 
