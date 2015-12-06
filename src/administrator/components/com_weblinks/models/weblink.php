@@ -10,7 +10,6 @@
 defined('_JEXEC') or die;
 
 use Joomla\Registry\Registry;
-use Joomla\String\String;
 
 /**
  * Weblinks model.
@@ -325,10 +324,10 @@ class WeblinksModelWeblink extends JModelAdmin
 		{
 			if ($name == $table->title)
 			{
-				$name = String::increment($name);
+				$name = JString::increment($name);
 			}
 
-			$alias = String::increment($alias, 'dash');
+			$alias = JString::increment($alias, 'dash');
 		}
 
 		return array($name, $alias);
