@@ -111,7 +111,7 @@ JFactory::getDocument()->addScriptDeclaration('
 						<th width="5%" class="nowrap center hidden-phone">
 							<?php echo JHtml::_('grid.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
 						</th>
-						<th width="5%" class="nowrap hidden-phone">
+						<th width="10%" class="nowrap hidden-phone">
 							<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'a.language', $listDirn, $listOrder); ?>
 						</th>
 						<th width="1%" class="nowrap center hidden-phone">
@@ -188,7 +188,7 @@ JFactory::getDocument()->addScriptDeclaration('
 							<?php if ($item->language == '*'):?>
 								<?php echo JText::alt('JALL', 'language'); ?>
 							<?php else:?>
-								<?php echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED'); ?>
+								<?php echo $item->language_title ? JHtml::_('image', 'mod_languages/' . $item->language_image . '.gif', $item->language_title, array('title' => $item->language_title), true) . '&nbsp;' . $this->escape($item->language_title) : JText::_('JUNDEFINED'); ?>
 							<?php endif;?>
 						</td>
 						<td class="center hidden-phone">
