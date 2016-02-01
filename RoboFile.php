@@ -19,7 +19,7 @@ class RoboFile extends \Robo\Tasks
 {
 	// Load tasks from composer, see composer.json
 	use \joomla_projects\robo\loadTasks;
-	use \JBuild\Tasks\loadTasks;
+	use \Joomla\Jorobo\Tasks\loadTasks;
 
 	/**
 	 * File extension for executables
