@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a8a7b0841ddc3e3a0bd3342685dec2c7",
-    "content-hash": "6960f421ca42c77ad244335fb8fb3ee3",
+    "hash": "1e02f52490bd8e653a61756e42ffdf13",
+    "content-hash": "485d45ee16fd095375863f13246c60d3",
     "packages": [],
     "packages-dev": [
         {
@@ -705,7 +705,7 @@
         },
         {
             "name": "joomla-projects/jorobo",
-            "version": "dev-master",
+            "version": "0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-projects/jorobo.git",
@@ -3222,8 +3222,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "joomla-projects/joomla-browser": 20,
-        "joomla-projects/robo": 20,
-        "joomla-projects/jorobo": 20
+        "joomla-projects/robo": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
