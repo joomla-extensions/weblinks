@@ -12,6 +12,6 @@
         "joomla-projects/robo": "dev-master",
         "joomla-projects/selenium-server-standalone": "v2.47.1",
         "fzaninotto/faker": "^1.5",
-        "joomla-projects/jorobo": "dev-master"
+        "joomla-projects/jorobo": "0.2"
     }
 }
