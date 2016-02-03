@@ -484,9 +484,9 @@ class RoboFile extends \Robo\Tasks
 	 */
 	public function build($params = ['dev' => false])
 	{
-		if (!file_exists('jbuild.ini'))
+		if (!file_exists('jorobo.ini'))
 		{
-			$this->_copy('jbuild.dist.ini', 'jbuild.ini');
+			$this->_copy('jorobo.dist.ini', 'jorobo.ini');
 		}
 
 		$this->taskBuild($params)->run();

@@ -168,6 +168,7 @@ class AdministratorCategoriesCest
 		$I->checkAllResults();
 		$I->amGoingTo('try to delete a Weblinks Category');
 		$I->clickToolbarButton('Empty trash');
+		$I->acceptPopup();
 		$I->waitForElement(['id' => 'system-message-container'], '60');
 		$I->expectTo('see a success message after Deleting the category');
 		$I->see('1 category successfully deleted.', ['id' => 'system-message-container']);
