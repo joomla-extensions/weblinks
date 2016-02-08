@@ -115,7 +115,10 @@ class FrontendWeblinksCest
 
 		// Click on the link, go back, and check that hits is 1
 		$I->click(['link' => $title]);
-		$I->moveBack();
+		$I->amOnPage('index.php?option=com_weblinks');
+		$I->waitForText('Uncategorised','30', ['css' => 'h3']);
+		$I->comment('I open the uncategorised Weblink Category');
+		$I->click(['link' => 'Uncategorised']);
 		$I->expectTo('see that hits is 1');
 		$I->see('Hits: 1', ['class' => 'list-hits']);
 	}
