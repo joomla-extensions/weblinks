@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2a84f69c2f1c9c30cbdb3d7031598ca9",
-    "content-hash": "56baea20fbb902f01ab051a33e273427",
+    "hash": "295ade5ea032be302803797b599d32a5",
+    "content-hash": "38fcfd404287dc8d0b3f391ccd288057",
     "packages": [],
     "packages-dev": [
         {
@@ -799,16 +799,16 @@
         },
         {
             "name": "joomla-projects/selenium-server-standalone",
-            "version": "v2.47.1",
+            "version": "v2.51.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-projects/selenium-server-standalone.git",
-                "reference": "ee9d37f7bab058c010a9109803e23d6198329d22"
+                "reference": "30bd42c4facebcf04e826065a1ea5f17a1078332"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joomla-projects/selenium-server-standalone/zipball/ee9d37f7bab058c010a9109803e23d6198329d22",
-                "reference": "ee9d37f7bab058c010a9109803e23d6198329d22",
+                "url": "https://api.github.com/repos/joomla-projects/selenium-server-standalone/zipball/30bd42c4facebcf04e826065a1ea5f17a1078332",
+                "reference": "30bd42c4facebcf04e826065a1ea5f17a1078332",
                 "shasum": ""
             },
             "bin": [
@@ -831,7 +831,7 @@
                 "selenium",
                 "testing"
             ],
-            "time": "2015-09-30 10:26:45"
+            "time": "2016-02-08 10:51:31"
         },
         {
             "name": "joomla/compat",
