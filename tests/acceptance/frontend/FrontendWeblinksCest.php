@@ -70,6 +70,7 @@ class FrontendWeblinksCest
 		$I->waitForText('Uncategorised','30', ['css' => 'h3']);
 		$I->checkForPhpNoticesOrWarnings();
 		$I->comment('I open the uncategorised Weblink Category');
+		$I->waitForElement(['link' => 'Uncategorised'], 60);
 		$I->click(['link' => 'Uncategorised']);
 
 		// Check that hits is 0
@@ -81,7 +82,17 @@ class FrontendWeblinksCest
 
 		// Click on the link, go back, and check that hits is still 0
 		$I->click(['link' => $title]);
-		$I->moveBack();
+
+		$I->amOnPage('index.php?option=com_weblinks');
+		$I->waitForElement(['link' => 'Uncategorised'], 60);
+		$I->click(['link' => 'Uncategorised']);
+		$I->comment('I search the weblink: ' . $title);
+		$I->waitForElement(['id' => 'filter-search'], 60);
+		$I->fillField(['id' => 'filter-search'], $title);
+		$I->pressKey(['id' => 'filter-search'], \Facebook\WebDriver\WebDriverKeys::ENTER);
+		$I->wait(1);
+		$I->waitForText('Uncategorised','30', ['css' => 'h2']);
+
 		$I->expectTo('see that hits is still 0');
 		$I->see('Hits: 0', ['class' => 'list-hits']);
 	}
@@ -115,7 +126,16 @@ class FrontendWeblinksCest
 
 		// Click on the link, go back, and check that hits is 1
 		$I->click(['link' => $title]);
-		$I->moveBack();
+		$I->amOnPage('index.php?option=com_weblinks');
+		$I->comment('I open the uncategorised Weblink Category');
+		$I->waitForElement(['link' => 'Uncategorised'], 60);
+		$I->click(['link' => 'Uncategorised']);
+		$I->comment('I search the weblink: ' . $title);
+		$I->waitForElement(['id' => 'filter-search'], 60);
+		$I->fillField(['id' => 'filter-search'], $title);
+		$I->pressKey(['id' => 'filter-search'], \Facebook\WebDriver\WebDriverKeys::ENTER);
+		$I->wait(1);
+		$I->waitForText('Uncategorised','30', ['css' => 'h2']);
 		$I->expectTo('see that hits is 1');
 		$I->see('Hits: 1', ['class' => 'list-hits']);
 	}
