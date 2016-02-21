@@ -1,6 +1,8 @@
 build:
   image: yveshoppe/joomla-systemtests
   commands:
+    - apt-get update
+    - apt-get upgrade -y
     - chmod a+x .drone/build.sh
     - ./.drone/build.sh
     - cd /tests/www
