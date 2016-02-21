@@ -60,5 +60,5 @@ tests/cache
 
 # Package building related
 /dist
-jbuild.ini
+jorobo.ini
 
