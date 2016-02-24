@@ -4,7 +4,6 @@
 define("_JEXEC", 'true');
 
 // Maximise error reporting.
-ini_set('zend.ze1_compatibility_mode', '0');
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -86,10 +85,13 @@ if (!defined('JDEBUG'))
 
 if (!defined('JPATH_COMPONENT_SITE'))
 {
-	define('JPATH_COMPONENT_SITE', dirname(dirname(JPATH_BASE)) . '/src');
+	define('JPATH_COMPONENT_SITE', dirname(dirname(JPATH_BASE)) . '/src/component/com_weblinks');
 }
 
-
+if (!defined('JPATH_COMPONENT_ADMINISTRATOR'))
+{
+	define('JPATH_COMPONENT_ADMINISTRATOR', dirname(dirname(JPATH_BASE)) . '/src/administrator/component/com_weblinks');
+}
 
 $_SERVER['HTTP_HOST'] = "localhost";
 
