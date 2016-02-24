@@ -491,4 +491,22 @@ class RoboFile extends \Robo\Tasks
 
 		$this->taskBuild($params)->run();
 	}
+
+	/**
+	 * Executes all unit tests
+	 */
+	public function runUnit()
+	{
+		$this->createTestingSite();
+		$this->getComposer();
+		$this->taskComposerInstall()->run();
+
+		// Make sure to run the build command to generate AcceptanceTester
+		$this->_exec($this->isWindows() ? 'vendor\bin\codecept.bat build' : 'php vendor/bin/codecept build');
+
+		$this->taskCodecept()
+			->suite('unit')
+			->run()
+			->stopOnFail();
+	}
 }
