@@ -141,7 +141,17 @@ class AdministratorCategoriesCest
 		$I->amGoingTo('Navigate to Categories page in /administrator/');
 		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
 		$I->waitForText('Weblinks: Categories', '60', ['css' => 'h1']);
-		$I->setFilter('Select Status', 'Archived');
+
+		if ($I->isPhoneScreen())
+		{
+			$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks&filter[published]=2');
+			$I->waitForText('Weblinks: Categories', '60', ['css' => 'h1']);
+		}
+		else
+		{
+			$I->setFilter('Select Status', 'Archived');
+		}
+
 		$I->searchForItem($this->categoryTitle);
 		$I->checkAllResults();
 		$I->amGoingTo('try to delete a Weblinks Category');
@@ -163,7 +173,17 @@ class AdministratorCategoriesCest
 		$I->amGoingTo('Navigate to Categories page in /administrator/');
 		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
 		$I->waitForText('Weblinks: Categories', '60', ['css' => 'h1']);
-		$I->setFilter('Select Status', 'Trashed');
+
+		if ($I->isPhoneScreen())
+		{
+			$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks&filter[published]=-2');
+			$I->waitForText('Weblinks: Categories', '60', ['css' => 'h1']);
+		}
+		else
+		{
+			$I->setFilter('Select Status', 'Trashed');
+		}
+
 		$I->searchForItem($this->categoryTitle);
 		$I->checkAllResults();
 		$I->amGoingTo('try to delete a Weblinks Category');
