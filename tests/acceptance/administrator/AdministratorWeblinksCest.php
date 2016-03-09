@@ -116,7 +116,7 @@ class AdministratorWeblinksCest
 
 		$I->amGoingTo('Delete the just saved weblink');
 		$I->checkAllResults();
-		$I->click(['xpath'=> '//div[@id="toolbar-delete"]/button']);
+		$I->clickToolbarButton('empty trash');
 		$I->acceptPopup();
 		$I->waitForText('Web Links','30',['css' => 'h1']);
 		$I->expectTo('see a success message and the weblink removed from the list');
