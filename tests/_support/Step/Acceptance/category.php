@@ -58,7 +58,7 @@ class category extends \AcceptanceTester
 		$I->waitForText('Weblinks: Categories', '30', ['css' => 'h1']);
 		$I->searchForItem($categoryName);
 		$I->amGoingTo('Select the weblink result');
-		$I->checkAllResults();
+		$I->click(['xpath' => "//input[@id='cb0']"]);
 		$I->clickToolbarButton("Trash");
 		$I->see('category successfully trashed.', ['id' => 'system-message-container']);
 	}
@@ -78,7 +78,7 @@ class category extends \AcceptanceTester
 		$I->setFilter('select status', 'Trashed');
 		$I->searchForItem($categoryName);
 		$I->amGoingTo('Select the weblink result');
-		$I->checkAllResults();
+		$I->click(['xpath' => "//input[@id='cb0']"]);
 		$I->clickToolbarButton("empty trash");
 		$I->see('category successfully deleted.', ['id' => 'system-message-container']);
 	}
