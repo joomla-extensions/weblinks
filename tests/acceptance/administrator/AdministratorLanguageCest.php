@@ -123,3 +123,4 @@ Class AdministratorLanguageCest
     $I->deleteMenuItem($menuItemtitle2, "Main Menu (fr-FR)");
   }
 }
+
