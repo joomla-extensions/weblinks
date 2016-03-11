@@ -26,7 +26,7 @@ class category extends \AcceptanceTester
 	 *
 	 * @return void
 	 */
-	public function createCategory($categoryName)
+	public function createCategory($categoryName,$language)
 	{
 		$I = $this;
 		$I->am('Administrator');
@@ -39,6 +39,7 @@ class category extends \AcceptanceTester
 		$I->clickToolbarButton('New');
 		$I->waitForText('Weblinks: New Category', '30', ['css' => 'h1']);
 		$I->fillField(['id' => 'jform_title'], $categoryName);
+		$I->selectOptionInChosen('Language', $language);
 		$I->clickToolbarButton('Save & Close');
 		$I->expectTo('see a success message after saving the category');
 		$I->see('Category successfully saved', ['id' => 'system-message-container']);
