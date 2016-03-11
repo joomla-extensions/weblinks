@@ -85,14 +85,10 @@ Class AdministratorLanguageCest
     $I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
     $I->waitForText('Weblinks: Categories', '30', ['css' => 'h1']);
     $I->expectTo('see categories page');
-    $I->checkForPhpNoticesOrWarnings();
-    $I->amGoingTo('try to save a category with a filled title english');
-    $I->clickToolbarButton('new');
-    $I->waitForText('Weblinks: New Category', '30', ['css' => 'h1']);
     $title1 = $this->catTitle.'-en';
     $title2 = $this->catTitle.'-fr';
-    $I->createCategory($title1);
-    $I->createCategory($title2);
+    $I->createCategory($title1, "English (UK)");
+    $I->createCategory($title2, "French (FR)");
     $I->am('Administrator');
     $I->wantToTest('menu creation in /administrator/');
     $I->amGoingTo('Navigate to MenuItems page in /administrator/');
@@ -112,7 +108,7 @@ Class AdministratorLanguageCest
     $I->see("Page d'accueil");
 
     $I->am('Administrator');
-    $I->wantToTest('delete category created in /administrator/');
+    $I->wantToTest('trash category created in /administrator/');
     $I->trashCategory($title1);
     $I->trashCategory($title2);
     $I->wantToTest('delete category created in /administrator/');
