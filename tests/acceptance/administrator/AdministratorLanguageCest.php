@@ -14,15 +14,14 @@ Class AdministratorLanguageCest
   *
   * return void
   */
-
-    public function __construct()
+  public function __construct()
   {
     $this->faker = Faker\Factory::create();
-    $this->title  = 'Weblink' . $this->faker->randomNumber();
+    $this->webTitle = 'Weblink' . $this->faker->randomNumber();
+    $this->catTitle =  'Category' . $this->faker->randomNumber();
     $this->url  = $this->faker->url();
     $this->menuItem = 'Menu Item' . $this->faker->randomNumber();
   }
-
 
   /**
   * Test to create and then delete the menu item
@@ -39,7 +38,7 @@ Class AdministratorLanguageCest
     $I->waitForText('Menus: Items', '30', ['css' => 'h1']);
     $I->expectTo('see MenuItem page');
     $I->checkForPhpNoticesOrWarnings();
-    $title = "kshitij en-GB3".rand(1, 100);
+    $title = $this->menuItem;
     $I->createMenuItem($title, "Weblinks", "List All Web Link Categories", "Main Menu","All");
     $I->deleteMenuItem($title);
   }
@@ -70,15 +69,14 @@ Class AdministratorLanguageCest
     $I->see("Home");
     $I->deleteMenuItem("Test Lang en-GB");
     $I->deleteMenuItem("Test Lang fr-FR");
-
 }
 
   /**
-  * Create multilingial weblinks with different categories, valiate its creation on the frontend
+  * Create multilingial weblinks with different categories, validate its creation on the frontend
   *
   * return void
   */
-  public function administratorCreateMenuCheckLanguageTranslationFrontEnd(\Step\Acceptance\weblink $I, AcceptanceTester $P)
+  public function administratorCreateMenuCheckLanguageTranslationFrontEnd(\Step\Acceptance\category $I)
   {
     $I->am('Administrator');
     $I->wantToTest('Category creation in /administrator/');
@@ -89,51 +87,39 @@ Class AdministratorLanguageCest
     $I->expectTo('see categories page');
     $I->checkForPhpNoticesOrWarnings();
     $I->amGoingTo('try to save a category with a filled title english');
-    $I->click(['xpath' => "//button[@onclick=\"Joomla.submitbutton('category.add')\"]"]);
+    $I->clickToolbarButton('new');
     $I->waitForText('Weblinks: New Category', '30', ['css' => 'h1']);
-    $salt = rand(1, 100);
-    $I->fillField(['id' => 'jform_title'], 'webcat-en ' . $salt);
-    $I->click(['xpath' => "//button[@onclick=\"Joomla.submitbutton('category.apply')\"]"]);
-    $I->expectTo('see a success message after saving the category');
-    $I->see('Category successfully saved', ['id' => 'system-message-container']);
-
-    $I->amGoingTo('try to save a category with a filled title french');
-    $I->clickToolbarButton("save & new");
-    //$I->click(['xpath' => "//button[@onclick=\"Joomla.submitbutton('category.save2new')\"]"]);
-    $I->waitForText('Weblinks: New Category', '30', ['css' => 'h1']);
-    $I->fillField(['id' => 'jform_title'], 'webcat-fr ' . $salt);
-    $I->clickToolbarButton("save & close");
-    $I->expectTo('see a success message after saving the category');
-    $I->see('Category successfully saved', ['id' => 'system-message-container']);
-    $I->createWeblink($this->title, $this->url, "No");
-
-    $I = $P;
-
+    $title1 = $this->catTitle.'-en';
+    $title2 = $this->catTitle.'-fr';
+    $I->createCategory($title1);
+    $I->createCategory($title2);
     $I->am('Administrator');
     $I->wantToTest('menu creation in /administrator/');
-    //$I->doAdministratorLogin();
     $I->amGoingTo('Navigate to MenuItems page in /administrator/');
     $I->amOnPage('administrator/index.php?option=com_menus&view=items');
     $I->waitForText('Menus: Items', '30', ['css' => 'h1']);
     $I->expectTo('see MenuItem page');
     $I->checkForPhpNoticesOrWarnings();
-    $I->createMenuItem("Test Lang en-GB".$salt, "Weblinks", "List All Web Link Categories", "Main Menu (en-GB)","All");
-    $I->createMenuItem("Test Lang fr-FR".$salt, "Weblinks", "List All Web Link Categories", "Main Menu (fr-FR)","All");
+    $menuItemtitle1 = $this->menuItem;
+    $menuItemtitle2 = $this->menuItem;
+    $I->createMenuItem($menuItemtitle1, "Weblinks", "List All Web Link Categories", "Main Menu (en-GB)","English (UK)");
+    $I->createMenuItem($menuItemtitle2, "Weblinks", "List All Web Link Categories", "Main Menu (fr-FR)","French (FR)");
     $I->amGoingTo("Home page");
     $I->amOnPage("index.php/");
-    //$I->waitForText("Test Lang en-GB", '30', ['css' => 'a']);
     $I->click(['xpath' => "//li[2]/a/img"]);
     $I->see("Home");
-
     $I->click(['xpath' => "//li[1]/a/img"]);
     $I->see("Page d'accueil");
 
     $I->am('Administrator');
+    $I->wantToTest('delete category created in /administrator/');
+    $I->trashCategory($title1);
+    $I->trashCategory($title2);
+    $I->wantToTest('delete category created in /administrator/');
+    $I->deleteCategory($title1);
+    $I->deleteCategory($title2);
     $I->wantToTest('delete menu created in /administrator/');
-    //$I->doAdministratorLogin();
-    $I->amOnPage('administrator/index.php?option=com_menus&view=items');
-    $I->deleteMenuItem("Test Lang en-GB".$salt, "Main Menu (en-GB)");
-    $I->deleteMenuItem("Test Lang fr-FR".$salt, "Main Menu (fr-FR)");
-
+    $I->deleteMenuItem($menuItemtitle1, "Main Menu (en-GB)");
+    $I->deleteMenuItem($menuItemtitle2, "Main Menu (fr-FR)");
   }
 }
