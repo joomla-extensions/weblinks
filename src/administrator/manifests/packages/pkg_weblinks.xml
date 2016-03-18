@@ -2,9 +2,9 @@
 <extension type="package" version="3.0" method="upgrade">
 	<name>pkg_weblinks</name>
 	<packagename>weblinks</packagename>
-	<creationDate>December 2012</creationDate>
+	<creationDate>##DATE##</creationDate>
 	<packager>Joomla! Project</packager>
-	<copyright>(C) 2005 - ##DATE## Open Source Matters. All rights reserved.</copyright>
+	<copyright>(C) 2005 - ##YEAR## Open Source Matters. All rights reserved.</copyright>
 	<packageremail>admin@joomla.org</packageremail>
 	<packagerurl>www.joomla.org</packagerurl>
 	<author>Joomla! Project</author>
