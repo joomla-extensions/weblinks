@@ -41,6 +41,8 @@ class Com_WeblinksInstallerScript
 			$category->access = 1;
 			$category->params = '{"category_layout":"","image":""}';
 			$category->metadata = '{"author":"","robots":""}';
+			$category->metadesc = '';
+			$category->metakey = '';
 			$category->language = '*';
 			$category->checked_out_time = JFactory::getDbo()->getNullDate();
 			$category->version = 1;
