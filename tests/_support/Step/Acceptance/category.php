@@ -26,7 +26,7 @@ class category extends \AcceptanceTester
 	 *
 	 * @return void
 	 */
-	public function createCategory($categoryName,$language)
+	public function createCategory($categoryName,$language = "all")
 	{
 		$I = $this;
 		$I->am('Administrator');
