@@ -45,7 +45,7 @@ defined('_JEXEC') or die;
 
 			if ($params->get('hits', 0))
 			{
-				echo '(' . $item->hits . ' ' . JText::_('MOD_WEBLINKS_HITS') . ')';
+				echo ' -' . $item->hits . ' ' . JText::_('MOD_WEBLINKS_HITS') . '-';
 			}
 			?>
 		</li>
