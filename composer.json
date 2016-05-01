@@ -2,6 +2,11 @@
     "name"       : "joomla-extensions/weblinks",
     "description": "The Open Source PHP Framework for creating complex Joomla extensions",
     "license"    : "GPL-2.0+",
+    "config": {
+        "platform": {
+            "php": "5.5.33"
+        }
+    },
     "require"    : {
         "php": ">=5.3.10"
     },
