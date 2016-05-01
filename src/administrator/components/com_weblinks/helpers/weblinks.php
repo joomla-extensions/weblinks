@@ -43,7 +43,7 @@ class WeblinksHelper extends JHelperContent
 	/**
 	 * Adds Count Items for Category Manager.
 	 *
-	 * @param   stdClass[]  &$items  The banner category objects
+	 * @param   stdClass[]  &$items  The weblinks category objects
 	 *
 	 * @return  stdClass[]
 	 *
