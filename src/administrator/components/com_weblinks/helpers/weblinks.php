@@ -39,4 +39,58 @@ class WeblinksHelper extends JHelperContent
 			$vName == 'categories'
 		);
 	}
+
+	/**
+	 * Adds Count Items for Category Manager.
+	 *
+	 * @param   stdClass[]  &$items  The weblinks category objects
+	 *
+	 * @return  stdClass[]
+	 *
+	 * @since   3.5.1
+	 */
+	public static function countItems(&$items)
+	{
+		$db = JFactory::getDbo();
+
+		foreach ($items as $item)
+		{
+			$item->count_trashed = 0;
+			$item->count_archived = 0;
+			$item->count_unpublished = 0;
+			$item->count_published = 0;
+			$query = $db->getQuery(true);
+			$query->select('state, COUNT(*) AS count')
+				->from($db->qn('#__weblinks'))
+				->where('catid = ' . (int) $item->id)
+				->group('state');
+			$db->setQuery($query);
+			$weblinks = $db->loadObjectList();
+
+			foreach ($weblinks as $weblink)
+			{
+				if ($weblink->state == 1)
+				{
+					$item->count_published = $weblink->count;
+				}
+
+				if ($weblink->state == 0)
+				{
+					$item->count_unpublished = $weblink->count;
+				}
+
+				if ($weblink->state == 2)
+				{
+					$item->count_archived = $weblink->count;
+				}
+
+				if ($weblink->state == -2)
+				{
+					$item->count_trashed = $weblink->count;
+				}
+			}
+		}
+
+		return $items;
+	}
 }
