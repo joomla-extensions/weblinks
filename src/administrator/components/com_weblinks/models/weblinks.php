@@ -50,7 +50,7 @@ class WeblinksModelWeblinks extends JModelList
 				'publish_down', 'a.publish_down',
 				'url', 'a.url',
 				'tag',
-				'level', 'c.level'
+				'level', 'c.level',
 			);
 		}
 
