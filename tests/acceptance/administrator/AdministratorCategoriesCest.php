@@ -119,7 +119,7 @@ class AdministratorCategoriesCest
 		$I->doAdministratorLogin();
 		$I->amGoingTo('Navigate to Categories page in /administrator/');
 		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
-		$I->waitForText('Weblinks: Categories', '60', ['css' => 'h1']);
+		$I->waitForText('Web Links: Categories', '60', ['css' => 'h1']);
 		$I->searchForItem($this->categoryTitle);
 		$I->checkAllResults();
 		$I->amGoingTo('try to archive a Web Links category');
