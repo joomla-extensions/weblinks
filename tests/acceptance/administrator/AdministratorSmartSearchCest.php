@@ -91,7 +91,7 @@ class AdministratorSmartSearchCest
 		$I->amOnPage('administrator/index.php?option=com_finder');
 		$I->waitForText('Smart Search: Indexed Content', '30', ['css' => 'h1']);
 		$I->click(['css' => 'button[data-target="#modal-archive"]']);
-		$I->wait(5);
+		$I->wait(1);
 		$I->switchToIframe('Smart Search Indexer');
 
 		// Put something here to check that it worked.
