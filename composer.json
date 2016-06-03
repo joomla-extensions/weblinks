@@ -11,7 +11,7 @@
         "php": ">=5.3.10"
     },
     "require-dev": {
-        "codeception/codeception": "~2.2",
+        "codeception/codeception": "^2.2",
         "joomla-projects/joomla-browser": "v3.6.0",
         "codegyre/robo": "~0.5",
         "joomla-projects/robo": "dev-master",
