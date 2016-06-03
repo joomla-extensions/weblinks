@@ -4,22 +4,22 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1d278248959c97dd9542b4d742b69946",
-    "content-hash": "ccb1216dacf94fe049baf27294cd255d",
+    "hash": "ea6be0b5282b8640ab92ed8ef8874064",
+    "content-hash": "5dc2fb55984c7a25770a5669dc99eea3",
     "packages": [],
     "packages-dev": [
         {
             "name": "codeception/codeception",
-            "version": "2.1.8",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/Codeception.git",
-                "reference": "f3daa61f0f11c531b33eb3623ab0daa599d88a79"
+                "reference": "e31097051056e26d2d70e23b4df57a0f6f7df1b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/f3daa61f0f11c531b33eb3623ab0daa599d88a79",
-                "reference": "f3daa61f0f11c531b33eb3623ab0daa599d88a79",
+                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/e31097051056e26d2d70e23b4df57a0f6f7df1b0",
+                "reference": "e31097051056e26d2d70e23b4df57a0f6f7df1b0",
                 "shasum": ""
             },
             "require": {
@@ -1403,16 +1403,16 @@
         },
         {
             "name": "joomla-projects/selenium-server-standalone",
-            "version": "v2.52.0",
+            "version": "v2.53.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-projects/selenium-server-standalone.git",
-                "reference": "17b4bb3fd087ded32fe2d9342b8573a75f56460c"
+                "reference": "4c9428e1450de6a9fa956f3bd726351a9b281b53"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joomla-projects/selenium-server-standalone/zipball/17b4bb3fd087ded32fe2d9342b8573a75f56460c",
-                "reference": "17b4bb3fd087ded32fe2d9342b8573a75f56460c",
+                "url": "https://api.github.com/repos/joomla-projects/selenium-server-standalone/zipball/4c9428e1450de6a9fa956f3bd726351a9b281b53",
+                "reference": "4c9428e1450de6a9fa956f3bd726351a9b281b53",
                 "shasum": ""
             },
             "bin": [
@@ -1435,7 +1435,7 @@
                 "selenium",
                 "testing"
             ],
-            "time": "2016-02-16 11:07:51"
+            "time": "2016-05-30 15:21:57"
         },
         {
             "name": "joomla/compat",
@@ -2839,16 +2839,16 @@
         },
         {
             "name": "sebastian/git",
-            "version": "2.1.1",
+            "version": "2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/git.git",
-                "reference": "38638de3e94830a5cd7a5956135589b967609cd5"
+                "reference": "607dcc6003502acdd0e6199b60ba954ce00f3004"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/git/zipball/38638de3e94830a5cd7a5956135589b967609cd5",
-                "reference": "38638de3e94830a5cd7a5956135589b967609cd5",
+                "url": "https://api.github.com/repos/sebastianbergmann/git/zipball/607dcc6003502acdd0e6199b60ba954ce00f3004",
+                "reference": "607dcc6003502acdd0e6199b60ba954ce00f3004",
                 "shasum": ""
             },
             "require": {
@@ -2880,7 +2880,7 @@
             "keywords": [
                 "git"
             ],
-            "time": "2016-02-21 15:02:23"
+            "time": "2016-03-12 23:31:06"
         },
         {
             "name": "sebastian/global-state",
@@ -3902,16 +3902,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.24.0",
+            "version": "v1.24.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "3e5aa30ebfbafd5951fb1b01e338e1800ce7e0e8"
+                "reference": "3566d311a92aae4deec6e48682dc5a4528c4a512"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/3e5aa30ebfbafd5951fb1b01e338e1800ce7e0e8",
-                "reference": "3e5aa30ebfbafd5951fb1b01e338e1800ce7e0e8",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/3566d311a92aae4deec6e48682dc5a4528c4a512",
+                "reference": "3566d311a92aae4deec6e48682dc5a4528c4a512",
                 "shasum": ""
             },
             "require": {
@@ -3959,7 +3959,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2016-01-25 21:22:18"
+            "time": "2016-05-30 09:11:59"
         }
     ],
     "aliases": [],
