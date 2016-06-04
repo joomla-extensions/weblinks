@@ -29,10 +29,10 @@ class AdministratorSmartSearchCest
 
 		$I->amGoingTo('Navigate to the Global Configuration page in /administrator/ and disable the plugin');
 		$I->amOnPage('administrator/index.php?option=com_config');
-		$I->waitForText('Global Configuration', '30', ['css' => 'h1']);
+		$I->waitForText('Global Configuration', 30, ['class' => 'page-title']);
 		$I->selectOptionInChosen('Default Editor', 'Editor - None');
 		$I->clickToolbarButton('Save & Close');
-		$I->waitForText('Control Panel', '30', ['css' => 'h1']);
+		$I->waitForText('Control Panel', 30, ['class'=> 'page-title']);
 		$I->expectTo('see a success message after saving the configuration');
 		$I->see('Configuration successfully saved', ['id' => 'system-message-container']);
 	}
@@ -52,11 +52,11 @@ class AdministratorSmartSearchCest
 		$I->expectTo('see a message saying that the content plugin should be enabled');
 		$I->waitForElement(['link' => 'enable this plugin']);
 		$I->click(['link' => 'enable this plugin']);
-		$I->waitForText('Plugins', '30', ['css' => 'h1']);
+		$I->waitForText('Plugins', 30, ['class'=> 'page-title']);
 		$I->waitForElement(['link' => 'Content - Smart Search']);
 		$I->checkOption(['id' => 'cb0']);
 		$I->clickToolbarButton('Publish');		// Note: The button is called "Enable", but we need to call it "Publish" here.
-		$I->waitForText('Plugin successfully enabled', '30', ['class' => 'alert-message']);
+		$I->waitForText('Plugin successfully enabled', 30, ['class' => 'alert-message']);
 	}
 
 	/*
@@ -71,10 +71,10 @@ class AdministratorSmartSearchCest
 
 		$I->amGoingTo('Navigate to the Smart Search page in /administrator/ and purge the index');
 		$I->amOnPage('administrator/index.php?option=com_finder');
-		$I->waitForText('Smart Search', '30', ['css' => 'h1']);
+		$I->waitForText('Smart Search', 30, ['class'=> 'page-title']);
 		$I->clickToolbarButton('Trash');		// Note: The button is called "Clear Index", but we need to call it "Trash" here.
 		$I->acceptPopup();
-		$I->waitForText('All items have been successfully deleted', '30', ['class' => 'alert-message']);
+		$I->waitForText('All items have been successfully deleted', 30, ['class' => 'alert-message']);
 	}
 
 	/*
@@ -89,10 +89,11 @@ class AdministratorSmartSearchCest
 
 		$I->amGoingTo('Navigate to Smart Search page in /administrator/ and index the content');
 		$I->amOnPage('administrator/index.php?option=com_finder');
-		$I->waitForText('Smart Search: Indexed Content', '30', ['css' => 'h1']);
+		$I->waitForText('Smart Search: Indexed Content', 30, ['class'=> 'page-title']);
 		$I->click(['css' => 'button[data-target="#modal-archive"]']);
 		$I->wait(1);
-		$I->switchToIframe('Smart Search Indexer');
+		$I->switchToIFrame('Smart Search Indexer');
+		$I->checkForPhpNoticesOrWarnings();
 
 		// Put something here to check that it worked.
 	}
@@ -100,6 +101,8 @@ class AdministratorSmartSearchCest
 	/*
 	 * Add a new article.
 	 * Since the content plugin is enabled, this will add the article to the search index.
+	 *
+	 * @todo Revisit this when Gherkin is available.
 	 */
 	public function administratorAddNewArticle(\Step\Acceptance\weblink $I)
 	{
@@ -109,13 +112,15 @@ class AdministratorSmartSearchCest
 		$I->doAdministratorLogin();
 
 		$I->amGoingTo('Navigate to the Article Manager Edit page in /administrator/ and create a new article');
-		$I->amOnPage('administrator/index.php?option=com_content&view=article&layout=edit');
-		$I->waitForText('Articles: New', '30', ['css' => 'h1']);
+		$I->amOnPage('administrator/index.php?option=com_content');
+		$I->waitForText('Articles', 30, ['class'=> 'page-title']);
+		$I->clickToolbarButton('New');
+		$I->waitForText('Articles: New', 30, ['class'=> 'page-title']);
 
 		$I->fillField(['id' => 'jform_title'], $this->title);
 		$I->fillField(['id' => 'jform_articletext'], $this->articletext);
 		$I->clickToolbarButton('Save & Close');
-		$I->waitForText('Articles', '30', ['css' => 'h1']);
+		$I->waitForText('Articles', 30, ['class'=> 'page-title']);
 		$I->expectTo('see a success message and the article added after saving it');
 		$I->see('Article successfully saved', ['id' => 'system-message-container']);
 		$I->see($this->title, ['id' => 'articleList']);
@@ -132,12 +137,13 @@ class AdministratorSmartSearchCest
 		$I->doAdministratorLogin();
 
 		$I->amGoingTo('Navigate to Plugins page in /administrator/ and disable the Smart Search Content plugin');
-		$I->amOnPage('administrator/index.php?option=com_plugins&view=plugins&filter[search]=Content - Smart Search');
-		$I->waitForText('Plugins', '30', ['css' => 'h1']);
+		$I->amOnPage('administrator/index.php?option=com_plugins&view=plugins');
+		$I->searchForItem('Content - Smart Search');
+		$I->waitForText('Plugins', 30, ['class'=> 'page-title']);
 		$I->waitForElement(['link' => 'Content - Smart Search']);
 		$I->checkOption(['id' => 'cb0']);
 		$I->clickToolbarButton('Unpublish');		// Note: The button is called "Disable", but we need to call it "Unpublish" here.
-		$I->waitForText('Plugin successfully disabled', '30', ['class' => 'alert-message']);
+		$I->waitForText('Plugin successfully disabled', 30, ['class' => 'alert-message']);
 	}
 }
 
