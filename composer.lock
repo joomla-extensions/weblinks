@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2e266a9779d4a27cedb1befd0661d6eb",
-    "content-hash": "55dcaa2e0cc8487d1759e9489a475a98",
+    "hash": "87c538127e912beb7f81120234148278",
+    "content-hash": "9f0da75ef3fec4dd00045e1882077fb2",
     "packages": [],
     "packages-dev": [
         {
@@ -1375,16 +1375,16 @@
         },
         {
             "name": "joomla-projects/jorobo",
-            "version": "0.3.0",
+            "version": "0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-projects/jorobo.git",
-                "reference": "9d52b9f0d8b6b22f0574e40166fd6ebee479ab56"
+                "reference": "6f815a48d75418023c4de5cd79a8f1eb7150ee31"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joomla-projects/jorobo/zipball/9d52b9f0d8b6b22f0574e40166fd6ebee479ab56",
-                "reference": "9d52b9f0d8b6b22f0574e40166fd6ebee479ab56",
+                "url": "https://api.github.com/repos/joomla-projects/jorobo/zipball/6f815a48d75418023c4de5cd79a8f1eb7150ee31",
+                "reference": "6f815a48d75418023c4de5cd79a8f1eb7150ee31",
                 "shasum": ""
             },
             "require": {
@@ -1424,7 +1424,7 @@
                 }
             ],
             "description": "Tools and Tasks based on Robo.li for Joomla Extension Development and Releases",
-            "time": "2016-03-14 14:51:42"
+            "time": "2016-04-14 17:32:12"
         },
         {
             "name": "joomla-projects/robo",
