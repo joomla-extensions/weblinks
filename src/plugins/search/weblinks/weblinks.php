@@ -174,7 +174,7 @@ class PlgSearchWeblinks extends JPlugin
 		$case_when1 .= ' ELSE ';
 		$case_when1 .= $c_id . ' END as catslug';
 
-		$query->select('a.title AS title, \'\' AS created, a.url, a.description AS text, ' . $case_when . "," . $case_when1)
+		$query->select('a.title AS title, a.created AS created, a.url, a.description AS text, ' . $case_when . "," . $case_when1)
 		->select($query->concatenate(array($db->quote($searchWeblinks), 'c.title'), " / ") . ' AS section')
 		->select('\'1\' AS browsernav')
 		->from('#__weblinks AS a')
