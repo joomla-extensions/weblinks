@@ -62,7 +62,7 @@ class weblink extends \AcceptanceTester
 		$I->checkAllResults();
 		$I->clickToolbarButton('Trash');
 		$I->waitForText('Web Links','30',['css' => 'h1']);
-		$I->waitForText('Web link successfully trashed', 30, ['id' => 'system-message-container']);
+		$I->waitForText('1 web link successfully trashed', 30, ['id' => 'system-message-container']);
 
 		$I->amGoingTo('Delete the weblink');
 		$I->selectOptionInChosen('- Select Status -', 'Trashed');
