@@ -12,13 +12,13 @@ class AdministratorSmartSearchCest
 	public function __construct()
 	{
 		$this->faker = Faker\Factory::create();
-		$this->title  = 'SmartSearch' . $this->faker->randomNumber();
+		$this->title  = $this->faker->bothify('SmartSearch ?##?');
+		$this->url  = $this->faker->url;
 		$this->articletext = 'This is a test';
 	}
 
-	/*
-	 * Before the tests proper, switch the WYSIWYG editor off.
-	 * This is to make it easier to create test content.
+	/**
+	 * Before the tests proper, switch the WYSIWYG editor off. This is to make it easier to create test content.
 	 */
 	public function administratorDisableEditor(\Step\Acceptance\weblink $I)
 	{
@@ -27,7 +27,7 @@ class AdministratorSmartSearchCest
 
 		$I->doAdministratorLogin();
 
-		$I->amGoingTo('Navigate to the Global Configuration page in /administrator/ and disable the plugin');
+		$I->amGoingTo('Navigate to the Global Configuration page in /administrator/ and disable the WYSIWYG Editor');
 		$I->amOnPage('administrator/index.php?option=com_config');
 		$I->waitForText('Global Configuration', 30, ['class' => 'page-title']);
 		$I->selectOptionInChosen('Default Editor', 'Editor - None');
@@ -37,29 +37,46 @@ class AdministratorSmartSearchCest
 		$I->see('Configuration successfully saved', ['id' => 'system-message-container']);
 	}
 
-	/*
-	 * Before the tests proper, the Smart Search content plugin must be enabled.
-	 */
 	public function administratorEnableContentPlugin(\Step\Acceptance\weblink $I)
 	{
 		$I->am('Administrator');
-		$I->wantToTest('Enabling the Smart Search content plugin before the tests proper');
+		$I->wantToTest('Enabling the Smart Search content plugin. Note that this is not a requirement for Smart Search to index Weblinks');
 
 		$I->doAdministratorLogin();
 
 		$I->amGoingTo('Navigate to the Smart Search page in /administrator/');
 		$I->amOnPage('administrator/index.php?option=com_finder');
 		$I->expectTo('see a message saying that the content plugin should be enabled');
-		$I->waitForElement(['link' => 'enable this plugin']);
-		$I->click(['link' => 'enable this plugin']);
-		$I->waitForText('Plugins', 30, ['class'=> 'page-title']);
-		$I->waitForElement(['link' => 'Content - Smart Search']);
-		$I->checkOption(['id' => 'cb0']);
-		$I->clickToolbarButton('Publish');		// Note: The button is called "Enable", but we need to call it "Publish" here.
-		$I->waitForText('Plugin successfully enabled', 30, ['class' => 'alert-message']);
+		$I->waitForElement(['link' => 'Smart Search Content Plugin']);
+		$I->click(['link' => 'Smart Search Content Plugin']);
+		$I->waitForText('Plugins: Content - Smart Search', 30, ['class'=> 'page-title']);
+		$I->selectOptionInChosen('Status', 'Enabled');
+		$I->clickToolbarButton('save & close');
+		$I->waitForText('Plugin successfully saved.', 30, ['id' => 'system-message-container']);
+		$I->see('Plugin successfully saved.', ['id' => 'system-message-container']);
 	}
 
-	/*
+	/**
+	 * Before the tests proper, the Weblinks Smart Search plugin must be enabled.
+	 */
+	public function administratorEnableSmartsearchWeblinksPlugin(\Step\Acceptance\weblink $I)
+	{
+		$I->am('Administrator');
+		$I->wantToTest('Enabling the Smart Search Weblinks plugin');
+
+		$I->doAdministratorLogin();
+
+		$I->amOnPage('administrator/index.php?option=com_plugins');
+		$I->searchForItem('Smart Search - Web Links');
+		$I->click(['link' => 'Smart Search - Web Links']);
+		$I->waitForText('Plugins: Smart Search - Web Links', 30, ['class'=> 'page-title']);
+		$I->selectOptionInChosen('Status', 'Enabled');
+		$I->clickToolbarButton('save & close');
+		$I->waitForText('Plugin successfully saved.', 30, ['id' => 'system-message-container']);
+		$I->see('Plugin successfully saved.', ['id' => 'system-message-container']);
+	}
+
+	/**
 	 * Purge the index.
 	 */
 	public function administratorPurgeIndex(\Step\Acceptance\weblink $I)
@@ -72,12 +89,21 @@ class AdministratorSmartSearchCest
 		$I->amGoingTo('Navigate to the Smart Search page in /administrator/ and purge the index');
 		$I->amOnPage('administrator/index.php?option=com_finder');
 		$I->waitForText('Smart Search', 30, ['class'=> 'page-title']);
-		$I->clickToolbarButton('Trash');		// Note: The button is called "Clear Index", but we need to call it "Trash" here.
+
+		$I->click('Clear Index');
 		$I->acceptPopup();
 		$I->waitForText('All items have been successfully deleted', 30, ['class' => 'alert-message']);
+		$I->see('All items have been successfully deleted', ['class' => 'alert-message']);
 	}
 
-	/*
+	public function administratorCreateWeblink(\Step\Acceptance\weblink $I)
+	{
+		$I->doAdministratorLogin();
+
+		$I->createWeblink($this->title, $this->url);
+	}
+
+	/**
 	 * Index the current content.
 	 */
 	public function administratorRunTheIndexer(\Step\Acceptance\weblink $I)
@@ -90,43 +116,13 @@ class AdministratorSmartSearchCest
 		$I->amGoingTo('Navigate to Smart Search page in /administrator/ and index the content');
 		$I->amOnPage('administrator/index.php?option=com_finder');
 		$I->waitForText('Smart Search: Indexed Content', 30, ['class'=> 'page-title']);
-		$I->click(['css' => 'button[data-target="#modal-archive"]']);
-		$I->wait(1);
-		$I->switchToIFrame('Smart Search Indexer');
-		$I->checkForPhpNoticesOrWarnings();
-
-		// Put something here to check that it worked.
+		$I->click(['xpath' => "//div[@id='toolbar']//button[contains(text()[normalize-space()], 'Index')]"]);
+		$I->comment('I wait while smart search indexes the links');
+		$I->wait(2);
+		$I->waitForText($this->title, 30, '#j-main-container');
 	}
 
-	/*
-	 * Add a new article.
-	 * Since the content plugin is enabled, this will add the article to the search index.
-	 *
-	 * @todo Revisit this when Gherkin is available.
-	 */
-	public function administratorAddNewArticle(\Step\Acceptance\weblink $I)
-	{
-		$I->am('Administrator');
-		$I->wantToTest('Adding a new article before the tests proper');
-
-		$I->doAdministratorLogin();
-
-		$I->amGoingTo('Navigate to the Article Manager Edit page in /administrator/ and create a new article');
-		$I->amOnPage('administrator/index.php?option=com_content');
-		$I->waitForText('Articles', 30, ['class'=> 'page-title']);
-		$I->clickToolbarButton('New');
-		$I->waitForText('Articles: New', 30, ['class'=> 'page-title']);
-
-		$I->fillField(['id' => 'jform_title'], $this->title);
-		$I->fillField(['id' => 'jform_articletext'], $this->articletext);
-		$I->clickToolbarButton('Save & Close');
-		$I->waitForText('Articles', 30, ['class'=> 'page-title']);
-		$I->expectTo('see a success message and the article added after saving it');
-		$I->see('Article successfully saved', ['id' => 'system-message-container']);
-		$I->see($this->title, ['id' => 'articleList']);
-	}
-
-	/*
+	/**
 	 * After the tests, the Smart Search content plugin must be disabled, ready for the next test.
 	 */
 	public function administratorDisableContentPlugin(\Step\Acceptance\weblink $I)
@@ -145,5 +141,31 @@ class AdministratorSmartSearchCest
 		$I->clickToolbarButton('Unpublish');		// Note: The button is called "Disable", but we need to call it "Unpublish" here.
 		$I->waitForText('Plugin successfully disabled', 30, ['class' => 'alert-message']);
 	}
-}
 
+	/**
+	 * After the tests, the Smart Search content plugin must be disabled, ready for the next test.
+	 */
+	public function administratorDisableSmartsearchWeblinksPlugin(\Step\Acceptance\weblink $I)
+	{
+		$I->am('Administrator');
+		$I->wantToTest('Disabling the Smart Search content plugin, ready for the next test run');
+
+		$I->doAdministratorLogin();
+
+		$I->amGoingTo('Navigate to Plugins page in /administrator/ and disable the Smart Search Content plugin');
+		$I->amOnPage('administrator/index.php?option=com_plugins&view=plugins');
+		$I->searchForItem('Smart Search - Web Links');
+		$I->waitForText('Plugins', 30, ['class'=> 'page-title']);
+		$I->waitForElement(['link' => 'Smart Search - Web Links']);
+		$I->checkOption(['id' => 'cb0']);
+		$I->clickToolbarButton('Unpublish');		// Note: The button is called "Disable", but we need to call it "Unpublish" here.
+		$I->waitForText('Plugin successfully disabled', 30, ['class' => 'alert-message']);
+	}
+
+	public function cleanUp(\Step\Acceptance\weblink $I)
+	{
+		$I->doAdministratorLogin();
+
+		$I->administratorDeleteWeblink($this->title);
+	}
+}
