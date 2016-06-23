@@ -79,7 +79,7 @@ class AdministratorCategoriesCest
 		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
 		$I->searchForItem($this->categoryTitle);
 		$I->waitForText('Weblinks: Categories', '60', ['css' => 'h1']);
-		$I->checkAllResults();
+		$I->click(['xpath' => "//input[@id='cb0']"]);
 		$I->amGoingTo('try to publish a Weblinks Category');
 		$I->clickToolbarButton('publish');
 		$I->waitForElement(['id' => 'system-message-container'], '60');
@@ -100,7 +100,8 @@ class AdministratorCategoriesCest
 		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
 		$I->waitForText('Weblinks: Categories', '60', ['css' => 'h1']);
 		$I->searchForItem($this->categoryTitle);
-		$I->checkAllResults();
+		$I->waitForText('Weblinks: Categories', '60', ['css' => 'h1']);
+		$I->click(['xpath' => "//input[@id='cb0']"]);
 		$I->amGoingTo('try to unpublish a Weblinks Category');
 		$I->clickToolbarButton('unpublish');
 		$I->waitForElement(['id' => 'system-message-container'], '60');
@@ -121,7 +122,8 @@ class AdministratorCategoriesCest
 		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
 		$I->waitForText('Weblinks: Categories', '60', ['css' => 'h1']);
 		$I->searchForItem($this->categoryTitle);
-		$I->checkAllResults();
+		$I->waitForText('Weblinks: Categories', '60', ['css' => 'h1']);
+		$I->click(['xpath' => "//input[@id='cb0']"]);
 		$I->amGoingTo('try to archive a weblink category');
 		$I->clickToolbarButton('archive');
 		$I->waitForElement(['id' => 'system-message-container'], '60');
@@ -143,7 +145,7 @@ class AdministratorCategoriesCest
 		$I->waitForText('Weblinks: Categories', '60', ['css' => 'h1']);
 		$I->setFilter('Select Status', 'Archived');
 		$I->searchForItem($this->categoryTitle);
-		$I->checkAllResults();
+		$I->click(['xpath' => "//input[@id='cb0']"]);
 		$I->amGoingTo('try to delete a Weblinks Category');
 		$I->clickToolbarButton('Trash');
 		$I->waitForElement(['id' => 'system-message-container'], '60');
@@ -165,7 +167,7 @@ class AdministratorCategoriesCest
 		$I->waitForText('Weblinks: Categories', '60', ['css' => 'h1']);
 		$I->setFilter('Select Status', 'Trashed');
 		$I->searchForItem($this->categoryTitle);
-		$I->checkAllResults();
+		$I->click(['xpath' => "//input[@id='cb0']"]);
 		$I->amGoingTo('try to delete a Weblinks Category');
 		$I->clickToolbarButton('Empty trash');
 		$I->acceptPopup();

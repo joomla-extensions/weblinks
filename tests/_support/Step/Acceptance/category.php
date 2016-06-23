@@ -26,7 +26,7 @@ class category extends \AcceptanceTester
 	 *
 	 * @return void
 	 */
-	public function createCategory($categoryName)
+	public function createCategory($categoryName, $language = "all")
 	{
 		$I = $this;
 		$I->am('Administrator');
@@ -39,6 +39,7 @@ class category extends \AcceptanceTester
 		$I->clickToolbarButton('New');
 		$I->waitForText('Weblinks: New Category', '30', ['css' => 'h1']);
 		$I->fillField(['id' => 'jform_title'], $categoryName);
+		$I->selectOptionInChosen('Language', $language);
 		$I->clickToolbarButton('Save & Close');
 		$I->expectTo('see a success message after saving the category');
 		$I->see('Category successfully saved', ['id' => 'system-message-container']);
@@ -58,7 +59,7 @@ class category extends \AcceptanceTester
 		$I->waitForText('Weblinks: Categories', '30', ['css' => 'h1']);
 		$I->searchForItem($categoryName);
 		$I->amGoingTo('Select the weblink result');
-		$I->checkAllResults();
+		$I->click(['xpath' => "//input[@id='cb0']"]);
 		$I->clickToolbarButton("Trash");
 		$I->see('category successfully trashed.', ['id' => 'system-message-container']);
 	}
@@ -78,7 +79,7 @@ class category extends \AcceptanceTester
 		$I->setFilter('select status', 'Trashed');
 		$I->searchForItem($categoryName);
 		$I->amGoingTo('Select the weblink result');
-		$I->checkAllResults();
+		$I->click(['xpath' => "//input[@id='cb0']"]);
 		$I->clickToolbarButton("empty trash");
 		$I->see('category successfully deleted.', ['id' => 'system-message-container']);
 	}
