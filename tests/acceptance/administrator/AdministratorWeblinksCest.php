@@ -77,11 +77,16 @@ class AdministratorWeblinksCest
 		$I->waitForText('Web Links','30',['css' => 'h1']);
 
 		$I->amGoingTo('Delete the just saved weblink');
-		$I->checkAllResults();
-		$I->clickToolbarButton('Trash');
-		$I->waitForText('Web Links','30',['css' => 'h1']);
-		$I->expectTo('see a success message and the weblink removed from the list');
-		$I->see('Web link successfully trashed',['id' => 'system-message-container']);
+		if ($I->isPhone()) {
+			$I->changeIndividualStatus($this->title, 'Trashed');
+			$I->see('Web link successfully saved',['id' => 'system-message-container']);
+		} else {
+			$I->checkAllResults();
+			$I->clickToolbarButton('Trash');
+			$I->waitForText('Web Links','30',['css' => 'h1']);
+			$I->expectTo('see a success message and the weblink removed from the list');
+			$I->see('Web link successfully trashed',['id' => 'system-message-container']);
+		}
 		$I->cantSee($this->title,['id' => 'weblinkList']);
 	}
 
@@ -90,28 +95,32 @@ class AdministratorWeblinksCest
 	 */
 	public function administratorDeleteWeblink(AcceptanceTester $I)
 	{
-		$I->am('Administrator');
-		$I->wantToTest('Weblink removal in /administrator/');
+		if (!$I->isPhone()) {
+			$I->am('Administrator');
+			$I->wantToTest('Weblink removal in /administrator/');
 
-		$I->doAdministratorLogin();
+			$I->doAdministratorLogin();
 
-		$I->amGoingTo('Navigate to Weblinks page in /administrator/');
-		$I->amOnPage('administrator/index.php?option=com_weblinks');
-		$I->waitForText('Web Links','30',['css' => 'h1']);
-		$I->expectTo('see weblinks page');
-		$I->selectOptionInChosen('- Select Status -', 'Trashed');
-		$I->amGoingTo('Search the just saved weblink');
-		$I->searchForItem($this->title);
-		$I->waitForText('Web Links','30',['css' => 'h1']);
+			$I->amGoingTo('Navigate to Weblinks page in /administrator/');
+			$I->amOnPage('administrator/index.php?option=com_weblinks');
+			$I->waitForText('Web Links','30',['css' => 'h1']);
+			$I->expectTo('see weblinks page');
+			$I->selectOptionInChosen('- Select Status -', 'Trashed');
+			$I->amGoingTo('Search the just saved weblink');
+			$I->searchForItem($this->title);
+			$I->waitForText('Web Links','30',['css' => 'h1']);
 
-		$I->amGoingTo('Delete the just saved weblink');
-		$I->checkAllResults();
-		$I->click(['xpath'=> '//div[@id="toolbar-delete"]/button']);
-		$I->acceptPopup();
-		$I->waitForText('Web Links','30',['css' => 'h1']);
-		$I->expectTo('see a success message and the weblink removed from the list');
-		$I->see('1 web link successfully deleted.',['id' => 'system-message-container']);
-		$I->cantSee($this->title,['id' => 'weblinkList']);
+			$I->amGoingTo('Delete the just saved weblink');
+			$I->checkAllResults();
+			$I->clickToolbarButton('empty trash');
+			$I->acceptPopup();
+			$I->waitForText('Web Links','30',['css' => 'h1']);
+			$I->expectTo('see a success message and the weblink removed from the list');
+			$I->see('1 web link successfully deleted.',['id' => 'system-message-container']);
+			$I->cantSee($this->title,['id' => 'weblinkList']);
+		} else {
+			$I->amGoingTo('Bypass this test for phone');
+		}
 	}
 
 	public function administratorCreateWeblinkWithoutTitleFails(AcceptanceTester $I)
@@ -128,9 +137,9 @@ class AdministratorWeblinksCest
 		$I->checkForPhpNoticesOrWarnings();
 
 		$I->amGoingTo('try to save a weblink with empty title and it should fail');
-		$I->click(['xpath'=> "//button[@onclick=\"Joomla.submitbutton('weblink.add')\"]"]);
+		$I->clickToolbarButton('New');
 		$I->waitForText('Web Link: New','30',['css' => 'h1']);
-		$I->click(['xpath'=> "//button[@onclick=\"Joomla.submitbutton('weblink.apply')\"]"]);
+		$I->clickToolbarButton('Save');
 		$I->expectTo('see an error when trying to save a weblink without title and without URL');
 		$I->see('Invalid field:  Title',['id' => 'system-message-container']);
 		$I->see('Invalid field:  URL',['id' => 'system-message-container']);
