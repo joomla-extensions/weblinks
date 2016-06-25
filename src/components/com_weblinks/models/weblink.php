@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Utilities\ArrayHelper;
+
 JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . '/tables');
 
 /**
@@ -34,11 +36,11 @@ class WeblinksModelWeblink extends JModelItem
 	 */
 	protected function populateState()
 	{
-		$app = JFactory::getApplication();
-		$params	= $app->getParams();
+		$app    = JFactory::getApplication();
+		$params = $app->getParams();
 
 		// Load the object state.
-		$id	= $app->input->getInt('id');
+		$id = $app->input->getInt('id');
 		$this->setState('weblink.id', $id);
 
 		// Load the parameters.
@@ -79,8 +81,8 @@ class WeblinksModelWeblink extends JModelItem
 				}
 
 				// Convert the JTable to a clean JObject.
-				$properties = $table->getProperties(1);
-				$this->_item = JArrayHelper::toObject($properties, 'JObject');
+				$properties  = $table->getProperties(1);
+				$this->_item = ArrayHelper::toObject($properties, 'JObject');
 			}
 			elseif ($error = $table->getError())
 			{
@@ -94,13 +96,13 @@ class WeblinksModelWeblink extends JModelItem
 	/**
 	 * Returns a reference to the a Table object, always creating it.
 	 *
-	 * @param	type	The table type to instantiate
-	 * @param	string	A prefix for the table class name. Optional.
-	 * @param	array	Configuration array for model. Optional.
+	 * @param   type    The table type to instantiate
+	 * @param   string  A prefix for the table class name. Optional.
+	 * @param   array   Configuration array for model. Optional.
 	 *
-	 * @return	JTable	A database object
+	 * @return  JTable  A database object
 	 *
-	 * @since	1.6
+	 * @since   1.6
 	 */
 	public function getTable($type = 'Weblink', $prefix = 'WeblinksTable', $config = array())
 	{
@@ -121,8 +123,6 @@ class WeblinksModelWeblink extends JModelItem
 			$id = $this->getState('weblink.id');
 		}
 
-		$weblink = $this->getTable('Weblink', 'WeblinksTable');
-
-		return $weblink->hit($id);
+		return $this->getTable('Weblink', 'WeblinksTable')->hit($id);
 	}
 }
