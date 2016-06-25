@@ -69,7 +69,7 @@ class WeblinksControllerWeblink extends JControllerForm
 	 */
 	protected function allowAdd($data = array())
 	{
-		$categoryId	= ArrayHelper::getValue($data, 'catid', $this->input->getInt('id'), 'int');
+		$categoryId = ArrayHelper::getValue($data, 'catid', $this->input->getInt('id'), 'int');
 		$allow      = null;
 
 		if ($categoryId)
@@ -180,8 +180,8 @@ class WeblinksControllerWeblink extends JControllerForm
 	protected function getRedirectToItemAppend($recordId = null, $urlVar = null)
 	{
 		$append = parent::getRedirectToItemAppend($recordId, $urlVar);
-		$itemId	= $this->input->getInt('Itemid');
-		$return	= $this->getReturnPage();
+		$itemId = $this->input->getInt('Itemid');
+		$return = $this->getReturnPage();
 
 		if ($itemId)
 		{
@@ -264,7 +264,7 @@ class WeblinksControllerWeblink extends JControllerForm
 		}
 
 		// Check whether item access level allows access.
-		$groups	= JFactory::getUser()->getAuthorisedViewLevels();
+		$groups = JFactory::getUser()->getAuthorisedViewLevels();
 
 		if (!in_array($link->access, $groups))
 		{
