@@ -14,6 +14,17 @@ JHtml::_('behavior.formvalidation');
 JHtml::_('formbehavior.chosen', 'select');
 JHtml::_('behavior.modal', 'a.modal_jform_contenthistory');
 
+$captchaEnabled = false;
+$captchaSet = $this->params->get('captcha', JFactory::getApplication()->get('captcha', '0'));
+foreach (JPluginHelper::getPlugin('captcha') as $plugin)
+{
+	if ($captchaSet === $plugin->name)
+	{
+		$captchaEnabled = true;
+		break;
+	}
+}
+
 // Create shortcut to parameters.
 $params = $this->state->get('params');
 ?>
@@ -52,6 +63,12 @@ $params = $this->state->get('params');
 				</div>
 			<?php endif; ?>
 		</div>
+
+		<?php if (($captchaEnabled)) : ?>
+			<div class="btn-group">
+				<?php echo $this->form->renderField('captcha'); ?>
+			</div>
+		<?php endif; ?>
 
 		<hr class="hr-condensed" />
 		<?php echo $this->form->renderField('title'); ?>
