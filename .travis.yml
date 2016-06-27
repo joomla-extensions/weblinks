@@ -1,13 +1,23 @@
 language: php
-php:
-- 5.5
-- 5.6
-- 7.0
-addons:
-  firefox: "46.0.1"
+
+env:
+  global:
+    - RUN_PHPCS="no"
+
 matrix:
-  allow_failures:
+  fast_finish: true
+  include:
+  - php: 5.5
+  - php: 5.6
+    env: RUN_PHPCS="yes"
+  - php: 7.0
+    sudo: true
+    addons:
+      firefox: "46.0.1"
+    allow_failures:
     - php: 7.0
+
+
 before_script:
 - sudo apt-get update -qq
 - sudo apt-get install -y --force-yes apache2 libapache2-mod-fastcgi php5-curl php5-mysql php5-intl php5-gd > /dev/null
@@ -42,5 +52,8 @@ script:
 # Build
 - mv jorobo.dist.ini jorobo.ini
 - vendor/bin/robo build
+# System tests (Codeception)
 - mv tests/acceptance.suite.dist.yml tests/acceptance.suite.yml
 - vendor/bin/robo run:tests --use-htaccess
+# Run phpcs on PHP 5.6 against weblinks source
+- if [[ $RUN_PHPCS == "yes" ]]; then vendor/bin/phpcs --report=full --extensions=php -p --standard=tests/joomla-cms3/build/phpcs/Joomla ./src; fi
