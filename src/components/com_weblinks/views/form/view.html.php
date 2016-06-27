@@ -27,6 +27,8 @@ class WeblinksViewForm extends JViewLegacy
 	public function display($tpl = null)
 	{
 		$user = JFactory::getUser();
+		// Get the application
+		$app = JFactory::getApplication();
 
 		// Get model data.
 		$this->state       = $this->get('State');
@@ -52,6 +54,12 @@ class WeblinksViewForm extends JViewLegacy
 
 		if (!empty($this->item))
 		{
+			// Override the base weblink data with any data in the session.
+			$temp = (array) $app->getUserState('com_weblinks.edit.weblink.data', array());
+			foreach ($temp as $k => $v)
+			{
+				$this->item->$k = $v;
+			}
 			$this->form->bind($this->item);
 		}
 
