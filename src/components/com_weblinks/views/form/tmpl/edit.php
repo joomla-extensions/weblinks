@@ -47,6 +47,31 @@ $params = $this->state->get('params');
 	</h1>
 	<?php endif; ?>
 	<form action="<?php echo JRoute::_('index.php?option=com_weblinks&view=form&w_id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-vertical">
+		
+		<?php echo $this->form->renderField('title'); ?>
+		<?php echo $this->form->renderField('alias'); ?>
+		<?php echo $this->form->renderField('catid'); ?>
+		<?php echo $this->form->renderField('url'); ?>
+		<?php echo $this->form->renderField('tags'); ?>
+
+		<?php if ($params->get('save_history', 0)) : ?>
+			<?php echo $this->form->renderField('version_note'); ?>
+		<?php endif; ?>
+
+		<?php if ($this->user->authorise('core.edit.state', 'com_weblinks.weblink')) : ?>
+			<?php echo $this->form->renderField('state'); ?>
+		<?php endif; ?>
+		<?php echo $this->form->renderField('language'); ?>
+		<?php echo $this->form->renderField('description'); ?>
+		
+		<hr class="hr-condensed" />
+		
+		<?php if ($captchaEnabled) : ?>
+			<div class="btn-group">
+				<?php echo $this->form->renderField('captcha'); ?>
+			</div>
+		<?php endif; ?>
+		
 		<div class="btn-toolbar">
 			<div class="btn-group">
 				<button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('weblink.save')">
@@ -64,29 +89,6 @@ $params = $this->state->get('params');
 				</div>
 			<?php endif; ?>
 		</div>
-
-		<?php if ($captchaEnabled) : ?>
-			<div class="btn-group">
-				<?php echo $this->form->renderField('captcha'); ?>
-			</div>
-		<?php endif; ?>
-
-		<hr class="hr-condensed" />
-		<?php echo $this->form->renderField('title'); ?>
-		<?php echo $this->form->renderField('alias'); ?>
-		<?php echo $this->form->renderField('catid'); ?>
-		<?php echo $this->form->renderField('url'); ?>
-		<?php echo $this->form->renderField('tags'); ?>
-
-		<?php if ($params->get('save_history', 0)) : ?>
-			<?php echo $this->form->renderField('version_note'); ?>
-		<?php endif; ?>
-
-		<?php if ($this->user->authorise('core.edit.state', 'com_weblinks.weblink')) : ?>
-			<?php echo $this->form->renderField('state'); ?>
-		<?php endif; ?>
-		<?php echo $this->form->renderField('language'); ?>
-		<?php echo $this->form->renderField('description'); ?>
 
 		<input type="hidden" name="return" value="<?php echo $this->return_page;?>" />
 		<input type="hidden" name="task" value="" />
