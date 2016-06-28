@@ -44,7 +44,9 @@
 					class="btn-group btn-group-yesno"
 					default="1"
 					label="MOD_WEBLINKS_FIELD_GROUPBYSHOWTITLE_LABEL"
-					description="MOD_WEBLINKS_FIELD_GROUPBYSHOWTITLE_DESC">
+					description="MOD_WEBLINKS_FIELD_GROUPBYSHOWTITLE_DESC"
+					showon="groupby:1"
+					>
 					<option
 					    value="1">JYES</option>
 					<option
@@ -55,7 +57,9 @@
 					type="list"
 					default="c.lft"
 					label="MOD_WEBLINKS_FIELD_GROUPBYORDERING_LABEL"
-					description="MOD_WEBLINKS_FIELD_GROUPBYORDERING_DESC">
+					description="MOD_WEBLINKS_FIELD_GROUPBYORDERING_DESC"
+					showon="groupby:1"
+					>
 					<option
 					    value="c.title">JGLOBAL_TITLE</option>
 					<option
@@ -66,7 +70,9 @@
 					type="list"
 					default="asc"
 					label="MOD_WEBLINKS_FIELD_GROUPBYDIRECTION_LABEL"
-					description="MOD_WEBLINKS_FIELD_GROUPBYDIRECTION_DESC">
+					description="MOD_WEBLINKS_FIELD_GROUPBYDIRECTION_DESC"
+					showon="groupby:1"
+					>
 					<option
 					    value="asc">MOD_WEBLINKS_FIELD_VALUE_ASCENDING</option>
 					<option
