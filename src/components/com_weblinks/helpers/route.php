@@ -21,18 +21,20 @@ abstract class WeblinksHelperRoute
 	protected static $lang_lookup = array();
 
 	/**
-	 * @param   integer  The route of the weblink
+	 * Get the route of the weblink
+	 *
+	 * @param   integer  $id        Weblink ID
+	 * @param   integer  $catid     Categorie ID
+	 * @param   integer  $language  Language
 	 *
 	 * @return  string
 	 */
 	public static function getWeblinkRoute($id, $catid, $language = 0)
 	{
-		$needles = array(
-			'weblink'  => array((int) $id)
-		);
+		$needles = array('weblink'  => array((int) $id));
 
 		// Create the link
-		$link = 'index.php?option=com_weblinks&view=weblink&id='. $id;
+		$link = 'index.php?option=com_weblinks&view=weblink&id=' . $id;
 
 		if ($catid > 1)
 		{
@@ -67,6 +69,8 @@ abstract class WeblinksHelperRoute
 	}
 
 	/**
+	 * Ge the form route
+	 *
 	 * @param   integer  $id      The id of the weblink.
 	 * @param   string   $return  The return page variable.
 	 *
@@ -77,7 +81,7 @@ abstract class WeblinksHelperRoute
 		// Create the link.
 		if ($id)
 		{
-			$link = 'index.php?option=com_weblinks&task=weblink.edit&w_id='. $id;
+			$link = 'index.php?option=com_weblinks&task=weblink.edit&w_id=' . $id;
 		}
 		else
 		{
@@ -86,13 +90,15 @@ abstract class WeblinksHelperRoute
 
 		if ($return)
 		{
-			$link .= '&return='.$return;
+			$link .= '&return=' . $return;
 		}
 
 		return $link;
 	}
 
 	/**
+	 * Get the Category Route
+	 *
 	 * @param   JCategoryNode|string|integer  $catid     JCategoryNode object or category ID
 	 * @param   integer                       $language  Language code
 	 *
@@ -120,7 +126,7 @@ abstract class WeblinksHelperRoute
 			$needles = array();
 
 			// Create the link
-			$link = 'index.php?option=com_weblinks&view=category&id='.$id;
+			$link = 'index.php?option=com_weblinks&view=category&id=' . $id;
 
 			$catids = array_reverse($category->getPath());
 			$needles['category'] = $catids;
@@ -139,7 +145,7 @@ abstract class WeblinksHelperRoute
 
 			if ($item = self::_findItem($needles))
 			{
-				$link .= '&Itemid='.$item;
+				$link .= '&Itemid=' . $item;
 			}
 		}
 
@@ -147,6 +153,8 @@ abstract class WeblinksHelperRoute
 	}
 
 	/**
+	 * Do a language lookup
+	 *
 	 * @return void
 	 */
 	protected static function buildLanguageLookup()
@@ -169,6 +177,13 @@ abstract class WeblinksHelperRoute
 		}
 	}
 
+	/**
+	 * Find items per given $needles
+	 *
+	 * @params  array  $needles
+	 *
+	 * @return void
+	 */
 	protected static function _findItem($needles = null)
 	{
 		$app      = JFactory::getApplication();
@@ -208,7 +223,7 @@ abstract class WeblinksHelperRoute
 
 						if (isset($item->query['id']))
 						{
-							// here it will become a bit tricky
+							// Here it will become a bit tricky
 							// language != * can override existing entries
 							// language == * cannot override existing entries
 							if (!isset(self::$lookup[$language][$view][$item->query['id']]) || $item->language != '*')
