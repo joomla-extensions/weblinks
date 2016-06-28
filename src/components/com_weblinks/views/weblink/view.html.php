@@ -20,25 +20,33 @@ class WeblinksViewWeblink extends JViewLegacy
 
 	protected $item;
 
+	/**
+	 * Display the view.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a Error object.
+	 */
 	public function display($tpl = null)
 	{
 		// Get some data from the models
-		$item		= $this->get('Item');
+		$item = $this->get('Item');
 
 		if ($this->getLayout() == 'edit')
 		{
 			$this->_displayEdit($tpl);
+
 			return;
 		}
 
 		if ($item->url)
 		{
-			// redirects to url if matching id found
+			// Redirects to url if matching id found
 			JFactory::getApplication()->redirect($item->url);
 		}
 		else
 		{
-			//TODO create proper error handling
+			// TODO create proper error handling
 			JFactory::getApplication()->redirect(JRoute::_('index.php'), JText::_('COM_WEBLINKS_ERROR_WEBLINK_NOT_FOUND'), 'notice');
 		}
 	}
