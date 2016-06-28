@@ -36,7 +36,7 @@ class WeblinksModelCategory extends JModelList
 	/**
 	 * Constructor.
 	 *
-	 * @param   $config  array  An optional associative array of configuration settings.
+	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
 	 * @see     JControllerLegacy
 	 * @since   1.6
