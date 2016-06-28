@@ -23,9 +23,11 @@ class WeblinksViewWeblinks extends JViewLegacy
 	protected $state;
 
 	/**
-	 * Display the view
+	 * Display the view.
 	 *
-	 * @return  void
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
 	public function display($tpl = null)
 	{
@@ -51,6 +53,8 @@ class WeblinksViewWeblinks extends JViewLegacy
 
 	/**
 	 * Add the page title and toolbar.
+	 *
+	 * @return  void
 	 *
 	 * @since   1.6
 	 */
