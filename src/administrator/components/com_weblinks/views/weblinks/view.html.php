@@ -29,9 +29,11 @@ class WeblinksViewWeblinks extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->state      = $this->get('State');
-		$this->items      = $this->get('Items');
-		$this->pagination = $this->get('Pagination');
+		$this->state         = $this->get('State');
+		$this->items         = $this->get('Items');
+		$this->pagination    = $this->get('Pagination');
+		$this->filterForm    = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
 
 		WeblinksHelper::addSubmenu('weblinks');
 
@@ -84,7 +86,7 @@ class WeblinksViewWeblinks extends JViewLegacy
 			JToolbarHelper::checkin('weblinks.checkin');
 		}
 
-		if ($state->get('filter.state') == -2 && $canDo->get('core.delete'))
+		if ($state->get('filter.published') == -2 && $canDo->get('core.delete'))
 		{
 			JToolbarHelper::deleteList('JGLOBAL_CONFIRM_DELETE', 'weblinks.delete', 'JTOOLBAR_EMPTY_TRASH');
 		}
@@ -113,39 +115,6 @@ class WeblinksViewWeblinks extends JViewLegacy
 		}
 
 		JToolbarHelper::help('JHELP_COMPONENTS_WEBLINKS_LINKS');
-
-		JHtmlSidebar::setAction('index.php?option=com_weblinks&view=weblinks');
-
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_PUBLISHED'),
-			'filter_state',
-			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
-		);
-
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_CATEGORY'),
-			'filter_category_id',
-			JHtml::_('select.options', JHtml::_('category.options', 'com_weblinks'), 'value', 'text', $this->state->get('filter.category_id'))
-		);
-
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_ACCESS'),
-			'filter_access',
-			JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'))
-		);
-
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_LANGUAGE'),
-			'filter_language',
-			JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))
-		);
-
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_TAG'),
-			'filter_tag',
-			JHtml::_('select.options', JHtml::_('tag.options', true, true), 'value', 'text', $this->state->get('filter.tag'))
-		);
-
 	}
 
 	/**
