@@ -85,12 +85,12 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 						<?php endif; ?>
 						<?php // Compute the correct link ?>
 						<?php $menuclass = 'category' . $this->pageclass_sfx; ?>
-						<?php $link = $item->link; ?>
-						<?php $width	= $item->params->get('width'); ?>
-						<?php $height	= $item->params->get('height'); ?>
+						<?php $link   = $item->link; ?>
+						<?php $width  = $item->params->get('width'); ?>
+						<?php $height = $item->params->get('height'); ?>
 						<?php if ($width == null || $height == null) : ?>
-							<?php $width	= 600; ?>
-							<?php $height	= 500; ?>
+							<?php $width  = 600; ?>
+							<?php $height = 500; ?>
 						<?php endif; ?>
 						<?php if ($this->items[$i]->state == 0) : ?>
 							<span class="label label-warning"><?php echo JText::_('JUNPUBLISHED'); ?></span>
@@ -137,7 +137,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 						<?php $imgfloat = (empty($images->float_first)) ? $this->params->get('float_first') : $images->float_first; ?>
 						<div class="img-intro-<?php echo htmlspecialchars($imgfloat); ?>"> <img
 							<?php if ($images->image_first_caption) : ?>
-								<?php echo 'class="caption"' . ' title="' . htmlspecialchars($images->image_first_caption) . '"'; ?>
+								<?php echo 'class="caption" title="' . htmlspecialchars($images->image_first_caption) . '"'; ?>
 							<?php endif; ?>
 							src="<?php echo htmlspecialchars($images->image_first); ?>" alt="<?php echo htmlspecialchars($images->image_first_alt); ?>"/> </div>
 						<?php endif; ?>
@@ -145,7 +145,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 						<?php $imgfloat = (empty($images->float_second)) ? $this->params->get('float_second') : $images->float_second; ?>
 						<div class="pull-<?php echo htmlspecialchars($imgfloat); ?> item-image"> <img
 						<?php if ($images->image_second_caption) : ?>
-							<?php echo 'class="caption"' . ' title="' . htmlspecialchars($images->image_second_caption) . '"'; ?>
+							<?php echo 'class="caption" title="' . htmlspecialchars($images->image_second_caption) . '"'; ?>
 						<?php endif; ?>
 						src="<?php echo htmlspecialchars($images->image_second); ?>" alt="<?php echo htmlspecialchars($images->image_second_alt); ?>"/> </div>
 						<?php endif; ?>
