@@ -23,9 +23,9 @@ abstract class WeblinksHelperRoute
 	/**
 	 * Get the route of the weblink
 	 *
-	 * @param   integer  $id        Weblink ID
-	 * @param   integer  $catid     Categorie ID
-	 * @param   integer  $language  Language
+	 * @param   integer  $id        Web link ID
+	 * @param   integer  $catid     Category ID
+	 * @param   string   $language  Language
 	 *
 	 * @return  string
 	 */
