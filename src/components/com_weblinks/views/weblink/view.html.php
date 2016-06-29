@@ -25,7 +25,7 @@ class WeblinksViewWeblink extends JViewLegacy
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @return  mixed  A string if successful, otherwise a Error object.
+	 * @return  mixed  A string if successful, otherwise an Error object.
 	 */
 	public function display($tpl = null)
 	{
@@ -46,7 +46,7 @@ class WeblinksViewWeblink extends JViewLegacy
 		}
 		else
 		{
-			// TODO create proper error handling
+			// @TODO create proper error handling
 			JFactory::getApplication()->redirect(JRoute::_('index.php'), JText::_('COM_WEBLINKS_ERROR_WEBLINK_NOT_FOUND'), 'notice');
 		}
 	}
