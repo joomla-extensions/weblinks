@@ -20,8 +20,8 @@ class WeblinksController extends JControllerLegacy
 	 * Method to display a view.
 	 *
 	 * @param   boolean  $cacheable   If true, the view output will be cached
-	 * @param   array    $urlparams  An array of safe url parameters and their variable types,
-	 *                               for valid values see {@link JFilterInput::clean()}.
+	 * @param   array    $urlparams   An array of safe url parameters and their variable types,
+	 *                                for valid values see {@link JFilterInput::clean()}.
 	 *
 	 * @return  WeblinksController  This object to support chaining.
 	 *
@@ -29,8 +29,8 @@ class WeblinksController extends JControllerLegacy
 	 */
 	public function display($cacheable = false, $urlparams = false)
 	{
-		$cacheable	= true;	// Huh? Why not just put that in the constructor?
-		$user		= JFactory::getUser();
+		// Huh? Why not just put that in the constructor?
+		$cacheable = true;
 
 		// Set the default view name and format from the Request.
 		// Note we are using w_id to avoid collisions with the router and the return page.
@@ -45,12 +45,12 @@ class WeblinksController extends JControllerLegacy
 		}
 
 		$safeurlparams = array(
-			'id'				=> 'INT',
-			'limit'				=> 'UINT',
-			'limitstart'		=> 'UINT',
-			'filter_order'		=> 'CMD',
-			'filter_order_Dir'	=> 'CMD',
-			'lang'				=> 'CMD'
+			'id'               => 'INT',
+			'limit'            => 'UINT',
+			'limitstart'       => 'UINT',
+			'filter_order'     => 'CMD',
+			'filter_order_Dir' => 'CMD',
+			'lang'             => 'CMD'
 		);
 
 		// Check for edit form.
