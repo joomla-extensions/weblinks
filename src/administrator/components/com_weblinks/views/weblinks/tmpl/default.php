@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
@@ -129,7 +129,7 @@ if ($saveOrder)
 								<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'weblinks.', $canCheckin); ?>
 							<?php endif; ?>
 							<?php if ($canEdit) : ?>
-								<a href="<?php echo JRoute::_('index.php?option=com_weblinks&task=weblink.edit&id='.(int) $item->id); ?>">
+								<a href="<?php echo JRoute::_('index.php?option=com_weblinks&task=weblink.edit&id=' . (int) $item->id); ?>">
 									<?php echo $this->escape($item->title); ?></a>
 							<?php else : ?>
 									<?php echo $this->escape($item->title); ?>
@@ -150,7 +150,7 @@ if ($saveOrder)
 						<td class="small nowrap hidden-phone">
 							<?php if ($item->language == '*') : ?>
 								<?php echo JText::alt('JALL', 'language'); ?>
-							<?php else:?>
+							<?php else : ?>
 								<?php echo $item->language_title ? JHtml::_('image', 'mod_languages/' . $item->language_image . '.gif', $item->language_title, array('title' => $item->language_title), true) . '&nbsp;' . $this->escape($item->language_title) : JText::_('JUNDEFINED'); ?>
 							<?php endif;?>
 						</td>
