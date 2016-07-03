@@ -24,6 +24,13 @@ class WeblinksViewForm extends JViewLegacy
 
 	protected $state;
 
+	/**
+	 * Display the view.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise an Error object.
+	 */
 	public function display($tpl = null)
 	{
 		$user = JFactory::getUser();
@@ -40,7 +47,7 @@ class WeblinksViewForm extends JViewLegacy
 		}
 		else
 		{
-			$authorised = $user->authorise('core.edit', 'com_weblinks.category.'.$this->item->catid);
+			$authorised = $user->authorise('core.edit', 'com_weblinks.category.' . $this->item->catid);
 		}
 
 		if ($authorised !== true)
@@ -66,7 +73,7 @@ class WeblinksViewForm extends JViewLegacy
 		// Create a shortcut to the parameters.
 		$params = &$this->state->params;
 
-		//Escape strings for HTML output
+		// Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
 
 		$this->params = $params;
@@ -78,6 +85,8 @@ class WeblinksViewForm extends JViewLegacy
 
 	/**
 	 * Prepares the document
+	 *
+	 * @return  void
 	 */
 	protected function _prepareDocument()
 	{
