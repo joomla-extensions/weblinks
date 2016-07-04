@@ -32,12 +32,12 @@ class AdministratorCategoriesCest
 
 		$I->amGoingTo('Navigate to Categories page in /administrator/');
 		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
-		$I->waitForText('Web Links: Categories', '60', ['css' => 'h1']);
+		$I->waitForText('Weblinks: Categories', '60', ['css' => 'h1']);
 		$I->expectTo('see categories page');
 
 		$I->amGoingTo('try to save a category with empty title and it should fail');
 		$I->clickToolbarButton('new');
-		$I->waitForText('Web Links: New Category', '60', ['css' => 'h1']);
+		$I->waitForText('Weblinks: New Category', '60', ['css' => 'h1']);
 		$I->clickToolbarButton('save');
 		$I->expectTo('see an error when trying to save a category without title');
 		$I->see('Invalid field:  Title', ['id' => 'system-message-container']);
@@ -52,13 +52,13 @@ class AdministratorCategoriesCest
 
 		$I->amGoingTo('Navigate to Categories page in /administrator/ and create a Category');
 		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
-		$I->waitForText('Web Links: Categories', '60', ['css' => 'h1']);
+		$I->waitForText('Weblinks: Categories', '60', ['css' => 'h1']);
 		$I->expectTo('see categories page');
 		$I->checkForPhpNoticesOrWarnings();
 
 		$I->amGoingTo('try to save a category with a filled title');
 		$I->clickToolbarButton('New');
-		$I->waitForText('Web Links: New Category', '60', ['css' => 'h1']);
+		$I->waitForText('Weblinks: New Category', '60', ['css' => 'h1']);
 		$I->fillField(['id' => 'jform_title'], $this->categoryTitle);
 		$I->clickToolbarButton('Save & Close');
 		$I->expectTo('see a success message after saving the category');
@@ -78,7 +78,7 @@ class AdministratorCategoriesCest
 		$I->amGoingTo('Navigate to Categories page in /administrator/');
 		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
 		$I->searchForItem($this->categoryTitle);
-		$I->waitForText('Web Links: Categories', '60', ['css' => 'h1']);
+		$I->waitForText('Weblinks: Categories', '60', ['css' => 'h1']);
 		$I->checkAllResults();
 		$I->amGoingTo('try to publish a Web Links Category');
 		$I->clickToolbarButton('publish');
@@ -98,7 +98,7 @@ class AdministratorCategoriesCest
 		$I->doAdministratorLogin();
 		$I->amGoingTo('Navigate to Categories page in /administrator/');
 		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
-		$I->waitForText('Web Links: Categories', '60', ['css' => 'h1']);
+		$I->waitForText('Weblinks: Categories', '60', ['css' => 'h1']);
 		$I->searchForItem($this->categoryTitle);
 		$I->checkAllResults();
 		$I->amGoingTo('try to unpublish a Web Links Category');
@@ -119,7 +119,7 @@ class AdministratorCategoriesCest
 		$I->doAdministratorLogin();
 		$I->amGoingTo('Navigate to Categories page in /administrator/');
 		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
-		$I->waitForText('Web Links: Categories', '60', ['css' => 'h1']);
+		$I->waitForText('Weblinks: Categories', '60', ['css' => 'h1']);
 		$I->searchForItem($this->categoryTitle);
 		$I->checkAllResults();
 		$I->amGoingTo('try to archive a Web Links category');
@@ -140,7 +140,7 @@ class AdministratorCategoriesCest
 		$I->doAdministratorLogin();
 		$I->amGoingTo('Navigate to Categories page in /administrator/');
 		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
-		$I->waitForText('Web Links: Categories', '60', ['css' => 'h1']);
+		$I->waitForText('Weblinks: Categories', '60', ['css' => 'h1']);
 		$I->setFilter('Select Status', 'Archived');
 		$I->searchForItem($this->categoryTitle);
 		$I->checkAllResults();
@@ -162,7 +162,7 @@ class AdministratorCategoriesCest
 		$I->doAdministratorLogin();
 		$I->amGoingTo('Navigate to Categories page in /administrator/');
 		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
-		$I->waitForText('Web Links: Categories', '60', ['css' => 'h1']);
+		$I->waitForText('Weblinks: Categories', '60', ['css' => 'h1']);
 		$I->setFilter('Select Status', 'Trashed');
 		$I->searchForItem($this->categoryTitle);
 		$I->checkAllResults();
@@ -184,7 +184,7 @@ class AdministratorCategoriesCest
 		$I->amGoingTo('Navigate to Categories page in /administrator/ and verify the Tabs');
 		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
 		$I->clickToolbarButton('New');
-		$I->waitForText('Web Links: New Category', '30', ['css' => 'h1']);
+		$I->waitForText('Weblinks: New Category', '30', ['css' => 'h1']);
 		$I->verifyAvailableTabs(['Category', 'Publishing', 'Permissions', 'Options']);
 	}
 }
