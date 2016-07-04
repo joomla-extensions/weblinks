@@ -37,25 +37,6 @@ class AdministratorSmartSearchCest
 		$I->see('Configuration successfully saved', ['id' => 'system-message-container']);
 	}
 
-	public function administratorEnableContentPlugin(\Step\Acceptance\weblink $I)
-	{
-		$I->am('Administrator');
-		$I->wantToTest('Enabling the Smart Search content plugin. Note that this is not a requirement for Smart Search to index Weblinks');
-
-		$I->doAdministratorLogin();
-
-		$I->amGoingTo('Navigate to the Smart Search page in /administrator/');
-		$I->amOnPage('administrator/index.php?option=com_finder');
-		$I->expectTo('see a message saying that the content plugin should be enabled');
-		$I->waitForElement(['link' => 'Smart Search Content Plugin']);
-		$I->click(['link' => 'Smart Search Content Plugin']);
-		$I->waitForText('Plugins: Content - Smart Search', 30, ['class'=> 'page-title']);
-		$I->selectOptionInChosen('Status', 'Enabled');
-		$I->clickToolbarButton('save & close');
-		$I->waitForText('Plugin successfully saved.', 30, ['id' => 'system-message-container']);
-		$I->see('Plugin successfully saved.', ['id' => 'system-message-container']);
-	}
-
 	/**
 	 * Before the tests proper, the Weblinks Smart Search plugin must be enabled.
 	 */
