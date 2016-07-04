@@ -71,7 +71,7 @@ class AdministratorSmartSearchCest
 		$I->amOnPage('administrator/index.php?option=com_finder');
 		$I->waitForText('Smart Search', 30, ['class'=> 'page-title']);
 
-		$I->click('Clear Index');
+		$I->click(['xpath' => "//div[@id='toolbar-trash']/button"]); // Clear Index button
 		$I->acceptPopup();
 		$I->waitForText('All items have been successfully deleted', 30, ['class' => 'alert-message']);
 		$I->see('All items have been successfully deleted', ['class' => 'alert-message']);
