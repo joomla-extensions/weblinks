@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 
-$published = $this->state->get('filter.state');
+$published = $this->state->get('filter.published');
 ?>
 <div class="modal hide fade" id="collapseModal">
 	<div class="modal-header">

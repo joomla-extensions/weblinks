@@ -47,7 +47,7 @@ $params = $this->state->get('params');
 	</h1>
 	<?php endif; ?>
 	<form action="<?php echo JRoute::_('index.php?option=com_weblinks&view=form&w_id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-vertical">
-		
+
 		<?php echo $this->form->renderField('title'); ?>
 		<?php echo $this->form->renderField('alias'); ?>
 		<?php echo $this->form->renderField('catid'); ?>
@@ -71,7 +71,7 @@ $params = $this->state->get('params');
 				<?php echo $this->form->renderField('captcha'); ?>
 			</div>
 		<?php endif; ?>
-		
+
 		<div class="btn-toolbar">
 			<div class="btn-group">
 				<button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('weblink.save')">

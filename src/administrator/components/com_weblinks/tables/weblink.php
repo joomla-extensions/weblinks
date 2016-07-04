@@ -45,7 +45,7 @@ class WeblinksTableWeblink extends JTable
 	/**
 	 * Overload the store method for the Weblinks table.
 	 *
-	 * @param   boolean	Toggle whether null values should be updated.
+	 * @param   boolean  $updateNulls  Toggle whether null values should be updated.
 	 *
 	 * @return  boolean  True on success, false on failure.
 	 *
@@ -122,7 +122,7 @@ class WeblinksTableWeblink extends JTable
 			return false;
 		}
 
-		// check for valid name
+		// Check for valid name
 		if (trim($this->title) == '')
 		{
 			$this->setError(JText::_('COM_WEBLINKS_ERR_TABLES_TITLE'));

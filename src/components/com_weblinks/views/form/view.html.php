@@ -25,12 +25,12 @@ class WeblinksViewForm extends JViewLegacy
 	protected $state;
 
 	/**
- 	 * Display the view.
- 	 *
- 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
- 	 *
- 	 * @return  mixed  A string if successful, otherwise an Error object.
- 	 */
+	 * Display the view.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise an Error object.
+	 */
 	public function display($tpl = null)
 	{
 		$user = JFactory::getUser();
@@ -93,8 +93,8 @@ class WeblinksViewForm extends JViewLegacy
 
 	/**
 	 * Prepares the document
-	 * 
-	 * @return  void 
+	 *
+	 * @return  void
 	 */
 	protected function _prepareDocument()
 	{
