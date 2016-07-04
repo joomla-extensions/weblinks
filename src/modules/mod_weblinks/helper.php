@@ -57,6 +57,9 @@ class ModWeblinksHelper
 
 		$catid	= (int) $params->get('catid', 0);
 		$model->setState('category.id', $catid);
+		$model->setState('category.group', $params->get('groupby', 0));
+		$model->setState('category.ordering', $params->get('groupby_ordering', 'c.lft'));
+		$model->setState('category.direction', $params->get('groupby_direction', 'ASC'));
 
 		// Create query object
 		$db = JFactory::getDbo();
