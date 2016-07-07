@@ -65,7 +65,7 @@ class weblink extends \AcceptanceTester
 		$I->waitForText('1 web link successfully trashed', 30, ['id' => 'system-message-container']);
 
 		$I->amGoingTo('Delete the weblink');
-		$I->selectOptionInChosen('- Select Status -', 'Trashed');
+		$I->selectOptionInChosenById('filter_published', 'Trashed');
 		$I->amGoingTo('Search the just saved weblink');
 		$I->searchForItem($title);
 		$I->waitForText('Web Links','30',['css' => 'h1']);

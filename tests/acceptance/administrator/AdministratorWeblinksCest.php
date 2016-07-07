@@ -97,11 +97,9 @@ class AdministratorWeblinksCest
 
 		$I->amGoingTo('Navigate to Weblinks page in /administrator/');
 		$I->amOnPage('administrator/index.php?option=com_weblinks');
-		$I->waitForText('Web Links','30',['css' => 'h1']);
 		$I->expectTo('see weblinks page');
-		$I->click('Search Tools');
-		$I->wait(2);
-		$I->selectOptionInChosenById('filter_published', 'Trashed');
+		$I->waitForText('Web Links','30',['css' => 'h1']);
+		$I->selectOptionInChosenById('filter_state', 'Trashed');
 		$I->amGoingTo('Search the just saved weblink');
 		$I->searchForItem($this->title);
 		$I->waitForText('Web Links','30',['css' => 'h1']);
