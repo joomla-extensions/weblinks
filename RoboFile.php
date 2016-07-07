@@ -81,6 +81,35 @@ class RoboFile extends \Robo\Tasks
 	}
 
 	/**
+	 * Updates the Extension in the JoomlaCMS testing installation for manual tests
+	 *
+	 * @param   int     $use_htaccess    (1/0) Rename and enable embedded Joomla .htaccess file
+	 * @param   string  $package_method  Optional. Availabe methods are "phing" or "gulp". "gulp" by default
+	 *
+	 * @return void
+	 */
+	public function runTestUpdate()
+	{
+		$this->runSelenium();
+
+		$this->taskWaitForSeleniumStandaloneServer()
+			->run()
+			->stopOnFail();
+
+		// Make sure to Run the Build Command to Generate AcceptanceTester
+		$this->_exec($this->isWindows() ? 'vendor\bin\codecept.bat build' : 'php vendor/bin/codecept build');
+
+		$this->taskCodecept()
+			->arg('--steps')
+			->arg('--debug')
+			->arg('--tap')
+			->arg('--fail-fast')
+			->arg('tests/acceptance/update/')
+			->run()
+			->stopOnFail();
+	}
+
+	/**
 	 * Executes all the Selenium System Tests in a suite on your machine
 	 *
 	 * @param   array $opts Array of configuration options:
