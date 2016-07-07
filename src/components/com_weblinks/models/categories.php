@@ -86,7 +86,7 @@ class WeblinksModelCategories extends JModelList
 	}
 
 	/**
-	 * Redefine the function an add some properties to make the styling more easy
+	 * Redefine the function and add some properties to make the styling more easy
 	 *
 	 * @return  mixed  An array of data items on success, false on failure.
 	 */
