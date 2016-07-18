@@ -43,7 +43,7 @@ if($params->get('groupby', 0)) :
                                     <?php
                                     $link = $item->link;
 
-                                    switch ($params->get('target', 3))
+                                    switch ($item->params->get('target', 3))
                                     {
                                         case 1:
                                             // Open in a new window
@@ -91,7 +91,7 @@ if($params->get('groupby', 0)) :
                 <?php
                 $link = $item->link;
 
-                switch ($params->get('target', 3))
+                switch ($item->params->get('target', 3))
                 {
                     case 1:
                         // Open in a new window
