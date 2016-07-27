@@ -103,6 +103,7 @@ class RoboFile extends \Robo\Tasks
 
 		$this->taskCodecept()
 			->arg('--steps')
+			->arg('--debug')
 			->arg('--fail-fast')
 			->arg('--env ' . $opts['env'])
 			->arg('tests/acceptance/install/')
@@ -111,6 +112,7 @@ class RoboFile extends \Robo\Tasks
 
 		$this->taskCodecept()
 			->arg('--steps')
+			->arg('--debug')
 			->arg('--fail-fast')
 			->arg('--env ' . $opts['env'])
 			->arg('tests/acceptance/administrator/')
@@ -119,6 +121,7 @@ class RoboFile extends \Robo\Tasks
 
 		$this->taskCodecept()
 			->arg('--steps')
+			->arg('--debug')
 			->arg('--fail-fast')
 			->arg('--env ' . $opts['env'])
 			->arg('tests/acceptance/frontend/')
