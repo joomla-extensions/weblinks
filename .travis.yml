@@ -7,7 +7,7 @@ addons:
   firefox: "47.0.1"
 before_script:
 - sudo apt-get update -qq
-- sudo apt-get install -y --force-yes apache2 libapache2-mod-fastcgi php5-curl php5-mysql php5-intl php5-gd > /dev/null
+- sudo apt-get install -y --force-yes apache2 libapache2-mod-fastcgi > /dev/null
 - sudo mkdir $(pwd)/.run
 - chmod a+x tests/travis-php-fpm.sh
 - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf;
