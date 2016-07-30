@@ -1,10 +1,10 @@
 <?php
 /**
- * @package	 Joomla.Site
+ * @package     Joomla.Site
  * @subpackage  com_weblinks
  *
  * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
- * @license	 GNU General Public License version 2 or later; see LICENSE.txt
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
@@ -38,7 +38,7 @@ class WeblinksModelCategory extends JModelList
 	 *
 	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
-	 * @see	 JControllerLegacy
+	 * @see     JControllerLegacy
 	 * @since   1.6
 	 */
 	public function __construct($config = array())
@@ -121,7 +121,7 @@ class WeblinksModelCategory extends JModelList
 		// Filter by category.
 		if ($categoryId = $this->getState('category.id'))
 		{
-					// Group by subcategory
+			// Group by subcategory
 			if ($this->getState('category.group', 0))
 			{
 				$query->select('c.title AS category_title')
