@@ -45,7 +45,7 @@ abstract class WeblinksHelperRoute
 			{
 				$needles['category'] = array_reverse($category->getPath());
 				$needles['categories'] = $needles['category'];
-				$link .= '&catid='.$catid;
+				$link .= '&catid=' . $catid;
 			}
 		}
 
@@ -62,7 +62,7 @@ abstract class WeblinksHelperRoute
 
 		if ($item = self::_findItem($needles))
 		{
-			$link .= '&Itemid='.$item;
+			$link .= '&Itemid=' . $item;
 		}
 
 		return $link;
@@ -180,7 +180,7 @@ abstract class WeblinksHelperRoute
 	/**
 	 * Find items per given $needles
 	 *
-	 * @params  array  $needles
+	 * @param  array  $needles
 	 *
 	 * @return void
 	 */
@@ -195,7 +195,7 @@ abstract class WeblinksHelperRoute
 		{
 			self::$lookup[$language] = array();
 
-			$component	= JComponentHelper::getComponent('com_weblinks');
+			$component = JComponentHelper::getComponent('com_weblinks');
 
 			$attributes = array('component_id');
 			$values = array($component->id);
@@ -223,9 +223,11 @@ abstract class WeblinksHelperRoute
 
 						if (isset($item->query['id']))
 						{
-							// Here it will become a bit tricky
-							// language != * can override existing entries
-							// language == * cannot override existing entries
+							/**
+							 * Here it will become a bit tricky
+							 * language != * can override existing entries
+							 * language == * cannot override existing entries
+							 */
 							if (!isset(self::$lookup[$language][$view][$item->query['id']]) || $item->language != '*')
 							{
 								self::$lookup[$language][$view][$item->query['id']] = $item->id;
