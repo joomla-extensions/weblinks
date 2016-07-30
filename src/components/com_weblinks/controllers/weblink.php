@@ -227,11 +227,21 @@ class WeblinksControllerWeblink extends JControllerForm
 	 */
 	public function save($key = null, $urlVar = 'w_id')
 	{
+		// Get the application
+		$app = JFactory::getApplication();
+
+		// Get the data from POST
+		$data = $this->input->post->get('jform', array(), 'array');
+
+		// Save the data in the session.
+		$app->setUserState('com_weblinks.edit.weblink.data', $data);
 		$result = parent::save($key, $urlVar);
 
 		// If ok, redirect to the return page.
 		if ($result)
 		{
+			// Flush the data from the session
+			$app->setUserState('com_weblinks.edit.weblink.data', null);
 			$this->setRedirect($this->getReturnPage());
 		}
 

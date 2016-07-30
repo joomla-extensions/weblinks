@@ -185,6 +185,6 @@ class AdministratorCategoriesCest
 		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
 		$I->clickToolbarButton('New');
 		$I->waitForText('Web Links: New Category', '30', ['css' => 'h1']);
-		$I->verifyAvailableTabs(['Category', 'Publishing', 'Permissions', 'Options']);
+		$I->verifyAvailableTabs(['Category', 'Options', 'Publishing', 'Permissions']);
 	}
 }

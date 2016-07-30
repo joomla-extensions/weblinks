@@ -36,7 +36,7 @@ class WeblinksModelCategory extends JModelList
 	/**
 	 * Constructor.
 	 *
-	 * @param   array  An optional associative array of configuration settings.
+	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
 	 * @see     JControllerLegacy
 	 * @since   1.6
@@ -121,9 +121,20 @@ class WeblinksModelCategory extends JModelList
 		// Filter by category.
 		if ($categoryId = $this->getState('category.id'))
 		{
-			$query->where('a.catid = ' . (int) $categoryId)
-				->join('LEFT', '#__categories AS c ON c.id = a.catid')
-				->where('c.access IN (' . $groups . ')');
+            		// Group by subcategory
+			if ($this->getState('category.group', 0))
+			{
+				$query->select('c.title AS category_title')
+				    ->where('c.parent_id = ' . (int) $categoryId)
+				    ->join('LEFT', '#__categories AS c ON c.id = a.catid')
+				    ->where('c.access IN (' . $groups . ')');
+			}
+			else
+			{
+				$query->where('a.catid = ' . (int) $categoryId)
+				    ->join('LEFT', '#__categories AS c ON c.id = a.catid')
+				    ->where('c.access IN (' . $groups . ')');
+			}
 
 			// Filter by published category
 			$cpublished = $this->getState('filter.c.published');
@@ -141,7 +152,6 @@ class WeblinksModelCategory extends JModelList
 			->join('LEFT', '#__users AS uam ON uam.id = a.modified_by');
 
 		// Filter by state
-
 		$state = $this->getState('filter.state');
 
 		if (is_numeric($state))
@@ -149,7 +159,7 @@ class WeblinksModelCategory extends JModelList
 			$query->where('a.state = ' . (int) $state);
 		}
 
-		// do not show trashed links on the front-end
+		// Do not show trashed links on the front-end
 		$query->where('a.state != -2');
 
 		// Filter by start and end dates.
@@ -176,12 +186,20 @@ class WeblinksModelCategory extends JModelList
 			$search = $db->quote('%' . $db->escape($search, true) . '%');
 			$query->where('(a.title LIKE ' . $search . ')');
 		}
+		
+		// If grouping by subcategory, add the subcategory list ordering clause.
+		if($this->getState('category.group', 0))
+		{
+			$query->order(
+				$db->escape($this->getState('category.ordering', 'c.lft')) . ' ' .
+				$db->escape($this->getState('category.direction', 'ASC'))
+			);
+		}
 
 		// Add the list ordering clause.
 		$query->order(
-			$db->escape(
-				$this->getState('list.ordering', 'a.ordering')) . ' ' . $db->escape($this->getState('list.direction', 'ASC')
-			)
+			$db->escape($this->getState('list.ordering', 'a.ordering')) . ' ' .
+			$db->escape($this->getState('list.direction', 'ASC'))
 		);
 
 		return $query;
@@ -191,6 +209,11 @@ class WeblinksModelCategory extends JModelList
 	 * Method to auto-populate the model state.
 	 *
 	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
+	 *
+	 * @return  void
 	 *
 	 * @since   1.6
 	 */
@@ -234,7 +257,7 @@ class WeblinksModelCategory extends JModelList
 
 		if ((!$user->authorise('core.edit.state', 'com_weblinks')) && (!$user->authorise('core.edit', 'com_weblinks')))
 		{
-			// limit to published for people who can't edit or edit.state.
+			// Limit to published for people who can't edit or edit.state.
 			$this->setState('filter.state', 1);
 
 			// Filter by start and end dates.
@@ -301,8 +324,6 @@ class WeblinksModelCategory extends JModelList
 	/**
 	 * Get the parent category
 	 *
-	 * @param   integer  An optional category id. If not supplied, the model state 'category.id' will be used.
-	 *
 	 * @return  mixed  An array of categories or false if an error occurs.
 	 */
 	public function getParent()
@@ -311,40 +332,46 @@ class WeblinksModelCategory extends JModelList
 		{
 			$this->getCategory();
 		}
+
 		return $this->_parent;
 	}
 
 	/**
-	 * Get the sibling (adjacent) categories.
+	 * Get the leftsibling (adjacent) categories.
 	 *
 	 * @return  mixed  An array of categories or false if an error occurs.
 	 */
-	function &getLeftSibling()
+	public function &getLeftSibling()
 	{
 		if (!is_object($this->_item))
 		{
 			$this->getCategory();
 		}
+
 		return $this->_leftsibling;
 	}
 
-	function &getRightSibling()
+	/**
+	 * Get the rightsibling (adjacent) categories.
+	 *
+	 * @return  mixed  An array of categories or false if an error occurs.
+	 */
+	public function &getRightSibling()
 	{
 		if (!is_object($this->_item))
 		{
 			$this->getCategory();
 		}
+
 		return $this->_rightsibling;
 	}
 
 	/**
 	 * Get the child categories.
 	 *
-	 * @param   integer  An optional category id. If not supplied, the model state 'category.id' will be used.
-	 *
 	 * @return  mixed  An array of categories or false if an error occurs.
 	 */
-	function &getChildren()
+	public function &getChildren()
 	{
 		if (!is_object($this->_item))
 		{

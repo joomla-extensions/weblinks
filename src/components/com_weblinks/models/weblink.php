@@ -32,6 +32,8 @@ class WeblinksModelWeblink extends JModelItem
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
+	 * @return  void
+	 *
 	 * @since   1.6
 	 */
 	protected function populateState()
@@ -50,7 +52,7 @@ class WeblinksModelWeblink extends JModelItem
 	/**
 	 * Method to get an object.
 	 *
-	 * @param   integer	The id of the object to get.
+	 * @param   integer  $id  The id of the object to get.
 	 *
 	 * @return  mixed  Object on success, false on failure.
 	 */
@@ -96,9 +98,9 @@ class WeblinksModelWeblink extends JModelItem
 	/**
 	 * Returns a reference to the a Table object, always creating it.
 	 *
-	 * @param   type    The table type to instantiate
-	 * @param   string  A prefix for the table class name. Optional.
-	 * @param   array   Configuration array for model. Optional.
+	 * @param   string  $type    The table type to instantiate
+	 * @param   string  $prefix  A prefix for the table class name. Optional.
+	 * @param   array   $config  Configuration array for model. Optional.
 	 *
 	 * @return  JTable  A database object
 	 *
