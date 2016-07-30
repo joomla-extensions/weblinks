@@ -155,7 +155,7 @@ abstract class WeblinksHelperRoute
 	/**
 	 * Do a language lookup
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	protected static function buildLanguageLookup()
 	{
@@ -182,7 +182,7 @@ abstract class WeblinksHelperRoute
 	 *
 	 * @param   array  $needles
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	protected static function _findItem($needles = null)
 	{
