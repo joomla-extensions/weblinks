@@ -292,6 +292,31 @@ class WeblinksModelWeblink extends JModelAdmin
 	{
 		$app = JFactory::getApplication();
 
+		JLoader::register('CategoriesHelper', JPATH_ADMINISTRATOR . '/components/com_categories/helpers/categories.php');
+
+		// Cast catid to integer for comparison
+		$catid = (int) $data['catid'];
+ 
+		// Check if New Category exists
+		if ($catid > 0)
+		{
+			$catid = CategoriesHelper::validateCategoryId($data['catid'], 'com_weblinks');
+		}
+
+		// Save New Category
+		if ($catid == 0)
+		{
+			$table = array();
+			$table['title'] = $data['catid'];
+			$table['parent_id'] = 1;
+			$table['extension'] = 'com_weblinks';
+			$table['language'] = $data['language'];
+			$table['published'] = 1;
+
+			// Create new category and get catid back
+			$data['catid'] = CategoriesHelper::createCategory($table);
+		}
+
 		// Alter the title for save as copy
 		if ($app->input->get('task') == 'save2copy')
 		{
