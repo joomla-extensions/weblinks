@@ -6,9 +6,8 @@ How to test a PR with the [Patch Tester Component](https://github.com/joomla-ext
 ============
 
 Easily apply changes from a pull requests against this repo:
-- Install the last release of [com_weblinks](https://github.com/joomla-extensions/weblinks/releases/latest) into your Joomla.
-- Install the last release of [com_patchtester](https://github.com/joomla-extensions/patchtester/releases/latest) into your Joomla (weblinks is supported since Version 3.0.0 Alpha 2).
-
+Install the last release of [com_weblinks](https://github.com/joomla-extensions/weblinks/releases/latest) into your Joomla.
+Install the last release of [com_patchtester](https://github.com/joomla-extensions/patchtester/releases/latest) into your Joomla (weblinks is supported since Version 3.0.0 Alpha 2).
 Log into your site's administrator section, go to the Patch Tester Component Options (Components -> Patch Tester -> Options)
 Switch the `GitHub Repository` to `Joomla Weblinks Package`
 Click `Save & Close` and hit the `Fetch Data` Button to the the lastest pull requests
