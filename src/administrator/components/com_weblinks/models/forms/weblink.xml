@@ -24,7 +24,8 @@
 			description="COM_WEBLINKS_FIELD_CATEGORY_DESC"
 			required="true"
 			allowAdd="true"
-			default="" />
+			default="" 
+		/>
 
 		<field name="url" type="url"
 			class="span12"
