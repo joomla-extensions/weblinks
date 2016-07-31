@@ -357,6 +357,7 @@ class WeblinksModelWeblink extends JModelAdmin
 
 		return array($name, $alias);
 	}
+
 	/**
 	 * Allows preprocessing of the JForm object.
 	 *
@@ -366,7 +367,7 @@ class WeblinksModelWeblink extends JModelAdmin
 	 *
 	 * @return  void
 	 *
-	 * @since    3.6.1
+	 * @since    3.6.0
 	 */
 	protected function preprocessForm(JForm $form, $data, $group = 'content')
 	{
