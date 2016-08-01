@@ -21,6 +21,7 @@ $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $canOrder	= $user->authorise('core.edit.state', 'com_weblinks.category');
 $saveOrder	= $listOrder == 'a.ordering';
+
 if ($saveOrder)
 {
 	$saveOrderingUrl = 'index.php?option=com_weblinks&task=weblinks.saveOrderAjax&tmpl=component';
@@ -80,27 +81,21 @@ if ($saveOrder)
 					</tr>
 				</tfoot>
 				<tbody>
-				<?php foreach ($this->items as $i => $item) :
-					$ordering   = ($listOrder == 'a.ordering');
-					$item->cat_link	= JRoute::_('index.php?option=com_categories&extension=com_weblinks&task=edit&type=other&cid[]='. $item->catid);
-					$canCreate  = $user->authorise('core.create',     'com_weblinks.category.' . $item->catid);
-					$canEdit    = $user->authorise('core.edit',       'com_weblinks.category.' . $item->catid);
-					$canCheckin = $user->authorise('core.manage',     'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0;
-					$canChange  = $user->authorise('core.edit.state', 'com_weblinks.category.' . $item->catid) && $canCheckin;
-					?>
+				<?php foreach ($this->items as $i => $item) : ?>
+					<?php $ordering       = ($listOrder == 'a.ordering'); ?>
+					<?php $item->cat_link = JRoute::_('index.php?option=com_categories&extension=com_weblinks&task=edit&type=other&cid[]=' . $item->catid); ?>
+					<?php $canCreate      = $user->authorise('core.create',     'com_weblinks.category.' . $item->catid); ?>
+					<?php $canEdit        = $user->authorise('core.edit',       'com_weblinks.category.' . $item->catid); ?>
+					<?php $canCheckin     = $user->authorise('core.manage',     'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0; ?>
+					<?php $canChange      = $user->authorise('core.edit.state', 'com_weblinks.category.' . $item->catid) && $canCheckin; ?>
 					<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->catid; ?>">
 						<td class="order nowrap center hidden-phone">
-							<?php
-							$iconClass = '';
-							if (!$canChange)
-							{
-								$iconClass = ' inactive';
-							}
-							elseif (!$saveOrder)
-							{
-								$iconClass = ' inactive tip-top hasTooltip" title="' . JHtml::tooltipText('JORDERINGDISABLED');
-							}
-							?>
+							<?php $iconClass = ''; ?>
+							<?php if (!$canChange) : ?>
+								<?php $iconClass = ' inactive'; ?>
+							<?php elseif (!$saveOrder) : ?>
+								<?php $iconClass = ' inactive tip-top hasTooltip" title="' . JHtml::tooltipText('JORDERINGDISABLED'); ?>
+							<?php endif; ?>
 							<span class="sortable-handler<?php echo $iconClass ?>">
 								<i class="icon-menu"></i>
 							</span>
@@ -114,14 +109,12 @@ if ($saveOrder)
 						<td class="center">
 							<div class="btn-group">
 								<?php echo JHtml::_('jgrid.published', $item->state, $i, 'weblinks.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
-								<?php // Create dropdown items and render the dropdown list.
-								if ($canChange)
-								{
-									JHtml::_('actionsdropdown.' . ((int) $item->state === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'weblinks');
-									JHtml::_('actionsdropdown.' . ((int) $item->state === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'weblinks');
-									echo JHtml::_('actionsdropdown.render', $this->escape($item->title));
-								}
-								?>
+								<?php // Create dropdown items and render the dropdown list. ?>
+								<?php if ($canChange) : ?>
+									<?php JHtml::_('actionsdropdown.' . ((int) $item->state === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'weblinks'); ?>
+									<?php JHtml::_('actionsdropdown.' . ((int) $item->state === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'weblinks'); ?>
+									<?php echo JHtml::_('actionsdropdown.render', $this->escape($item->title)); ?>
+								<?php endif; ?>
 							</div>
 						</td>
 						<td class="nowrap has-context">

@@ -19,9 +19,9 @@ class WeblinksController extends JControllerLegacy
 	/**
 	 * Method to display a view.
 	 *
-	 * @param   boolean  $cacheable   If true, the view output will be cached
-	 * @param   array    $urlparams   An array of safe url parameters and their variable types,
-	 *                                for valid values see {@link JFilterInput::clean()}.
+	 * @param   boolean  $cacheable  If true, the view output will be cached
+	 * @param   array    $urlparams  An array of safe url parameters and their variable types,
+	 *                               for valid values see {@link JFilterInput::clean()}.
 	 *
 	 * @return  WeblinksController  This object to support chaining.
 	 *
@@ -32,9 +32,11 @@ class WeblinksController extends JControllerLegacy
 		// Huh? Why not just put that in the constructor?
 		$cacheable = true;
 
-		// Set the default view name and format from the Request.
-		// Note we are using w_id to avoid collisions with the router and the return page.
-		// Frontend is a bit messier than the backend.
+		/**
+		 * Set the default view name and format from the Request.
+		 * Note we are using w_id to avoid collisions with the router and the return page.
+		 * Frontend is a bit messier than the backend.
+		 */
 		$id    = $this->input->getInt('w_id');
 		$vName = $this->input->get('view', 'categories');
 		$this->input->set('view', $vName);
