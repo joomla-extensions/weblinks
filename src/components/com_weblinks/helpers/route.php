@@ -180,7 +180,7 @@ abstract class WeblinksHelperRoute
 	/**
 	 * Find items per given $needles
 	 *
-	 * @param   array  $needles
+	 * @param   array  $needles  A given array of needles to find
 	 *
 	 * @return  void
 	 */
