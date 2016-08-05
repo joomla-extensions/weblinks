@@ -2,6 +2,20 @@
 
 This repo is meant to hold the decoupled com_weblinks component and related code.
 
+How to test a PR with the [Patch Tester Component](https://github.com/joomla-extensions/patchtester/releases/latest)
+============
+
+Easily apply changes from a pull requests against this repo:
+Install the last release of [com_weblinks](https://github.com/joomla-extensions/weblinks/releases/latest) into your Joomla.
+Install the last release of [com_patchtester](https://github.com/joomla-extensions/patchtester/releases/latest) into your Joomla (weblinks is supported since Version 3.0.0 Alpha 2).
+Log into your site's administrator section, go to the Patch Tester Component Options (Components -> Patch Tester -> Options)
+Switch the `GitHub Repository` to `Joomla Weblinks Package`
+Click `Save & Close` and hit the `Fetch Data` Button to the the lastest pull requests
+Click `Apply Patch` to apply the proposed changes from the pull request.
+Click `Revert Patch` to revert an applied patch.
+
+You can read more about the Patch Tester extension on the [Joomla! Documentation Wiki](https://docs.joomla.org/Component_Patchtester_for_Testers).
+
 # Building
 
 ```bash
