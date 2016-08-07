@@ -70,7 +70,7 @@ class WeblinksViewWeblinks extends JViewLegacy
 			JToolbarHelper::addNew('weblink.add');
 		}
 
-		if ($canDo->get('core.edit'))
+		if ($canDo->get('core.edit') || $canDo->get('core.edit.own'))
 		{
 			JToolbarHelper::editList('weblink.edit');
 		}
