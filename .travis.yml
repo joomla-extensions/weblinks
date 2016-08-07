@@ -1,29 +1,34 @@
 language: php
-php:
-- 5.5
-- 5.6
-addons:
-  firefox: "44.0.2"
+
+env:
+  global:
+    - RUN_PHPCS="no"
+
 matrix:
-  allow_failures:
-    - php: 5.6
+  fast_finish: true
+  include:
+  - php: 5.5
+  - php: 5.6
+    env: RUN_PHPCS="yes"
+  - php: 7.0
+    sudo: true
+    addons:
+      firefox: "47.0.1"
+    allow_failures:
+    - php: 7.0
+
 before_script:
 - sudo apt-get update -qq
-- sudo apt-get install -y --force-yes apache2 libapache2-mod-fastcgi php5-curl php5-mysql php5-intl php5-gd > /dev/null
+- sudo apt-get install -y --force-yes apache2 libapache2-mod-fastcgi > /dev/null
 - sudo mkdir $(pwd)/.run
-- sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-- sudo sed -e "s,listen = 127.0.0.1:9000,listen = /tmp/php5-fpm.sock,g" --in-place ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-- sudo sed -e "s,;listen.owner = nobody,listen.owner = $USER,g" --in-place ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-- sudo sed -e "s,;listen.group = nobody,listen.group = $USER,g" --in-place ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-- sudo sed -e "s,;listen.mode = 0660,listen.mode = 0666,g" --in-place ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-- sudo sed -e "s,user = nobody,;user = $USER,g" --in-place ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-- sudo sed -e "s,group = nobody,;group = $USER,g" --in-place ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-- cat ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+- chmod a+x tests/travis-php-fpm.sh
+- sudo ./tests/travis-php-fpm.sh $USER $(phpenv version-name)
 - sudo a2enmod rewrite actions fastcgi alias
 - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
 - sudo cp -f tests/travis-ci-apache.conf /etc/apache2/sites-available/default
 - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
+- sudo sed -e "s?%PHPVERSION%?${TRAVIS_PHP_VERSION:0:1}?g" --in-place /etc/apache2/sites-available/default
 - git submodule update --init --recursive
 - sudo service apache2 restart
 # Xvfb
@@ -41,5 +46,8 @@ script:
 # Build
 - mv jorobo.dist.ini jorobo.ini
 - vendor/bin/robo build
+# System tests (Codeception)
 - mv tests/acceptance.suite.dist.yml tests/acceptance.suite.yml
 - vendor/bin/robo run:tests --use-htaccess
+# Run phpcs on PHP 5.6 against weblinks source
+- if [[ $RUN_PHPCS == "yes" ]]; then vendor/bin/phpcs --report=full --extensions=php -p --standard=tests/joomla-cms3/build/phpcs/Joomla ./src; fi

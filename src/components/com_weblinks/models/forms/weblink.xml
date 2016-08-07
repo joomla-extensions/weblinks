@@ -89,6 +89,15 @@
 			size="45"
 			labelclass="control-label" />
 
+		<field
+			name="captcha"
+			type="captcha"
+			label="COM_WEBLINKS_CAPTCHA_LABEL"
+			description="COM_WEBLINKS_CAPTCHA_DESC"
+			validate="captcha"
+			namespace="weblink"
+		/>
+
 	</fieldset>
 	<fields name="metadata">
 		<fieldset name="jmetadata"

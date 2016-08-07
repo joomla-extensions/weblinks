@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<extension type="package" version="3.0" method="upgrade">
+<extension type="package" version="3.5" method="upgrade">
 	<name>pkg_weblinks</name>
 	<packagename>weblinks</packagename>
 	<creationDate>December 2012</creationDate>
@@ -25,6 +25,6 @@
 	</languages>
 	<updateservers>
 		<!-- Note: No spaces or linebreaks allowed between the server tags -->
-		<server type="extension" name="Weblinks Update Site">https://raw.githubusercontent.com/joomla-extensions/weblinks/master/manifest.xml</server>
+		<server type="extension" name="Web Links Update Site">https://raw.githubusercontent.com/joomla-extensions/weblinks/master/manifest.xml</server>
 	</updateservers>
 </extension>

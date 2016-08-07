@@ -14,6 +14,18 @@ JHtml::_('behavior.formvalidation');
 JHtml::_('formbehavior.chosen', 'select');
 JHtml::_('behavior.modal', 'a.modal_jform_contenthistory');
 
+$captchaEnabled = false;
+$captchaSet = $this->params->get('captcha', JFactory::getApplication()->get('captcha', '0'));
+
+foreach (JPluginHelper::getPlugin('captcha') as $plugin)
+{
+	if ($captchaSet === $plugin->name)
+	{
+		$captchaEnabled = true;
+		break;
+	}
+}
+
 // Create shortcut to parameters.
 $params = $this->state->get('params');
 ?>
@@ -34,7 +46,32 @@ $params = $this->state->get('params');
 		<?php echo $this->escape($this->params->get('page_heading')); ?>
 	</h1>
 	<?php endif; ?>
-	<form action="<?php echo JRoute::_('index.php?option=com_weblinks&view=form&w_id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-vertical">
+	<form action="<?php echo JRoute::_('index.php?option=com_weblinks&view=form&w_id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-vertical">
+
+		<?php echo $this->form->renderField('title'); ?>
+		<?php echo $this->form->renderField('alias'); ?>
+		<?php echo $this->form->renderField('catid'); ?>
+		<?php echo $this->form->renderField('url'); ?>
+		<?php echo $this->form->renderField('tags'); ?>
+
+		<?php if ($params->get('save_history', 0)) : ?>
+			<?php echo $this->form->renderField('version_note'); ?>
+		<?php endif; ?>
+
+		<?php if ($this->user->authorise('core.edit.state', 'com_weblinks.weblink')) : ?>
+			<?php echo $this->form->renderField('state'); ?>
+		<?php endif; ?>
+		<?php echo $this->form->renderField('language'); ?>
+		<?php echo $this->form->renderField('description'); ?>
+		
+		<hr class="hr-condensed" />
+		
+		<?php if ($captchaEnabled) : ?>
+			<div class="btn-group">
+				<?php echo $this->form->renderField('captcha'); ?>
+			</div>
+		<?php endif; ?>
+
 		<div class="btn-toolbar">
 			<div class="btn-group">
 				<button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('weblink.save')">
@@ -52,23 +89,6 @@ $params = $this->state->get('params');
 				</div>
 			<?php endif; ?>
 		</div>
-
-		<hr class="hr-condensed" />
-		<?php echo $this->form->renderField('title'); ?>
-		<?php echo $this->form->renderField('alias'); ?>
-		<?php echo $this->form->renderField('catid'); ?>
-		<?php echo $this->form->renderField('url'); ?>
-		<?php echo $this->form->renderField('tags'); ?>
-
-		<?php if ($params->get('save_history', 0)) : ?>
-			<?php echo $this->form->renderField('version_note'); ?>
-		<?php endif; ?>
-
-		<?php if ($this->user->authorise('core.edit.state', 'com_weblinks.weblink')) : ?>
-			<?php echo $this->form->renderField('state'); ?>
-		<?php endif; ?>
-		<?php echo $this->form->renderField('language'); ?>
-		<?php echo $this->form->renderField('description'); ?>
 
 		<input type="hidden" name="return" value="<?php echo $this->return_page;?>" />
 		<input type="hidden" name="task" value="" />
