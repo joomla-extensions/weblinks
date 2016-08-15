@@ -334,6 +334,8 @@ class RoboFile extends \Robo\Tasks
 			$this->_copy('./tests/joomla-cms3/htaccess.txt', './tests/joomla-cms3/.htaccess');
 			$this->_exec('sed -e "s,# RewriteBase /,RewriteBase /tests/joomla-cms3/,g" -in-place tests/joomla-cms3/.htaccess');
 		}
+
+		$this->taskExec('curl -I http://localhost/tests/joomla-cms3/')->printed(true)->run();
 	}
 
 	/**
@@ -429,6 +431,9 @@ class RoboFile extends \Robo\Tasks
 			$this->taskWaitForSeleniumStandaloneServer()
 				->run()
 				->stopOnFail();
+
+			// Debug selenium log
+			$this->taskExec('cat selenium.log')->printed(true)->run();
 		}
 	}
 
