@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f244fa13073bb712787e8b4c51daa7ae",
-    "content-hash": "647a440a0daacb57add2eb04c6f869f4",
+    "hash": "c2bdb7124839ff643bff00796c95553c",
+    "content-hash": "9855a8dec3de3fdd7b66d3f64408585e",
     "packages": [],
     "packages-dev": [
         {
@@ -324,16 +324,16 @@
         },
         {
             "name": "facebook/webdriver",
-            "version": "1.1.3",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/facebook/php-webdriver.git",
-                "reference": "b7186fb1bcfda956d237f59face250d06ef47253"
+                "reference": "0b889d7de7461439f8a3bbcca46e0f696cb27986"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/b7186fb1bcfda956d237f59face250d06ef47253",
-                "reference": "b7186fb1bcfda956d237f59face250d06ef47253",
+                "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/0b889d7de7461439f8a3bbcca46e0f696cb27986",
+                "reference": "0b889d7de7461439f8a3bbcca46e0f696cb27986",
                 "shasum": ""
             },
             "require": {
@@ -341,9 +341,7 @@
                 "php": ">=5.3.19"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^1.11",
-                "phpunit/phpunit": "4.6.* || ~5.0",
-                "squizlabs/php_codesniffer": "^2.6"
+                "phpunit/phpunit": "4.6.*"
             },
             "suggest": {
                 "phpdocumentor/phpdocumentor": "2.*"
@@ -366,7 +364,7 @@
                 "selenium",
                 "webdriver"
             ],
-            "time": "2016-08-10 00:44:08"
+            "time": "2016-06-04 00:02:34"
         },
         {
             "name": "fzaninotto/faker",
