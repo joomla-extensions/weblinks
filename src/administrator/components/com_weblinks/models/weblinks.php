@@ -132,7 +132,7 @@ class WeblinksModelWeblinks extends JModelList
 		$query->select(
 			$this->getState(
 				'list.select',
-				'a.id, a.title, a.alias, a.checked_out, a.checked_out_time, a.catid,' .
+				'a.id, a.title, a.alias, a.checked_out, a.checked_out_time, a.catid, a.created_by, ' .
 				'a.hits, a.state, a.access, a.ordering, a.language, a.publish_up, a.publish_down'
 			)
 		);

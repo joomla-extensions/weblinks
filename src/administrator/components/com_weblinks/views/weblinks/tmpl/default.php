@@ -86,7 +86,8 @@ if ($saveOrder)
 					<?php $item->cat_link = JRoute::_('index.php?option=com_categories&extension=com_weblinks&task=edit&type=other&cid[]=' . $item->catid); ?>
 					<?php $canCreate      = $user->authorise('core.create',     'com_weblinks.category.' . $item->catid); ?>
 					<?php $canEdit        = $user->authorise('core.edit',       'com_weblinks.category.' . $item->catid); ?>
-					<?php $canCheckin     = $user->authorise('core.manage',     'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0; ?>
+					<?php $canCheckin     = $user->authorise('core.manage',     'com_checkin') || $item->checked_out == $user->id || $item->checked_out == 0; ?>
+					<?php $canEditOwn     = $user->authorise('core.edit.own',   'com_weblinks.category.' . $item->catid) && $item->created_by == $user->id; ?>
 					<?php $canChange      = $user->authorise('core.edit.state', 'com_weblinks.category.' . $item->catid) && $canCheckin; ?>
 					<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->catid; ?>">
 						<td class="order nowrap center hidden-phone">
@@ -121,7 +122,7 @@ if ($saveOrder)
 							<?php if ($item->checked_out) : ?>
 								<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'weblinks.', $canCheckin); ?>
 							<?php endif; ?>
-							<?php if ($canEdit) : ?>
+							<?php if ($canEdit || $canEditOwn) : ?>
 								<a href="<?php echo JRoute::_('index.php?option=com_weblinks&task=weblink.edit&id=' . (int) $item->id); ?>">
 									<?php echo $this->escape($item->title); ?></a>
 							<?php else : ?>
