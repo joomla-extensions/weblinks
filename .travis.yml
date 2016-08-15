@@ -41,6 +41,7 @@ before_script:
 - sleep 3 # give fluxbox some time to start
 # Composer
 - composer install
+- firefox -v  
 
 script:
 # Build
