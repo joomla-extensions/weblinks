@@ -434,6 +434,10 @@ class RoboFile extends \Robo\Tasks
 
 			// Debug selenium log
 			$this->taskExec('cat selenium.log')->printed(true)->run();
+
+			$this->taskExec('ps aux')->printed(true)->run();
+
+			$this->taskExec('netstat -napt')->printed(true)->run();
 		}
 	}
 
