@@ -18,6 +18,8 @@ matrix:
     - php: 7.0
 
 before_script:
+# Update Hostname
+- sudo sed -i '1s/^/127.0.0.1 localhost\n/' /etc/hosts
 - sudo apt-get update -qq
 - sudo apt-get install -y --force-yes apache2 libapache2-mod-fastcgi > /dev/null
 - sudo mkdir $(pwd)/.run
