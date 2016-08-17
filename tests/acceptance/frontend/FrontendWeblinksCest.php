@@ -25,7 +25,7 @@ class FrontendWeblinksCest
 	 * @param   \Step\Acceptance\Weblink  $I
 	 */
 
-	public function createWeblinkAndConfirmFrontend(\Step\Acceptance\weblink $I)
+	public function createWeblinkAndConfirmFrontend(\Step\Acceptance\weblink $I, $scenario)
 	{
 		$scenario->skip('Temporarilly skipped, for drone integration');
 
@@ -54,7 +54,7 @@ class FrontendWeblinksCest
 		$I->seeElement(['xpath' => "//a[@href='$this->url']"]);
 	}
 
-	public function hitsAreNotIncrementedIfCountClicksIsOff(\Step\Acceptance\weblink $I)
+	public function hitsAreNotIncrementedIfCountClicksIsOff(\Step\Acceptance\weblink $I, $scenario)
 	{
 		$scenario->skip('Temporarilly skipped, for drone integration');
 
@@ -101,7 +101,7 @@ class FrontendWeblinksCest
 		$I->see('Hits: 0', ['class' => 'list-hits']);
 	}
 
-	public function hitsAreIncrementedIfCountClicksIsOn(\Step\Acceptance\weblink $I)
+	public function hitsAreIncrementedIfCountClicksIsOn(\Step\Acceptance\weblink $I, $scenario)
 	{
 		$scenario->skip('Temporarilly skipped, for drone integration');
 
