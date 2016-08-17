@@ -27,7 +27,7 @@ class FrontendWeblinksCest
 
 	public function createWeblinkAndConfirmFrontend(\Step\Acceptance\weblink $I, $scenario)
 	{
-		$scenario->skip('Temporarilly skipped, for drone integration');
+		$scenario->skip('Temporarily skipped for drone, see: https://github.com/joomla-extensions/weblinks/issues/261');
 
 		$I->am('Administrator');
 		$I->wantToTest('Listing a category of Web Links in frontend');
@@ -56,7 +56,7 @@ class FrontendWeblinksCest
 
 	public function hitsAreNotIncrementedIfCountClicksIsOff(\Step\Acceptance\weblink $I, $scenario)
 	{
-		$scenario->skip('Temporarilly skipped, for drone integration');
+		$scenario->skip('Temporarily skipped for drone, see: https://github.com/joomla-extensions/weblinks/issues/261');
 
 		$title  = 'Weblink' . $this->faker->randomNumber();
 		$url = $I->getConfiguration('counter_test_url');
@@ -103,7 +103,7 @@ class FrontendWeblinksCest
 
 	public function hitsAreIncrementedIfCountClicksIsOn(\Step\Acceptance\weblink $I, $scenario)
 	{
-		$scenario->skip('Temporarilly skipped, for drone integration');
+		$scenario->skip('Temporarily skipped for drone, see: https://github.com/joomla-extensions/weblinks/issues/261');
 
 		$title  = 'Weblink' . $this->faker->randomNumber();
 		$url = $I->getConfiguration('counter_test_url');
