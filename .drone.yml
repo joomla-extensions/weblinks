@@ -8,14 +8,9 @@ build:
     - Xvfb -screen 0 1024x768x24 -ac +extension GLX +render -noreset > /dev/null 2>&1 &
     - sleep 4
     - fluxbox &
+    - curl -I http://localhost/tests/joomla-cms3/
     - vendor/bin/robo run:tests
     - echo "Finished tests at $(date)"
   clone:
     depth: 1
     path: repo
-  notify:
-    email:
-      recipients:
-        - yves@compojoom.com
-        - robert@rdeutz.de
-        - javier.gomez@community.joomla.org
