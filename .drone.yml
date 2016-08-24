@@ -14,3 +14,6 @@ build:
   clone:
     depth: 1
     path: repo
+  cache:
+    mount:
+      - vendor
