@@ -1,3 +1,6 @@
+cache:
+  mount:
+    - vendor
 build:
   image: yveshoppe/joomla-systemtests:latest
   commands:
@@ -14,6 +17,3 @@ build:
   clone:
     depth: 1
     path: repo
-  cache:
-    mount:
-      - vendor
