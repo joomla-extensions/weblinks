@@ -1,6 +1,7 @@
 cache:
   mount:
     - vendor
+    - .git
 build:
   image: yveshoppe/joomla-systemtests:latest
   commands:
