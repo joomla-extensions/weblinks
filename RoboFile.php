@@ -19,7 +19,7 @@ class RoboFile extends \Robo\Tasks
 {
 	// Load tasks from composer, see composer.json
 	use \joomla_projects\robo\loadTasks;
-	use \JBuild\Tasks\loadTasks;
+	use \Joomla\Jorobo\Tasks\loadTasks;
 
 	/**
 	 * File extension for executables
@@ -66,22 +66,31 @@ class RoboFile extends \Robo\Tasks
 	{
 		if ($this->isWindows())
 		{
-			return '.exe';
+			// check wehter git.exe or git as command should be used,
+			// as on window both is possible
+			if(!$this->_exec('git.exe --version')->getMessage())
+			{
+				return '';
+			}
+			else
+			{
+				return '.exe';
+			}
 		}
-
 		return '';
 	}
 
 	/**
 	 * Executes all the Selenium System Tests in a suite on your machine
 	 *
-	 * @param   bool  $use_htaccess  Renames and enable embedded Joomla .htaccess file
-	 *
+	 * @param   array $opts Array of configuration options:
+	 *          - 'use-htaccess': renames and enable embedded Joomla .htaccess file
+	 *          - 'env': set a specific environment to get configuration from
 	 * @return mixed
 	 */
-	public function runTests($use_htaccess = false)
+	public function runTests($opts = ['use-htaccess' => false, 'env' => 'desktop'])
 	{
-		$this->createTestingSite($use_htaccess);
+		$this->createTestingSite($opts['use-htaccess']);
 
 		$this->getComposer();
 
@@ -96,6 +105,7 @@ class RoboFile extends \Robo\Tasks
 			->arg('--steps')
 			->arg('--debug')
 			->arg('--fail-fast')
+			->arg('--env ' . $opts['env'])
 			->arg('tests/acceptance/install/')
 			->run()
 			->stopOnFail();
@@ -104,6 +114,7 @@ class RoboFile extends \Robo\Tasks
 			->arg('--steps')
 			->arg('--debug')
 			->arg('--fail-fast')
+			->arg('--env ' . $opts['env'])
 			->arg('tests/acceptance/administrator/')
 			->run()
 			->stopOnFail();
@@ -112,9 +123,11 @@ class RoboFile extends \Robo\Tasks
 			->arg('--steps')
 			->arg('--debug')
 			->arg('--fail-fast')
+			->arg('--env ' . $opts['env'])
 			->arg('tests/acceptance/frontend/')
 			->run()
 			->stopOnFail();
+
 		/*
 		// Uncomment this lines if you need to debug selenium errors
 		$seleniumErrors = file_get_contents('selenium.log');
@@ -274,6 +287,11 @@ class RoboFile extends \Robo\Tasks
 		// Caching cloned installations locally
 		if (!is_dir('tests/cache') || (time() - filemtime('tests/cache') > 60 * 60 * 24))
 		{
+			if (file_exists('tests/cache'))
+			{
+				$this->taskDeleteDir('tests/cache')->run();
+			}
+
 			$this->_exec($this->buildGitCloneCommand());
 		}
 
@@ -480,11 +498,29 @@ class RoboFile extends \Robo\Tasks
 	 */
 	public function build($params = ['dev' => false])
 	{
-		if (!file_exists('jbuild.ini'))
+		if (!file_exists('jorobo.ini'))
 		{
-			$this->_copy('jbuild.dist.ini', 'jbuild.ini');
+			$this->_copy('jorobo.dist.ini', 'jorobo.ini');
 		}
 
 		$this->taskBuild($params)->run();
+	}
+
+	/**
+	 * Executes all unit tests
+	 */
+	public function runUnit()
+	{
+		$this->createTestingSite();
+		$this->getComposer();
+		$this->taskComposerInstall()->run();
+
+		// Make sure to run the build command to generate AcceptanceTester
+		$this->_exec($this->isWindows() ? 'vendor\bin\codecept.bat build' : 'php vendor/bin/codecept build');
+
+		$this->taskCodecept()
+			->suite('unit')
+			->run()
+			->stopOnFail();
 	}
 }

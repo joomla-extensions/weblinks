@@ -24,6 +24,13 @@ class WeblinksViewForm extends JViewLegacy
 
 	protected $state;
 
+	/**
+	 * Display the view.
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise an Error object.
+	 */
 	public function display($tpl = null)
 	{
 		$user = JFactory::getUser();
@@ -40,7 +47,7 @@ class WeblinksViewForm extends JViewLegacy
 		}
 		else
 		{
-			$authorised = $user->authorise('core.edit', 'com_weblinks.category.'.$this->item->catid);
+			$authorised = $user->authorise('core.edit', 'com_weblinks.category.' . $this->item->catid);
 		}
 
 		if ($authorised !== true)
@@ -52,6 +59,14 @@ class WeblinksViewForm extends JViewLegacy
 
 		if (!empty($this->item))
 		{
+			// Override the base weblink data with any data in the session.
+			$temp = (array) JFactory::getApplication()->getUserState('com_weblinks.edit.weblink.data', array());
+
+			foreach ($temp as $k => $v)
+			{
+				$this->item->$k = $v;
+			}
+
 			$this->form->bind($this->item);
 		}
 
@@ -66,7 +81,7 @@ class WeblinksViewForm extends JViewLegacy
 		// Create a shortcut to the parameters.
 		$params = &$this->state->params;
 
-		//Escape strings for HTML output
+		// Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
 
 		$this->params = $params;
@@ -78,12 +93,14 @@ class WeblinksViewForm extends JViewLegacy
 
 	/**
 	 * Prepares the document
+	 *
+	 * @return  void
 	 */
 	protected function _prepareDocument()
 	{
-		$app	= JFactory::getApplication();
-		$menus	= $app->getMenu();
-		$title	= null;
+		$app   = JFactory::getApplication();
+		$menus = $app->getMenu();
+		$title = null;
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself

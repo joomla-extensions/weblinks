@@ -19,7 +19,7 @@ class WeblinksController extends JControllerLegacy
 	/**
 	 * Method to display a view.
 	 *
-	 * @param   boolean  $cachable   If true, the view output will be cached
+	 * @param   boolean  $cacheable  If true, the view output will be cached
 	 * @param   array    $urlparams  An array of safe url parameters and their variable types,
 	 *                               for valid values see {@link JFilterInput::clean()}.
 	 *
@@ -27,30 +27,32 @@ class WeblinksController extends JControllerLegacy
 	 *
 	 * @since   1.5
 	 */
-	public function display($cachable = false, $urlparams = false)
+	public function display($cacheable = false, $urlparams = false)
 	{
-		$cachable	= true;	// Huh? Why not just put that in the constructor?
-		$user		= JFactory::getUser();
+		// Huh? Why not just put that in the constructor?
+		$cacheable = true;
 
-		// Set the default view name and format from the Request.
-		// Note we are using w_id to avoid collisions with the router and the return page.
-		// Frontend is a bit messier than the backend.
+		/**
+		 * Set the default view name and format from the Request.
+		 * Note we are using w_id to avoid collisions with the router and the return page.
+		 * Frontend is a bit messier than the backend.
+		 */
 		$id    = $this->input->getInt('w_id');
 		$vName = $this->input->get('view', 'categories');
 		$this->input->set('view', $vName);
 
 		if (JFactory::getUser()->id ||($this->input->getMethod() == 'POST' && $vName = 'categories'))
 		{
-			$cachable = false;
+			$cacheable = false;
 		}
 
 		$safeurlparams = array(
-			'id'				=> 'INT',
-			'limit'				=> 'UINT',
-			'limitstart'		=> 'UINT',
-			'filter_order'		=> 'CMD',
-			'filter_order_Dir'	=> 'CMD',
-			'lang'				=> 'CMD'
+			'id'               => 'INT',
+			'limit'            => 'UINT',
+			'limitstart'       => 'UINT',
+			'filter_order'     => 'CMD',
+			'filter_order_Dir' => 'CMD',
+			'lang'             => 'CMD'
 		);
 
 		// Check for edit form.
@@ -60,6 +62,6 @@ class WeblinksController extends JControllerLegacy
 			return JError::raiseError(403, JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
 		}
 
-		return parent::display($cachable, $safeurlparams);
+		return parent::display($cacheable, $safeurlparams);
 	}
 }

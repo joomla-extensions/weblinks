@@ -40,6 +40,11 @@ class WeblinksModelCategories extends JModelList
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
+	 *
+	 * @return  void
+	 *
 	 * @since   1.6
 	 */
 	protected function populateState($ordering = null, $direction = null)
@@ -54,8 +59,8 @@ class WeblinksModelCategories extends JModelList
 		$params = $app->getParams();
 		$this->setState('params', $params);
 
-		$this->setState('filter.published',	1);
-		$this->setState('filter.access',	true);
+		$this->setState('filter.published', 1);
+		$this->setState('filter.access', true);
 	}
 
 	/**
@@ -65,25 +70,25 @@ class WeblinksModelCategories extends JModelList
 	 * different modules that might need different sets of data or different
 	 * ordering requirements.
 	 *
-	 * @param   string  $id	A prefix for the store id.
+	 * @param   string  $id  A prefix for the store id.
 	 *
 	 * @return  string  A store id.
 	 */
 	protected function getStoreId($id = '')
 	{
 		// Compile the store id.
-		$id	.= ':'.$this->getState('filter.extension');
-		$id	.= ':'.$this->getState('filter.published');
-		$id	.= ':'.$this->getState('filter.access');
-		$id	.= ':'.$this->getState('filter.parentId');
+		$id .= ':' . $this->getState('filter.extension');
+		$id .= ':' . $this->getState('filter.published');
+		$id .= ':' . $this->getState('filter.access');
+		$id .= ':' . $this->getState('filter.parentId');
 
 		return parent::getStoreId($id);
 	}
 
 	/**
-	 * redefine the function an add some properties to make the styling more easy
+	 * Redefine the function and add some properties to make the styling more easy
 	 *
-	 * @return mixed An array of data items on success, false on failure.
+	 * @return  mixed  An array of data items on success, false on failure.
 	 */
 	public function getItems()
 	{
@@ -117,12 +122,18 @@ class WeblinksModelCategories extends JModelList
 		return $this->_items;
 	}
 
+	/**
+	 * Get the parent
+	 *
+	 * @return  mixed  An array of data items on success, false on failure.
+	 */
 	public function getParent()
 	{
 		if (!is_object($this->_parent))
 		{
 			$this->getItems();
 		}
+
 		return $this->_parent;
 	}
 }

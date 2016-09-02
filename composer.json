@@ -2,16 +2,22 @@
     "name"       : "joomla-extensions/weblinks",
     "description": "The Open Source PHP Framework for creating complex Joomla extensions",
     "license"    : "GPL-2.0+",
+    "config": {
+        "platform": {
+            "php": "5.5.33"
+        }
+    },
     "require"    : {
         "php": ">=5.3.10"
     },
     "require-dev": {
-        "codeception/codeception": "~2.1",
-        "joomla-projects/joomla-browser": "dev-develop",
-        "codegyre/robo": "~0.5",
+        "codeception/codeception": "^2.2",
+        "joomla-projects/joomla-browser": "v3.6.0.1",
+        "codegyre/robo": "~0.6",
         "joomla-projects/robo": "dev-master",
-        "joomla-projects/selenium-server-standalone": "v2.47.1",
-        "fzaninotto/faker": "^1.5",
-        "joomla-projects/jorobo": "dev-master"
+        "joomla-projects/selenium-server-standalone": "v2.53.1",
+        "fzaninotto/faker": "^1.6",
+        "joomla-projects/jorobo": "0.4",
+        "Behat/Gherkin": "^4.4.1"
     }
 }

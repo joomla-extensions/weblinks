@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Utilities\ArrayHelper;
+
 /**
  * Weblink controller class.
  *
@@ -27,14 +29,13 @@ class WeblinksControllerWeblink extends JControllerForm
 	 */
 	protected function allowAdd($data = array())
 	{
-		$user = JFactory::getUser();
-		$categoryId = JArrayHelper::getValue($data, 'catid', $this->input->getInt('filter_category_id'), 'int');
+		$categoryId = ArrayHelper::getValue($data, 'catid', $this->input->getInt('filter_category_id'), 'int');
 		$allow = null;
 
 		if ($categoryId)
 		{
 			// If the category has been passed in the URL check it.
-			$allow = $user->authorise('core.create', $this->option . '.category.' . $categoryId);
+			$allow = JFactory::getUser()->authorise('core.create', $this->option . '.category.' . $categoryId);
 		}
 
 		if ($allow !== null)
@@ -59,21 +60,29 @@ class WeblinksControllerWeblink extends JControllerForm
 	protected function allowEdit($data = array(), $key = 'id')
 	{
 		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
-		$categoryId = 0;
 
-		if ($recordId)
+		// Since there is no asset tracking, fallback to the component permissions.
+		if (!$recordId)
 		{
-			$categoryId = (int) $this->getModel()->getItem($recordId)->catid;
+			return parent::allowEdit($data, $key);
 		}
 
-		if ($categoryId)
+		// Get the item.
+		$item = $this->getModel()->getItem($recordId);
+
+		// Since there is no item, return false.
+		if (empty($item))
 		{
-			// The category has been set. Check the category permissions.
-			return JFactory::getUser()->authorise('core.edit', $this->option . '.category.' . $categoryId);
+			return false;
 		}
 
-		// Since there is no asset tracking, revert to the component permissions.
-		return parent::allowEdit($data, $key);
+		$user = JFactory::getUser();
+
+		// Check if can edit own core.edit.own.
+		$canEditOwn = $user->authorise('core.edit.own', $this->option . '.category.' . (int) $item->catid) && $item->created_by == $user->id;
+
+		// Check the category core.edit permissions.
+		return $canEditOwn || $user->authorise('core.edit', $this->option . '.category.' . (int) $item->catid);
 	}
 
 	/**
@@ -104,9 +113,9 @@ class WeblinksControllerWeblink extends JControllerForm
 	 * @param   JModelLegacy  $model      The data model object.
 	 * @param   array         $validData  The validated data.
 	 *
-	 * @return	void
+	 * @return  void
 	 *
-	 * @since	1.6
+	 * @since   1.6
 	 */
 	protected function postSaveHook(JModelLegacy $model, $validData = array())
 	{

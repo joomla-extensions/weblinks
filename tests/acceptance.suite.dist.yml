@@ -40,3 +40,15 @@ modules:
             counter_test_url: 'http://localhost/tests/joomla-cms3' # the url for the weblink item used to test hits counter
             url: 'http://localhost/tests/joomla-cms3' # the url that points to the joomla installation at /tests/system/joomla-cms - we need it twice here
 error_level: "E_ALL & ~E_STRICT & ~E_DEPRECATED"
+env:
+    desktop: ~
+    tablet:
+        modules:
+            config:
+                JoomlaBrowser:
+                    window_size: 768x1024
+    phone:
+        modules:
+            config:
+                JoomlaBrowser:
+                    window_size: 480x640

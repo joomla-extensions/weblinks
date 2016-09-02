@@ -99,7 +99,9 @@ class AdministratorWeblinksCest
 		$I->amOnPage('administrator/index.php?option=com_weblinks');
 		$I->waitForText('Web Links','30',['css' => 'h1']);
 		$I->expectTo('see weblinks page');
-		$I->selectOptionInChosen('- Select Status -', 'Trashed');
+		$I->click('Search Tools');
+		$I->wait(2);
+		$I->selectOptionInChosenById('filter_published', 'Trashed');
 		$I->amGoingTo('Search the just saved weblink');
 		$I->searchForItem($this->title);
 		$I->waitForText('Web Links','30',['css' => 'h1']);
@@ -107,6 +109,7 @@ class AdministratorWeblinksCest
 		$I->amGoingTo('Delete the just saved weblink');
 		$I->checkAllResults();
 		$I->click(['xpath'=> '//div[@id="toolbar-delete"]/button']);
+		$I->acceptPopup();
 		$I->waitForText('Web Links','30',['css' => 'h1']);
 		$I->expectTo('see a success message and the weblink removed from the list');
 		$I->see('1 web link successfully deleted.',['id' => 'system-message-container']);

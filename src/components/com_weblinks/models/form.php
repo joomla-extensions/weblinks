@@ -43,6 +43,8 @@ class WeblinksModelForm extends WeblinksModelWeblink
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
+	 * @return  void
+	 *
 	 * @since   1.6
 	 */
 	protected function populateState()

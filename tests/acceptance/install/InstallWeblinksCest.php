@@ -16,6 +16,7 @@ class InstallWeblinksCest
 		$I->am('Administrator');
 		$I->installJoomlaRemovingInstallationFolder();
 		$I->doAdministratorLogin();
+		$I->disableStatistics();
 		$I->setErrorReportingToDevelopment();
 	}
 
@@ -32,4 +33,5 @@ class InstallWeblinksCest
 		$I->installExtensionFromUrl($url . "/pkg-weblinks-current.zip");
 		$I->doAdministratorLogout();
 	}
+
 }
