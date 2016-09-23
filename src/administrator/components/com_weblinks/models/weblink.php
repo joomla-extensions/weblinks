@@ -332,16 +332,4 @@ class WeblinksModelWeblink extends JModelAdmin
 
 		return array($name, $alias);
 	}
-
-	/**
-	 * Is the user allowed to create an on the fly category?
-	 *
-	 * @return  bool
-	 *
-	 * @since   3.6.0
-	 */
-	private function canCreateCategory()
-	{
-		return JFactory::getUser()->authorise('core.create', 'com_banners');
-	}
 }
