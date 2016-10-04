@@ -41,7 +41,7 @@ class WeblinksController extends JControllerLegacy
 		$vName = $this->input->get('view', 'categories');
 		$this->input->set('view', $vName);
 
-		if (JFactory::getUser()->id ||($this->input->getMethod() == 'POST' && $vName = 'categories'))
+		if (JFactory::getUser()->id ||($this->input->getMethod() == 'POST' && $vName == 'categories'))
 		{
 			$cacheable = false;
 		}
