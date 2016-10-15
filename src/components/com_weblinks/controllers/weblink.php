@@ -305,7 +305,7 @@ class WeblinksControllerWeblink extends JControllerForm
 		if ($link->url)
 		{
 			$modelLink->hit($id);
-			JFactory::getApplication()->redirect($link->url);
+			JFactory::getApplication()->redirect($link->url, 301);
 		}
 
 		return JError::raiseWarning(404, JText::_('COM_WEBLINKS_ERROR_WEBLINK_URL_INVALID'));
