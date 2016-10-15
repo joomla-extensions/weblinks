@@ -442,7 +442,13 @@ class RoboFile extends \Robo\Tasks
 		// Make sure we have Composer
 		if (!file_exists('./composer.phar'))
 		{
-			$insecure = $this->isWindows() ? ' --insecure' : '';
+			$insecure = '';
+
+			if (!empty($this->configuration->insecure))
+			{
+				$insecure = '--insecure';
+			}
+
 			$this->_exec('curl ' . $insecure . ' --retry 3 --retry-delay 5 -sS https://getcomposer.org/installer | php');
 		}
 	}
