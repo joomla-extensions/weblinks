@@ -17,7 +17,7 @@
 			description="COM_WEBLINKS_FIELD_ALIAS_DESC"
 			hint="JFIELD_ALIAS_PLACEHOLDER" />
 
-		<field	name="catid"
+		<field name="catid"
 			type="categoryedit"
 			extension="com_weblinks"
 			label="JCATEGORY"
