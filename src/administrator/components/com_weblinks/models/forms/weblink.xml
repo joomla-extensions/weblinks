@@ -17,11 +17,14 @@
 			description="COM_WEBLINKS_FIELD_ALIAS_DESC"
 			hint="JFIELD_ALIAS_PLACEHOLDER" />
 
-		<field name="catid" type="categoryedit" extension="com_weblinks"
-			label="JCATEGORY" description="COM_WEBLINKS_FIELD_CATEGORY_DESC"
-		>
-		</field>
-
+		<field name="catid"
+			type="categoryedit"
+			extension="com_weblinks"
+			label="JCATEGORY"
+			description="COM_WEBLINKS_FIELD_CATEGORY_DESC"
+			required="true"
+			default="" 
+		/>
 
 		<field name="url" type="url"
 			class="span12"

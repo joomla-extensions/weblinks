@@ -292,6 +292,31 @@ class WeblinksModelWeblink extends JModelAdmin
 	{
 		$app = JFactory::getApplication();
 
+		JLoader::register('CategoriesHelper', JPATH_ADMINISTRATOR . '/components/com_categories/helpers/categories.php');
+
+		// Cast catid to integer for comparison
+		$catid = (int) $data['catid'];
+ 
+		// Check if New Category exists
+		if ($catid > 0)
+		{
+			$catid = CategoriesHelper::validateCategoryId($data['catid'], 'com_weblinks');
+		}
+
+		// Save New Category
+		if ($catid == 0 && $this->canCreateCategory())
+		{
+			$table = array();
+			$table['title'] = $data['catid'];
+			$table['parent_id'] = 1;
+			$table['extension'] = 'com_weblinks';
+			$table['language'] = $data['language'];
+			$table['published'] = 1;
+
+			// Create new category and get catid back
+			$data['catid'] = CategoriesHelper::createCategory($table);
+		}
+
 		// Alter the title for save as copy
 		if ($app->input->get('task') == 'save2copy')
 		{
@@ -331,5 +356,38 @@ class WeblinksModelWeblink extends JModelAdmin
 		}
 
 		return array($name, $alias);
+	}
+
+	/**
+	 * Allows preprocessing of the JForm object.
+	 *
+	 * @param   JForm   $form   The form object
+	 * @param   array   $data   The data to be merged into the form object
+	 * @param   string  $group  The plugin group to be executed
+	 *
+	 * @return  void
+	 *
+	 * @since    3.6.0
+	 */
+	protected function preprocessForm(JForm $form, $data, $group = 'content')
+	{
+		if ($this->canCreateCategory())
+		{
+			$form->setFieldAttribute('catid', 'allowAdd', 'true');
+		}
+
+		parent::preprocessForm($form, $data, $group);
+	}
+
+	/**
+	 * Is the user allowed to create an on the fly category?
+	 *
+	 * @return  bool
+	 *
+	 * @since   3.6.0
+	 */
+	private function canCreateCategory()
+	{
+		return JFactory::getUser()->authorise('core.create', 'com_weblinks');
 	}
 }
