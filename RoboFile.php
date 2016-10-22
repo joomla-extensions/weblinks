@@ -523,4 +523,19 @@ class RoboFile extends \Robo\Tasks
 			->run()
 			->stopOnFail();
 	}
+
+	/**
+	 * Update copyright headers for this project. (Set the text up in the jorobo.ini)
+	 *
+	 * @return  void
+	 */
+	public function headers()
+	{
+		if (!file_exists('jorobo.ini'))
+		{
+			$this->_copy('jorobo.dist.ini', 'jorobo.ini');
+		}
+
+		(new \Joomla\Jorobo\Tasks\CopyrightHeader())->run();
+	}
 }
