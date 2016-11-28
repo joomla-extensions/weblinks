@@ -13,4 +13,17 @@
 		</downloads>
 		<targetplatform name="joomla" version="3.[56789]" />
 	</update>
+	<update>
+		<name>Weblinks Extension Package</name>
+		<description>Joomla! CMS Weblinks Package</description>
+		<element>pkg_weblinks</element>
+		<type>package</type>
+		<version>3.6.0-beta</version>
+		<client>site</client>
+		<infourl title="Weblinks Extension Package">https://github.com/joomla-extensions/weblinks/releases/tag/3.6.0-beta</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://github.com/joomla-extensions/weblinks/releases/download/3.6.0-beta/pkg-weblinks-3.6.0-beta.zip</downloadurl>
+		</downloads>
+		<targetplatform name="joomla" version="3.[6789]" />
+	</update>
 </updates>
