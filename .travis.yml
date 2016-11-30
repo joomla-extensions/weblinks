@@ -1,3 +1,4 @@
+sudo: true
 language: php
 
 env:
@@ -7,15 +8,29 @@ env:
 matrix:
   fast_finish: true
   include:
-  - php: 5.5
-  - php: 5.6
-    env: RUN_PHPCS="yes"
-  - php: 7.0
-    sudo: true
-    addons:
-      firefox: "47.0.1"
-    allow_failures:
+    - php: 5.5
+    - php: 5.6
+      env: RUN_PHPCS="yes"
     - php: 7.0
+      sudo: true
+      addons:
+        firefox: "47.0.1"
+    - php: 7.1
+    - php: hhvm
+      sudo: true
+      dist: trusty
+      group: edge # Until the next stable image update sometime after 2016-12-01
+      addons:
+        apt:
+          packages:
+            - mysql-server-5.6
+            - mysql-client-core-5.6
+            - mysql-client-5.6
+      services:
+        - mysql
+        - postgresql
+  allow_failures:
+    - php: hhvm
 
 before_script:
 # Forcing localhost in hosts file
