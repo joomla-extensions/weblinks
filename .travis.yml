@@ -19,7 +19,7 @@ matrix:
     - php: hhvm
       sudo: true
       dist: trusty
-      group: edge # until the next update
+      group: edge # Until the next stable image update sometime after 2016-12-01
       addons:
         apt:
           packages:
@@ -30,8 +30,6 @@ matrix:
         - mysql
         - postgresql
   allow_failures:
-    - php: 7.0
-    - php: 7.1
     - php: hhvm
 
 before_script:
