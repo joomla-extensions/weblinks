@@ -31,7 +31,7 @@ defined('_JEXEC') or die;
 			<div class="span<?php echo (12 / $cols); ?>">
 		<?php endif; ?>
 		<?php if ($params->get('groupby_showtitle', 1)) : ?>
-			<h4><?php echo htmlspecialchars($cat['title'], ENT_COMPAT, 'UTF-8')); ?></h4>
+			<h4><?php echo htmlspecialchars($cat['title'], ENT_COMPAT, 'UTF-8'); ?></h4>
 		<?php endif; ?>
 			<ul class="weblinks<?php echo $moduleclass_sfx; ?>">
 				<?php foreach ($items as $item) : ?>
