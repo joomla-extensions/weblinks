@@ -18,7 +18,7 @@ modules:
         - AcceptanceHelper
     config:
         JoomlaBrowser:
-            url: 'http://localhost/tests/joomla-cms3'     # the url that points to the joomla installation at /tests/system/joomla-cms
+            url: 'http://localhost/tests/joomla'     # the url that points to the joomla installation at /tests/system/joomla-cms
             browser: 'firefox'
             window_size: 1024x768
             capabilities:
@@ -37,8 +37,8 @@ modules:
             language: 'English (United Kingdom)'   # Language in which you want the Application to be Installed
         AcceptanceHelper:
             repo_folder: '/home/travis/build/joomla-extensions/weblinks/' # Path to the Extension repository. To be used by tests to install via Install from folder
-            counter_test_url: 'http://localhost/tests/joomla-cms3' # the url for the weblink item used to test hits counter
-            url: 'http://localhost/tests/joomla-cms3' # the url that points to the joomla installation at /tests/system/joomla-cms - we need it twice here
+            counter_test_url: 'http://localhost/tests/joomla' # the url for the weblink item used to test hits counter
+            url: 'http://localhost/tests/joomla' # the url that points to the joomla installation at /tests/system/joomla-cms - we need it twice here
 error_level: "E_ALL & ~E_STRICT & ~E_DEPRECATED"
 env:
     desktop: ~
