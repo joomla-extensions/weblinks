@@ -331,8 +331,8 @@ class RoboFile extends \Robo\Tasks
 		// Optionally uses Joomla default htaccess file. Used by TravisCI
 		if ($use_htaccess == true)
 		{
-			$this->_copy('./tests/joomla-cms3/htaccess.txt', './tests/joomla-cms3/.htaccess');
-			$this->_exec('sed -e "s,# RewriteBase /,RewriteBase /tests/joomla-cms3/,g" -in-place tests/joomla-cms3/.htaccess');
+			$this->_copy('./tests/joomla/htaccess.txt', './tests/joomla/.htaccess');
+			$this->_exec('sed -e "s,# RewriteBase /,RewriteBase /tests/joomla/,g" -in-place tests/joomla/.htaccess');
 		}
 	}
 
@@ -392,13 +392,13 @@ class RoboFile extends \Robo\Tasks
 	{
 		if (empty($this->configuration->cmsPath))
 		{
-			return 'tests/joomla-cms3';
+			return 'tests/joomla';
 		}
 
 		if (!file_exists(dirname($this->configuration->cmsPath)))
 		{
 			$this->say("Cms path written in local configuration does not exists or is not readable");
-			return 'tests/joomla-cms3';
+			return 'tests/joomla';
 		}
 
 		return $this->configuration->cmsPath;
