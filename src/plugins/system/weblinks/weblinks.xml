@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.5" type="plugin" group="system" method="upgrade">
+	<name>plg_system_weblinks</name>
+	<author>Joomla! Project</author>
+	<creationDate>2016-12-19</creationDate>
+	<copyright>(C) 2005 - 2016 Open Source Matters. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see	LICENSE.txt</license>
+	<authorEmail>admin@joomla.org</authorEmail>
+	<authorUrl>www.joomla.org</authorUrl>
+	<version>3.6.0-beta</version>
+	<description>PLG_SYSTEM_WEBLINKS_XML_DESCRIPTION</description>
+	<files>
+		<file>weblinks.xml</file>
+		<folder>language</folder>
+		<file plugin="weblinks">weblinks.php</file>
+	</files>
+	<languages folder="administrator/language">
+	</languages>
+</extension>
