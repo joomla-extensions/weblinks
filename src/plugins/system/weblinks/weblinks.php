@@ -54,13 +54,11 @@ class PlgSystemWeblinks extends JPlugin
 			return array();
 		}
 
-		// Link to web links component page.
-		$adminLink = JUri::root() . 'administrator/index.php?option=com_weblinks&view=weblinks&filter[published]=1';
-
 		return array(array(
-			'title' => JText::sprintf('PLG_SYSTEM_WEBLINKS_STATISTICS', $adminLink),
+			'title' => JText::sprintf('PLG_SYSTEM_WEBLINKS_STATISTICS'),
 			'icon'  => 'out-2',
 			'data'  => $links,
+			'link'  => JUri::root() . 'administrator/index.php?option=com_weblinks&view=weblinks&filter[published]=1',
 		));
 	}
 }
