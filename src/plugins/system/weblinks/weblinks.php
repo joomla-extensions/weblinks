@@ -14,7 +14,7 @@ use Joomla\Registry\Registry;
 /**
  * System plugin for Joomla Web Links.
  *
- * @since  __DEPLOY_VERSION__
+ * @since  3.6.0
  */
 class PlgSystemWeblinks extends JPlugin
 {
@@ -22,7 +22,7 @@ class PlgSystemWeblinks extends JPlugin
 	 * Load the language file on instantiation.
 	 *
 	 * @var    boolean
-	 * @since  __DEPLOY_VERSION__
+	 * @since  3.6.0
 	 */
 	protected $autoloadLanguage = true;
 
@@ -33,7 +33,7 @@ class PlgSystemWeblinks extends JPlugin
 	 *
 	 * @return  array containing statistical information.
 	 *
-	 * @since   __DEPLOY_VERSION__
+	 * @since   3.6.0
 	 */
 	public function onGetStats($extension)
 	{
