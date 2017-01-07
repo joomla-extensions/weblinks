@@ -43,6 +43,12 @@ class RoboFile extends \Robo\Tasks
 	private $cmsPath = '';
 
 	/**
+	 * @var array | null
+	 * @since  __DEPLOY_VERSION__
+	 */
+	private $suiteConfig;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct()
@@ -411,18 +417,18 @@ class RoboFile extends \Robo\Tasks
 	 */
 	public function runSelenium()
 	{
-		if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN')
+		if (!$this->isWindows())
 		{
-			$this->_exec("vendor/bin/selenium-server-standalone >> selenium.log 2>&1 &");
+			$this->_exec("vendor/bin/selenium-server-standalone " . $this->getWebDriver() . ' >> selenium.log 2>&1 &');
 		}
 		else
 		{
-			$this->_exec("START java.exe -jar .\\vendor\\joomla-projects\\selenium-server-standalone\\bin\\selenium-server-standalone.jar");
+			$this->_exec('START java.exe -jar' . $this->getWebDriver() . ' vendor\joomla-projects\selenium-server-standalone\bin\selenium-server-standalone.jar ');
 		}
 
-		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
+		if ($this->isWindows())
 		{
-			sleep(10);
+			sleep(3);
 		}
 		else
 		{
@@ -537,5 +543,104 @@ class RoboFile extends \Robo\Tasks
 		}
 
 		(new \Joomla\Jorobo\Tasks\CopyrightHeader())->run();
+	}
+
+	/**
+	 * Detect the correct driver for selenium
+	 *
+	 * @return  string the webdriver string to use with selenium
+	 *
+	 * @since version
+	 */
+	public function getWebdriver()
+	{
+		$suiteConfig        = $this->getSuiteConfig();
+		$codeceptMainConfig = \Codeception\Configuration::config();
+		$browser            = $suiteConfig['modules']['config']['JoomlaBrowser']['browser'];
+
+		if ($browser == 'chrome')
+		{
+			$driver['type'] = 'webdriver.chrome.driver';
+		}
+		elseif ($browser == 'firefox')
+		{
+			$driver['type'] = 'webdriver.gecko.driver';
+		}
+		elseif ($browser == 'MicrosoftEdge')
+		{
+			$driver['type'] = 'webdriver.edge.driver';
+
+			// Check if we are using Windows Insider builds
+			if ($suiteConfig['modules']['config']['AcceptanceHelper']['MicrosoftEdgeInsiders'])
+			{
+				$browser = 'MicrosoftEdgeInsiders';
+			}
+		}
+		elseif ($browser == 'internet explorer')
+		{
+			$driver['type'] = 'webdriver.ie.driver';
+		}
+
+		// Check if we have a path for this browser and OS in the codeception settings
+		if (isset($codeceptMainConfig['webdrivers'][$browser][$this->getOs()]))
+		{
+			$driverPath = $codeceptMainConfig['webdrivers'][$browser][$this->getOs()];
+		}
+		else
+		{
+			$this->yell(print_r($codeceptMainConfig).'No driver for your browser. Check your browser in acceptance.suite.yml and the webDrivers in codeception.yml');
+
+			// We can't do anything without a driver, exit
+			exit(1);
+		}
+
+		$driver['path'] = $driverPath;
+
+		return '-D' . implode('=', $driver);
+	}
+
+	/**
+	 * Get the suite configuration
+	 *
+	 * @param string $suite
+	 *
+	 * @return array
+	 */
+	private function getSuiteConfig($suite = 'acceptance')
+	{
+		if (!$this->suiteConfig)
+		{
+			$this->suiteConfig = Symfony\Component\Yaml\Yaml::parse(file_get_contents("tests/{$suite}.suite.yml"));
+		}
+
+		return $this->suiteConfig;
+	}
+
+		/**
+	 * Return the os name
+	 *
+	 * @return string
+	 *
+	 * @since version
+	 */
+	private function getOs()
+	{
+		$os = php_uname('s');
+
+		if (strpos(strtolower($os), 'windows') !== false)
+		{
+			$os = 'windows';
+		}
+		// Who have thought that Mac is actually Darwin???
+		elseif (strpos(strtolower($os), 'darwin') !== false)
+		{
+			$os = 'mac';
+		}
+		else
+		{
+			$os = 'linux';
+		}
+
+		return $os;
 	}
 }

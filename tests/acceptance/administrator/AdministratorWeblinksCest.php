@@ -122,7 +122,6 @@ class AdministratorWeblinksCest
 		$I->wantToTest('Weblink creation without title fails in /administrator/');
 
 		$I->doAdministratorLogin();
-
 		$I->amGoingTo('Navigate to Weblinks page in /administrator/');
 		$I->amOnPage('administrator/index.php?option=com_weblinks');
 		$I->waitForText('Web Links','30',['css' => 'h1']);
@@ -130,9 +129,9 @@ class AdministratorWeblinksCest
 		$I->checkForPhpNoticesOrWarnings();
 
 		$I->amGoingTo('try to save a weblink with empty title and it should fail');
-		$I->click(['xpath'=> "//button[@onclick=\"Joomla.submitbutton('weblink.add')\"]"]);
+		$I->click(['xpath' => "//div[@id='toolbar-new']//button"]);
 		$I->waitForText('Web Link: New','30',['css' => 'h1']);
-		$I->click(['xpath'=> "//button[@onclick=\"Joomla.submitbutton('weblink.apply')\"]"]);
+		$I->click(['xpath' => "//div[@id='toolbar-apply']//button"]);
 		$I->expectTo('see an error when trying to save a weblink without title and without URL');
 		$I->see('Invalid field:  Title',['id' => 'system-message-container']);
 		$I->see('Invalid field:  URL',['id' => 'system-message-container']);
