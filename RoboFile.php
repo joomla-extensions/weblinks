@@ -5,7 +5,11 @@
  * Download robo.phar from http://robo.li/robo.phar and type in the root of the repo: $ php robo.phar
  * Or do: $ composer update, and afterwards you will be able to execute robo like $ php vendor/bin/robo
  *
- * @see http://robo.li/
+ * @package     Joomla.Site
+ * @subpackage  RoboFile
+ *
+ * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 require_once 'vendor/autoload.php';
@@ -15,6 +19,13 @@ if (!defined('JPATH_BASE'))
 	define('JPATH_BASE', __DIR__);
 }
 
+/**
+ * Modern php task runner for Joomla! Browser Automated Tests execution
+ *
+ * @package  RoboFile
+ *
+ * @since    1.0
+ */
 class RoboFile extends \Robo\Tasks
 {
 	// Load tasks from composer, see composer.json
@@ -44,7 +55,7 @@ class RoboFile extends \Robo\Tasks
 
 	/**
 	 * @var array | null
-	 * @since  __DEPLOY_VERSION__
+	 * @since  version
 	 */
 	private $suiteConfig;
 
@@ -72,9 +83,9 @@ class RoboFile extends \Robo\Tasks
 	{
 		if ($this->isWindows())
 		{
-			// check wehter git.exe or git as command should be used,
-			// as on window both is possible
-			if(!$this->_exec('git.exe --version')->getMessage())
+			// Check wehter git.exe or git as command should be used,
+			// As on window both is possible
+			if (!$this->_exec('git.exe --version')->getMessage())
 			{
 				return '';
 			}
@@ -83,15 +94,17 @@ class RoboFile extends \Robo\Tasks
 				return '.exe';
 			}
 		}
+
 		return '';
 	}
 
 	/**
 	 * Executes all the Selenium System Tests in a suite on your machine
 	 *
-	 * @param   array $opts Array of configuration options:
+	 * @param   array  $opts  Array of configuration options:
 	 *          - 'use-htaccess': renames and enable embedded Joomla .htaccess file
 	 *          - 'env': set a specific environment to get configuration from
+	 * 
 	 * @return mixed
 	 */
 	public function runTests($opts = ['use-htaccess' => false, 'env' => 'desktop'])
@@ -135,7 +148,7 @@ class RoboFile extends \Robo\Tasks
 			->stopOnFail();
 
 		/*
-		// Uncomment this lines if you need to debug selenium errors
+		Uncomment this lines if you need to debug selenium errors
 		$seleniumErrors = file_get_contents('selenium.log');
 		if ($seleniumErrors) {
 			$this->say('Printing Selenium Log files');
@@ -149,9 +162,8 @@ class RoboFile extends \Robo\Tasks
 	/**
 	 * Executes a specific Selenium System Tests in your machine
 	 *
-	 * @param string $seleniumPath   Optional path to selenium-standalone-server-x.jar
-	 * @param string $pathToTestFile Optional name of the test to be run
-	 * @param string $suite          Optional name of the suite containing the tests, Acceptance by default.
+	 * @param   string  $pathToTestFile  Optional name of the test to be run
+	 * @param   string  $suite           Optional name of the suite containing the tests, Acceptance by default.
 	 *
 	 * @return mixed
 	 */
@@ -199,26 +211,28 @@ class RoboFile extends \Robo\Tasks
 
 		$pathToTestFile = 'tests/' . $suite . '/' . $test;
 
-		//loading the class to display the methods in the class
+		// Loading the class to display the methods in the class
 		require 'tests/' . $suite . '/' . $test;
 
-		//logic to fetch the class name from the file name
+		// Logic to fetch the class name from the file name
 		$fileName = explode("/", $test);
 		$className = explode(".", $fileName[1]);
 
-		//if the selected file is cest only than we will give the option to execute individual methods, we don't need this in cept file
+		// If the selected file is cest only than we will give the option to execute individual methods, we don't need this in cept file
 		$i = 1;
+
 		if (strripos($className[0], 'cest'))
 		{
 			$class_methods = get_class_methods($className[0]);
 			$this->say('[' . $i . '] ' . 'All');
 			$methods[$i] = 'All';
 			$i++;
+
 			foreach ($class_methods as $method_name)
 			{
-
 				$reflect = new ReflectionMethod($className[0], $method_name);
-				if(!$reflect->isConstructor())
+
+				if (!$reflect->isConstructor())
 				{
 					if ($reflect->isPublic())
 					{
@@ -228,12 +242,13 @@ class RoboFile extends \Robo\Tasks
 					}
 				}
 			}
+
 			$this->say('');
 			$methodNumber = $this->ask('Please choose the method in the test that you would want to run...');
 			$method = $methods[$methodNumber];
 		}
 
-		if(isset($method) && $method != 'All')
+		if (isset($method) && $method != 'All')
 		{
 			$pathToTestFile = $pathToTestFile . ':' . $method;
 		}
@@ -249,23 +264,28 @@ class RoboFile extends \Robo\Tasks
 	/**
 	 * Run the specified checker tool. Valid options are phpmd, phpcs, phpcpd
 	 *
-	 * @param string $tool
+	 * @param   string  $tool  The tool
 	 *
-	 * @return bool
+	 * @return  bool
 	 */
 	public function runChecker($tool = null)
 	{
-		if ($tool === null) {
+		if ($tool === null)
+		{
 			$this->say('You have to specify a tool name as argument. Valid tools are phpmd, phpcs, phpcpd.');
+
 			return false;
 		}
 
-		if (!in_array($tool, array('phpmd', 'phpcs', 'phpcpd') )) {
+		if (!in_array($tool, array('phpmd', 'phpcs', 'phpcpd')))
+		{
 			$this->say('The tool you required is not known. Valid tools are phpmd, phpcs, phpcpd.');
+
 			return false;
 		}
 
-		switch ($tool) {
+		switch ($tool)
+		{
 			case 'phpmd':
 				return $this->runPhpmd();
 
@@ -281,12 +301,15 @@ class RoboFile extends \Robo\Tasks
 	 * Creates a testing Joomla site for running the tests (use it before run:test)
 	 *
 	 * @param   bool  $use_htaccess  (1/0) Rename and enable embedded Joomla .htaccess file
+	 * 
+	 * @return  bool
 	 */
 	public function createTestingSite($use_htaccess = false)
 	{
 		if (!empty($this->configuration->skipClone))
 		{
 			$this->say('Reusing Joomla CMS site already present at ' . $this->cmsPath);
+
 			return;
 		}
 
@@ -354,13 +377,16 @@ class RoboFile extends \Robo\Tasks
 		if (!file_exists($configurationFile))
 		{
 			$this->say("No local configuration file");
+
 			return null;
 		}
 
 		$configuration = parse_ini_file($configurationFile);
+
 		if ($configuration === false)
 		{
 			$this->say('Local configuration file is empty or wrong (check is it in correct .ini format');
+
 			return null;
 		}
 
@@ -404,6 +430,7 @@ class RoboFile extends \Robo\Tasks
 		if (!file_exists(dirname($this->configuration->cmsPath)))
 		{
 			$this->say("Cms path written in local configuration does not exists or is not readable");
+
 			return 'tests/joomla';
 		}
 
@@ -423,7 +450,8 @@ class RoboFile extends \Robo\Tasks
 		}
 		else
 		{
-			$this->_exec('START java.exe -jar' . $this->getWebDriver() . ' vendor\joomla-projects\selenium-server-standalone\bin\selenium-server-standalone.jar ');
+			$this->_exec('START java.exe -jar' . $this->getWebDriver() .
+					' vendor\joomla-projects\selenium-server-standalone\bin\selenium-server-standalone.jar ');
 		}
 
 		if ($this->isWindows())
@@ -464,6 +492,8 @@ class RoboFile extends \Robo\Tasks
 	 *
 	 * @param   string  $host  Web host of the remote server.
 	 * @param   string  $port  Server port.
+	 * 
+	 * @return  void
 	 */
 	public function killSelenium($host = 'localhost', $port = '4444')
 	{
@@ -473,6 +503,8 @@ class RoboFile extends \Robo\Tasks
 
 	/**
 	 * Run the phpmd tool
+	 * 
+	 * @return  void
 	 */
 	private function runPhpmd()
 	{
@@ -481,6 +513,8 @@ class RoboFile extends \Robo\Tasks
 
 	/**
 	 * Run the phpcs tool
+	 * 
+	 * @return  void
 	 */
 	private function runPhpcs()
 	{
@@ -489,6 +523,8 @@ class RoboFile extends \Robo\Tasks
 
 	/**
 	 * Run the phpcpd tool
+	 * 
+	 * @return  void
 	 */
 	private function runPhpcpd()
 	{
@@ -514,6 +550,8 @@ class RoboFile extends \Robo\Tasks
 
 	/**
 	 * Executes all unit tests
+	 * 
+	 * @return  void
 	 */
 	public function runUnit()
 	{
@@ -542,7 +580,7 @@ class RoboFile extends \Robo\Tasks
 			$this->_copy('jorobo.dist.ini', 'jorobo.ini');
 		}
 
-		(new \Joomla\Jorobo\Tasks\CopyrightHeader())->run();
+		(new \Joomla\Jorobo\Tasks\CopyrightHeader)->run();
 	}
 
 	/**
@@ -588,7 +626,9 @@ class RoboFile extends \Robo\Tasks
 		}
 		else
 		{
-			$this->yell(print_r($codeceptMainConfig).'No driver for your browser. Check your browser in acceptance.suite.yml and the webDrivers in codeception.yml');
+			$this->yell(
+					print_r($codeceptMainConfig) .
+					'No driver for your browser. Check your browser in acceptance.suite.yml and the webDrivers in codeception.yml');
 
 			// We can't do anything without a driver, exit
 			exit(1);
@@ -602,7 +642,7 @@ class RoboFile extends \Robo\Tasks
 	/**
 	 * Get the suite configuration
 	 *
-	 * @param string $suite
+	 * @param   string  $suite  The suite
 	 *
 	 * @return array
 	 */
@@ -616,7 +656,7 @@ class RoboFile extends \Robo\Tasks
 		return $this->suiteConfig;
 	}
 
-		/**
+	/**
 	 * Return the os name
 	 *
 	 * @return string
