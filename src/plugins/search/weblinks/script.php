@@ -12,10 +12,28 @@ defined('_JEXEC') or die;
 /**
  * Installation class to perform additional changes during install/uninstall/update
  *
- * @since  3.6.0
+ * @since  __DEPLOY_VERSION__
  */
-class plgSearchWeblinksInstallerScript
+class PlgSearchWeblinksInstallerScript extends JInstallerScript
 {
+	/**
+	 * Extension script constructor.
+	 *
+	 * @return  void
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function __construct()
+	{
+		$this->minimumJoomla = '3.6';
+		$this->minimumPhp    = JOOMLA_MINIMUM_PHP;
+
+		$this->deleteFiles = array(
+			'/administrator/language/en-GB/en-GB.plg_search_weblinks.ini',
+ 			'/administrator/language/en-GB/en-GB.plg_search_weblinks.sys.ini',
+		);
+	}
+
 	/**
 	 * Method to run after the install routine.
 	 *
@@ -24,36 +42,11 @@ class plgSearchWeblinksInstallerScript
 	 *
 	 * @return  void
 	 *
-	 * @since   3.6.0
+	 * @since   __DEPLOY_VERSION__
 	 */
 	public function postflight($type, $parent)
 	{
-		// Remove old language files if present.
-		$this->removeOldLanguageFiles();
-	}
-
-	/**
-	 * Remove old language files if present.
-	 *
-	 * From 3.6.0 onwards, language files are included in the plugin rather than in administrator/language.
-	 *
-	 * @return  void
-	 *
-	 * @since   3.6.0
-	 */
-	private function removeOldLanguageFiles()
-	{
-		$filesToRemove = array(
-			'/administrator/language/en-GB/en-GB.plg_search_weblinks.ini',
-			'/administrator/language/en-GB/en-GB.plg_search_weblinks.sys.ini',
-			);
-
-		foreach ($filesToRemove as $filename)
-		{
-			if (file_exists(JPATH_ROOT . $filename))
-			{
-				unlink(JPATH_ROOT . $filename);
-			}
-		}
+		// Remove files
+		$this->removeFiles();
 	}
 }
