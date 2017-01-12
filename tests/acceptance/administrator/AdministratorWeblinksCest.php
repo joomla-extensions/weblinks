@@ -7,8 +7,20 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+/**
+ * Acceptance cest object class for admin steps
+ *
+ * @package  Administrator
+ *
+ * @since    1.0
+ */
 class AdministratorWeblinksCest
 {
+	/**
+	 * User constructor.
+	 *
+	 * @since   version
+	 */
 	public function __construct()
 	{
 		$this->faker = Faker\Factory::create();
@@ -16,6 +28,15 @@ class AdministratorWeblinksCest
 		$this->url  = $this->faker->url();
 	}
 
+	/**
+	 * Method to verify available tabs
+	 *
+	 * @param   string  $I  The weblink object
+	 *
+	 * @since   version
+	 *
+	 * @return  void
+	 */
 	public function administratorVerifyAvailableTabs(\Step\Acceptance\weblink $I)
 	{
 		$I->am('Administrator');
@@ -31,6 +52,15 @@ class AdministratorWeblinksCest
 		$I->verifyAvailableTabs(['New Web Link', 'Images', 'Publishing', 'Options', 'Metadata']);
 	}
 
+	/**
+	 * Method to create weblink
+	 *
+	 * @param   string  $I  The weblink object
+	 *
+	 * @since   version
+	 *
+	 * @return  void
+	 */
 	public function administratorCreateWeblink(\Step\Acceptance\weblink $I)
 	{
 		$I->am('Administrator');
@@ -58,7 +88,15 @@ class AdministratorWeblinksCest
 	}
 
 	/**
+	 * Method to trash weblink
+	 *
+	 * @param   string  $I  The weblink object
+	 *
+	 * @since   version
+	 * 
 	 * @depends administratorCreateWeblink
+	 *
+	 * @return  void
 	 */
 	public function administratorTrashWeblink(AcceptanceTester $I)
 	{
@@ -69,24 +107,32 @@ class AdministratorWeblinksCest
 
 		$I->amGoingTo('Navigate to Weblinks page in /administrator/');
 		$I->amOnPage('administrator/index.php?option=com_weblinks');
-		$I->waitForText('Web Links','30',['css' => 'h1']);
+		$I->waitForText('Web Links', '30', ['css' => 'h1']);
 		$I->expectTo('see weblinks page');
 
 		$I->amGoingTo('Search the just saved weblink');
 		$I->searchForItem($this->title);
-		$I->waitForText('Web Links','30',['css' => 'h1']);
+		$I->waitForText('Web Links', '30', ['css' => 'h1']);
 
 		$I->amGoingTo('Delete the just saved weblink');
 		$I->checkAllResults();
 		$I->clickToolbarButton('Trash');
-		$I->waitForText('Web Links','30',['css' => 'h1']);
+		$I->waitForText('Web Links', '30', ['css' => 'h1']);
 		$I->expectTo('see a success message and the weblink removed from the list');
-		$I->see('Web link successfully trashed',['id' => 'system-message-container']);
-		$I->cantSee($this->title,['id' => 'weblinkList']);
+		$I->see('Web link successfully trashed', ['id' => 'system-message-container']);
+		$I->cantSee($this->title, ['id' => 'weblinkList']);
 	}
 
 	/**
-	 * @depends administratorTrashWeblink
+	 * Method to delete weblink
+	 *
+	 * @param   string  $I  The weblink object
+	 *
+	 * @since   version
+	 * 
+	 * @depends administratorCreateWeblink
+	 *
+	 * @return  void
 	 */
 	public function administratorDeleteWeblink(AcceptanceTester $I)
 	{
@@ -97,44 +143,54 @@ class AdministratorWeblinksCest
 
 		$I->amGoingTo('Navigate to Weblinks page in /administrator/');
 		$I->amOnPage('administrator/index.php?option=com_weblinks');
-		$I->waitForText('Web Links','30',['css' => 'h1']);
+		$I->waitForText('Web Links', '30', ['css' => 'h1']);
 		$I->expectTo('see weblinks page');
 		$I->click('Search Tools');
 		$I->wait(2);
 		$I->selectOptionInChosenById('filter_published', 'Trashed');
 		$I->amGoingTo('Search the just saved weblink');
 		$I->searchForItem($this->title);
-		$I->waitForText('Web Links','30',['css' => 'h1']);
+		$I->waitForText('Web Links', '30', ['css' => 'h1']);
 
 		$I->amGoingTo('Delete the just saved weblink');
 		$I->checkAllResults();
-		$I->click(['xpath'=> '//div[@id="toolbar-delete"]/button']);
+		$I->click(['xpath' => '//div[@id="toolbar-delete"]/button']);
 		$I->acceptPopup();
-		$I->waitForText('Web Links','30',['css' => 'h1']);
+		$I->waitForText('Web Links', '30', ['css' => 'h1']);
 		$I->expectTo('see a success message and the weblink removed from the list');
-		$I->see('1 web link successfully deleted.',['id' => 'system-message-container']);
-		$I->cantSee($this->title,['id' => 'weblinkList']);
+		$I->see('1 web link successfully deleted.', ['id' => 'system-message-container']);
+		$I->cantSee($this->title, ['id' => 'weblinkList']);
 	}
 
+	/**
+	 * Method to delete weblink
+	 *
+	 * @param   string  $I  The weblink object
+	 *
+	 * @since   version
+	 * 
+	 * @depends administratorCreateWeblink
+	 *
+	 * @return  void
+	 */
 	public function administratorCreateWeblinkWithoutTitleFails(AcceptanceTester $I)
 	{
 		$I->am('Administrator');
 		$I->wantToTest('Weblink creation without title fails in /administrator/');
 
 		$I->doAdministratorLogin();
-
 		$I->amGoingTo('Navigate to Weblinks page in /administrator/');
 		$I->amOnPage('administrator/index.php?option=com_weblinks');
-		$I->waitForText('Web Links','30',['css' => 'h1']);
+		$I->waitForText('Web Links', '30', ['css' => 'h1']);
 		$I->expectTo('see weblinks page');
 		$I->checkForPhpNoticesOrWarnings();
 
 		$I->amGoingTo('try to save a weblink with empty title and it should fail');
-		$I->click(['xpath'=> "//button[@onclick=\"Joomla.submitbutton('weblink.add')\"]"]);
-		$I->waitForText('Web Link: New','30',['css' => 'h1']);
-		$I->click(['xpath'=> "//button[@onclick=\"Joomla.submitbutton('weblink.apply')\"]"]);
+		$I->click(['xpath' => "//div[@id='toolbar-new']//button"]);
+		$I->waitForText('Web Link: New', '30', ['css' => 'h1']);
+		$I->click(['xpath' => "//div[@id='toolbar-apply']//button"]);
 		$I->expectTo('see an error when trying to save a weblink without title and without URL');
-		$I->see('Invalid field:  Title',['id' => 'system-message-container']);
-		$I->see('Invalid field:  URL',['id' => 'system-message-container']);
+		$I->see('Invalid field:  Title', ['id' => 'system-message-container']);
+		$I->see('Invalid field:  URL', ['id' => 'system-message-container']);
 	}
 }

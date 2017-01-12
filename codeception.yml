@@ -8,3 +8,18 @@ settings:
     bootstrap: _bootstrap.php
     colors: true
     memory_limit: 1024M
+webdrivers:
+  firefox:
+    windows: vendor\joomla-projects\selenium-server-standalone\bin\webdrivers\gecko\geckodriver64.exe
+    mac: vendor/joomla-projects/selenium-server-standalone/bin/webdrivers/gecko/geckodriver_mac
+    linux: vendor/joomla-projects/selenium-server-standalone/bin/webdrivers/gecko/geckodriver_linux_64
+  chrome:
+    windows: vendor\joomla-projects\selenium-server-standalone\bin\webdrivers\chrome\chromedriver.exe
+    mac: vendor/joomla-projects/selenium-server-standalone/bin/webdrivers/chrome/chromedriver_mac
+    linux: vendor/joomla-projects/selenium-server-standalone/bin/webdrivers/chrome/chromedriver_linux_64
+  internet explorer:
+    windows: vendor\joomla-projects\selenium-server-standalone\bin\webdrivers\internet-explorer32\IEDriverServer.exe
+  MicrosoftEdge:
+    windows: vendor\joomla-projects\selenium-server-standalone\bin\webdrivers\edge\MicrosoftWebDriver.exe
+  MicrosoftEdgeInsiders:
+    windows: vendor\joomla-projects\selenium-server-standalone\bin\webdrivers\edge-insiders\MicrosoftWebDriver.exe
