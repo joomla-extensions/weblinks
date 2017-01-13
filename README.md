@@ -3,7 +3,7 @@
 This repo is meant to hold the decoupled com_weblinks component and related code.
 
 #How to test a PR
-============
+
 ##With the [Patch Tester Component](https://github.com/joomla-extensions/patchtester/releases/latest)
 
 
@@ -37,10 +37,6 @@ git checkout move-lang-files
 
 # For Linux
 
-```bash
-$ composer install
-$ vendor/bin/robo build
-```
 
 ##Install
 
