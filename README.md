@@ -97,10 +97,7 @@ composer.lock	 jorobo.dist.ini  README.md	src
 /var/www/html/weblinks$ cat composer.json
 ```
 
-or
-
-
-(https://github.com/joomla-extensions/weblinks/blob/master/composer.json)
+or https://github.com/joomla-extensions/weblinks/blob/master/composer.json
 
 
 Read more about [how to install composer](https://getcomposer.org/doc/00-intro.md) here.
