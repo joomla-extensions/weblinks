@@ -67,4 +67,4 @@ script:
 - mv tests/acceptance.suite.dist.yml tests/acceptance.suite.yml
 - vendor/bin/robo run:tests --use-htaccess
 # Run phpcs on PHP 5.6 against weblinks source
-- if [[ $RUN_PHPCS == "yes" ]]; then vendor/bin/phpcs --report=full --extensions=php -p --standard=tests/joomla-cms3/build/phpcs/Joomla ./src; fi
+- if [[ $RUN_PHPCS == "yes" ]]; then vendor/bin/phpcs --report=full --extensions=php -p --standard=tests/joomla/build/phpcs/Joomla ./src; fi
