@@ -19,21 +19,28 @@ Click `Revert Patch` to revert an applied patch.
 You can read more about the Patch Tester extension on the [Joomla! Documentation Wiki](https://docs.joomla.org/Component_Patchtester_for_Testers).
 
 ##With Github
+
+
 If you want to test a patch you can apply the patch via git.
 
 If you cloned this repo under the name upstream - your remote is upstream – you can user the command
+
 ```
 git fetch upstream pull/PR_NUMBER/head:BRANCHNUMER
 ```
+
 for fetching the branch of the PR https://github.com/joomla-extensions/weblinks/pull/290 this would be
+
 ```
 git fetch upstream pull/290/head:move-lang-files
+
 ```
+
 After that you can checkout the branch and start testing.
+
 ```
 git checkout move-lang-files
 ```
-
 
 # For Linux
 
@@ -41,7 +48,7 @@ git checkout move-lang-files
 ##Install
 
 
-###1. Open a session and change to the root of your local webserver.
+###1. Open a session and change to the document root of your local webserver.
 
 ```
 $ cd /var/www/html/
@@ -50,9 +57,10 @@ $ cd /var/www/html/
 
 
 ###2. Clone the current repository into your webserver root folder
+
 ```
 /var/www/html$ git clone git@github.com:joomla-extensions/weblinks.git
-Klone nach 'weblinks' ...
+Clone nach 'weblinks' ...
 remote: Counting objects: 2446, done.
 remote: Compressing objects: 100% (75/75), done.
 remote: Total 2446 (delta 10), reused 0 (delta 0), pack-reused 2361
@@ -66,6 +74,7 @@ If you get an error you can try git clone https://github.com:joomla-extensions/w
 
 
 ###3. Change to the directory weblinks
+
 ```
 /var/www/html$ cd weblinks
 /var/www/html/weblinks$
@@ -73,6 +82,7 @@ If you get an error you can try git clone https://github.com:joomla-extensions/w
 
 
 ###4. This files should be in your weblinks folder.
+
 ```
 /var/www/html/weblinks$ ls
 codeception.yml  docs		  LICENSE	RoboFile.dist.ini  tests
@@ -81,51 +91,53 @@ composer.lock	 jorobo.dist.ini  README.md	src
 ```
 
 
-
 ###5. Optional: Have a look into composer.json for information what software you will install via composer.
+
 ```
 /var/www/html/weblinks$ cat composer.json
 ```
+
 or
+
 ```
 https://github.com/joomla-extensions/weblinks/blob/master/composer.json
 ```
-If you do not know composer up to know: Read more about how to install composer here: https://getcomposer.org/doc/00-intro.md
 
+Read more about [how to install composer](https://getcomposer.org/doc/00-intro.md) here.
 
 
 ###6. Optional: If you have problems using composer set a timeout.
+
 ```
 /var/www/html/weblinks$export COMPOSER_PROCESS_TIMEOUT=1500;
 ```
 
+
 ###7. Install via composer
+
 ```
 /var/www/html/weblinks$ composer install
-Cannot load Xdebug - it was already loaded
-You are running composer with xdebug enabled. This has a major impact on runtime performance. See https://getcomposer.org/xdebug
-Cannot create cache directory /home/astrid/.composer/cache/repo/https---packagist.org/, or directory is not writable. Proceeding without cache
-Cannot create cache directory /home/astrid/.composer/cache/files/, or directory is not writable. Proceeding without cache
 Loading composer repositories with package information
 Installing dependencies (including require-dev) from lock file
   - Installing symfony/yaml (v3.1.3)
     Downloading: 100%
-…..
-Package greencape/joomla-cs is abandoned, you should avoid using it. Use greencape/coding-standards instead.
+...
+...
 Generating autoload files
 
 ```
 
 
-###8. After that you have to build robo (http://robotframework.org/)
+###8. After that you have to build [robo](http://robotframework.org/)
+
 ```
 /var/www/html/weblinks$ vendor/bin/robo build
 ```
 
+###9. Optional: Prepare the database
+If you use MySQL or PostgreSQL as database and your user has create database privileges the Database is automatically created by the Joomla installer.
+But the safest way is to create the database before running Joomla's web installer.
 
-
-
-###9. Prepare the database
 ```
 /var/www/html/weblinks$ mysql -u root -p
 
@@ -137,17 +149,18 @@ Bye
 ```
 
 
-
 ###10. Copy the file acceptance.suite.dist.yml  into  acceptance.suite.dist.yml
+
 ```
 /var/www/html/weblinks$ cd tests
 /var/www/html/weblinks/tests$ cp acceptance.suite.dist.yml acceptance.suite.yml
 ```
 
+
 ###11. Update the file acceptance.suite.yml to your needs. At least you have to update the options url, database name and  counter_test_url.
 
 ```
-astrid@astrid-TravelMate-5760G:/var/www/html/weblinks/tests$ cat acceptance.suite.yml
+/var/www/html/weblinks/tests$ cat acceptance.suite.yml
 
 class_name: AcceptanceTester
 modules:
@@ -189,7 +202,7 @@ env:
         modules:
             config:
                 JoomlaBrowser:
-                    window_size: 480x640astrid@astrid-TravelMate-
+                    window_size: 480x640
 ```
 
 
@@ -213,26 +226,30 @@ branch = staging
 localUser =
 
 ; Set this to true, if your curl binaries are not able to create an https connection
-insecure = falseastrid@astrid-TravelMate-5760G:/var/www/html/weblinks$
+insecure = false
 ```
 
 
 ###13. Optional: Set use owner of the project to your user.
+
 ```
-/var/www/html/weblinks$chown -R username:usergroup /var/www
+/var/www/html/weblinks$sudo chown -R username:usergroup /var/www
 ```
+
+
 ###14. Ready! Run the first tests:
 
 ```
 /var/www/html/weblinks$ vendor/bin/robo run:tests
-Klone nach 'tests/cache' ...
+Clone nach 'tests/cache' ...
  [Exec] Done in 13.18s
  [FileSystem\CopyDir] Copied from tests/cache to tests/joomla-cms3
- [Exec] Running chown -R astrid tests/joomla-cms3
 ...
 ```
 
+
 ## Tests
+
 The tests in Weblinks Extension use Codeception Testing Framework, if you want to know more about the technology used for testing please check: [Testing Joomla Extensions with Codeception](https://docs.joomla.org/Testing_Joomla_Extensions_with_Codeception).
 
 ## Optional: extra configuration for RoboFile
@@ -264,7 +281,7 @@ Note: the first parameter is used by Travis and you should always set it to "0" 
 
 
 ##Video
-Here you can finde a video that shows the installation of com_weblinks for testing: https://www.youtube.com/watch?v=fWO_Ed_wxpw
+[Here](https://www.youtube.com/watch?v=fWO_Ed_wxpw) you can finde a video that shows the installation of com_weblinks for testing.
 
 
 #For Windows:
