@@ -100,7 +100,7 @@ composer.lock	 jorobo.dist.ini  README.md	src
 or
 
 ```
-https://github.com/joomla-extensions/weblinks/blob/master/composer.json
+(https://github.com/joomla-extensions/weblinks/blob/master/composer.json)
 ```
 
 Read more about [how to install composer](https://getcomposer.org/doc/00-intro.md) here.
