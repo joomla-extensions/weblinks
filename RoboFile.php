@@ -683,4 +683,14 @@ class RoboFile extends \Robo\Tasks
 
 		return $os;
 	}
+
+	/**
+	 * Update Version __DEPLOY_VERSION__ in Weblinks. (Set the version up in the jorobo.ini)
+	 *
+	 * @return  void
+	 */
+	public function bump()
+	{
+		(new \Joomla\Jorobo\Tasks\BumpVersion())->run();
+	}
 }
