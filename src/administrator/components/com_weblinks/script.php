@@ -14,8 +14,21 @@ defined('_JEXEC') or die;
  *
  * @since  3.4
  */
-class Com_WeblinksInstallerScript
+class Com_WeblinksInstallerScript extends JInstallerScript
 {
+	/**
+	 * Extension script constructor.
+	 *
+	 * @return  void
+	 *
+	 * @since   __DEPLOY_VERSION__
+	 */
+	public function __construct()
+	{
+		$this->minimumJoomla = '3.6.3';
+		$this->minimumPhp    = JOOMLA_MINIMUM_PHP;
+	}
+
 	/**
 	 * Function to perform changes during install
 	 *
