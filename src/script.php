@@ -27,7 +27,5 @@ class Pkg_WeblinksInstallerScript extends JInstallerScript
 	{
 		$this->minimumJoomla = '3.6.3';
 		$this->minimumPhp    = JOOMLA_MINIMUM_PHP;
-
-		JFactory::getApplication()->enqueueMessage(JText::_('Joomla'), 'error');
 	}
 }
