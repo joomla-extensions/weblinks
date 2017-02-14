@@ -101,17 +101,19 @@ class WeblinksHelper extends JHelperContent
 	 *
 	 * @return  stdClass[]
 	 *
-	 * @since   3.7
+	 * @since   3.7.0
 	 */
 	public static function countTagItems(&$items, $extension)
 	{
 		$db = JFactory::getDbo();
+
 		foreach ($items as $item)
 		{
 			$item->count_trashed = 0;
 			$item->count_archived = 0;
 			$item->count_unpublished = 0;
 			$item->count_published = 0;
+
 			$query = $db->getQuery(true);
 			$query->select('published as state, count(*) AS count')
 				->from($db->qn('#__contentitem_tag_map') . 'AS ct ')
@@ -119,8 +121,10 @@ class WeblinksHelper extends JHelperContent
 				->where('ct.type_alias =' . $db->q($extension))
 				->join('LEFT', $db->qn('#__categories') . ' AS c ON ct.content_item_id=c.id')
 				->group('state');
+
 			$db->setQuery($query);
 			$weblinks = $db->loadObjectList();
+
 			foreach ($weblinks as $weblink)
 			{
 				if ($weblink->state == 1)
@@ -141,6 +145,7 @@ class WeblinksHelper extends JHelperContent
 				}
 			}
 		}
+
 		return $items;
 	}
 }
