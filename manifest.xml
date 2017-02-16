@@ -25,7 +25,7 @@
 			<downloadurl type="full" format="zip">https://github.com/joomla-extensions/weblinks/releases/download/3.6.0-rc1/pkg-weblinks-3.6.0-rc1.zip</downloadurl>
 		</downloads>
 		<tags>
-			<tag>beta</tag>
+			<tag>rc</tag>
 		</tags>
 		<targetplatform name="joomla" version="3.[6789]" />
 	</update>
