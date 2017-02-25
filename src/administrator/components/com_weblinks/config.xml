@@ -370,7 +370,7 @@
 			description="JGLOBAL_CUSTOM_FIELDS_ENABLE_DESC"
 			default="1"
 			class="btn-group btn-group-yesno"
-			>
+		>
 			<option value="1">JYES</option>
 			<option value="0">JNO</option>
 		</field>
