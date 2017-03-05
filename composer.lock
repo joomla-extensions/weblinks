@@ -1475,7 +1475,7 @@
         },
         {
             "name": "joomla-projects/selenium-server-standalone",
-            "version": "v2.53.1",
+            "version": "v3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-projects/selenium-server-standalone.git",
