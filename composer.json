@@ -13,7 +13,7 @@
     "require-dev": {
         "codeception/codeception": "^2.2",
         "joomla-projects/joomla-browser": "v3.6.5.1",
-        "composition/robo": "~1",
+        "consolidation/robo": "^1.0.0",
         "joomla-projects/robo": "~0",
         "joomla-projects/selenium-server-standalone": "v3.0.1.2",
         "fzaninotto/faker": "^1.6",
