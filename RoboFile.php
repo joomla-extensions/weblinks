@@ -104,7 +104,7 @@ class RoboFile extends \Robo\Tasks
 	 * @param   array  $opts  Array of configuration options:
 	 *          - 'use-htaccess': renames and enable embedded Joomla .htaccess file
 	 *          - 'env': set a specific environment to get configuration from
-	 * 
+	 *
 	 * @return mixed
 	 */
 	public function runTests($opts = ['use-htaccess' => false, 'env' => 'desktop'])
@@ -124,7 +124,7 @@ class RoboFile extends \Robo\Tasks
 			->arg('--steps')
 			->arg('--debug')
 			->arg('--fail-fast')
-			->arg('--env ' . $opts['env'])
+			->env($opts['env'])
 			->arg('tests/acceptance/install/')
 			->run()
 			->stopOnFail();
@@ -133,7 +133,7 @@ class RoboFile extends \Robo\Tasks
 			->arg('--steps')
 			->arg('--debug')
 			->arg('--fail-fast')
-			->arg('--env ' . $opts['env'])
+			->env($opts['env'])
 			->arg('tests/acceptance/administrator/')
 			->run()
 			->stopOnFail();
@@ -142,7 +142,7 @@ class RoboFile extends \Robo\Tasks
 			->arg('--steps')
 			->arg('--debug')
 			->arg('--fail-fast')
-			->arg('--env ' . $opts['env'])
+			->env($opts['env'])
 			->arg('tests/acceptance/frontend/')
 			->run()
 			->stopOnFail();
@@ -301,7 +301,7 @@ class RoboFile extends \Robo\Tasks
 	 * Creates a testing Joomla site for running the tests (use it before run:test)
 	 *
 	 * @param   bool  $use_htaccess  (1/0) Rename and enable embedded Joomla .htaccess file
-	 * 
+	 *
 	 * @return  bool
 	 */
 	public function createTestingSite($use_htaccess = false)
@@ -492,7 +492,7 @@ class RoboFile extends \Robo\Tasks
 	 *
 	 * @param   string  $host  Web host of the remote server.
 	 * @param   string  $port  Server port.
-	 * 
+	 *
 	 * @return  void
 	 */
 	public function killSelenium($host = 'localhost', $port = '4444')
@@ -503,7 +503,7 @@ class RoboFile extends \Robo\Tasks
 
 	/**
 	 * Run the phpmd tool
-	 * 
+	 *
 	 * @return  void
 	 */
 	private function runPhpmd()
@@ -513,7 +513,7 @@ class RoboFile extends \Robo\Tasks
 
 	/**
 	 * Run the phpcs tool
-	 * 
+	 *
 	 * @return  void
 	 */
 	private function runPhpcs()
@@ -523,7 +523,7 @@ class RoboFile extends \Robo\Tasks
 
 	/**
 	 * Run the phpcpd tool
-	 * 
+	 *
 	 * @return  void
 	 */
 	private function runPhpcpd()
@@ -550,7 +550,7 @@ class RoboFile extends \Robo\Tasks
 
 	/**
 	 * Executes all unit tests
-	 * 
+	 *
 	 * @return  void
 	 */
 	public function runUnit()
