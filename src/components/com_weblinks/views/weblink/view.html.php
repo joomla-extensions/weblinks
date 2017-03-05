@@ -34,8 +34,8 @@ class WeblinksViewWeblink extends JViewLegacy
 		$dispatcher = JEventDispatcher::getInstance();
 
 		$this->item  = $this->get('Item');
-		$this->params = $this->state->get('params');
 		$this->state = $this->get('State');
+		$this->params = $this->state->get('params');
 
 		// Create a shortcut for $item.
 		$item = $this->item;
