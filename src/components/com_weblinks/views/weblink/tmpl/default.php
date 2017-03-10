@@ -27,7 +27,9 @@ $params  = $this->item->params;
 	<?php echo $this->item->event->beforeDisplayContent; ?>
 
 	<div itemprop="articleBody">
-		<?php echo $this->item->url; ?>
+		<a href="<?php echo $this->item->url; ?>" target="_blank" itemprop="url">
+			<?php echo JStringPunycode::urlToUTF8($this->item->url); ?>
+		</a>
 		<?php echo $this->item->description; ?>
 	</div>
 
