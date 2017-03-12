@@ -12,7 +12,7 @@ defined('JPATH_BASE') or die;
 /**
  * Supports a modal weblink picker.
  *
- * @since  1.6
+ * @since  __DEPLOY_VERSION__
  */
 class JFormFieldModal_Weblink extends JFormField
 {
@@ -20,7 +20,7 @@ class JFormFieldModal_Weblink extends JFormField
 	 * The form field type.
 	 *
 	 * @var    string
-	 * @since  3.6
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $type = 'Modal_Weblink';
 
@@ -29,7 +29,7 @@ class JFormFieldModal_Weblink extends JFormField
 	 *
 	 * @return  string  The field input markup.
 	 *
-	 * @since   3.6
+	 * @since   __DEPLOY_VERSION__
 	 */
 	protected function getInput()
 	{
@@ -263,7 +263,7 @@ class JFormFieldModal_Weblink extends JFormField
 	 *
 	 * @return  string  The field label markup.
 	 *
-	 * @since   3.6
+	 * @since   __DEPLOY_VERSION__
 	 */
 	protected function getLabel()
 	{

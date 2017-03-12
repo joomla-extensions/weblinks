@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 /**
  * HTML Weblink View class for the Weblinks component
  *
- * @since  1.5
+ * @since  __DEPLOY_VERSION__
  */
 class WeblinksViewWeblink extends JViewLegacy
 {
