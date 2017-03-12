@@ -1,9 +1,9 @@
 <?php
 /**
  * @package     Joomla.Administrator
- * @subpackage  com_content
+ * @subpackage  com_weblinks
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -143,13 +143,13 @@ class WeblinksAssociationsHelper extends JAssociationExtensionHelper
 			{
 				case 'category':
 					$fields['created_user_id'] = 'a.created_user_id';
-					$fields['ordering'] = 'a.lft';
-					$fields['level'] = 'a.level';
-					$fields['catid'] = '';
-					$fields['state'] = 'a.published';
+					$fields['ordering']        = 'a.lft';
+					$fields['level']           = 'a.level';
+					$fields['catid']           = '';
+					$fields['state']           = 'a.published';
 
-					$support['state'] = true;
-					$support['acl'] = true;
+					$support['state']    = true;
+					$support['acl']      = true;
 					$support['checkout'] = true;
 
 					$tables = array(
