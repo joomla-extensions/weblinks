@@ -151,6 +151,7 @@ class WeblinksAssociationsHelper extends JAssociationExtensionHelper
 					$support['state']    = true;
 					$support['acl']      = true;
 					$support['checkout'] = true;
+					$support['level'] = true;
 
 					$tables = array(
 						'a' => '#__categories'
