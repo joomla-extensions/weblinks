@@ -18,7 +18,8 @@
 			name="title"
 			type="text"
 			class="input-xxlarge input-large-text"
-			size="40" label="JGLOBAL_TITLE"
+			size="40"
+			label="JGLOBAL_TITLE"
 			description="COM_WEBLINKS_FIELD_TITLE_DESC"
 			required="true"
 		/>
@@ -47,7 +48,8 @@
 			type="url"
 			class="span12"
 			filter="url"
-			size="40" label="COM_WEBLINKS_FIELD_URL_LABEL"
+			size="40"
+			label="COM_WEBLINKS_FIELD_URL_LABEL"
 			description="COM_WEBLINKS_FIELD_URL_DESC"
 			required="true"
 		/>
@@ -66,7 +68,8 @@
 			name="hits"
 			type="text"
 			class="readonly"
-			size="6" label="JGLOBAL_HITS"
+			size="6"
+			label="JGLOBAL_HITS"
 			description="COM_WEBLINKS_HITS_DESC"
 			readonly="true"
 			filter="unset"
@@ -249,6 +252,7 @@
 		name="params"
 		label="JGLOBAL_FIELDSET_DISPLAY_OPTIONS"
 		>
+
 		<fieldset
 			name="jbasic"
 			label="COM_WEBLINKS_FIELDSET_OPTIONS"
@@ -359,8 +363,8 @@
 				type="list"
 				label="COM_WEBLINKS_FLOAT_LABEL"
 				description="COM_WEBLINKS_FLOAT_DESC"
-				useglobal="true"
-				>
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="right">COM_WEBLINKS_RIGHT</option>
 				<option value="left">COM_WEBLINKS_LEFT</option>
 				<option value="none">COM_WEBLINKS_NONE</option>
@@ -388,6 +392,7 @@
 		name="metadata"
 		label="JGLOBAL_FIELDSET_METADATA_OPTIONS"
 		>
+
 		<fieldset
 			name="jmetadata"
 			label="JGLOBAL_FIELDSET_METADATA_OPTIONS"
