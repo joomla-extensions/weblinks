@@ -183,7 +183,7 @@ class PlgSearchWeblinks extends JPlugin
 		->order($order);
 
 		// Filter by language.
-		if (JFactory::getApplication()->isSite() && JLanguageMultilang::isEnabled())
+		if (JFactory::getApplication()->isClient('site') && JLanguageMultilang::isEnabled())
 		{
 			$tag = JFactory::getLanguage()->getTag();
 			$query->where('a.language in (' . $db->quote($tag) . ',' . $db->quote('*') . ')')
