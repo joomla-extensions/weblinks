@@ -55,7 +55,7 @@
 			description="JFIELD_PUBLISHED_DESC"
 			label="JSTATUS"
 			size="1"
-		>
+			>
 			<option value="1">JPUBLISHED</option>
 			<option value="0">JUNPUBLISHED</option>
 		</field>
@@ -85,7 +85,7 @@
 			label="JFIELD_LANGUAGE_LABEL"
 			description="JFIELD_LANGUAGE_DESC"
 			class="inputbox"
-		>
+			>
 			<option value="*">JALL</option>
 		</field>
 
@@ -116,14 +116,13 @@
 			validate="captcha"
 			namespace="weblink"
 		/>
-
 	</fieldset>
+
 	<fields name="metadata">
 		<fieldset
 			name="jmetadata"
 			label="JGLOBAL_FIELDSET_METADATA_OPTIONS"
-		>
-
+			>
 			<field
 				name="robots"
 				type="hidden"
@@ -131,7 +130,7 @@
 				label="JFIELD_METADATA_ROBOTS_LABEL"
 				description="JFIELD_METADATA_ROBOTS_DESC"
 				labelclass="control-label"
-			>
+				>
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="index, follow">JGLOBAL_INDEX_FOLLOW</option>
 				<option value="noindex, follow">JGLOBAL_NOINDEX_FOLLOW</option>
