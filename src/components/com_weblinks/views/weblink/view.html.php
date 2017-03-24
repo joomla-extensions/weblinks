@@ -1,7 +1,7 @@
 <?php
 /**
- * @package     Joomla.Administrator
- * @subpackage  Weblinks
+ * @package     Joomla.Site
+ * @subpackage  com_weblinks
  *
  * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -10,18 +10,20 @@
 defined('_JEXEC') or die;
 
 /**
- * HTML View class for the WebLinks component
+ * HTML Weblink View class for the Weblinks component
  *
- * @since  1.5
+ * @since  __DEPLOY_VERSION__
  */
 class WeblinksViewWeblink extends JViewLegacy
 {
-	protected $state;
-
 	protected $item;
 
+	protected $params;
+
+	protected $state;
+
 	/**
-	 * Display the view.
+	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
@@ -29,25 +31,30 @@ class WeblinksViewWeblink extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		// Get some data from the models
-		$item = $this->get('Item');
+		$dispatcher = JEventDispatcher::getInstance();
 
-		if ($this->getLayout() == 'edit')
-		{
-			$this->_displayEdit($tpl);
+		$this->item  = $this->get('Item');
+		$this->state = $this->get('State');
+		$this->params = $this->state->get('params');
 
-			return;
-		}
+		// Create a shortcut for $item.
+		$item = $this->item;
 
-		if ($item->url)
-		{
-			// Redirects to url if matching id found
-			JFactory::getApplication()->redirect($item->url);
-		}
-		else
-		{
-			// @TODO create proper error handling
-			JFactory::getApplication()->redirect(JRoute::_('index.php'), JText::_('COM_WEBLINKS_ERROR_WEBLINK_NOT_FOUND'), 'notice');
-		}
+		$offset = $this->state->get('list.offset');
+
+		$dispatcher->trigger('onWeblinksPrepare', array ('com_weblinks.weblink', &$item, &$item->params, $offset));
+
+		$item->event = new stdClass;
+
+		$results = $dispatcher->trigger('onWeblinksAfterTitle', array('com_weblinks.weblink', &$item, &$item->params, $offset));
+		$item->event->afterDisplayTitle = trim(implode("\n", $results));
+
+		$results = $dispatcher->trigger('onWeblinksBeforeDisplay', array('com_weblinks.weblink', &$item, &$item->params, $offset));
+		$item->event->beforeDisplayContent = trim(implode("\n", $results));
+
+		$results = $dispatcher->trigger('onWeblinksAfterDisplay', array('com_weblinks.weblink', &$item, &$item->params, $offset));
+		$item->event->afterDisplayContent = trim(implode("\n", $results));
+
+		parent::display($tpl);
 	}
 }
