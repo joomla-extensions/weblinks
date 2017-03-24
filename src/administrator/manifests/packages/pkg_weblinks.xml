@@ -20,6 +20,7 @@
 		<file type="module" id="mod_weblinks" client="site">mod_weblinks.zip</file>
 		<file type="plugin" id="weblinks" group="finder">plg_finder_weblinks.zip</file>
 		<file type="plugin" id="weblinks" group="search">plg_search_weblinks.zip</file>
+		<file type="plugin" id="weblinks" group="system">plg_system_weblinks.zip</file>
 	</files>
 	<languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.pkg_weblinks.sys.ini</language>
