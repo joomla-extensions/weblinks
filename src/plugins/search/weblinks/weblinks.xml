@@ -9,10 +9,11 @@
 	<authorUrl>www.joomla.org</authorUrl>
 	<version>##VERSION##</version>
 	<description>PLG_SEARCH_WEBLINKS_XML_DESCRIPTION</description>
+	<scriptfile>script.php</scriptfile>
 	<files>
 		##FILES##
 	</files>
-	<languages folder="administrator/language">
+	<languages folder="language">
 		##LANGUAGE_FILES##
 	</languages>
 	<config>
