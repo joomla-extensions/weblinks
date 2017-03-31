@@ -2,9 +2,9 @@
 
 This repo is meant to hold the decoupled com_weblinks component and related code.
 
-#How to test a PR
+# How to test a PR
 
-##With the [Patch Tester Component](https://github.com/joomla-extensions/patchtester/releases/latest)
+## With the [Patch Tester Component](https://github.com/joomla-extensions/patchtester/releases/latest)
 
 
 Easily apply changes from a pull requests against this repo:
@@ -18,7 +18,7 @@ Click `Revert Patch` to revert an applied patch.
 
 You can read more about the Patch Tester extension on the [Joomla! Documentation Wiki](https://docs.joomla.org/Component_Patchtester_for_Testers).
 
-##With Github
+## With Github
 
 
 If you want to test a patch you can apply the patch via git.
