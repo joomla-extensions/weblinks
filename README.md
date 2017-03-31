@@ -45,10 +45,10 @@ git checkout move-lang-files
 # For Linux
 
 
-##Install
+## Install
 
 
-###1. Open a session and change to the document root of your local webserver.
+### 1. Open a session and change to the document root of your local webserver.
 
 ```
 $ cd /var/www/html/
@@ -56,7 +56,7 @@ $ cd /var/www/html/
 ```
 
 
-###2. Clone the current repository into your webserver root folder
+### 2. Clone the current repository into your webserver root folder
 
 ```
 /var/www/html$ git clone git@github.com:joomla-extensions/weblinks.git
@@ -73,7 +73,7 @@ Are you new with github? Here you can find informations about setting it up: htt
 If you get an error you can try git clone https://github.com:joomla-extensions/weblinks.git instead of git clone git@github.com:joomla-extensions/weblinks.git
 
 
-###3. Change to the directory weblinks
+### 3. Change to the directory weblinks
 
 ```
 /var/www/html$ cd weblinks
@@ -81,7 +81,7 @@ If you get an error you can try git clone https://github.com:joomla-extensions/w
 ```
 
 
-###4. This files should be in your weblinks folder.
+### 4. This files should be in your weblinks folder.
 
 ```
 /var/www/html/weblinks$ ls
@@ -91,7 +91,7 @@ composer.lock	 jorobo.dist.ini  README.md	src
 ```
 
 
-###5. Optional: Have a look into composer.json for information what software you will install via composer.
+### 5. Optional: Have a look into composer.json for information what software you will install via composer.
 
 ```
 /var/www/html/weblinks$ cat composer.json
@@ -103,14 +103,14 @@ or https://github.com/joomla-extensions/weblinks/blob/master/composer.json
 Read more about [how to install composer](https://getcomposer.org/doc/00-intro.md) here.
 
 
-###6. Optional: If you have problems using composer set a timeout.
+### 6. Optional: If you have problems using composer set a timeout.
 
 ```
 /var/www/html/weblinks$export COMPOSER_PROCESS_TIMEOUT=1500;
 ```
 
 
-###7. Install via composer
+### 7. Install via composer
 
 ```
 /var/www/html/weblinks$ composer install
@@ -125,13 +125,13 @@ Generating autoload files
 ```
 
 
-###8. After that you have to build [robo](http://robotframework.org/)
+### 8. After that you have to build [robo](http://robotframework.org/)
 
 ```
 /var/www/html/weblinks$ vendor/bin/robo build
 ```
 
-###9. Optional: Prepare the database
+### 9. Optional: Prepare the database
 If you use MySQL or PostgreSQL as database and your user has create database privileges the Database is automatically created by the Joomla installer.
 But the safest way is to create the database before running Joomla's web installer.
 
@@ -146,7 +146,7 @@ Bye
 ```
 
 
-###10. Copy the file acceptance.suite.dist.yml  into  acceptance.suite.dist.yml
+### 10. Copy the file acceptance.suite.dist.yml  into  acceptance.suite.dist.yml
 
 ```
 /var/www/html/weblinks$ cd tests
@@ -154,7 +154,7 @@ Bye
 ```
 
 
-###11. Update the file acceptance.suite.yml to your needs. At least you have to update the options url, database name and  counter_test_url.
+### 11. Update the file acceptance.suite.yml to your needs. At least you have to update the options url, database name and  counter_test_url.
 
 ```
 /var/www/html/weblinks/tests$ cat acceptance.suite.yml
@@ -203,7 +203,7 @@ env:
 ```
 
 
-###12. Optional: Go back to weblinks directory and create and edit the file RoboFile.ini. Delete the local user www-data.
+### 12. Optional: Go back to weblinks directory and create and edit the file RoboFile.ini. Delete the local user www-data.
 
 ```
 /var/www/html/weblinks$ cp RoboFile.dist.ini RoboFile.ini
@@ -227,14 +227,14 @@ insecure = false
 ```
 
 
-###13. Optional: Set use owner of the project to your user.
+### 13. Optional: Set use owner of the project to your user.
 
 ```
 /var/www/html/weblinks$sudo chown -R username:usergroup /var/www
 ```
 
 
-###14. Ready! Run the first tests:
+### 14. Ready! Run the first tests:
 
 ```
 /var/www/html/weblinks$ vendor/bin/robo run:tests
@@ -277,11 +277,11 @@ To set a specific resolution, set is as an option of the command:
 Note: the first parameter is used by Travis and you should always set it to "0" when you run your tests locally.
 
 
-##Video
+## Video
 [Here](https://www.youtube.com/watch?v=fWO_Ed_wxpw) you can finde a video that shows the installation of com_weblinks for testing.
 
 
-#For Windows:
+# For Windows:
 
 You need to install:
 - Git for windows (https://msysgit.github.io/)
