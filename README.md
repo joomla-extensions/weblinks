@@ -1,4 +1,8 @@
-# Weblinks for Joomla! Travis: [![Travis Build Status](https://travis-ci.org/joomla-extensions/weblinks.svg?branch=master)](https://travis-ci.org/joomla-extensions/weblinks) | Drone: [![Drone Build Status](http://213.160.72.75/api/badges/joomla-extensions/weblinks/status.svg)](http://213.160.72.75/joomla-extensions/weblinks)
+# Weblinks for Joomla! Travis:
+
+Travis: [![Travis Build Status](https://travis-ci.org/joomla-extensions/weblinks.svg?branch=master)](https://travis-ci.org/joomla-extensions/weblinks) 
+
+Drone: [![Drone Build Status](http://213.160.72.75/api/badges/joomla-extensions/weblinks/status.svg)](http://213.160.72.75/joomla-extensions/weblinks)
 
 This repo is meant to hold the decoupled com_weblinks component and related code.
 
