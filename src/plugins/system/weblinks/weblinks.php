@@ -46,7 +46,7 @@ class PlgSystemWeblinks extends JPlugin
 	 */
 	public function onGetStats($extension)
 	{
-		if (!in_array($this->supportedExtensions, $extension))
+		if (!in_array($extension, $this->supportedExtensions))
 		{
 			return array();
 		}
