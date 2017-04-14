@@ -15,7 +15,7 @@ class AdministratorCategoriesCest
 	/**
 	 * Creates random names for the objects that will be used by the tests
 	 *
-	 * @see https://github.com/fzaninotto/Faker#fakerproviderbase
+	 * @link https://github.com/fzaninotto/Faker#fakerproviderbase
 	 */
 	public function __construct()
 	{

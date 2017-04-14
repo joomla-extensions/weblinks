@@ -9,7 +9,7 @@ namespace Step\Acceptance;
  * @todo: this class should grow until being able to execute generic operations over a Weblink: change status, add to category...
  *
  * @package Step\Acceptance
- * @see http://codeception.com/docs/06-ReusingTestCode#StepObjects
+ * @link http://codeception.com/docs/06-ReusingTestCode#StepObjects
  */
 class weblink extends \AcceptanceTester
 {
