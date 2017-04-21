@@ -25,6 +25,17 @@ class PlgSystemWeblinks extends JPlugin
 	protected $autoloadLanguage = true;
 
 	/**
+	 * Supported Extensions
+	 *
+	 * @var    array
+	 * @since  __DEPLOY_VERSION__
+	 */
+	private $supportedExtensions = array(
+		'mod_stats',
+		'mod_stats_admin',
+	);
+
+	/**
 	 * Method to add statistics information to Administrator control panel.
 	 *
 	 * @param   string   $extension  The extension requesting information.
@@ -35,6 +46,11 @@ class PlgSystemWeblinks extends JPlugin
 	 */
 	public function onGetStats($extension)
 	{
+		if (!in_array($extension, $this->supportedExtensions))
+		{
+			return array();
+		}
+
 		if (!JComponentHelper::isEnabled('com_weblinks'))
 		{
 			return array();
