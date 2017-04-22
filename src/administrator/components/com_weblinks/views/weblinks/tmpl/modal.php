@@ -43,15 +43,20 @@ if (!empty($editor))
 	JFactory::getDocument()->addScriptOptions('xtd-weblinks', array('editor' => $editor));
 	$onclick = "jSelectWeblink";
 }
+
+$iconStates = array(
+	-2 => 'icon-trash',
+	0 => 'icon-unpublish',
+	1 => 'icon-publish',
+	2 => 'icon-archive',
+);
+
 ?>
 <div class="container-popup">
 
 	<form action="<?php echo JRoute::_('index.php?option=com_weblinks&view=weblinks&layout=modal&tmpl=component&function=' . $function . '&' . JSession::getFormToken() . '=1&editor=' . $editor); ?>" method="post" name="adminForm" id="adminForm" class="form-inline">
-
 		<?php echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this)); ?>
-
 		<div class="clearfix"></div>
-
 		<?php if (empty($this->items)) : ?>
 			<div class="alert alert-no-items">
 				<?php echo JText::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
@@ -88,35 +93,16 @@ if (!empty($editor))
 					</tr>
 				</tfoot>
 				<tbody>
-				<?php
-				$iconStates = array(
-					-2 => 'icon-trash',
-					0 => 'icon-unpublish',
-					1 => 'icon-publish',
-					2 => 'icon-archive',
-				);
-				?>
 				<?php foreach ($this->items as $i => $item) : ?>
-					<?php if ($item->language && JLanguageMultilang::isEnabled())
-					{
-						$tag = strlen($item->language);
-						if ($tag == 5)
-						{
-							$lang = substr($item->language, 0, 2);
-						}
-						elseif ($tag == 6)
-						{
-							$lang = substr($item->language, 0, 3);
-						}
-						else {
-							$lang = '';
-						}
-					}
-					elseif (!JLanguageMultilang::isEnabled())
-					{
-						$lang = '';
-					}
-					?>
+					<?php if ($item->language && JLanguageMultilang::isEnabled()) : ?>
+						<?php $tag = strlen($item->language); ?>
+						<?php $lang = ''; ?>
+						<?php if ($tag == 5) : ?>
+							<?php $lang = substr($item->language, 0, 2); ?>
+						<?php elseif ($tag == 6) : ?>
+							<?php $lang = substr($item->language, 0, 3); ?>
+						<?php endif; ?>
+					<?php endif; ?>
 					<tr class="row<?php echo $i % 2; ?>">
 						<td class="center">
 							<span class="<?php echo $iconStates[$this->escape($item->state)]; ?>"></span>
