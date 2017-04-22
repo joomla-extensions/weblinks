@@ -42,17 +42,17 @@ class WeblinksViewWeblink extends JViewLegacy
 
 		$offset = $this->state->get('list.offset');
 
-		$dispatcher->trigger('onWeblinksPrepare', array ('com_weblinks.weblink', &$item, &$item->params, $offset));
+		$dispatcher->trigger('onContentPrepare', array ('com_weblinks.weblink', &$item, &$item->params, $offset));
 
 		$item->event = new stdClass;
 
-		$results = $dispatcher->trigger('onWeblinksAfterTitle', array('com_weblinks.weblink', &$item, &$item->params, $offset));
+		$results = $dispatcher->trigger('onContentAfterTitle', array('com_weblinks.weblink', &$item, &$item->params, $offset));
 		$item->event->afterDisplayTitle = trim(implode("\n", $results));
 
-		$results = $dispatcher->trigger('onWeblinksBeforeDisplay', array('com_weblinks.weblink', &$item, &$item->params, $offset));
+		$results = $dispatcher->trigger('onContentBeforeDisplay', array('com_weblinks.weblink', &$item, &$item->params, $offset));
 		$item->event->beforeDisplayContent = trim(implode("\n", $results));
 
-		$results = $dispatcher->trigger('onWeblinksAfterDisplay', array('com_weblinks.weblink', &$item, &$item->params, $offset));
+		$results = $dispatcher->trigger('onContentAfterDisplay', array('com_weblinks.weblink', &$item, &$item->params, $offset));
 		$item->event->afterDisplayContent = trim(implode("\n", $results));
 
 		parent::display($tpl);
