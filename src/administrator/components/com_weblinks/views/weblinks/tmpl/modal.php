@@ -94,9 +94,9 @@ $iconStates = array(
 				</tfoot>
 				<tbody>
 				<?php foreach ($this->items as $i => $item) : ?>
+					<?php $lang = ''; ?>
 					<?php if ($item->language && JLanguageMultilang::isEnabled()) : ?>
 						<?php $tag = strlen($item->language); ?>
-						<?php $lang = ''; ?>
 						<?php if ($tag == 5) : ?>
 							<?php $lang = substr($item->language, 0, 2); ?>
 						<?php elseif ($tag == 6) : ?>
