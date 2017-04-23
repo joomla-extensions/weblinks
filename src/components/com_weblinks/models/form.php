@@ -35,7 +35,16 @@ class WeblinksModelForm extends WeblinksModelWeblink
 	 */
 	public function getReturnPage()
 	{
-		return base64_encode($this->getState('return_page'));
+		$returnPageUrl = base64_encode($this->getState('return_page'));
+
+		if (!empty($returnPageUrl) && JUri::isInternal($redirectUrl))
+		{
+			return $returnPageUrl;
+		}
+
+		// If the page is not internal or empty return to the home page
+		return JUri::base();
+
 	}
 
 	/**
