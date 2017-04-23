@@ -7,7 +7,7 @@
  * @todo: this class should grow until being able to execute generic operations over a category: change status, add to category...
  *
  * @package Step\Acceptance
- * @see http://codeception.com/docs/06-ReusingTestCode#StepObjects
+ * @link http://codeception.com/docs/06-ReusingTestCode#StepObjects
  */
 namespace Step\Acceptance;
 /**

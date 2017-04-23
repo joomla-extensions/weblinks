@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="com_weblinks_weblink_view_default_title" option="com_weblinks_weblink_view_default_option">
+	<layout title="COM_WEBLINKS_WEBLINK_VIEW_DEFAULT_TITLE" option="COM_WEBLINKS_WEBLINK_VIEW_DEFAULT_OPTION">
 		<help
 			key = "JHELP_MENUS_MENU_ITEM_WEBLINK_SINGLE_WEBLINK"
 		/>
 		<message>
-			<![CDATA[com_weblinks_weblink_view_default_desc]]>
+			<![CDATA[COM_WEBLINKS_WEBLINK_VIEW_DEFAULT_DESC]]>
 		</message>
 	</layout>
 
 	<fields name="request">
-		<fieldset name="request"
-			addfieldpath="/administrator/components/com_weblinks/models/fields">
+		<fieldset
+			name="request"
+			addfieldpath="/administrator/components/com_weblinks/models/fields"
+		>
 
-			<field name="id" type="modal_weblink"
+			<field name="id"
+				type="modal_weblink"
 				label="COM_WEBLINKS_FIELD_SELECT_WEBLINK_LABEL"
 				required="true"
 				select="true"

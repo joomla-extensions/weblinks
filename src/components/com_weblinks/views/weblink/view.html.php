@@ -28,13 +28,15 @@ class WeblinksViewWeblink extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise an Error object.
+	 *
+	 * @since   __DEPLOY_VERSION__
 	 */
 	public function display($tpl = null)
 	{
 		$dispatcher = JEventDispatcher::getInstance();
 
-		$this->item  = $this->get('Item');
-		$this->state = $this->get('State');
+		$this->item   = $this->get('Item');
+		$this->state  = $this->get('State');
 		$this->params = $this->state->get('params');
 
 		// Create a shortcut for $item.
