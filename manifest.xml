@@ -5,12 +5,12 @@
 		<description>Joomla! CMS Weblinks Package</description>
 		<element>pkg_weblinks</element>
 		<type>package</type>
-		<version>3.6.0</version>
+		<version>3.7.0</version>
 		<client>site</client>
-		<infourl title="Weblinks Extension Package">https://github.com/joomla-extensions/weblinks/releases/tag/3.6.0</infourl>
+		<infourl title="Weblinks Extension Package">https://github.com/joomla-extensions/weblinks/releases/tag/3.7.0</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://github.com/joomla-extensions/weblinks/releases/download/3.6.0/pkg-weblinks-3.6.0.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://github.com/joomla-extensions/weblinks/releases/download/3.7.0/pkg-weblinks-3.7.0.zip</downloadurl>
 		</downloads>
-		<targetplatform name="joomla" version="3.[6789]" />
+		<targetplatform name="joomla" version="3.[789]" />
 	</update>
 </updates>
