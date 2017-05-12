@@ -149,7 +149,7 @@ class WeblinksAssociationsHelper extends JAssociationExtensionHelper
 
 					$support['state'] = true;
 					$support['acl'] = true;
-					//$support['checkout'] = true;
+					$support['checkout'] = true;
 					$support['category'] = true;
 					$support['save2copy'] = true;
 
