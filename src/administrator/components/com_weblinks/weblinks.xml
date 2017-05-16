@@ -33,6 +33,10 @@
 		</schemas>
 	</update>
 
+	<media folder="media" destination="com_weblinks">
+		<folder>js</folder>
+	</media>
+
 	<files folder="components/com_weblinks">
 		##FRONTEND_COMPONENT_FILES##
 	</files>
