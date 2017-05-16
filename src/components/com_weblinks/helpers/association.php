@@ -1,7 +1,7 @@
 <?php
 /**
- * @package     Joomla.Administrator
- * @subpackage  Weblinks
+ * @package     Joomla.Site
+ * @subpackage  com_weblinks
  *
  * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -35,6 +35,23 @@ abstract class WeblinksHelperAssociation extends CategoryHelperAssociation
 		$jinput = JFactory::getApplication()->input;
 		$view   = is_null($view) ? $jinput->get('view') : $view;
 		$id     = empty($id) ? $jinput->getInt('id') : $id;
+
+		if ($view === 'weblink')
+		{
+			if ($id)
+			{
+				$associations = JLanguageAssociations::getAssociations('com_weblinks', '#__weblinks', 'com_weblinks.item', $id);
+
+				$return = array();
+
+				foreach ($associations as $tag => $item)
+				{
+					$return[$tag] = WeblinksHelperRoute::getWeblinkRoute($item->id, (int) $item->catid, $item->language);
+				}
+
+				return $return;
+			}
+		}
 
 		if ($view == 'category' || $view == 'categories')
 		{

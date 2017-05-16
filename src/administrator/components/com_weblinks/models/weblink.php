@@ -11,6 +11,8 @@ defined('_JEXEC') or die;
 
 use Joomla\Registry\Registry;
 
+JLoader::register('WeblinksHelper', JPATH_ADMINISTRATOR . '/components/com_weblinks/helpers/weblinks.php');
+
 /**
  * Weblinks model.
  *
@@ -25,6 +27,14 @@ class WeblinksModelWeblink extends JModelAdmin
 	 * @since  3.2
 	 */
 	public $typeAlias = 'com_weblinks.weblink';
+	
+	/**
+	 * The context used for the associations table
+	 *
+	 * @var string
+	 * @since    3.4.4
+	 */
+	protected $associationsContext = 'com_weblinks.item';
 
 	/**
 	 * The prefix to use with controller messages.
@@ -200,6 +210,25 @@ class WeblinksModelWeblink extends JModelAdmin
 			$registry->loadString($item->images);
 			$item->images = $registry->toArray();
 
+			// Load associated newsfeeds items
+			$app = JFactory::getApplication();
+			$assoc = JLanguageAssociations::isEnabled();
+
+			if ($assoc)
+			{
+				$item->associations = array();
+
+				if ($item->id != null)
+				{
+					$associations = JLanguageAssociations::getAssociations('com_weblinks', '#__weblinks', 'com_weblinks.item', $item->id);
+
+					foreach ($associations as $tag => $association)
+					{
+						$item->associations[$tag] = $association->id;
+					}
+				}
+			}
+
 			if (!empty($item->id))
 			{
 				$item->tags = new JHelperTags;
@@ -374,6 +403,37 @@ class WeblinksModelWeblink extends JModelAdmin
 		if ($this->canCreateCategory())
 		{
 			$form->setFieldAttribute('catid', 'allowAdd', 'true');
+		}
+
+		// Association weblinks items
+		if (JLanguageAssociations::isEnabled())
+		{
+			$languages = JLanguageHelper::getContentLanguages(false, true, null, 'ordering', 'asc');
+
+			if (count($languages) > 1)
+			{
+				$addform = new SimpleXMLElement('<form />');
+				$fields = $addform->addChild('fields');
+				$fields->addAttribute('name', 'associations');
+				$fieldset = $fields->addChild('fieldset');
+				$fieldset->addAttribute('name', 'item_associations');
+
+				foreach ($languages as $language)
+				{
+					$field = $fieldset->addChild('field');
+					$field->addAttribute('name', $language->lang_code);
+					$field->addAttribute('type', 'modal_weblink');
+					$field->addAttribute('language', $language->lang_code);
+					$field->addAttribute('label', $language->title);
+					$field->addAttribute('translate_label', 'false');
+					$field->addAttribute('select', 'true');
+					$field->addAttribute('new', 'true');
+					$field->addAttribute('edit', 'true');
+					$field->addAttribute('clear', 'true');
+				}
+
+				$form->load($addform, false);
+			}
 		}
 
 		parent::preprocessForm($form, $data, $group);

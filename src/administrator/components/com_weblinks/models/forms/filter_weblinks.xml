@@ -8,7 +8,6 @@
 			description="COM_WEBLINKS_FILTER_SEARCH_DESC"
 			hint="JSEARCH_FILTER"
 		/>
-
 		<field
 			name="published"
 			type="status"
@@ -18,7 +17,6 @@
 			>
 			<option value="">JOPTION_SELECT_PUBLISHED</option>
 		</field>
-
 		<field
 			name="category_id"
 			type="category"
@@ -29,7 +27,6 @@
 			>
 			<option value="">JOPTION_SELECT_CATEGORY</option>
 		</field>
-
 		<field
 			name="access"
 			type="accesslevel"
@@ -39,7 +36,6 @@
 			>
 			<option value="">JOPTION_SELECT_ACCESS</option>
 		</field>
-
 		<field
 			name="language"
 			type="contentlanguage"
@@ -50,7 +46,6 @@
 			<option value="">JOPTION_SELECT_LANGUAGE</option>
 			<option value="*">JALL</option>
 		</field>
-
 		<field
 			name="tag"
 			type="tag"
@@ -61,7 +56,6 @@
 			>
 			<option value="">JOPTION_SELECT_TAG</option>
 		</field>
-
 		<field
 			name="level"
 			type="integer"
@@ -76,7 +70,6 @@
 			<option value="">JOPTION_SELECT_MAX_LEVELS</option>
 		</field>
 	</fields>
-
 	<fields name="list">
 		<field
 			name="fullordering"
@@ -97,12 +90,23 @@
 			<option value="access_level DESC">JGRID_HEADING_ACCESS_DESC</option>
 			<option value="a.hits ASC">JGLOBAL_HITS_ASC</option>
 			<option value="a.hits DESC">JGLOBAL_HITS_DESC</option>
+			<option
+				value="association ASC"
+				requires="associations"
+				>
+				JASSOCIATIONS_ASC
+			</option>
+			<option
+				value="association DESC"
+				requires="associations"
+				>
+				JASSOCIATIONS_DESC
+			</option>
 			<option value="language_title ASC">JGRID_HEADING_LANGUAGE_ASC</option>
 			<option value="language_title DESC">JGRID_HEADING_LANGUAGE_DESC</option>
 			<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
 			<option value="a.id DESC">JGRID_HEADING_ID_DESC</option>
 		</field>
-
 		<field
 			name="limit"
 			type="limitbox"

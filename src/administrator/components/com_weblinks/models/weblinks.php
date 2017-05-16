@@ -52,6 +52,12 @@ class WeblinksModelWeblinks extends JModelList
 				'tag',
 				'level', 'c.level',
 			);
+
+			$assoc = JLanguageAssociations::isEnabled();
+			if ($assoc)
+			{
+				$config['filter_fields'][] = 'association';
+			}
 		}
 
 		parent::__construct($config);
@@ -70,6 +76,22 @@ class WeblinksModelWeblinks extends JModelList
 	 */
 	protected function populateState($ordering = 'a.title', $direction = 'asc')
 	{
+		$app = JFactory::getApplication();
+
+		$forcedLanguage = $app->input->get('forcedLanguage', '', 'cmd');
+
+		// Adjust the context to support modal layouts.
+		if ($layout = $app->input->get('layout'))
+		{
+			$this->context .= '.' . $layout;
+		}
+
+		// Adjust the context to support forced languages.
+		if ($forcedLanguage)
+		{
+			$this->context .= '.' . $forcedLanguage;
+		}
+
 		// Load the filter state.
 		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
 		$this->setState('filter.access', $this->getUserStateFromRequest($this->context . '.filter.access', 'filter_access', '', 'cmd'));
@@ -82,6 +104,12 @@ class WeblinksModelWeblinks extends JModelList
 		// Load the parameters.
 		$params = JComponentHelper::getParams('com_weblinks');
 		$this->setState('params', $params);
+
+		// Force a language.
+		if (!empty($forcedLanguage))
+		{
+			$this->setState('filter.language', $forcedLanguage);
+		}
 
 		// List state information.
 		parent::populateState($ordering, $direction);
@@ -132,7 +160,7 @@ class WeblinksModelWeblinks extends JModelList
 		$query->select(
 			$this->getState(
 				'list.select',
-				'a.id, a.title, a.alias, a.checked_out, a.checked_out_time, a.catid, a.created_by, ' .
+				'a.id, a.title, a.alias, a.checked_out, a.checked_out_time, a.catid, a.created, a.created_by, ' .
 				'a.hits, a.state, a.access, a.ordering, a.language, a.publish_up, a.publish_down'
 			)
 		);
@@ -154,6 +182,17 @@ class WeblinksModelWeblinks extends JModelList
 		// Join over the categories.
 		$query->select('c.title AS category_title')
 			->join('LEFT', $db->quoteName('#__categories', 'c') . ' ON ' . $db->qn('c.id') . ' = ' . $db->qn('a.catid'));
+
+		// Join over the associations.
+		$assoc = JLanguageAssociations::isEnabled();
+
+		if ($assoc)
+		{
+			$query->select('COUNT(asso2.id)>1 AS association')
+				->join('LEFT', $db->quoteName('#__associations', 'asso') . ' ON asso.id = a.id AND asso.context = ' . $db->quote('com_weblinks.item'))
+				->join('LEFT', $db->quoteName('#__associations', 'asso2') . ' ON asso2.key = asso.key')
+				->group('a.id, l.title, l.image, uc.name, ag.title, c.title');
+		}
 
 		// Filter by access level.
 		if ($access = $this->getState('filter.access'))
