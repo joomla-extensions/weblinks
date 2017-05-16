@@ -27,7 +27,7 @@ class WeblinksModelWeblink extends JModelAdmin
 	 * @since  3.2
 	 */
 	public $typeAlias = 'com_weblinks.weblink';
-	
+
 	/**
 	 * The context used for the associations table
 	 *
@@ -210,7 +210,7 @@ class WeblinksModelWeblink extends JModelAdmin
 			$registry->loadString($item->images);
 			$item->images = $registry->toArray();
 
-			// Load associated newsfeeds items
+			// Load associated web links items
 			$app = JFactory::getApplication();
 			$assoc = JLanguageAssociations::isEnabled();
 
@@ -325,7 +325,7 @@ class WeblinksModelWeblink extends JModelAdmin
 
 		// Cast catid to integer for comparison
 		$catid = (int) $data['catid'];
- 
+
 		// Check if New Category exists
 		if ($catid > 0)
 		{
