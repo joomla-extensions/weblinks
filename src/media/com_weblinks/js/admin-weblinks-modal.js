@@ -1,5 +1,5 @@
 /**
- * @copyright  Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 (function() {
@@ -49,7 +49,7 @@
 				var functionName = event.target.getAttribute('data-function');
 
 				if (functionName === 'jSelectWeblink') {
-					// Used in xtd_contacts
+					// Used in xtd_weblinks
 					window[functionName](event.target.getAttribute('data-id'), event.target.getAttribute('data-title'), event.target.getAttribute('data-cat-id'), null, event.target.getAttribute('data-uri'), event.target.getAttribute('data-language', null));
 				} else {
 					// Used in com_menus
