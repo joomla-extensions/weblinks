@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 /**
- * Editor WEb Link button
+ * Editor Web Link button
  *
  * @since  __DEPLOY_VERSION__
  */
