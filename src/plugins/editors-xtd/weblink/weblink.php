@@ -35,7 +35,7 @@ class PlgButtonWeblink extends JPlugin
 	 */
 	public function onDisplay($name)
 	{
-		$user  = JFactory::getUser();
+		$user = JFactory::getUser();
 
 		if ($user->authorise('core.create', 'com_weblinks')
 			|| $user->authorise('core.edit', 'com_weblinks')

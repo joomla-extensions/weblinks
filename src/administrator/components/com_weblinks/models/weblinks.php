@@ -54,6 +54,7 @@ class WeblinksModelWeblinks extends JModelList
 			);
 
 			$assoc = JLanguageAssociations::isEnabled();
+
 			if ($assoc)
 			{
 				$config['filter_fields'][] = 'association';
