@@ -21,6 +21,7 @@ class JFormFieldModal_Weblink extends JFormField
 	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $type = 'Modal_Weblink';
+
 	/**
 	 * Method to get the field input markup.
 	 *
