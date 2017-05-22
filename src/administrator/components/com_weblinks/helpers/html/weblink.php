@@ -29,7 +29,7 @@ abstract class JHtmlWeblink
 	 *
 	 * @throws  Exception
 	 *
-	 * @since   __DELPOY_VERSION__
+	 * @since   ___DEPLOY_VERSION__
 	 */
 	public static function association($weblinkid)
 	{
