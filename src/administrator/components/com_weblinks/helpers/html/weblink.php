@@ -16,7 +16,7 @@ JLoader::register('WeblinksHelper', JPATH_ADMINISTRATOR . '/components/com_webli
 /**
  * Weblink HTML helper class.
  *
- * @since  1.6
+ * @since  __DELPOY_VERSION__
  */
 abstract class JHtmlWeblink
 {
@@ -28,14 +28,17 @@ abstract class JHtmlWeblink
 	 * @return  string  The language HTML
 	 *
 	 * @throws  Exception
+	 *
+	 * @since   __DELPOY_VERSION__
 	 */
 	public static function association($weblinkid)
 	{
 		// Defaults
 		$html = '';
+		$associations = JLanguageAssociations::getAssociations('com_weblinks', '#__weblinks', 'com_weblinks.item', $weblinkid);
 
 		// Get the associations
-		if ($associations = JLanguageAssociations::getAssociations('com_weblinks', '#__weblinks', 'com_weblinks.item', $weblinkid))
+		if ($associations)
 		{
 			foreach ($associations as $tag => $associated)
 			{
@@ -70,7 +73,7 @@ abstract class JHtmlWeblink
 				foreach ($items as &$item)
 				{
 					$text = strtoupper($item->lang_sef);
-					$url = JRoute::_('index.php?option=com_weblinks&task=weblink.edit&id=' . (int) $item->id);
+					$url  = JRoute::_('index.php?option=com_weblinks&task=weblink.edit&id=' . (int) $item->id);
 
 					$tooltip = htmlspecialchars($item->title, ENT_QUOTES, 'UTF-8') . '<br />' . JText::sprintf('JCATEGORY_SPRINTF', $item->category_title);
 					$classes = 'hasPopover label label-association label-' . $item->lang_sef;

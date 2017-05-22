@@ -7,7 +7,9 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die;
+
 $app = JFactory::getApplication();
+
 if ($app->isClient('site'))
 {
 	JSession::checkToken('get') or die(JText::_('JINVALID_TOKEN'));
@@ -26,23 +28,27 @@ JHtml::_('formbehavior.chosen', 'select');
 // Special case for the search field tooltip.
 $searchFilterDesc = $this->filterForm->getFieldAttribute('search', 'description', null, 'filter');
 JHtml::_('bootstrap.tooltip', '#filter_search', array('title' => JText::_($searchFilterDesc), 'placement' => 'bottom'));
+
 $function  = $app->input->getCmd('function', 'jSelectWeblink');
 $editor    = $app->input->getCmd('editor', '');
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 $onclick   = $this->escape($function);
+
 if (!empty($editor))
 {
 	// This view is used also in com_menus. Load the xtd script only if the editor is set!
 	JFactory::getDocument()->addScriptOptions('xtd-weblinks', array('editor' => $editor));
 	$onclick = "jSelectWeblink";
 }
+
 $iconStates = array(
 	-2 => 'icon-trash',
 	0 => 'icon-unpublish',
 	1 => 'icon-publish',
 	2 => 'icon-archive',
 );
+
 ?>
 <div class="container-popup">
 

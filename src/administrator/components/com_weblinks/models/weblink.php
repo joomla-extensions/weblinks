@@ -31,8 +31,8 @@ class WeblinksModelWeblink extends JModelAdmin
 	/**
 	 * The context used for the associations table
 	 *
-	 * @var string
-	 * @since    3.4.4
+	 * @var    string
+	 * @since  __DEPLOY_VERSION__
 	 */
 	protected $associationsContext = 'com_weblinks.item';
 
@@ -211,7 +211,6 @@ class WeblinksModelWeblink extends JModelAdmin
 			$item->images = $registry->toArray();
 
 			// Load associated web links items
-			$app = JFactory::getApplication();
 			$assoc = JLanguageAssociations::isEnabled();
 
 			if ($assoc)
