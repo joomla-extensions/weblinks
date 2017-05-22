@@ -21,7 +21,7 @@ class InstallWeblinksCest
 	}
 
 	/**
-	 * @depends installJoomla
+	 * depends installJoomla
 	 */
 	public function installWeblinks(\AcceptanceTester $I)
 	{
