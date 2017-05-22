@@ -65,12 +65,18 @@ class weblink extends \AcceptanceTester
 
 		$I->amGoingTo('Trash the weblink');
 		$I->checkAllResults();
-/*		$I->clickToolbarButton('Trash');
+		$I->clickToolbarButton('Trash');
 		$I->waitForText('Web Links','30',['css' => 'h1']);
 		$I->waitForText('1 web link successfully trashed', 30, ['id' => 'system-message-container']);
 
 		$I->amGoingTo('Delete the weblink');
-		$I->selectOptionInChosen('- Select Status -', 'Trashed');
+
+		$I->amGoingTo('Make sure that the Search Tools are open and select Trashed.');
+		$I->click('Clear');
+		$I->click('Search Tools');
+
+		$I->selectOptionInChosenByIdUsingJs('filter_published', 'Trashed');
+
 		$I->amGoingTo('Search the just saved weblink');
 		$I->searchForItem($title);
 		$I->waitForText('Web Links','30',['css' => 'h1']);
@@ -78,6 +84,6 @@ class weblink extends \AcceptanceTester
 		$I->click(['xpath'=> '//div[@id="toolbar-delete"]/button']);
 		$I->acceptPopup();
 		$I->waitForText('Web Links','30',['css' => 'h1']);
-		$I->waitForText('1 web link successfully deleted.', 30, ['id' => 'system-message-container']);*/
+		$I->waitForText('1 web link successfully deleted.', 30, ['id' => 'system-message-container']);
 	}
 }
