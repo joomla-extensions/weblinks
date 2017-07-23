@@ -6,10 +6,9 @@
 	<download_link>https://github.com/joomla-extensions/weblinks/releases</download_link>
 	<documentation_link>https://docs.joomla.org/Help33:Components_Weblinks_Links</documentation_link>
 	<support_link>https://forum.joomla.org/</support_link>
-	<license_link>http://opensourcematters.org/legal/license-copyright/gnu-general-public-license-v2.html</license_link>
-	<version>3.6.0</version>
+	<license_link>https://opensourcematters.org/legal/license-copyright/gnu-general-public-license-v2.html</license_link>
+	<version>3.7.0</version>
 	<compatibility>
-		<version>36</version>
 		<version>37</version>
 	</compatibility>
 </jedupdate>
