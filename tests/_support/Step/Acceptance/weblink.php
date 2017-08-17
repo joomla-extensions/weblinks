@@ -33,10 +33,15 @@ class weblink extends \AcceptanceTester
 		$I->comment('I try to save a weblink with a filled title and URL');
 		$I->click('New');
 		$I->waitForText('Web Link: New', '30', ['css' => 'h1']);
+
+		$I->comment('I make sure, that I am on the new weblink tab');
+		$I->click(['link' => 'New Web Link']);
+
 		$I->fillField(['id' => 'jform_title'], $title);
 		$I->fillField(['id' => 'jform_url'], $url);
 
 		if ($countClicks !== null) {
+			$I->comment('I make sure, that I am on the details tab');
 			$I->click(['link' => 'Options']);
 			$I->selectOptionInChosen("Count Clicks", $countClicks);
 		}
@@ -54,7 +59,7 @@ class weblink extends \AcceptanceTester
 		$I->waitForText('Web Links','30',['css' => 'h1']);
 		$I->expectTo('see weblinks page');
 
-		$I->amGoingTo('Search for the weblink');
+		$I->amGoingTo('Search for the weblink with the title ' . $title);
 		$I->searchForItem($title);
 		$I->waitForText('Web Links','30',['css' => 'h1']);
 
@@ -65,7 +70,13 @@ class weblink extends \AcceptanceTester
 		$I->waitForText('1 web link successfully trashed', 30, ['id' => 'system-message-container']);
 
 		$I->amGoingTo('Delete the weblink');
-		$I->selectOptionInChosen('- Select Status -', 'Trashed');
+
+		$I->amGoingTo('Make sure that the Search Tools are open and select Trashed.');
+		$I->click('Clear');
+		$I->click('Search Tools');
+
+		$I->selectOptionInChosenByIdUsingJs('filter_published', 'Trashed');
+
 		$I->amGoingTo('Search the just saved weblink');
 		$I->searchForItem($title);
 		$I->waitForText('Web Links','30',['css' => 'h1']);
