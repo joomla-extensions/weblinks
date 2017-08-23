@@ -216,7 +216,7 @@ class RoboFile extends \Robo\Tasks
 		if ($useHtaccess == true)
 		{
 			$this->say('Renaming htaccess.txt to .htaccess');
-			$this->_copy('./htaccess.txt', $this->cmsPath . '/.htaccess');
+			$this->_copy($this->cmsPath . '/htaccess.txt', $this->cmsPath . '/.htaccess');
 			$this->_exec('sed -e "s,# RewriteBase /,RewriteBase /tests/joomla-cms,g" -in-place tests/joomla/.htaccess');
 		}
 	}
