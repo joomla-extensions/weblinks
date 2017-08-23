@@ -637,5 +637,17 @@ class RoboFile extends \Robo\Tasks
 	{
 		(new \Joomla\Jorobo\Tasks\BumpVersion())->run();
 	}
+
+	/**
+	 * Build the joomla extension package
+	 *
+	 * @param   array  $params  Additional params
+	 *
+	 * @return  void
+	 */
+	public function build($params = ['dev' => false])
+	{
+		(new \Joomla\Jorobo\Tasks\Build($params))->run();
+	}
 }
 
