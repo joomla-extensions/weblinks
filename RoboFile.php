@@ -200,7 +200,7 @@ class RoboFile extends \Robo\Tasks
 			}
 		}
 
-		$exclude = ['tests', 'tests-phpunit', '.run', '.github', '.git', '.drone', 'docs', 'src'];
+		$exclude = ['tests', 'tests-phpunit', '.run', '.github', '.git', '.drone', 'docs', 'src', 'cache'];
 
 		$this->copyJoomla($this->cmsPath, $exclude);
 
@@ -210,7 +210,7 @@ class RoboFile extends \Robo\Tasks
 			$this->_exec('chown -R ' . $this->configuration->localUser . ' ' . $this->cmsPath);
 		}
 
-		$this->_copy('dist/pkg-weblinks-current.zip', $this->cmsPath . "/pkg-weblinks-current.zip");
+		$this->_copy('dist/pkg-weblinks-current.zip', "tests/_data/pkg-weblinks-current.zip");
 
 		// Optionally uses Joomla default htaccess file. Used by TravisCI
 		if ($useHtaccess == true)
@@ -626,6 +626,16 @@ class RoboFile extends \Robo\Tasks
 		$branch = empty($this->configuration->branch) ? 'staging' : $this->configuration->branch;
 
 		return "git clone -b $branch --single-branch --depth 1 https://github.com/joomla/joomla-cms.git " . $this->testsPath . "cache";
+	}
+
+	/**
+	 * Update Version __DEPLOY_VERSION__ in Weblinks. (Set the version up in the jorobo.ini)
+	 *
+	 * @return  void
+	 */
+	public function bump()
+	{
+		(new \Joomla\Jorobo\Tasks\BumpVersion())->run();
 	}
 }
 
