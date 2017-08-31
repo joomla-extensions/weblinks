@@ -35,6 +35,7 @@
 		<field
 			name="catid"
 			type="categoryedit"
+			addfieldprefix="Joomla\Component\Categories\Administrator\Field"
 			extension="com_weblinks"
 			label="JCATEGORY"
 			description="COM_WEBLINKS_FIELD_CATEGORY_DESC"
