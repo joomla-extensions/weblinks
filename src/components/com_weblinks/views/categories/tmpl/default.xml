@@ -98,8 +98,7 @@
 		</field>
 	</fieldset>
 
-	<fieldset 
-	name="category" label="JGLOBAL_CATEGORY_OPTIONS">
+	<fieldset name="category" label="JGLOBAL_CATEGORY_OPTIONS">
 		<field 
 			name="spacer1" 
 			type="spacer" 
