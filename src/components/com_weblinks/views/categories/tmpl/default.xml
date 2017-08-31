@@ -98,7 +98,8 @@
 		</field>
 	</fieldset>
 
-	<fieldset name="category" label="JGLOBAL_CATEGORY_OPTIONS">
+	<fieldset 
+	name="category" label="JGLOBAL_CATEGORY_OPTIONS">
 		<field 
 			name="spacer1" 
 			type="spacer" 
@@ -106,7 +107,9 @@
 			class="text"
 		/>
 
-		<field name="show_category_title" type="list"
+		<field 
+			name="show_category_title" 
+			type="list"
 			label="JGLOBAL_SHOW_CATEGORY_TITLE"
 			description="JGLOBAL_SHOW_CATEGORY_TITLE_DESC"
 			useglobal="true"

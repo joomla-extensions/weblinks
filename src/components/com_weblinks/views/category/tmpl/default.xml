@@ -140,8 +140,8 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-			<field	n
-				ame="show_pagination_limit" 
+			<field	
+				name="show_pagination_limit" 
 				type="list"
 				label="JGLOBAL_DISPLAY_SELECT_LABEL"
 				description="JGLOBAL_DISPLAY_SELECT_DESC"
