@@ -12,7 +12,11 @@ class InstallWeblinksCest
 {
 	public function installJoomla(\AcceptanceTester $I)
 	{
+		$I->am('Administrator');
+		$I->installJoomlaRemovingInstallationFolder();
 		$I->doAdministratorLogin();
+		$I->disableStatistics();
+		$I->setErrorReportingToDevelopment();
 	}
 
 	/**
@@ -21,7 +25,7 @@ class InstallWeblinksCest
 	public function installWeblinks(\AcceptanceTester $I)
 	{
 		$I->comment('get Weblinks repository folder from acceptance.suite.yml (see _support/AcceptanceHelper.php)');
-
+		$I->doAdministratorLogin();
 		// URL where the package file to install is located (mostly the same as joomla-cms)
 		$I->installExtensionFromFileUpload('pkg-weblinks-current.zip');
 		$I->doAdministratorLogout();
