@@ -208,7 +208,6 @@
 		</fieldset>
 
 		<fieldset name="integration">
-
 			<field 
 				name="show_feed_link" 
 				type="list"
