@@ -15,8 +15,10 @@
         "joomla-projects/joomla-browser": "dev-container-test",
         "joomla-projects/selenium-server-standalone": "~v3",
         "consolidation/robo": "^1.0.0",
-        "joomla-projects/joomla-testing-robo": "^1.0.0",
+        "joomla-projects/joomla-testing-robo": "dev-container-test",
         "fzaninotto/faker": "^1.6",
-        "joomla-projects/jorobo": "~0.6"
-    }
+        "joomla-projects/jorobo": "~0.7"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
