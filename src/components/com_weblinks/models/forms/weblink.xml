@@ -22,8 +22,8 @@
 		<field
 			name="title"
 			type="text"
-			description="COM_WEBLINKS_FIELD_TITLE_DESC"
 			label="JGLOBAL_TITLE"
+			description="COM_WEBLINKS_FIELD_TITLE_DESC"
 			required="true"
 			size="30"
 		/>
@@ -31,8 +31,8 @@
 		<field
 			name="alias"
 			type="text"
-			description="COM_WEBLINKS_FIELD_ALIAS_DESC"
 			label="JFIELD_ALIAS_LABEL"
+			description="COM_WEBLINKS_FIELD_ALIAS_DESC"
 			hint="JFIELD_ALIAS_PLACEHOLDER"
 			size="45"
 		/>
@@ -40,20 +40,20 @@
 		<field
 			name="description"
 			type="editor"
+			label="JGLOBAL_DESCRIPTION"
+			description="COM_WEBLINKS_FIELD_DESCRIPTION_DESC"
 			buttons="true"
 			hide="pagebreak,readmore"
-			description="COM_WEBLINKS_FIELD_DESCRIPTION_DESC"
 			filter="safehtml"
-			label="JGLOBAL_DESCRIPTION"
 			asset_id="com_weblinks"
 		/>
 
 		<field
 			name="state"
 			type="list"
-			default="1"
-			description="JFIELD_PUBLISHED_DESC"
 			label="JSTATUS"
+			description="JFIELD_PUBLISHED_DESC"
+			default="1"
 			size="1"
 			>
 			<option value="1">JPUBLISHED</option>
@@ -63,18 +63,18 @@
 		<field
 			name="catid"
 			type="categoryedit"
+			label="JCATEGORY"
 			description="COM_WEBLINKS_FIELD_CATEGORY_DESC"
 			extension="com_weblinks"
-			label="JCATEGORY"
 			required="true"
 		/>
 
 		<field
 			name="url"
 			type="url"
-			filter="url"
-			description="COM_WEBLINKS_FIELD_URL_DESC"
 			label="COM_WEBLINKS_FIELD_URL_LABEL"
+			description="COM_WEBLINKS_FIELD_URL_DESC"
+			filter="url"
 			required="true"
 			size="45"
 		/>
@@ -126,9 +126,9 @@
 			<field
 				name="robots"
 				type="hidden"
-				filter="unset"
 				label="JFIELD_METADATA_ROBOTS_LABEL"
 				description="JFIELD_METADATA_ROBOTS_DESC"
+				filter="unset"
 				labelclass="control-label"
 				>
 				<option value="">JGLOBAL_USE_GLOBAL</option>
@@ -141,9 +141,9 @@
 			<field
 				name="author"
 				type="hidden"
-				filter="unset"
 				label="JAUTHOR"
 				description="JFIELD_METADATA_AUTHOR_DESC"
+				filter="unset"
 				size="20"
 				labelclass="control-label"
 			/>
@@ -152,8 +152,8 @@
 				name="rights"
 				type="hidden"
 				label="JFIELD_META_RIGHTS_LABEL"
-				filter="unset"
 				description="JFIELD_META_RIGHTS_DESC"
+				filter="unset"
 				required="false"
 				labelclass="control-label"
 			/>
@@ -161,9 +161,9 @@
 			<field
 				name="xreference"
 				type="hidden"
-				filter="unset"
 				label="COM_CONTENT_FIELD_XREFERENCE_LABEL"
 				description="COM_CONTENT_FIELD_XREFERENCE_DESC"
+				filter="unset"
 				class="inputbox"
 				size="20"
 				labelclass="control-label"

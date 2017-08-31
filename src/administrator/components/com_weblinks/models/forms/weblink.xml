@@ -6,38 +6,38 @@
 		<field
 			name="id"
 			type="text"
-			default="0"
 			label="JGLOBAL_FIELD_ID_LABEL"
+			description="JGLOBAL_FIELD_ID_DESC"
 			readonly="true"
 			class="readonly"
-			description="JGLOBAL_FIELD_ID_DESC"
+			default="0"
 		/>
 
 		<field
 			name="title"
 			type="text"
-			class="input-xxlarge input-large-text"
-			size="40"
 			label="JGLOBAL_TITLE"
 			description="COM_WEBLINKS_FIELD_TITLE_DESC"
+			class="input-xxlarge input-large-text"
+			size="40"
 			required="true"
 		/>
 
 		<field
 			name="alias"
 			type="text"
-			size="40"
 			label="JFIELD_ALIAS_LABEL"
 			description="COM_WEBLINKS_FIELD_ALIAS_DESC"
+			size="40"
 			hint="JFIELD_ALIAS_PLACEHOLDER"
 		/>
 
 		<field
 			name="catid"
 			type="categoryedit"
-			extension="com_weblinks"
 			label="JCATEGORY"
 			description="COM_WEBLINKS_FIELD_CATEGORY_DESC"
+			extension="com_weblinks"
 			required="true"
 			default=""
 		/>
@@ -45,31 +45,31 @@
 		<field
 			name="url"
 			type="url"
+			label="COM_WEBLINKS_FIELD_URL_LABEL"
+			description="COM_WEBLINKS_FIELD_URL_DESC"
 			class="span12"
 			filter="url"
 			size="40"
-			label="COM_WEBLINKS_FIELD_URL_LABEL"
-			description="COM_WEBLINKS_FIELD_URL_DESC"
 			required="true"
 		/>
 
 		<field
 			name="description"
 			type="editor"
+			label="JGLOBAL_DESCRIPTION"
+			description="COM_WEBLINKS_FIELD_DESCRIPTION_DESC"
 			buttons="true"
 			hide="pagebreak,readmore"
 			filter="JComponentHelper::filterText"
-			label="JGLOBAL_DESCRIPTION"
-			description="COM_WEBLINKS_FIELD_DESCRIPTION_DESC"
 		/>
 
 		<field
 			name="hits"
 			type="text"
-			class="readonly"
-			size="6"
 			label="JGLOBAL_HITS"
 			description="COM_WEBLINKS_HITS_DESC"
+			class="readonly"
+			size="6"
 			readonly="true"
 			filter="unset"
 		/>
@@ -160,9 +160,9 @@
 		<field
 			name="modified"
 			type="calendar"
-			class="readonly"
 			label="JGLOBAL_FIELD_MODIFIED_LABEL"
 			description="COM_WEBLINKS_FIELD_MODIFIED_DESC"
+			class="readonly"
 			size="22"
 			readonly="true"
 			format="%Y-%m-%d %H:%M:%S"
@@ -213,10 +213,10 @@
 		<field
 			name="version"
 			type="text"
-			class="readonly"
 			label="COM_WEBLINKS_FIELD_VERSION_LABEL"
-			size="6"
 			description="COM_WEBLINKS_FIELD_VERSION_DESC"
+			class="readonly"
+			size="6"
 			readonly="true"
 			filter="unset"
 		/>
@@ -259,9 +259,9 @@
 			<field
 				name="target"
 				type="list"
-				default=""
 				label="COM_WEBLINKS_FIELD_TARGET_LABEL"
 				description="COM_WEBLINKS_FIELD_TARGET_DESC"
+				default=""
 				useglobal="true"
 				>
 				<option value="0">JBROWSERTARGET_PARENT</option>
@@ -273,25 +273,25 @@
 			<field
 				name="width"
 				type="text"
-				class="validate-numeric"
 				label="COM_WEBLINKS_FIELD_WIDTH_LABEL"
 				description="COM_WEBLINKS_FIELD_WIDTH_DESC"
+				class="validate-numeric"
 			/>
 
 			<field
 				name="height"
 				type="text"
-				class="validate-numeric"
 				label="COM_WEBLINKS_FIELD_HEIGHT_LABEL"
 				description="COM_WEBLINKS_FIELD_HEIGHT_DESC"
+				class="validate-numeric"
 			/>
 
 			<field
 				name="count_clicks"
 				type="list"
-				class="chzn-color"
 				label="COM_WEBLINKS_FIELD_COUNTCLICKS_LABEL"
 				description="COM_WEBLINKS_FIELD_COUNTCLICKS_DESC"
+				class="chzn-color"
 				useglobal="true"
 				>
 				<option value="0">JNO</option>
