@@ -418,7 +418,7 @@
 			type="radio"
 			label="JGLOBAL_CUSTOM_FIELDS_ENABLE_LABEL"
 			description="JGLOBAL_CUSTOM_FIELDS_ENABLE_DESC"
-			default="1"
+			default="0"
 			class="btn-group btn-group-yesno"
 		>
 			<option value="1">JYES</option>
