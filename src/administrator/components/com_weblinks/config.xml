@@ -411,7 +411,6 @@
 			<option value="1">JSHOW</option>
 			<option value="0">JHIDE</option>
 		</field>
-<<<<<<< HEAD
 
 		<field
 			name="custom_fields_enable"
@@ -424,8 +423,6 @@
 			<option value="1">JYES</option>
 			<option value="0">JNO</option>
 		</field>
-=======
->>>>>>> e8a9d563afa331e4975832959b0f19826a66b793
 	</fieldset>
 
 	<fieldset
