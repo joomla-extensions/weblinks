@@ -15,12 +15,13 @@ JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
 JHtml::_('formbehavior.chosen', 'select');
 
-$user		= JFactory::getUser();
-$userId		= $user->get('id');
-$listOrder	= $this->escape($this->state->get('list.ordering'));
-$listDirn	= $this->escape($this->state->get('list.direction'));
-$canOrder	= $user->authorise('core.edit.state', 'com_weblinks.category');
-$saveOrder	= $listOrder == 'a.ordering';
+$user      = JFactory::getUser();
+$userId    = $user->get('id');
+$listOrder = $this->escape($this->state->get('list.ordering'));
+$listDirn  = $this->escape($this->state->get('list.direction'));
+$canOrder  = $user->authorise('core.edit.state', 'com_weblinks.category');
+$saveOrder = $listOrder == 'a.ordering';
+$assoc     = JLanguageAssociations::isEnabled();
 
 if ($saveOrder)
 {
@@ -65,6 +66,11 @@ if ($saveOrder)
 						<th width="5%" class="nowrap center hidden-phone">
 							<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
 						</th>
+						<?php if ($assoc) : ?>
+						<th width="5%" class="nowrap hidden-phone hidden-tablet">
+							<?php echo JHtml::_('searchtools.sort', 'COM_WEBLINKS_HEADING_ASSOCIATION', 'association', $listDirn, $listOrder); ?>
+						</th>
+						<?php endif; ?>
 						<th width="10%" class="nowrap hidden-phone">
 							<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_LANGUAGE', 'language_title', $listDirn, $listOrder); ?>
 						</th>
@@ -98,7 +104,7 @@ if ($saveOrder)
 								<?php $iconClass = ' inactive tip-top hasTooltip" title="' . JHtml::tooltipText('JORDERINGDISABLED'); ?>
 							<?php endif; ?>
 							<span class="sortable-handler<?php echo $iconClass ?>">
-								<i class="icon-menu"></i>
+								<i class="icon-menu" aria-hidden="true"></i>
 							</span>
 							<?php if ($canChange && $saveOrder) : ?>
 								<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering; ?>" class="width-20 text-area-order " />
@@ -141,7 +147,14 @@ if ($saveOrder)
 						<td class="center hidden-phone">
 							<?php echo $item->hits; ?>
 						</td>
-						<td class="small nowrap hidden-phone">
+						<?php if ($assoc) : ?>
+							<td class="hidden-phone hidden-tablet">
+								<?php if ($item->association) : ?>
+									<?php echo JHtml::_('weblink.association', $item->id); ?>
+								<?php endif; ?>
+							</td>
+						<?php endif; ?>
+						<td class="small hidden-phone">
 							<?php echo JLayoutHelper::render('joomla.content.language', $item); ?>
 						</td>
 						<td class="center hidden-phone">

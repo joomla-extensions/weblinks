@@ -36,7 +36,7 @@ class WeblinksAssociationsHelper extends JAssociationExtensionHelper
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
-	protected $itemTypes = array('category');
+	protected $itemTypes = array('weblink', 'category');
 
 	/**
 	 * Has the extension association support
@@ -105,6 +105,10 @@ class WeblinksAssociationsHelper extends JAssociationExtensionHelper
 
 		switch ($typeName)
 		{
+			case 'weblink':
+				$table = JTable::getInstance('Weblink', 'WeblinksTable');
+				break;
+
 			case 'category':
 				$table = JTable::getInstance('Category');
 				break;
@@ -141,6 +145,21 @@ class WeblinksAssociationsHelper extends JAssociationExtensionHelper
 		{
 			switch ($typeName)
 			{
+				case 'weblink':
+
+					$support['state'] = true;
+					$support['acl'] = true;
+					$support['checkout'] = true;
+					$support['category'] = true;
+					$support['save2copy'] = true;
+
+					$tables = array(
+						'a' => '#__weblinks'
+					);
+
+					$title = 'weblink';
+					break;
+
 				case 'category':
 					$fields['created_user_id'] = 'a.created_user_id';
 					$fields['ordering']        = 'a.lft';

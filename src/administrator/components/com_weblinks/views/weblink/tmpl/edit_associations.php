@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Joomla.Site
+ * @package     Joomla.Administrator
  * @subpackage  com_weblinks
  *
  * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
@@ -9,6 +9,4 @@
 
 defined('_JEXEC') or die;
 
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
-$this->subtemplatename = 'items';
-echo JLayoutHelper::render('joomla.content.category_default', $this);
+echo JLayoutHelper::render('joomla.edit.associations', $this);
