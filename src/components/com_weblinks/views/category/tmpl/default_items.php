@@ -135,7 +135,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 						<?php $images = json_decode($item->images); ?>
 						<?php  if (isset($images->image_first) and !empty($images->image_first)) : ?>
 						<?php $imgfloat = (empty($images->float_first)) ? $this->params->get('float_first') : $images->float_first; ?>
-						<div class="img-intro-<?php echo htmlspecialchars($imgfloat); ?>"> <img
+						<div class="pull-<?php echo htmlspecialchars($imgfloat, ENT_COMPAT, 'UTF-8'); ?> item-image"> <img
 							<?php if ($images->image_first_caption) : ?>
 								<?php echo 'class="caption" title="' . htmlspecialchars($images->image_first_caption) . '"'; ?>
 							<?php endif; ?>
