@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Utilities\ArrayHelper;
+
 /**
  * Methods supporting a list of weblink records.
  *
@@ -93,27 +95,45 @@ class WeblinksModelWeblinks extends JModelList
 			$this->context .= '.' . $forcedLanguage;
 		}
 
-		// Load the filter state.
-		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
-		$this->setState('filter.access', $this->getUserStateFromRequest($this->context . '.filter.access', 'filter_access', '', 'cmd'));
-		$this->setState('filter.published', $this->getUserStateFromRequest($this->context . '.filter.published', 'filter_published', '', 'string'));
-		$this->setState('filter.category_id', $this->getUserStateFromRequest($this->context . '.filter.category_id', 'filter_category_id', '', 'cmd'));
-		$this->setState('filter.language', $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', '', 'string'));
-		$this->setState('filter.tag', $this->getUserStateFromRequest($this->context . '.filter.tag', 'filter_tag', '', 'string'));
-		$this->setState('filter.level', $this->getUserStateFromRequest($this->context . '.filter.level', 'filter_level', '', 'cmd'));
+		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
 
-		// Load the parameters.
-		$params = JComponentHelper::getParams('com_weblinks');
-		$this->setState('params', $params);
+		$published = $this->getUserStateFromRequest($this->context . '.filter.published', 'filter_published', '');
+		$this->setState('filter.published', $published);
 
-		// Force a language.
-		if (!empty($forcedLanguage))
+		$level = $this->getUserStateFromRequest($this->context . '.filter.level', 'filter_level');
+		$this->setState('filter.level', $level);
+
+		$language = $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', '');
+		$this->setState('filter.language', $language);
+
+		$formSubmited = $app->input->post->get('form_submited');
+
+		$access     = $this->getUserStateFromRequest($this->context . '.filter.access', 'filter_access');
+		$categoryId = $this->getUserStateFromRequest($this->context . '.filter.category_id', 'filter_category_id');
+		$tag        = $this->getUserStateFromRequest($this->context . '.filter.tag', 'filter_tag', '');
+
+		if ($formSubmited)
 		{
-			$this->setState('filter.language', $forcedLanguage);
+			$access = $app->input->post->get('access');
+			$this->setState('filter.access', $access);
+
+			$categoryId = $app->input->post->get('category_id');
+			$this->setState('filter.category_id', $categoryId);
+
+			$tag = $app->input->post->get('tag');
+			$this->setState('filter.tag', $tag);
 		}
 
 		// List state information.
 		parent::populateState($ordering, $direction);
+
+		// Force a language
+		if (!empty($forcedLanguage))
+		{
+			$this->setState('filter.language', $forcedLanguage);
+			$this->setState('filter.forcedLanguage', $forcedLanguage);
+		}
 	}
 
 	/**
@@ -196,16 +216,24 @@ class WeblinksModelWeblinks extends JModelList
 		}
 
 		// Filter by access level.
-		if ($access = $this->getState('filter.access'))
+		$access = $this->getState('filter.access');
+		if (is_numeric($access))
 		{
-			$query->where($db->quoteName('a.access') . ' = ' . (int) $access);
+			$query->where('a.access = ' . (int) $access);
+		}
+		elseif (is_array($access))
+		{
+			$access = ArrayHelper::toInteger($access);
+			$access = implode(',', $access);
+			$query->where('a.access IN (' . $access . ')');
 		}
 
-		// Implement View Level Access
+		// Filter by access level on categories.
 		if (!$user->authorise('core.admin'))
 		{
 			$groups = implode(',', $user->getAuthorisedViewLevels());
-			$query->where($db->quoteName('a.access') . ' IN (' . $groups . ')');
+			$query->where('a.access IN (' . $groups . ')');
+			$query->where('c.access IN (' . $groups . ')');
 		}
 
 		// Filter by published state
@@ -220,18 +248,37 @@ class WeblinksModelWeblinks extends JModelList
 			$query->where('(' . $db->quoteName('a.state') . ' IN (0, 1))');
 		}
 
-		// Filter by category.
+		// Filter by categories and by level
 		$categoryId = $this->getState('filter.category_id');
+		$level = $this->getState('filter.level');
 
-		if (is_numeric($categoryId))
+		$categoryId = $categoryId && !is_array($categoryId)
+			? array($categoryId)
+			: $categoryId;
+
+		// Case: Using both categories filter and by level filter
+		if (count($categoryId))
 		{
-			$query->where($db->quoteName('a.catid') . ' = ' . (int) $categoryId);
+			$categoryId = ArrayHelper::toInteger($categoryId);
+			$categoryTable = JTable::getInstance('Category', 'JTable');
+			$subCatItemsWhere = array();
+
+			foreach ($categoryId as $filter_catid)
+			{
+				$categoryTable->load($filter_catid);
+				$subCatItemsWhere[] = '(' .
+					($level ? 'c.level <= ' . ((int) $level + (int) $categoryTable->level - 1) . ' AND ' : '') .
+					'c.lft >= ' . (int) $categoryTable->lft . ' AND ' .
+					'c.rgt <= ' . (int) $categoryTable->rgt . ')';
+			}
+
+			$query->where(implode(' OR ', $subCatItemsWhere));
 		}
 
-		// Filter on the level.
-		if ($level = $this->getState('filter.level'))
+		// Case: Using only the by level filter
+		elseif ($level)
 		{
-			$query->where($db->quoteName('c.level') . ' <= ' . (int) $level);
+			$query->where('c.level <= ' . (int) $level);
 		}
 
 		// Filter by search in title
@@ -258,15 +305,34 @@ class WeblinksModelWeblinks extends JModelList
 
 		$tagId = $this->getState('filter.tag');
 
-		// Filter by a single tag.
+		// Filter by a single or group of tags.
+		$hasTag = false;
+		$tagId  = $this->getState('filter.tag');
+
 		if (is_numeric($tagId))
 		{
-			$query->where($db->quoteName('tagmap.tag_id') . ' = ' . (int) $tagId)
-				->join(
-					'LEFT', $db->quoteName('#__contentitem_tag_map', 'tagmap')
-					. ' ON ' . $db->quoteName('tagmap.content_item_id') . ' = ' . $db->quoteName('a.id')
-					. ' AND ' . $db->quoteName('tagmap.type_alias') . ' = ' . $db->quote('com_weblinks.weblink')
-				);
+			$hasTag = true;
+
+			$query->where($db->quoteName('tagmap.tag_id') . ' = ' . (int) $tagId);
+		}
+		elseif (is_array($tagId))
+		{
+			$tagId = ArrayHelper::toInteger($tagId);
+			$tagId = implode(',', $tagId);
+			if (!empty($tagId))
+			{
+				$hasTag = true;
+
+				$query->where($db->quoteName('tagmap.tag_id') . ' IN (' . $tagId . ')');
+			}
+		}
+
+		if ($hasTag)
+		{
+			$query->join('LEFT', $db->quoteName('#__contentitem_tag_map', 'tagmap')
+				. ' ON ' . $db->quoteName('tagmap.content_item_id') . ' = ' . $db->quoteName('a.id')
+				. ' AND ' . $db->quoteName('tagmap.type_alias') . ' = ' . $db->quote('com_weblinks.weblink')
+			);
 		}
 
 		// Add the list ordering clause.
