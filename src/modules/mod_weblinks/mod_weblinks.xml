@@ -11,6 +11,7 @@
 	<description>MOD_WEBLINKS_XML_DESCRIPTION</description>
 	<files>
 		##MODULE_FILES##
+		<file module="mod_weblinks">mod_weblinks.php</file>
 	</files>
 	<languages folder="language">
 		##LANGUAGE_FILES##
