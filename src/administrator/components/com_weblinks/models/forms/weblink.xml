@@ -317,8 +317,8 @@
 			<field
 				name="float_first"
 				type="list"
-				label="COM_WEBLINKS_FLOAT_LABEL"
-				description="COM_WEBLINKS_FLOAT_DESC"
+				label="COM_WEBLINKS_FLOAT_FIRST_LABEL"
+				description="COM_WEBLINKS_FLOAT_FIRST_DESC"
 				useglobal="true"
 				>
 				<option value="right">COM_WEBLINKS_RIGHT</option>
@@ -358,8 +358,8 @@
 			<field
 				name="float_second"
 				type="list"
-				label="COM_WEBLINKS_FLOAT_LABEL"
-				description="COM_WEBLINKS_FLOAT_DESC"
+				label="COM_WEBLINKS_FLOAT_SECOND_LABEL"
+				description="COM_WEBLINKS_FLOAT_SECOND_DESC"
 				>
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="right">COM_WEBLINKS_RIGHT</option>
