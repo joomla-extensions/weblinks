@@ -3,16 +3,16 @@
 	<name>plg_editors-xtd_weblink</name>
 	<author>Joomla! Project</author>
 	<creationDate>##DATE##</creationDate>
-	<copyright>Copyright (C) 2005 - 2017 Open Source Matters. All rights reserved.</copyright>
+	<copyright>Copyright (C) 2005 - ##YEAR## Open Source Matters. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>admin@joomla.org</authorEmail>
 	<authorUrl>www.joomla.org</authorUrl>
-	<version>3.7.0</version>
+	<version>##VERSION##</version>
 	<description>PLG_EDITORS-XTD_WEBLINK_XML_DESCRIPTION</description>
 	<files>
 		##FILES##
 	</files>
-	<languages folder="language">
+	<languages folder="administrator/language">
 		##LANGUAGE_FILES##
 	</languages>
 </extension>
