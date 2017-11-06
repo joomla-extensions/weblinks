@@ -33,8 +33,8 @@
 		</schemas>
 	</update>
 
-	<media folder="media" destination="com_weblinks">
-		<folder>js</folder>
+	<media folder="media/com_weblinks" destination="com_weblinks">
+		##MEDIA_FILES##
 	</media>
 
 	<files folder="components/com_weblinks">
