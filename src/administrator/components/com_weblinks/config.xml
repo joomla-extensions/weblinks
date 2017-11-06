@@ -50,6 +50,7 @@
 			label="JGLOBAL_HISTORY_LIMIT_OPTIONS_LABEL"
 			description="JGLOBAL_HISTORY_LIMIT_OPTIONS_DESC"
 			default="5"
+			showon="save_history:1"
 		/>
 
 		<field
@@ -63,6 +64,12 @@
 			<option value="1">JYES</option>
 			<option value="0">JNO</option>
 		</field>
+
+		<field
+			name="spacer1"
+			type="spacer"
+			hr="true"
+		/>
 
 		<field
 			name="icons"
@@ -85,10 +92,16 @@
 		/>
 
 		<field
+			name="spacer2"
+			type="spacer"
+			hr="true"
+		/>
+
+		<field
 			name="float_first"
 			type="list"
-			label="COM_WEBLINKS_FLOAT_LABEL"
-			description="COM_WEBLINKS_FLOAT_DESC"
+			label="COM_WEBLINKS_FLOAT_FIRST_LABEL"
+			description="COM_WEBLINKS_FLOAT_FIRST_DESC"
 			>
 			<option value="right">COM_WEBLINKS_RIGHT</option>
 			<option value="left">COM_WEBLINKS_LEFT</option>
@@ -98,13 +111,19 @@
 		<field
 			name="float_second"
 			type="list"
-			label="COM_WEBLINKS_FLOAT_LABEL"
-			description="COM_WEBLINKS_FLOAT_DESC"
+			label="COM_WEBLINKS_FLOAT_SECOND_LABEL"
+			description="COM_WEBLINKS_FLOAT_SECOND_DESC"
 			>
 			<option value="right">COM_WEBLINKS_RIGHT</option>
 			<option value="left">COM_WEBLINKS_LEFT</option>
 			<option value="none">COM_WEBLINKS_NONE</option>
 		</field>
+
+		<field
+			name="spacer3"
+			type="spacer"
+			hr="true"
+		/>
 
 		<field
 			id="show_tags"
@@ -410,6 +429,18 @@
 			>
 			<option value="1">JSHOW</option>
 			<option value="0">JHIDE</option>
+		</field>
+
+		<field
+			name="custom_fields_enable"
+			type="radio"
+			label="JGLOBAL_CUSTOM_FIELDS_ENABLE_LABEL"
+			description="JGLOBAL_CUSTOM_FIELDS_ENABLE_DESC"
+			default="0"
+			class="btn-group btn-group-yesno"
+		>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
 		</field>
 	</fieldset>
 

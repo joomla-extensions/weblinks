@@ -640,5 +640,19 @@ class RoboFile extends \Robo\Tasks
 	{
 		(new \Joomla\Jorobo\Tasks\Build($params))->run();
 	}
+
+	/**
+	 * Map into Joomla installation.
+	 *
+	 * @param   String  $target  The target joomla instance
+	 *
+	 * @since __DEPLOY_VERSION__
+	 *
+	 * @return  void
+	 */
+	public function map($target)
+	{
+		(new \Joomla\Jorobo\Tasks\Map($target))->run();
+	}
 }
 

@@ -14,8 +14,13 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('behavior.formvalidator');
 JHtml::_('formbehavior.chosen', 'select', null, array('disable_search_threshold' => 0 ));
 
-// Ignore Image fieldset for the layouts as we render it manually
-$this->ignore_fieldsets = array('images');
+$app = JFactory::getApplication();
+$input = $app->input;
+
+$assoc = JLanguageAssociations::isEnabled();
+
+// Fieldsets to not automatically render by /layouts/joomla/edit/params.php
+$this->ignore_fieldsets = array('details', 'images', 'item_associations', 'jmetadata');
 
 JFactory::getDocument()->addScriptDeclaration("
 	Joomla.submitbutton = function(task)
@@ -26,9 +31,14 @@ JFactory::getDocument()->addScriptDeclaration("
 		}
 	};
 ");
+
+// In case of modal
+$isModal = $input->get('layout') == 'modal' ? true : false;
+$layout  = $isModal ? 'modal' : 'edit';
+$tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=component' : '';
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_weblinks&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="weblink-form" class="form-validate">
+<form action="<?php echo JRoute::_('index.php?option=com_weblinks&layout=' . $layout . $tmpl . '&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="weblink-form" class="form-validate">
 
 	<?php echo JLayoutHelper::render('joomla.edit.title_alias', $this); ?>
 
@@ -73,11 +83,20 @@ JFactory::getDocument()->addScriptDeclaration("
 		<?php echo JHtml::_('bootstrap.endTab'); ?>
 
 		<?php echo JLayoutHelper::render('joomla.edit.params', $this); ?>
+		
+		<?php if (!$isModal && $assoc) : ?>
+			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'associations', JText::_('JGLOBAL_FIELDSET_ASSOCIATIONS')); ?>
+			<?php echo $this->loadTemplate('associations'); ?>
+			<?php echo JHtml::_('bootstrap.endTab'); ?>
+		<?php elseif ($isModal && $assoc) : ?>
+			<div class="hidden"><?php echo $this->loadTemplate('associations'); ?></div>
+		<?php endif; ?>
 
 		<?php echo JHtml::_('bootstrap.endTabSet'); ?>
 
 	</div>
 
 	<input type="hidden" name="task" value="" />
+	<input type="hidden" name="forcedLanguage" value="<?php echo $input->get('forcedLanguage', '', 'cmd'); ?>" />
 	<?php echo JHtml::_('form.token'); ?>
 </form>

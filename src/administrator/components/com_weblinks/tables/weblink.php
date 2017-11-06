@@ -93,7 +93,7 @@ class WeblinksTableWeblink extends JTable
 		// Verify that the alias is unique
 		$table = JTable::getInstance('Weblink', 'WeblinksTable');
 
-		if ($table->load(array('alias' => $this->alias, 'catid' => $this->catid)) && ($table->id != $this->id || $this->id == 0))
+		if ($table->load(array('language' => $this->language, 'alias' => $this->alias, 'catid' => $this->catid)) && ($table->id != $this->id || $this->id == 0))
 		{
 			$this->setError(JText::_('COM_WEBLINKS_ERROR_UNIQUE_ALIAS'));
 
@@ -136,6 +136,7 @@ class WeblinksTableWeblink extends JTable
 			->select($db->quoteName('id'))
 			->from($db->quoteName('#__weblinks'))
 			->where($db->quoteName('title') . ' = ' . $db->quote($this->title))
+			->where($db->quoteName('language') . ' = ' . $db->quote($this->language))
 			->where($db->quoteName('catid') . ' = ' . (int) $this->catid);
 		$db->setQuery($query);
 
@@ -153,7 +154,7 @@ class WeblinksTableWeblink extends JTable
 			$this->alias = $this->title;
 		}
 
-		$this->alias = JApplicationHelper::stringURLSafe($this->alias);
+		$this->alias = JApplicationHelper::stringURLSafe($this->alias, $this->language);
 
 		if (trim(str_replace('-', '', $this->alias)) == '')
 		{
