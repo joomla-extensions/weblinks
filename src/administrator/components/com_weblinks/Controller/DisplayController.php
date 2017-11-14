@@ -23,6 +23,14 @@ use Joomla\CMS\Router\Route;
 class DisplayController extends BaseController
 {
 	/**
+	 * The default view.
+	 *
+	 * @var    string
+	 * @since  1.6
+	 */
+	protected $default_view = 'weblinks';
+
+	/**
 	 * Method to display a view.
 	 *
 	 * @param   boolean  $cacheable  If true, the view output will be cached
