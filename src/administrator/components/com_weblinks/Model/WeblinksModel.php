@@ -7,14 +7,18 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\Component\Weblinks\Administrator\Model;
+
 defined('_JEXEC') or die;
+
+use Joomla\CMS\MVC\Model\ListModel;
 
 /**
  * Methods supporting a list of weblink records.
  *
  * @since  1.6
  */
-class WeblinksModelWeblinks extends JModelList
+class WeblinksModel extends ListModel
 {
 	/**
 	 * Constructor.
@@ -53,7 +57,7 @@ class WeblinksModelWeblinks extends JModelList
 				'level', 'c.level',
 			);
 
-			$assoc = JLanguageAssociations::isEnabled();
+			$assoc = \JLanguageAssociations::isEnabled();
 
 			if ($assoc)
 			{
@@ -77,7 +81,7 @@ class WeblinksModelWeblinks extends JModelList
 	 */
 	protected function populateState($ordering = 'a.title', $direction = 'asc')
 	{
-		$app = JFactory::getApplication();
+		$app = \JFactory::getApplication();
 
 		$forcedLanguage = $app->input->get('forcedLanguage', '', 'cmd');
 
@@ -103,7 +107,7 @@ class WeblinksModelWeblinks extends JModelList
 		$this->setState('filter.level', $this->getUserStateFromRequest($this->context . '.filter.level', 'filter_level', '', 'cmd'));
 
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_weblinks');
+		$params = \JComponentHelper::getParams('com_weblinks');
 		$this->setState('params', $params);
 
 		// Force a language.
@@ -155,7 +159,7 @@ class WeblinksModelWeblinks extends JModelList
 		// Create a new query object.
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
-		$user = JFactory::getUser();
+		$user = \JFactory::getUser();
 
 		// Select the required fields from the table.
 		$query->select(
@@ -185,7 +189,7 @@ class WeblinksModelWeblinks extends JModelList
 			->join('LEFT', $db->quoteName('#__categories', 'c') . ' ON ' . $db->qn('c.id') . ' = ' . $db->qn('a.catid'));
 
 		// Join over the associations.
-		$assoc = JLanguageAssociations::isEnabled();
+		$assoc = \JLanguageAssociations::isEnabled();
 
 		if ($assoc)
 		{
