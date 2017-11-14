@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\Component\Weblinks\Administrator\View\Weblinks;
+
 defined('_JEXEC') or die;
 
 /**
@@ -14,7 +16,7 @@ defined('_JEXEC') or die;
  *
  * @since  1.5
  */
-class WeblinksViewWeblinks extends JViewLegacy
+class HtmlView extends \Joomla\CMS\MVC\View\HtmlView
 {
 	protected $items;
 
@@ -40,13 +42,13 @@ class WeblinksViewWeblinks extends JViewLegacy
 		// Modal layout doesn't need the submenu.
 		if ($this->getLayout() !== 'modal')
 		{
-			WeblinksHelper::addSubmenu('weblinks');
+			\WeblinksHelper::addSubmenu('weblinks');
 		}
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
-			JError::raiseError(500, implode("\n", $errors));
+			\JError::raiseError(500, implode("\n", $errors));
 			return false;
 		}
 
@@ -54,16 +56,16 @@ class WeblinksViewWeblinks extends JViewLegacy
 		if ($this->getLayout() !== 'modal')
 		{
 			$this->addToolbar();
-			$this->sidebar = JHtmlSidebar::render();
+			$this->sidebar = \JHtmlSidebar::render();
 		}
 		else
 		{
 			// In article associations modal we need to remove language filter if forcing a language.
 			// We also need to change the category filter to show show categories with All or the forced language.
-			if ($forcedLanguage = JFactory::getApplication()->input->get('forcedLanguage', '', 'CMD'))
+			if ($forcedLanguage = \JFactory::getApplication()->input->get('forcedLanguage', '', 'CMD'))
 			{
 				// If the language is forced we can't allow to select the language, so transform the language selector filter into an hidden field.
-				$languageXml = new SimpleXMLElement('<field name="language" type="hidden" default="' . $forcedLanguage . '" />');
+				$languageXml = new \SimpleXMLElement('<field name="language" type="hidden" default="' . $forcedLanguage . '" />');
 				$this->filterForm->setField($languageXml, 'filter', true);
 
 				// Also, unset the active language filter so the search tools is not open by default with this filter.
@@ -89,50 +91,50 @@ class WeblinksViewWeblinks extends JViewLegacy
 		require_once JPATH_COMPONENT . '/helpers/weblinks.php';
 
 		$state = $this->get('State');
-		$canDo = JHelperContent::getActions('com_weblinks', 'category', $state->get('filter.category_id'));
-		$user  = JFactory::getUser();
+		$canDo = \JHelperContent::getActions('com_weblinks', 'category', $state->get('filter.category_id'));
+		$user  = \JFactory::getUser();
 
 		// Get the toolbar object instance
-		$bar = JToolbar::getInstance('toolbar');
+		$bar = \JToolbar::getInstance('toolbar');
 
-		JToolbarHelper::title(JText::_('COM_WEBLINKS_MANAGER_WEBLINKS'), 'link weblinks');
+		\JToolbarHelper::title(\JText::_('COM_WEBLINKS_MANAGER_WEBLINKS'), 'link weblinks');
 
 		if (count($user->getAuthorisedCategories('com_weblinks', 'core.create')) > 0)
 		{
-			JToolbarHelper::addNew('weblink.add');
+			\JToolbarHelper::addNew('weblink.add');
 		}
 
 		if ($canDo->get('core.edit') || $canDo->get('core.edit.own'))
 		{
-			JToolbarHelper::editList('weblink.edit');
+			\JToolbarHelper::editList('weblink.edit');
 		}
 
 		if ($canDo->get('core.edit.state'))
 		{
-			JToolbarHelper::publish('weblinks.publish', 'JTOOLBAR_PUBLISH', true);
-			JToolbarHelper::unpublish('weblinks.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			\JToolbarHelper::publish('weblinks.publish', 'JTOOLBAR_PUBLISH', true);
+			\JToolbarHelper::unpublish('weblinks.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 
-			JToolbarHelper::archiveList('weblinks.archive');
-			JToolbarHelper::checkin('weblinks.checkin');
+			\JToolbarHelper::archiveList('weblinks.archive');
+			\JToolbarHelper::checkin('weblinks.checkin');
 		}
 
 		if ($state->get('filter.published') == -2 && $canDo->get('core.delete'))
 		{
-			JToolbarHelper::deleteList('JGLOBAL_CONFIRM_DELETE', 'weblinks.delete', 'JTOOLBAR_EMPTY_TRASH');
+			\JToolbarHelper::deleteList('JGLOBAL_CONFIRM_DELETE', 'weblinks.delete', 'JTOOLBAR_EMPTY_TRASH');
 		}
 		elseif ($canDo->get('core.edit.state'))
 		{
-			JToolbarHelper::trash('weblinks.trash');
+			\JToolbarHelper::trash('weblinks.trash');
 		}
 
 		// Add a batch button
 		if ($user->authorise('core.create', 'com_weblinks') && $user->authorise('core.edit', 'com_weblinks')
 			&& $user->authorise('core.edit.state', 'com_weblinks'))
 		{
-			$title = JText::_('JTOOLBAR_BATCH');
+			$title = \JText::_('JTOOLBAR_BATCH');
 
 			// Instantiate a new JLayoutFile instance and render the batch button
-			$layout = new JLayoutFile('joomla.toolbar.batch');
+			$layout = new \JLayoutFile('joomla.toolbar.batch');
 
 			$dhtml = $layout->render(array('title' => $title));
 			$bar->appendButton('Custom', $dhtml, 'batch');
@@ -140,10 +142,10 @@ class WeblinksViewWeblinks extends JViewLegacy
 
 		if ($user->authorise('core.admin', 'com_weblinks') || $user->authorise('core.options', 'com_weblinks'))
 		{
-			JToolbarHelper::preferences('com_weblinks');
+			\JToolbarHelper::preferences('com_weblinks');
 		}
 
-		JToolbarHelper::help('JHELP_COMPONENTS_WEBLINKS_LINKS');
+		\JToolbarHelper::help('JHELP_COMPONENTS_WEBLINKS_LINKS');
 	}
 
 	/**
@@ -156,13 +158,13 @@ class WeblinksViewWeblinks extends JViewLegacy
 	protected function getSortFields()
 	{
 		return array(
-			'a.ordering' => JText::_('JGRID_HEADING_ORDERING'),
-			'a.state' => JText::_('JSTATUS'),
-			'a.title' => JText::_('JGLOBAL_TITLE'),
-			'a.access' => JText::_('JGRID_HEADING_ACCESS'),
-			'a.hits' => JText::_('JGLOBAL_HITS'),
-			'a.language' => JText::_('JGRID_HEADING_LANGUAGE'),
-			'a.id' => JText::_('JGRID_HEADING_ID')
+			'a.ordering' => \JText::_('JGRID_HEADING_ORDERING'),
+			'a.state' => \JText::_('JSTATUS'),
+			'a.title' => \JText::_('JGLOBAL_TITLE'),
+			'a.access' => \JText::_('JGRID_HEADING_ACCESS'),
+			'a.hits' => \JText::_('JGLOBAL_HITS'),
+			'a.language' => \JText::_('JGRID_HEADING_LANGUAGE'),
+			'a.id' => \JText::_('JGRID_HEADING_ID')
 		);
 	}
 }
