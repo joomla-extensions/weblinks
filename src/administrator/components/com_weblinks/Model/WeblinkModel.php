@@ -415,6 +415,7 @@ class WeblinkModel extends \JModelAdmin
 					$field->addAttribute('new', 'true');
 					$field->addAttribute('edit', 'true');
 					$field->addAttribute('clear', 'true');
+					$field->addAttribute('addfieldprefix', 'Joomla\\Component\\Weblinks\\Administrator\\Field');
 				}
 
 				$form->load($addform, false);
