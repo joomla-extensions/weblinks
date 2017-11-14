@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\Component\Weblinks\Administrator\View\Weblink;
+
 defined('_JEXEC') or die;
 
 /**
@@ -14,7 +16,7 @@ defined('_JEXEC') or die;
  *
  * @since  1.5
  */
-class WeblinksViewWeblink extends JViewLegacy
+class HtmlView extends \Joomla\CMS\MVC\View\HtmlView
 {
 	protected $state;
 
@@ -38,13 +40,13 @@ class WeblinksViewWeblink extends JViewLegacy
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
-			JError::raiseError(500, implode("\n", $errors));
+			\JError::raiseError(500, implode("\n", $errors));
 
 			return false;
 		}
-		
+
 		// If we are forcing a language in modal (used for associations).
-		if ($this->getLayout() === 'modal' && $forcedLanguage = JFactory::getApplication()->input->get('forcedLanguage', '', 'cmd'))
+		if ($this->getLayout() === 'modal' && $forcedLanguage = \JFactory::getApplication()->input->get('forcedLanguage', '', 'cmd'))
 		{
 			// Set the language field to the forcedLanguage and disable changing it.
 			$this->form->setValue('language', null, $forcedLanguage);
@@ -71,47 +73,47 @@ class WeblinksViewWeblink extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		JFactory::getApplication()->input->set('hidemainmenu', true);
+		\JFactory::getApplication()->input->set('hidemainmenu', true);
 
-		$user       = JFactory::getUser();
+		$user       = \JFactory::getUser();
 		$isNew      = ($this->item->id == 0);
 		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
 
 		// Since we don't track these assets at the item level, use the category id.
-		$canDo = JHelperContent::getActions('com_weblinks', 'category', $this->item->catid);
+		$canDo = \JHelperContent::getActions('com_weblinks', 'category', $this->item->catid);
 
-		JToolbarHelper::title($isNew ? JText::_('COM_WEBLINKS_MANAGER_WEBLINK_NEW') : JText::_('COM_WEBLINKS_MANAGER_WEBLINK_EDIT'), 'link weblinks');
+		\JToolbarHelper::title($isNew ? \JText::_('COM_WEBLINKS_MANAGER_WEBLINK_NEW') : \JText::_('COM_WEBLINKS_MANAGER_WEBLINK_EDIT'), 'link weblinks');
 
 		// If not checked out, can save the item.
 		if (!$checkedOut && ($canDo->get('core.edit')||(count($user->getAuthorisedCategories('com_weblinks', 'core.create')))))
 		{
-			JToolbarHelper::apply('weblink.apply');
-			JToolbarHelper::save('weblink.save');
+			\JToolbarHelper::apply('weblink.apply');
+			\JToolbarHelper::save('weblink.save');
 		}
 		if (!$checkedOut && (count($user->getAuthorisedCategories('com_weblinks', 'core.create'))))
 		{
-			JToolbarHelper::save2new('weblink.save2new');
+			\JToolbarHelper::save2new('weblink.save2new');
 		}
 		// If an existing item, can save to a copy.
 		if (!$isNew && (count($user->getAuthorisedCategories('com_weblinks', 'core.create')) > 0))
 		{
-			JToolbarHelper::save2copy('weblink.save2copy');
+			\JToolbarHelper::save2copy('weblink.save2copy');
 		}
 		if (empty($this->item->id))
 		{
-			JToolbarHelper::cancel('weblink.cancel');
+			\JToolbarHelper::cancel('weblink.cancel');
 		}
 		else
 		{
 			if ($this->state->params->get('save_history', 0) && $user->authorise('core.edit'))
 			{
-				JToolbarHelper::versions('com_weblinks.weblink', $this->item->id);
+				\JToolbarHelper::versions('com_weblinks.weblink', $this->item->id);
 			}
 
-			JToolbarHelper::cancel('weblink.cancel', 'JTOOLBAR_CLOSE');
+			\JToolbarHelper::cancel('weblink.cancel', 'JTOOLBAR_CLOSE');
 		}
 
-		JToolbarHelper::divider();
-		JToolbarHelper::help('JHELP_COMPONENTS_WEBLINKS_LINKS_EDIT');
+		\JToolbarHelper::divider();
+		\JToolbarHelper::help('JHELP_COMPONENTS_WEBLINKS_LINKS_EDIT');
 	}
 }
