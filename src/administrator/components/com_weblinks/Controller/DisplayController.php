@@ -7,14 +7,20 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\Component\Weblinks\Administrator\Controller;
+
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Router\Route;
 
 /**
  * Weblinks Main Controller
  *
  * @since  1.5
  */
-class WeblinksController extends JControllerLegacy
+class DisplayController extends BaseController
 {
 	/**
 	 * Method to display a view.
@@ -39,9 +45,9 @@ class WeblinksController extends JControllerLegacy
 		if ($view == 'weblink' && $layout == 'edit' && !$this->checkEditId('com_weblinks.edit.weblink', $id))
 		{
 			// Somehow the person just went to the form - we don't allow that.
-			$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
+			$this->setError(Text::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
 			$this->setMessage($this->getError(), 'error');
-			$this->setRedirect(JRoute::_('index.php?option=com_weblinks&view=weblinks', false));
+			$this->setRedirect(Route::_('index.php?option=com_weblinks&view=weblinks', false));
 
 			return false;
 		}
