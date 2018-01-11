@@ -160,7 +160,11 @@ Please do not forget to add jorobo.ini to .gitignore if you use passwords in it.
 /var/www/html/weblinks$ vendor/bin/robo map /var/www/html/weblinks/tests/joomla
 ```
 
-Now you can discover the web links extension in the Joomla! on /var/www/html/weblinks/tests/joomla
+Joomla! have to be already be installed at /var/www/html/weblinks/tests/joomla. Otherwise you
+can enter a path to another running Joomla! installation.
+If you follow the steps here, during the tests Joomla! will be installed at /var/www/html/weblinks/tests/joomla and
+you can discover the web links extensions in the Joomla! on /var/www/html/weblinks/tests/joomla.
+If you choose another installation, you can discover the web links extensions here.
 
 ### 8c. Optional: Update headers
 
