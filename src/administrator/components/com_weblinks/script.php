@@ -125,25 +125,6 @@ class Com_WeblinksInstallerScript extends JInstallerScript
 			// Build the path for our category
 			$category->rebuildPath($category->id);
 		}
-
-		$this->deleteGlobalLanguagefiles();
-	}
-
-	/**
-	 * method to update the component
-	 *
-	 * @param   Joomla\CMS\Installer\Adapter\ComponentAdapter $parent Installerobject
-	 *
-	 * @return void
-	 *
-	 * @since 3.8.0
-	 */
-	public function update($parent)
-	{
-		if (version_compare($this->oldRelease, '3.8.0', '<'))
-		{
-			$this->deleteGlobalLanguagefiles();
-		}
 	}
 
 	/**
@@ -172,6 +153,16 @@ class Com_WeblinksInstallerScript extends JInstallerScript
 
 		// Insert missing UCM Records if needed
 		$this->insertMissingUcmRecords();
+
+		// Remove global language files.
+		if ($type == 'install' || ($type == 'update' && version_compare($this->oldRelease, '3.8.0', '<')))
+		{
+			$this->deleteFiles[] = '/administrator/language/en-GB/en-GB.com_weblinks.ini';
+			$this->deleteFiles[] = '/administrator/language/en-GB/en-GB.com_weblinks.sys.ini';
+			$this->deleteFiles[] = '/language/en-GB/en-GB.com_weblinks.ini';
+
+			$this->removeFiles();
+		}
 	}
 
 	/**
@@ -343,19 +334,5 @@ class Com_WeblinksInstallerScript extends JInstallerScript
 			$db->setQuery($sql);
 			$db->execute();
 		}
-	}
-
-	/**
-	 * Method to delete the global language files.
-	 *
-	 * @return  void
-	 *
-	 * @since   3.8.0
-	 */
-	private function deleteGlobalLanguagefiles()
-	{
-		$this->deleteFiles[] = '/administrator/language/en-GB/en-GB.com_weblinks.ini';
-		$this->deleteFiles[] = '/administrator/language/en-GB/en-GB.com_weblinks.sys.ini';
-		$this->deleteFiles[] = '/language/en-GB/en-GB.com_weblinks.ini';
 	}
 }
