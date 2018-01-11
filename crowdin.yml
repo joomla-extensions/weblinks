@@ -1,0 +1,8 @@
+files:
+  - source: /src/administrator/components/com_weblinks/language/en-GB/*
+    translation: >-
+      /src/administrator/components/com_weblinks/language/%locale%/%original_file_name%
+  - source: /src/components/com_weblinks/language/en-GB/*
+    translation: /src/components/com_weblinks/language/%locale%/%original_file_name%
+  - source: /src/modules/mod_weblinks/language/en-GB/
+    translation: /src/modules/mod_weblinks/language/%locale%/%original_file_name%
