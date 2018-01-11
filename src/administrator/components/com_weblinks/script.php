@@ -9,17 +9,70 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+
 /**
  * Installation class to perform additional changes during install/uninstall/update
  *
  * @since  3.4
  */
-class Com_WeblinksInstallerScript
+class Com_WeblinksInstallerScript extends JInstallerScript
 {
+	/**
+	 * The extension name. This should be set in the installer script.
+	 *
+	 * @var    string
+	 * @since  3.8.0
+	 */
+	protected $extension = 'com_weblinks';
+	/**
+	 * Minimum PHP version required to install the extension
+	 *
+	 * @var    string
+	 * @since  3.8.0
+	 */
+	protected $minimumPhp = '5.3.10';
+	/**
+	 * Minimum Joomla! version required to install the extension
+	 *
+	 * @var    string
+	 * @since  3.8.0
+	 */
+	protected $minimumJoomla = '3.8.0';
+
+	/**
+	 * @var  string  During an update, it will be populated with the old release version
+	 *
+	 * @since 3.8.0
+	 */
+	private $oldRelease;
+
+	/**
+	 * Method to run before an install/update/uninstall method
+	 *
+	 * @param   string                                         $type   'install', 'update' or 'discover_install'
+	 * @param   Joomla\CMS\Installer\Adapter\ComponentAdapter  $parent Installerobject
+	 *
+	 * @return  boolean  false will terminate the installation
+	 *
+	 * @since 3.8.0
+	 */
+	public function preflight($type, $parent)
+	{
+		// Storing old release number for process in postflight
+		if (strtolower($type) == 'update')
+		{
+			$manifest         = $this->getItemArray('manifest_cache', '#__extensions', 'element', Factory::getDbo()->quote($this->extension));
+			$this->oldRelease = $manifest['version'];
+		}
+
+		return parent::preflight($type, $parent);
+	}
+
 	/**
 	 * Function to perform changes during install
 	 *
-	 * @param   JInstallerAdapterComponent  $parent  The class calling this method
+	 * @param   JInstallerAdapterComponent $parent The class calling this method
 	 *
 	 * @return  void
 	 *
@@ -28,27 +81,27 @@ class Com_WeblinksInstallerScript
 	public function install($parent)
 	{
 		// Initialize a new category
-		/** @type  JTableCategory  $category  */
+		/** @type  JTableCategory $category */
 		$category = JTable::getInstance('Category');
 
 		// Check if the Uncategorised category exists before adding it
 		if (!$category->load(array('extension' => 'com_weblinks', 'title' => 'Uncategorised')))
 		{
-			$category->extension = 'com_weblinks';
-			$category->title = 'Uncategorised';
-			$category->description = '';
-			$category->published = 1;
-			$category->access = 1;
-			$category->params = '{"category_layout":"","image":""}';
-			$category->metadata = '{"author":"","robots":""}';
-			$category->metadesc = '';
-			$category->metakey = '';
-			$category->language = '*';
+			$category->extension        = 'com_weblinks';
+			$category->title            = 'Uncategorised';
+			$category->description      = '';
+			$category->published        = 1;
+			$category->access           = 1;
+			$category->params           = '{"category_layout":"","image":""}';
+			$category->metadata         = '{"author":"","robots":""}';
+			$category->metadesc         = '';
+			$category->metakey          = '';
+			$category->language         = '*';
 			$category->checked_out_time = JFactory::getDbo()->getNullDate();
-			$category->version = 1;
-			$category->hits = 0;
+			$category->version          = 1;
+			$category->hits             = 0;
 			$category->modified_user_id = 0;
-			$category->checked_out = 0;
+			$category->checked_out      = 0;
 
 			// Set the location in the tree
 			$category->setLocation(1, 'last-child');
@@ -72,13 +125,32 @@ class Com_WeblinksInstallerScript
 			// Build the path for our category
 			$category->rebuildPath($category->id);
 		}
+
+		$this->deleteGlobalLanguagefiles();
+	}
+
+	/**
+	 * method to update the component
+	 *
+	 * @param   Joomla\CMS\Installer\Adapter\ComponentAdapter $parent Installerobject
+	 *
+	 * @return void
+	 *
+	 * @since 3.8.0
+	 */
+	public function update($parent)
+	{
+		if (version_compare($this->oldRelease, '3.8.0', '<'))
+		{
+			$this->deleteGlobalLanguagefiles();
+		}
 	}
 
 	/**
 	 * Method to run after the install routine.
 	 *
-	 * @param   string                      $type    The action being performed
-	 * @param   JInstallerAdapterComponent  $parent  The class calling this method
+	 * @param   string                     $type   The action being performed
+	 * @param   JInstallerAdapterComponent $parent The class calling this method
 	 *
 	 * @return  void
 	 *
@@ -271,5 +343,19 @@ class Com_WeblinksInstallerScript
 			$db->setQuery($sql);
 			$db->execute();
 		}
+	}
+
+	/**
+	 * Method to delete the global language files.
+	 *
+	 * @return  void
+	 *
+	 * @since   3.8.0
+	 */
+	private function deleteGlobalLanguagefiles()
+	{
+		$this->deleteFiles[] = '/administrator/language/en-GB/en-GB.com_weblinks.ini';
+		$this->deleteFiles[] = '/administrator/language/en-GB/en-GB.com_weblinks.sys.ini';
+		$this->deleteFiles[] = '/language/en-GB/en-GB.com_weblinks.ini';
 	}
 }
