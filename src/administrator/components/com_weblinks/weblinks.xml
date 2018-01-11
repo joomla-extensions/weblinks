@@ -40,9 +40,6 @@
 	<files folder="components/com_weblinks">
 		##FRONTEND_COMPONENT_FILES##
 	</files>
-	<languages folder="language">
-		##FRONTEND_LANGUAGE_FILES##
-	</languages>
 	<administration>
 		<menu img="class:weblinks">com_weblinks</menu>
 		<submenu>
@@ -58,9 +55,6 @@
 		<files folder="administrator/components/com_weblinks">
 			##BACKEND_COMPONENT_FILES##
 		</files>
-		<languages folder="administrator/language">
-			##BACKEND_LANGUAGE_FILES##
-		</languages>
 	</administration>
 </extension>
 

@@ -13,9 +13,6 @@
 		##MODULE_FILES##
 		<file module="mod_weblinks">mod_weblinks.php</file>
 	</files>
-	<languages folder="language">
-		##LANGUAGE_FILES##
-	</languages>
 	<help key="JHELP_EXTENSIONS_MODULE_MANAGER_WEBLINKS" />
 	<config>
 		<fields name="params">
