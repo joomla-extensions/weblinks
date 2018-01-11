@@ -1,6 +1,6 @@
 # Weblinks for Joomla! Travis:
 
-Travis: [![Travis Build Status](https://travis-ci.org/joomla-extensions/weblinks.svg?branch=master)](https://travis-ci.org/joomla-extensions/weblinks) 
+Travis: [![Travis Build Status](https://travis-ci.org/joomla-extensions/weblinks.svg?branch=master)](https://travis-ci.org/joomla-extensions/weblinks)
 
 Drone: [![Drone Build Status](http://213.160.72.75/api/badges/joomla-extensions/weblinks/status.svg)](http://213.160.72.75/joomla-extensions/weblinks)
 
@@ -134,6 +134,54 @@ Generating autoload files
 ```
 /var/www/html/weblinks$ vendor/bin/robo build
 ```
+
+Look at your work directory! Here you will find a subfolder called dist and
+in this is among other things an installable zip file.
+
+By the way: The command ```vendor/bin/robo build --dev``` enables you to
+start a new development release.
+
+### 8a. Optional: Have a look into robo.ini for information what parameters are used
+in the command ```command vendor/bin/robo build```.
+
+```
+/var/www/html/weblinks$ cat jorobo.ini
+```
+
+or https://github.com/joomla-extensions/weblinks/blob/master/jorobo.dist.ini
+The file https://github.com/joomla-extensions/weblinks/blob/master/jorobo.dist.ini is renamed
+to jorobo.ini with the ```command vendor/bin/robo build```
+Please do not forget to add jorobo.ini to .gitignore if you use passwords in it.
+
+
+### 8b. Optional: Map web links component into a Joomla! Installation
+
+```
+/var/www/html/weblinks$ vendor/bin/robo map /var/www/html/weblinks/tests/joomla
+```
+
+Now you can discover the web links extension in the Joomla! on /var/www/html/weblinks/tests/joomla
+
+### 8c. Optional: Update headers
+
+```
+/var/www/html/weblinks$ vendor/bin/robo header
+```
+
+Now each file in your project has the header that you entered in jorobo.ini.
+
+### 8d. Optional: Set current version number for  __DEPLOY_VERSION__
+
+If you add a new class or a new function, you should add a @since attribut.
+Please use @since  __DEPLOY_VERSION__ for this and run the command
+
+```
+/var/www/html/weblinks$ vendor/bin/robo header
+```
+
+Now the string __DEPLOY_VERSION__ is exchanged in each file with the
+version number you entered in the file jorobo.ini.
+
 
 ### 9. Optional: Prepare the database
 If you use MySQL or PostgreSQL as database and your user has create database privileges the Database is automatically created by the Joomla installer.
