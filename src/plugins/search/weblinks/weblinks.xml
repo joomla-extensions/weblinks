@@ -12,9 +12,6 @@
 	<files>
 		##FILES##
 	</files>
-	<languages folder="language">
-		##LANGUAGE_FILES##
-	</languages>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">

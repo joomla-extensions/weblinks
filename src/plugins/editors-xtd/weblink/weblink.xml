@@ -12,7 +12,4 @@
 	<files>
 		##FILES##
 	</files>
-	<languages folder="language">
-		##LANGUAGE_FILES##
-	</languages>
 </extension>
