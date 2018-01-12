@@ -157,9 +157,24 @@ class Com_WeblinksInstallerScript extends JInstallerScript
 		// Remove global language files.
 		if ($type == 'install' || ($type == 'update' && version_compare($this->oldRelease, '3.8.0', '<')))
 		{
+			// Component
 			$this->deleteFiles[] = '/administrator/language/en-GB/en-GB.com_weblinks.ini';
 			$this->deleteFiles[] = '/administrator/language/en-GB/en-GB.com_weblinks.sys.ini';
 			$this->deleteFiles[] = '/language/en-GB/en-GB.com_weblinks.ini';
+
+			// Module
+			$this->deleteFiles[] = '/language/en-GB/en-GB.mod_weblinks.ini';
+			$this->deleteFiles[] = '/language/en-GB/en-GB.mod_weblinks.sys.ini';
+
+			// Plugins
+			$this->deleteFiles[] = '/administrator/language/en-GB/en-GB.plg_editors-xtd_weblink.ini';
+			$this->deleteFiles[] = '/administrator/language/en-GB/en-GB.plg_editors-xtd_weblink.sys.ini';
+			$this->deleteFiles[] = '/administrator/language/en-GB/en-GB.plg_finder_weblinks.ini';
+			$this->deleteFiles[] = '/administrator/language/en-GB/en-GB.plg_finder_weblinks.sys.ini';
+			$this->deleteFiles[] = '/administrator/language/en-GB/en-GB.plg_search_weblinks.ini';
+			$this->deleteFiles[] = '/administrator/language/en-GB/en-GB.plg_search_weblinks.sys.ini';
+			$this->deleteFiles[] = '/administrator/language/en-GB/en-GB.plg_system_weblinks.ini';
+			$this->deleteFiles[] = '/administrator/language/en-GB/en-GB.plg_system_weblinks.sys.ini';
 
 			$this->removeFiles();
 		}
