@@ -199,6 +199,6 @@ class WeblinkTable extends \JTable
 			$this->metakey = implode(", ", $clean_keys);
 		}
 
-		return true;
+		return parent::check();
 	}
 }
