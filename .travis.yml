@@ -8,14 +8,13 @@ env:
 matrix:
   fast_finish: true
   include:
-    - php: 5.5
-    - php: 5.6
-      env: RUN_PHPCS="yes"
     - php: 7.0
+      env: RUN_PHPCS="yes"
       sudo: true
       addons:
         firefox: "47.0.1"
     - php: 7.1
+    - php: 7.2
     - php: hhvm
       sudo: true
       dist: trusty
@@ -66,5 +65,5 @@ script:
 # System tests (Codeception)
 - mv tests/acceptance.suite.dist.yml tests/acceptance.suite.yml
 - vendor/bin/robo run:tests --use-htaccess
-# Run phpcs on PHP 5.6 against weblinks source
+# Run phpcs on PHP 7.0 against weblinks source
 - if [[ $RUN_PHPCS == "yes" ]]; then vendor/bin/phpcs --report=full --extensions=php -p --standard=tests/joomla/build/phpcs/Joomla ./src; fi
