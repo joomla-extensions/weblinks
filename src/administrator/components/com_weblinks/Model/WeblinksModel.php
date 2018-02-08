@@ -12,6 +12,7 @@ namespace Joomla\Component\Weblinks\Administrator\Model;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
 /**
  * Methods supporting a list of weblink records.
@@ -23,12 +24,13 @@ class WeblinksModel extends ListModel
 	/**
 	 * Constructor.
 	 *
-	 * @param   array  $config  An optional associative array of configuration settings.
+	 * @param   array                $config  An optional associative array of configuration settings.
+	 * @param   MVCFactoryInterface  $factory  The factory.
 	 *
 	 * @see     JControllerLegacy
 	 * @since   1.6
 	 */
-	public function __construct($config = array())
+	public function __construct($config = array(), MVCFactoryInterface $factory = null)
 	{
 		if (empty($config['filter_fields']))
 		{
@@ -65,7 +67,7 @@ class WeblinksModel extends ListModel
 			}
 		}
 
-		parent::__construct($config);
+		parent::__construct($config, $factory);
 	}
 
 	/**
