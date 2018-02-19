@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\Component\Weblinks\Administrator\Controller;
+
 defined('_JEXEC') or die;
 
 use Joomla\Utilities\ArrayHelper;
@@ -16,7 +18,7 @@ use Joomla\Utilities\ArrayHelper;
  *
  * @since  1.6
  */
-class WeblinksControllerWeblink extends JControllerForm
+class WeblinkController extends \JControllerForm
 {
 	/**
 	 * Method override to check if you can add a new record.
@@ -35,7 +37,7 @@ class WeblinksControllerWeblink extends JControllerForm
 		if ($categoryId)
 		{
 			// If the category has been passed in the URL check it.
-			$allow = JFactory::getUser()->authorise('core.create', $this->option . '.category.' . $categoryId);
+			$allow = \JFactory::getUser()->authorise('core.create', $this->option . '.category.' . $categoryId);
 		}
 
 		if ($allow !== null)
@@ -76,7 +78,7 @@ class WeblinksControllerWeblink extends JControllerForm
 			return false;
 		}
 
-		$user = JFactory::getUser();
+		$user = \JFactory::getUser();
 
 		// Check if can edit own core.edit.own.
 		$canEditOwn = $user->authorise('core.edit.own', $this->option . '.category.' . (int) $item->catid) && $item->created_by == $user->id;
@@ -96,13 +98,13 @@ class WeblinksControllerWeblink extends JControllerForm
 	 */
 	public function batch($model = null)
 	{
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		\JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
 
 		// Set the model
 		$model = $this->getModel('Weblink', '', array());
 
 		// Preset the redirect
-		$this->setRedirect(JRoute::_('index.php?option=com_weblinks&view=weblinks' . $this->getRedirectToListAppend(), false));
+		$this->setRedirect(\JRoute::_('index.php?option=com_weblinks&view=weblinks' . $this->getRedirectToListAppend(), false));
 
 		return parent::batch($model);
 	}
@@ -117,13 +119,13 @@ class WeblinksControllerWeblink extends JControllerForm
 	 *
 	 * @since   1.6
 	 */
-	protected function postSaveHook(JModelLegacy $model, $validData = array())
+	protected function postSaveHook(\JModelLegacy $model, $validData = array())
 	{
 		$task = $this->getTask();
 
 		if ($task == 'save')
 		{
-			$this->setRedirect(JRoute::_('index.php?option=com_weblinks&view=weblinks', false));
+			$this->setRedirect(\JRoute::_('index.php?option=com_weblinks&view=weblinks', false));
 		}
 	}
 }

@@ -7,18 +7,20 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\Component\Weblinks\Administrator\Model;
+
 defined('_JEXEC') or die;
 
 use Joomla\Registry\Registry;
 
-JLoader::register('WeblinksHelper', JPATH_ADMINISTRATOR . '/components/com_weblinks/helpers/weblinks.php');
+\JLoader::register('WeblinksHelper', JPATH_ADMINISTRATOR . '/components/com_weblinks/helpers/weblinks.php');
 
 /**
  * Weblinks model.
  *
  * @since  1.5
  */
-class WeblinksModelWeblink extends JModelAdmin
+class WeblinkModel extends \JModelAdmin
 {
 	/**
 	 * The type alias for this content type.
@@ -64,7 +66,7 @@ class WeblinksModelWeblink extends JModelAdmin
 
 			if ($record->catid)
 			{
-				return JFactory::getUser()->authorise('core.delete', 'com_weblinks.category.' . (int) $record->catid);
+				return \JFactory::getUser()->authorise('core.delete', 'com_weblinks.category.' . (int) $record->catid);
 			}
 
 			return parent::canDelete($record);
@@ -84,26 +86,10 @@ class WeblinksModelWeblink extends JModelAdmin
 	{
 		if (!empty($record->catid))
 		{
-			return JFactory::getUser()->authorise('core.edit.state', 'com_weblinks.category.' . (int) $record->catid);
+			return \JFactory::getUser()->authorise('core.edit.state', 'com_weblinks.category.' . (int) $record->catid);
 		}
 
 		return parent::canEditState($record);
-	}
-
-	/**
-	 * Method to get a table object, load it if necessary.
-	 *
-	 * @param   string  $type    The table name. Optional.
-	 * @param   string  $prefix  The class prefix. Optional.
-	 * @param   array   $config  Configuration array for model. Optional.
-	 *
-	 * @return  JTable  A JTable object
-	 *
-	 * @since   1.6
-	 */
-	public function getTable($type = 'Weblink', $prefix = 'WeblinksTable', $config = array())
-	{
-		return JTable::getInstance($type, $prefix, $config);
 	}
 
 	/**
@@ -168,7 +154,7 @@ class WeblinksModelWeblink extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_weblinks.edit.weblink.data', array());
+		$data = \JFactory::getApplication()->getUserState('com_weblinks.edit.weblink.data', array());
 
 		if (empty($data))
 		{
@@ -177,7 +163,7 @@ class WeblinksModelWeblink extends JModelAdmin
 			// Prime some default values.
 			if ($this->getState('weblink.id') == 0)
 			{
-				$app = JFactory::getApplication();
+				$app = \JFactory::getApplication();
 				$data->set('catid', $app->input->get('catid', $app->getUserState('com_weblinks.weblinks.filter.category_id'), 'int'));
 			}
 		}
@@ -211,7 +197,7 @@ class WeblinksModelWeblink extends JModelAdmin
 			$item->images = $registry->toArray();
 
 			// Load associated web links items
-			$assoc = JLanguageAssociations::isEnabled();
+			$assoc = \JLanguageAssociations::isEnabled();
 
 			if ($assoc)
 			{
@@ -219,7 +205,7 @@ class WeblinksModelWeblink extends JModelAdmin
 
 				if ($item->id != null)
 				{
-					$associations = JLanguageAssociations::getAssociations('com_weblinks', '#__weblinks', 'com_weblinks.item', $item->id);
+					$associations = \JLanguageAssociations::getAssociations('com_weblinks', '#__weblinks', 'com_weblinks.item', $item->id);
 
 					foreach ($associations as $tag => $association)
 					{
@@ -230,7 +216,7 @@ class WeblinksModelWeblink extends JModelAdmin
 
 			if (!empty($item->id))
 			{
-				$item->tags = new JHelperTags;
+				$item->tags = new \JHelperTags;
 				$item->tags->getTagIds($item->id, 'com_weblinks.weblink');
 				$item->metadata['tags'] = $item->tags;
 			}
@@ -250,15 +236,15 @@ class WeblinksModelWeblink extends JModelAdmin
 	 */
 	protected function prepareTable($table)
 	{
-		$date = JFactory::getDate();
-		$user = JFactory::getUser();
+		$date = \JFactory::getDate();
+		$user = \JFactory::getUser();
 
 		$table->title = htmlspecialchars_decode($table->title, ENT_QUOTES);
-		$table->alias = JApplicationHelper::stringURLSafe($table->alias);
+		$table->alias = \JApplicationHelper::stringURLSafe($table->alias);
 
 		if (empty($table->alias))
 		{
-			$table->alias = JApplicationHelper::stringURLSafe($table->title);
+			$table->alias = \JApplicationHelper::stringURLSafe($table->title);
 		}
 
 		if (empty($table->id))
@@ -318,9 +304,9 @@ class WeblinksModelWeblink extends JModelAdmin
 	 */
 	public function save($data)
 	{
-		$app = JFactory::getApplication();
+		$app = \JFactory::getApplication();
 
-		JLoader::register('CategoriesHelper', JPATH_ADMINISTRATOR . '/components/com_categories/helpers/categories.php');
+		\JLoader::register('CategoriesHelper', JPATH_ADMINISTRATOR . '/components/com_categories/helpers/categories.php');
 
 		// Cast catid to integer for comparison
 		$catid = (int) $data['catid'];
@@ -328,7 +314,7 @@ class WeblinksModelWeblink extends JModelAdmin
 		// Check if New Category exists
 		if ($catid > 0)
 		{
-			$catid = CategoriesHelper::validateCategoryId($data['catid'], 'com_weblinks');
+			$catid = \CategoriesHelper::validateCategoryId($data['catid'], 'com_weblinks');
 		}
 
 		// Save New Category
@@ -342,7 +328,7 @@ class WeblinksModelWeblink extends JModelAdmin
 			$table['published'] = 1;
 
 			// Create new category and get catid back
-			$data['catid'] = CategoriesHelper::createCategory($table);
+			$data['catid'] = \CategoriesHelper::createCategory($table);
 		}
 
 		// Alter the title for save as copy
@@ -377,10 +363,10 @@ class WeblinksModelWeblink extends JModelAdmin
 		{
 			if ($name == $table->title)
 			{
-				$name = JString::increment($name);
+				$name = \JString::increment($name);
 			}
 
-			$alias = JString::increment($alias, 'dash');
+			$alias = \JString::increment($alias, 'dash');
 		}
 
 		return array($name, $alias);
@@ -397,7 +383,7 @@ class WeblinksModelWeblink extends JModelAdmin
 	 *
 	 * @since    3.6.0
 	 */
-	protected function preprocessForm(JForm $form, $data, $group = 'content')
+	protected function preprocessForm(\JForm $form, $data, $group = 'content')
 	{
 		if ($this->canCreateCategory())
 		{
@@ -405,13 +391,13 @@ class WeblinksModelWeblink extends JModelAdmin
 		}
 
 		// Association weblinks items
-		if (JLanguageAssociations::isEnabled())
+		if (\JLanguageAssociations::isEnabled())
 		{
-			$languages = JLanguageHelper::getContentLanguages(false, true, null, 'ordering', 'asc');
+			$languages = \JLanguageHelper::getContentLanguages(false, true, null, 'ordering', 'asc');
 
 			if (count($languages) > 1)
 			{
-				$addform = new SimpleXMLElement('<form />');
+				$addform = new \SimpleXMLElement('<form />');
 				$fields = $addform->addChild('fields');
 				$fields->addAttribute('name', 'associations');
 				$fieldset = $fields->addChild('fieldset');
@@ -429,6 +415,7 @@ class WeblinksModelWeblink extends JModelAdmin
 					$field->addAttribute('new', 'true');
 					$field->addAttribute('edit', 'true');
 					$field->addAttribute('clear', 'true');
+					$field->addAttribute('addfieldprefix', 'Joomla\\Component\\Weblinks\\Administrator\\Field');
 				}
 
 				$form->load($addform, false);
@@ -447,6 +434,6 @@ class WeblinksModelWeblink extends JModelAdmin
 	 */
 	private function canCreateCategory()
 	{
-		return JFactory::getUser()->authorise('core.create', 'com_weblinks');
+		return \JFactory::getUser()->authorise('core.create', 'com_weblinks');
 	}
 }

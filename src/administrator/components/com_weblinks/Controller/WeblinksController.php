@@ -7,14 +7,18 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\Component\Weblinks\Administrator\Controller;
+
 defined('_JEXEC') or die;
+
+use Joomla\CMS\MVC\Controller\AdminController;
 
 /**
  * Weblinks list controller class.
  *
  * @since  1.6
  */
-class WeblinksControllerWeblinks extends JControllerAdmin
+class WeblinksController extends AdminController
 {
 	/**
 	 * Proxy for getModel
@@ -27,7 +31,7 @@ class WeblinksControllerWeblinks extends JControllerAdmin
 	 *
 	 * @since   1.6
 	 */
-	public function getModel($name = 'Weblink', $prefix = 'WeblinksModel', $config = array('ignore_request' => true))
+	public function getModel($name = 'Weblink', $prefix = 'Administrator', $config = array('ignore_request' => true))
 	{
 		return parent::getModel($name, $prefix, $config);
 	}

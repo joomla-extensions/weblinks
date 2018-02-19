@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\Component\Weblinks\Administrator\Table;
+
 defined('_JEXEC') or die;
 
 /**
@@ -14,7 +16,7 @@ defined('_JEXEC') or die;
  *
  * @since  1.5
  */
-class WeblinksTableWeblink extends JTable
+class WeblinkTable extends \JTable
 {
 	/**
 	 * Ensure the params and metadata in json encoded in the bind method
@@ -38,8 +40,11 @@ class WeblinksTableWeblink extends JTable
 		// Set the published column alias
 		$this->setColumnAlias('published', 'state');
 
-		JTableObserverTags::createObserver($this, array('typeAlias' => 'com_weblinks.weblink'));
-		JTableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_weblinks.weblink'));
+		if (version_compare(JVERSION, '4.0', '<' ) == 1)
+		{
+			\JTableObserverTags::createObserver($this, array('typeAlias' => 'com_weblinks.weblink'));
+			\JTableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_weblinks.weblink'));
+		}
 	}
 
 	/**
@@ -53,8 +58,8 @@ class WeblinksTableWeblink extends JTable
 	 */
 	public function store($updateNulls = false)
 	{
-		$date = JFactory::getDate();
-		$user = JFactory::getUser();
+		$date = \JFactory::getDate();
+		$user = \JFactory::getUser();
 
 		$this->modified = $date->toSql();
 
@@ -91,17 +96,17 @@ class WeblinksTableWeblink extends JTable
 		}
 
 		// Verify that the alias is unique
-		$table = JTable::getInstance('Weblink', 'WeblinksTable');
+		$table = new WeblinkTable($this->getDbo());
 
 		if ($table->load(array('language' => $this->language, 'alias' => $this->alias, 'catid' => $this->catid)) && ($table->id != $this->id || $this->id == 0))
 		{
-			$this->setError(JText::_('COM_WEBLINKS_ERROR_UNIQUE_ALIAS'));
+			$this->setError(\JText::_('COM_WEBLINKS_ERROR_UNIQUE_ALIAS'));
 
 			return false;
 		}
 
 		// Convert IDN urls to punycode
-		$this->url = JStringPunycode::urlToPunycode($this->url);
+		$this->url = \JStringPunycode::urlToPunycode($this->url);
 
 		return parent::store($updateNulls);
 	}
@@ -115,9 +120,9 @@ class WeblinksTableWeblink extends JTable
 	 */
 	public function check()
 	{
-		if (JFilterInput::checkAttribute(array('href', $this->url)))
+		if (\JFilterInput::checkAttribute(array('href', $this->url)))
 		{
-			$this->setError(JText::_('COM_WEBLINKS_ERR_TABLES_PROVIDE_URL'));
+			$this->setError(\JText::_('COM_WEBLINKS_ERR_TABLES_PROVIDE_URL'));
 
 			return false;
 		}
@@ -125,7 +130,7 @@ class WeblinksTableWeblink extends JTable
 		// Check for valid name
 		if (trim($this->title) == '')
 		{
-			$this->setError(JText::_('COM_WEBLINKS_ERR_TABLES_TITLE'));
+			$this->setError(\JText::_('COM_WEBLINKS_ERR_TABLES_TITLE'));
 			return false;
 		}
 
@@ -144,7 +149,7 @@ class WeblinksTableWeblink extends JTable
 
 		if ($xid && $xid != (int) $this->id)
 		{
-			$this->setError(JText::_('COM_WEBLINKS_ERR_TABLES_NAME'));
+			$this->setError(\JText::_('COM_WEBLINKS_ERR_TABLES_NAME'));
 
 			return false;
 		}
@@ -154,17 +159,17 @@ class WeblinksTableWeblink extends JTable
 			$this->alias = $this->title;
 		}
 
-		$this->alias = JApplicationHelper::stringURLSafe($this->alias, $this->language);
+		$this->alias = \JApplicationHelper::stringURLSafe($this->alias, $this->language);
 
 		if (trim(str_replace('-', '', $this->alias)) == '')
 		{
-			$this->alias = JFactory::getDate()->format("Y-m-d-H-i-s");
+			$this->alias = \JFactory::getDate()->format("Y-m-d-H-i-s");
 		}
 
 		// Check the publish down date is not earlier than publish up.
 		if ($this->publish_down > $db->getNullDate() && $this->publish_down < $this->publish_up)
 		{
-			$this->setError(JText::_('JGLOBAL_START_PUBLISH_AFTER_FINISH'));
+			$this->setError(\JText::_('JGLOBAL_START_PUBLISH_AFTER_FINISH'));
 
 			return false;
 		}
@@ -177,7 +182,7 @@ class WeblinksTableWeblink extends JTable
 		{
 			// Array of characters to remove
 			$bad_characters = array("\n", "\r", "\"", "<", ">");
-			$after_clean = JString::str_ireplace($bad_characters, "", $this->metakey);
+			$after_clean = \JString::str_ireplace($bad_characters, "", $this->metakey);
 			$keys = explode(',', $after_clean);
 			$clean_keys = array();
 
@@ -194,6 +199,6 @@ class WeblinksTableWeblink extends JTable
 			$this->metakey = implode(", ", $clean_keys);
 		}
 
-		return true;
+		return parent::check();
 	}
 }
