@@ -1,16 +1,34 @@
 files:
   - source: /src/administrator/components/com_weblinks/language/en-GB
     translation: >-
-      /src/administrator/components/com_weblinks/language/%locale%/%original_file_name%
+      /src/administrator/components/com_weblinks/language/%locale%/%locale%.%original_file_name%
+    translation_replace: {
+          "en-GB." : ""
+    }
   - source: /src/components/com_weblinks/language/en-GB/en-GB.com_weblinks.ini
     translation: /src/components/com_weblinks/language/%locale%/%locale%.com_weblinks.ini
   - source: /src/modules/mod_weblinks/language/en-GB/
-    translation: /src/modules/mod_weblinks/language/%locale%/%original_file_name%
+    translation: /src/modules/mod_weblinks/language/%locale%/%locale%.%original_file_name%
+    translation_replace: {
+          "en-GB." : ""
+    }
   - source: /src/plugins/editors-xtd/weblink/language/en-GB
-    translation: /src/plugins/editors-xtd/weblink/language/%locale%/%original_file_name%
+    translation: /src/plugins/editors-xtd/weblink/language/%locale%/%locale%.%original_file_name%
+    translation_replace: {
+          "en-GB." : ""
+    }
   - source: /src/plugins/finder/weblinks/language/en-GB
-    translation: /src/plugins/finder/weblinks/language/%locale%/%original_file_name%
+    translation: /src/plugins/finder/weblinks/language/%locale%/%locale%.%original_file_name%
+    translation_replace: {
+          "en-GB." : ""
+    }
   - source: /src/plugins/search/weblinks/language/en-GB
-    translation: /src/plugins/search/weblinks/language/%locale%/%original_file_name%
+    translation: /src/plugins/search/weblinks/language/%locale%/%locale%.%original_file_name%
+    translation_replace: {
+          "en-GB." : ""
+    }
   - source: /src/plugins/system/weblinks/language/en-GB
-    translation: /src/plugins/system/weblinks/language/%locale%/%original_file_name%
+    translation: /src/plugins/system/weblinks/language/%locale%/%locale%.%original_file_name%
+    translation_replace: {
+          "en-GB." : ""
+    }
