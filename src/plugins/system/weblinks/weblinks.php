@@ -38,7 +38,7 @@ class PlgSystemWeblinks extends JPlugin
 	/**
 	 * Method to add statistics information to Administrator control panel.
 	 *
-	 * @param   string   $extension  The extension requesting information.
+	 * @param   string  $extension  The extension requesting information.
 	 *
 	 * @return  array containing statistical information.
 	 *

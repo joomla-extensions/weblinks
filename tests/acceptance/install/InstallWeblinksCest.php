@@ -8,7 +8,6 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-
 class InstallWeblinksCest
 {
 	public function installJoomla(\AcceptanceTester $I)
@@ -25,13 +24,10 @@ class InstallWeblinksCest
 	 */
 	public function installWeblinks(\AcceptanceTester $I)
 	{
-		$I->doAdministratorLogin();
 		$I->comment('get Weblinks repository folder from acceptance.suite.yml (see _support/AcceptanceHelper.php)');
-
+		$I->doAdministratorLogin();
 		// URL where the package file to install is located (mostly the same as joomla-cms)
-		$url = $I->getConfiguration('url');
-		$I->installExtensionFromUrl($url . "/pkg-weblinks-current.zip");
+		$I->installExtensionFromFileUpload('pkg-weblinks-current.zip');
 		$I->doAdministratorLogout();
 	}
-
 }
