@@ -124,7 +124,7 @@ if ($saveOrder)
 								<?php endif; ?>
 							</div>
 						</td>
-						<td class="nowrap has-context">
+						<td class="has-context">
 							<?php if ($item->checked_out) : ?>
 								<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'weblinks.', $canCheckin); ?>
 							<?php endif; ?>
