@@ -29,7 +29,7 @@ if (!defined('JPATH_BASE'))
 class RoboFile extends \Robo\Tasks
 {
 	// Load tasks from composer, see composer.json
-	use \joomla_projects\robo\loadTasks;
+	use \Joomla\Testing\Robo\Tasks\loadTasks;
 	use \Joomla\Jorobo\Tasks\loadTasks;
 
 	/**
@@ -83,7 +83,7 @@ class RoboFile extends \Robo\Tasks
 	{
 		if ($this->isWindows())
 		{
-			// Check wehter git.exe or git as command should be used,
+			// Check whether git.exe or git as command should be used,
 			// As on window both is possible
 			if (!$this->_exec('git.exe --version')->getMessage())
 			{
