@@ -1635,16 +1635,16 @@
         },
         {
             "name": "joomla-projects/jorobo",
-            "version": "0.7.0",
+            "version": "0.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-projects/jorobo.git",
-                "reference": "1386f7712e39f08a3c1722e514eebdd6d0580c62"
+                "reference": "ebcbd0eae3b9f2dfcca35d86ba442c88c942bc52"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joomla-projects/jorobo/zipball/1386f7712e39f08a3c1722e514eebdd6d0580c62",
-                "reference": "1386f7712e39f08a3c1722e514eebdd6d0580c62",
+                "url": "https://api.github.com/repos/joomla-projects/jorobo/zipball/ebcbd0eae3b9f2dfcca35d86ba442c88c942bc52",
+                "reference": "ebcbd0eae3b9f2dfcca35d86ba442c88c942bc52",
                 "shasum": ""
             },
             "require": {
@@ -1672,16 +1672,16 @@
                     "email": "yves@compojoom.com"
                 },
                 {
-                    "name": "Niels Braczek",
-                    "email": "nbraczek@bsds.de"
-                },
-                {
                     "name": "Niels Nübel",
                     "email": "niels@niels-nuebel.de"
+                },
+                {
+                    "name": "Niels Braczek",
+                    "email": "nbraczek@bsds.de"
                 }
             ],
             "description": "Tools and Tasks based on Robo.li for Joomla Extension Development and Releases",
-            "time": "2017-08-24T01:24:32+00:00"
+            "time": "2019-08-12T18:25:30+00:00"
         },
         {
             "name": "joomla-projects/selenium-server-standalone",
