@@ -93,7 +93,8 @@ class WeblinksTableWeblink extends JTable
 		// Verify that the alias is unique
 		$table = JTable::getInstance('Weblink', 'WeblinksTable', array('dbo' => $this->getDbo()));
 
-		if ($table->load(array('language' => $this->language, 'alias' => $this->alias, 'catid' => $this->catid)) && ($table->id != $this->id || $this->id == 0))
+		if ($table->load(array('language' => $this->language, 'alias' => $this->alias, 'catid' => $this->catid))
+			&& ($table->id != $this->id || $this->id == 0))
 		{
 			$this->setError(JText::_('COM_WEBLINKS_ERROR_UNIQUE_ALIAS'));
 
