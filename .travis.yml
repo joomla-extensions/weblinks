@@ -23,22 +23,12 @@ matrix:
     - php: 7.1
       services:
         - xvfb
-    - php: hhvm
-      sudo: true
-      dist: trusty
-      group: edge # Until the next stable image update sometime after 2016-12-01
-      addons:
-        apt:
-          packages:
-            - mysql-server-5.6
-            - mysql-client-core-5.6
-            - mysql-client-5.6
+    - php: 7.2
       services:
-        - mysql
-        - postgresql
         - xvfb
-  allow_failures:
-    - php: hhvm
+    - php: 7.3
+      services:
+        - xvfb
 
 before_script:
 # Forcing localhost in hosts file
