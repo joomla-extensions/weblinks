@@ -9,13 +9,20 @@ matrix:
   fast_finish: true
   include:
     - php: 5.5
+      dist: trusty
     - php: 5.6
       env: RUN_PHPCS="yes"
+      services:
+        - xvfb
     - php: 7.0
       sudo: true
       addons:
-        firefox: "47.0.1"
+        firefox: '47.0.1'
+      services:
+        - xvfb
     - php: 7.1
+      services:
+        - xvfb
     - php: hhvm
       sudo: true
       dist: trusty
@@ -29,6 +36,7 @@ matrix:
       services:
         - mysql
         - postgresql
+        - xvfb
   allow_failures:
     - php: hhvm
 
@@ -48,10 +56,10 @@ before_script:
 - sudo sed -e "s?%PHPVERSION%?${TRAVIS_PHP_VERSION:0:1}?g" --in-place /etc/apache2/sites-available/default
 - git submodule update --init --recursive
 - sudo service apache2 restart
-# Xvfb
-- "export DISPLAY=:99.0"
-- "sh -e /etc/init.d/xvfb start"
-- sleep 3 # give xvfb some time to start
+# Xvfb on trusty environments (PHP 5.5 and below)
+- if [[ $dist == "trusty" ]]; then export DISPLAY=:99.0; fi
+- if [[ $dist == "trusty" ]]; then sh -e /etc/init.d/xvfb start; fi
+- if [[ $dist == "trusty" ]]; then sleep 3 ; fi # give xvfb some time to start
 # Fluxbox
 - sudo apt-get install fluxbox -y --force-yes
 - fluxbox &
