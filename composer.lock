@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8e471a057bb2ecb11e1f699032d7c341",
+    "content-hash": "cfeab8e38688fc8318fdfac739483533",
     "packages": [],
     "packages-dev": [
         {
@@ -1685,27 +1685,36 @@
         },
         {
             "name": "joomla-projects/selenium-server-standalone",
-            "version": "v3.1.0",
+            "version": "3.141.59",
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-projects/selenium-server-standalone.git",
-                "reference": "cc928a73f0dfb900793dec48b18e08e8dfcbbaa7"
+                "reference": "2a2310b540344169d52e3d517d3f1d1b4d0b9f4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joomla-projects/selenium-server-standalone/zipball/cc928a73f0dfb900793dec48b18e08e8dfcbbaa7",
-                "reference": "cc928a73f0dfb900793dec48b18e08e8dfcbbaa7",
+                "url": "https://api.github.com/repos/joomla-projects/selenium-server-standalone/zipball/2a2310b540344169d52e3d517d3f1d1b4d0b9f4f",
+                "reference": "2a2310b540344169d52e3d517d3f1d1b4d0b9f4f",
                 "shasum": ""
             },
             "bin": [
                 "bin/selenium-server-standalone"
             ],
             "type": "library",
+            "autoload": {
+                "files": [
+                    "Selenium.php"
+                ]
+            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "Apache 2.0"
+                "Apache-2.0"
             ],
             "authors": [
+                {
+                    "name": "Puneet Kala",
+                    "email": "puneet.kala@community.joomla.org"
+                },
                 {
                     "name": "Sven Eisenschmidt",
                     "email": "sven.eisenschmidt@gmail.com"
@@ -1721,7 +1730,7 @@
                 "selenium",
                 "testing"
             ],
-            "time": "2017-02-21T15:10:31+00:00"
+            "time": "2019-07-31T05:15:24+00:00"
         },
         {
             "name": "joomla/compat",

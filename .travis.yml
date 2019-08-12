@@ -17,7 +17,7 @@ matrix:
     - php: 7.0
       sudo: true
       addons:
-        firefox: '47.0.1'
+        firefox: 'latest-esr'
       services:
         - xvfb
     - php: 7.1
