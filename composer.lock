@@ -1586,16 +1586,16 @@
         },
         {
             "name": "joomla-projects/joomla-testing-robo",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-projects/joomla-testing-robo.git",
-                "reference": "6d459ea7c3293b907e59429e077dea1367658f68"
+                "reference": "1b4b15df677ed3e9b5557c8ac057f710f58cfd3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joomla-projects/joomla-testing-robo/zipball/6d459ea7c3293b907e59429e077dea1367658f68",
-                "reference": "6d459ea7c3293b907e59429e077dea1367658f68",
+                "url": "https://api.github.com/repos/joomla-projects/joomla-testing-robo/zipball/1b4b15df677ed3e9b5557c8ac057f710f58cfd3b",
+                "reference": "1b4b15df677ed3e9b5557c8ac057f710f58cfd3b",
                 "shasum": ""
             },
             "require": {
@@ -1631,7 +1631,7 @@
                 "task",
                 "tests"
             ],
-            "time": "2016-12-14T20:43:15+00:00"
+            "time": "2019-08-12T19:33:12+00:00"
         },
         {
             "name": "joomla-projects/jorobo",

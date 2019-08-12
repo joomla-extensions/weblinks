@@ -454,6 +454,7 @@ class RoboFile extends \Robo\Tasks
 		else
 		{
 			$this->taskSeleniumStandaloneServer()
+                ->setWebdriver($this->getWebdriver())
 				->runSelenium()
 				->waitForSelenium()
 				->run()
