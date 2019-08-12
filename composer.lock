@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cfeab8e38688fc8318fdfac739483533",
+    "content-hash": "d3915c7584f2f0e9fa16886c3fbfd2a9",
     "packages": [],
     "packages-dev": [
         {
@@ -1535,24 +1535,30 @@
         },
         {
             "name": "joomla-projects/joomla-browser",
-            "version": "v3.6.5.1",
+            "version": "v3.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-projects/joomla-browser.git",
-                "reference": "833e113544dc05b34ef024b0634f17c69f95be42"
+                "reference": "b3099f181ce79b0dedd92dc14cf03388bb6c6c67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joomla-projects/joomla-browser/zipball/833e113544dc05b34ef024b0634f17c69f95be42",
-                "reference": "833e113544dc05b34ef024b0634f17c69f95be42",
+                "url": "https://api.github.com/repos/joomla-projects/joomla-browser/zipball/b3099f181ce79b0dedd92dc14cf03388bb6c6c67",
+                "reference": "b3099f181ce79b0dedd92dc14cf03388bb6c6c67",
                 "shasum": ""
             },
             "require": {
-                "consolidation/robo": "~1",
-                "php": ">=5.5.9"
+                "consolidation/robo": "^1",
+                "php": ">=5.5.9",
+                "symfony/console": "~3|~4",
+                "symfony/filesystem": "~3|~4",
+                "symfony/finder": "~3|~4",
+                "symfony/process": "~3|~4",
+                "symfony/yaml": "~3|~4"
             },
             "require-dev": {
-                "joomla-projects/joomla-testing-robo": "~1.0"
+                "codeception/codeception": "~2.4",
+                "joomla-projects/joomla-testing-robo": "dev-container-test"
             },
             "type": "library",
             "autoload": {
@@ -1570,7 +1576,7 @@
                     "email": "puneet.kala@community.joomla.org"
                 },
                 {
-                    "name": "Javier Gómez",
+                    "name": "Javier Gomez",
                     "email": "javier.gomez@community.joomla.org"
                 }
             ],
@@ -1582,7 +1588,7 @@
                 "acceptance testing",
                 "joomla"
             ],
-            "time": "2017-01-08T06:44:16+00:00"
+            "time": "2018-11-01T13:11:06+00:00"
         },
         {
             "name": "joomla-projects/joomla-testing-robo",
