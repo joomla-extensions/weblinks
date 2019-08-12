@@ -444,23 +444,18 @@ class RoboFile extends \Robo\Tasks
 	 */
 	public function runSelenium()
 	{
-		if (!$this->isWindows())
-		{
-			$this->_exec("vendor/bin/selenium-server-standalone " . $this->getWebDriver() . ' >> selenium.log 2>&1 &');
-		}
-		else
-		{
-			$this->_exec('START java.exe -jar' . $this->getWebDriver() .
-					' vendor\joomla-projects\selenium-server-standalone\bin\selenium-server-standalone.jar ');
-		}
-
 		if ($this->isWindows())
 		{
+			// TODO: Move this logic to the selenium standalone server task in the parent joomla repo
+			$this->_exec('START java.exe -jar' . $this->getWebDriver() .
+					' vendor\joomla-projects\selenium-server-standalone\bin\selenium-server-standalone.jar ');
 			sleep(3);
 		}
 		else
 		{
-			$this->taskWaitForSeleniumStandaloneServer()
+			$this->taskSeleniumStandaloneServer()
+				->runSelenium()
+				->waitForSelenium()
 				->run()
 				->stopOnFail();
 		}
