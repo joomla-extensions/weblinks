@@ -12,7 +12,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-use Joomla\Testing\Robo\Tasks\loadTasks;
+use Joomla\Jorobo\Tasks\loadTasks as loadReleaseTasks;
+use Joomla\Testing\Robo\Tasks\loadTasks as loadTestingTasks;
 use Robo\Tasks;
 
 require_once 'vendor/autoload.php';
@@ -32,8 +33,8 @@ if (!defined('JPATH_BASE'))
 class RoboFile extends Tasks
 {
 	// Load tasks from composer, see composer.json
-	use loadTasks;
-	use Joomla\Jorobo\Tasks\loadTasks;
+	use loadTestingTasks;
+	use loadReleaseTasks;
 
 	/**
 	 * File extension for executables
