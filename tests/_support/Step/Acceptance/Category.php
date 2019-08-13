@@ -17,34 +17,8 @@ namespace Step\Acceptance;
  *
  * @since    1.4
  */
-class category extends \AcceptanceTester
+class Category extends \AcceptanceTester
 {
-	/**
-	 * Function to create a Category in Joomla!
-	 *
-	 * @param   String  $categoryName  Name of the Category which is to be created
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function createCategory($categoryName)
-	{
-		$I = $this;
-		$I->am('Administrator');
-		$I->amOnPage('administrator/index.php?option=com_categories&extension=com_weblinks');
-		$I->waitForText('Weblinks: Categories', '30', ['css' => 'h1']);
-		$I->expectTo('see categories page');
-		$I->checkForPhpNoticesOrWarnings();
-
-		$I->amGoingTo('try to save a category with a filled title');
-		$I->clickToolbarButton('New');
-		$I->waitForText('Weblinks: New Category', '30', ['css' => 'h1']);
-		$I->fillField(['id' => 'jform_title'], $categoryName);
-		$I->clickToolbarButton('Save & Close');
-		$I->expectTo('see a success message after saving the category');
-		$I->see('Category successfully saved', ['id' => 'system-message-container']);
-	}
-
 	/**
 	 * Function to Trash a Category in Joomla!
 	 *

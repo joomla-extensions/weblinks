@@ -11,5 +11,5 @@ I am going to "try to unpublish a Weblinks Category"
 I click toolbar button "unpublish"
 I wait for element "['id' => 'system-message-container']"," '60"
 I expect to "See a success message after unpublishing the category"
-I see "1 category successfully unpublished"," ['id' => 'system-message-container']"
+I see "1 category unpublished"," ['id' => 'system-message-container']"
 

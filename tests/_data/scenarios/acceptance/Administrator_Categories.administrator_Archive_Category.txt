@@ -11,5 +11,5 @@ I am going to "try to archive a weblink category"
 I click toolbar button "archive"
 I wait for element "['id' => 'system-message-container']"," '60"
 I expect to "see a success message after Archiving the category"
-I see "1 category successfully archived."," ['id' => 'system-message-container']"
+I see "1 category archived."," ['id' => 'system-message-container']"
 
