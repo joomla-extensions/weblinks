@@ -39,6 +39,7 @@ modules:
             repo_folder: '/home/travis/build/joomla-extensions/weblinks/' # Path to the Extension repository. To be used by tests to install via Install from folder
             counter_test_url: 'http://localhost/tests/joomla' # the url for the weblink item used to test hits counter
             url: 'http://localhost/tests/joomla' # the url that points to the joomla installation at /tests/system/joomla-cms - we need it twice here
+            MicrosoftEdgeInsiders: false                  # set this to true, if you are on Windows Insiders
 error_level: "E_ALL & ~E_STRICT & ~E_DEPRECATED"
 env:
     desktop: ~

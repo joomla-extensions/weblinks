@@ -10,14 +10,16 @@ settings:
     memory_limit: 1024M
 webdrivers:
   firefox:
-    windows: vendor\joomla-projects\selenium-server-standalone\bin\webdrivers\gecko\windows\geckodriver64.exe
+    windows: vendor\\joomla-projects\\selenium-server-standalone\\bin\\webdrivers\\gecko\\windows\\geckodriver64.exe
     mac: vendor/joomla-projects/selenium-server-standalone/bin/webdrivers/gecko/mac/geckodriver
     linux: vendor/joomla-projects/selenium-server-standalone/bin/webdrivers/gecko/linux/geckodriver
   chrome:
-    windows: vendor\joomla-projects\selenium-server-standalone\bin\webdrivers\chrome\windows\chromedriver.exe
+    windows: vendor\\joomla-projects\\selenium-server-standalone\\bin\\webdrivers\\chrome\\windows\\chromedriver.exe
     mac: vendor/joomla-projects/selenium-server-standalone/bin/webdrivers/chrome/mac/chromedriver
     linux: vendor/joomla-projects/selenium-server-standalone/bin/webdrivers/chrome/linux/chromedriver
   internet explorer:
-    windows: vendor\joomla-projects\selenium-server-standalone\bin\webdrivers\internet-explorer32\IEDriverServer.exe
+    windows: vendor\\joomla-projects\\selenium-server-standalone\\bin\\webdrivers\\internet-explorer32\\IEDriverServer.exe
   MicrosoftEdge:
-    windows: vendor\joomla-projects\selenium-server-standalone\bin\webdrivers\edge\msedgedriver64.exe
+    windows: vendor\\joomla-projects\\selenium-server-standalone\\bin\\webdrivers\\edge\\msedgedriver.exe
+  MicrosoftEdgeInsiders:
+    windows: c:\\windows\system32\MicrosoftWebDriver.exe
