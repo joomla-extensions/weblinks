@@ -16,10 +16,11 @@ class weblink extends \AcceptanceTester
 	/**
 	 * Creates a weblink
 	 *
-	 * @param   string  $title          The title for the weblink
-	 * @param   string  $url            The url for the weblink
-	 * @param   string  $countClicks    If not null, we set the "Count Clicks" weblink property to the given value.
+	 * @param   string  $title        The title for the weblink
+	 * @param   string  $url          The url for the weblink
+	 * @param   string  $countClicks  If not null, we set the "Count Clicks" weblink property to the given value.
 	 *
+	 * @throws \Exception
 	 */
 	public function createWeblink($title, $url, $countClicks = null)
 	{

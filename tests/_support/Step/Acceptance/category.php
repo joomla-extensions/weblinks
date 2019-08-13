@@ -22,9 +22,10 @@ class category extends \AcceptanceTester
 	/**
 	 * Function to create a Category in Joomla!
 	 *
-	 * @param  String  $categoryName  Name of the Category which is to be created
+	 * @param   String  $categoryName  Name of the Category which is to be created
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function createCategory($categoryName)
 	{
@@ -47,9 +48,10 @@ class category extends \AcceptanceTester
 	/**
 	 * Function to Trash a Category in Joomla!
 	 *
-	 * @param  String  $categoryName  Name of the category which is to be trashed
+	 * @param   String  $categoryName  Name of the category which is to be trashed
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function trashCategory($categoryName)
 	{
@@ -66,9 +68,10 @@ class category extends \AcceptanceTester
 	/**
 	 * Function to Delete a Category in Joomla!
 	 *
-	 * @param  String  $categoryName  Name of the category which is to be deleted
+	 * @param   String  $categoryName  Name of the category which is to be deleted
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function deleteCategory($categoryName)
 	{
