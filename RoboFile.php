@@ -493,7 +493,12 @@ class RoboFile extends Tasks
 	public function killSelenium($host = 'localhost', $port = '4444')
 	{
 		$this->say('Trying to kill the selenium server.');
-		$this->_exec("curl http://$host:$port/selenium-server/driver/?cmd=shutDownSeleniumServer");
+
+		$this->taskSeleniumStandaloneServer()
+			->setUrl("http://$host:$port")
+			->killSelenium()
+			->run()
+			->stopOnFail();
 	}
 
 	/**
