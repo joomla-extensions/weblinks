@@ -22,4 +22,4 @@ webdrivers:
   MicrosoftEdge:
     windows: vendor\\joomla-projects\\selenium-server-standalone\\bin\\webdrivers\\edge\\msedgedriver.exe
   MicrosoftEdgeInsiders:
-    windows: c:\\windows\system32\MicrosoftWebDriver.exe
+    windows: c:\\windows\\system32\\MicrosoftWebDriver.exe
