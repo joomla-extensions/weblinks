@@ -2198,16 +2198,16 @@
         },
         {
             "name": "joomla-projects/jorobo",
-            "version": "0.7.1",
+            "version": "0.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-projects/jorobo.git",
-                "reference": "ebcbd0eae3b9f2dfcca35d86ba442c88c942bc52"
+                "reference": "9ed1190edab1e5f69286570e2ebdd451f6d15b01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joomla-projects/jorobo/zipball/ebcbd0eae3b9f2dfcca35d86ba442c88c942bc52",
-                "reference": "ebcbd0eae3b9f2dfcca35d86ba442c88c942bc52",
+                "url": "https://api.github.com/repos/joomla-projects/jorobo/zipball/9ed1190edab1e5f69286570e2ebdd451f6d15b01",
+                "reference": "9ed1190edab1e5f69286570e2ebdd451f6d15b01",
                 "shasum": ""
             },
             "require": {
@@ -2244,7 +2244,7 @@
                 }
             ],
             "description": "Tools and Tasks based on Robo.li for Joomla Extension Development and Releases",
-            "time": "2019-08-12T18:25:30+00:00"
+            "time": "2019-08-16T16:56:45+00:00"
         },
         {
             "name": "joomla-projects/selenium-server-standalone",
@@ -2283,7 +2283,7 @@
                     "email": "sven.eisenschmidt@gmail.com"
                 },
                 {
-                    "name": "Javier Gómez",
+                    "name": "Javier Gomez",
                     "email": "javier.gomez@community.joomla.org"
                 }
             ],

@@ -38,6 +38,7 @@
 			label="JCATEGORY"
 			description="COM_WEBLINKS_FIELD_CATEGORY_DESC"
 			extension="com_weblinks"
+			addfieldprefix="Joomla\Component\Categories\Administrator\Field"
 			required="true"
 			default=""
 		/>
