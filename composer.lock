@@ -1570,7 +1570,7 @@
                     "email": "puneet.kala@community.joomla.org"
                 },
                 {
-                    "name": "Javier Gómez",
+                    "name": "Javier Gomez",
                     "email": "javier.gomez@community.joomla.org"
                 }
             ],
@@ -1635,16 +1635,16 @@
         },
         {
             "name": "joomla-projects/jorobo",
-            "version": "0.7.0",
+            "version": "0.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-projects/jorobo.git",
-                "reference": "1386f7712e39f08a3c1722e514eebdd6d0580c62"
+                "reference": "9ed1190edab1e5f69286570e2ebdd451f6d15b01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joomla-projects/jorobo/zipball/1386f7712e39f08a3c1722e514eebdd6d0580c62",
-                "reference": "1386f7712e39f08a3c1722e514eebdd6d0580c62",
+                "url": "https://api.github.com/repos/joomla-projects/jorobo/zipball/9ed1190edab1e5f69286570e2ebdd451f6d15b01",
+                "reference": "9ed1190edab1e5f69286570e2ebdd451f6d15b01",
                 "shasum": ""
             },
             "require": {
@@ -1672,16 +1672,16 @@
                     "email": "yves@compojoom.com"
                 },
                 {
-                    "name": "Niels Braczek",
-                    "email": "nbraczek@bsds.de"
-                },
-                {
                     "name": "Niels Nübel",
                     "email": "niels@niels-nuebel.de"
+                },
+                {
+                    "name": "Niels Braczek",
+                    "email": "nbraczek@bsds.de"
                 }
             ],
             "description": "Tools and Tasks based on Robo.li for Joomla Extension Development and Releases",
-            "time": "2017-08-24T01:24:32+00:00"
+            "time": "2019-08-16T16:56:45+00:00"
         },
         {
             "name": "joomla-projects/selenium-server-standalone",
@@ -1711,7 +1711,7 @@
                     "email": "sven.eisenschmidt@gmail.com"
                 },
                 {
-                    "name": "Javier Gómez",
+                    "name": "Javier Gomez",
                     "email": "javier.gomez@community.joomla.org"
                 }
             ],
@@ -2456,8 +2456,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "email": "sb@sebastian-bergmann.de",
-                    "role": "lead"
+                    "role": "lead",
+                    "email": "sb@sebastian-bergmann.de"
                 }
             ],
             "description": "Library that provides collection, processing, and rendering functionality for PHP code coverage information.",
@@ -3334,8 +3334,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
+                    "role": "lead",
+                    "email": "sebastian@phpunit.de"
                 }
             ],
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
