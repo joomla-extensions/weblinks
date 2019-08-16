@@ -63,7 +63,7 @@ class WeblinksModelWeblink extends JModelItem
 	/**
 	 * Method to get an object.
 	 *
-	 * @param   integer  $id  The id of the object to get.
+	 * @param   integer  $pk  The id of the object to get.
 	 *
 	 * @return  mixed  Object on success, false on failure.
 	 */
@@ -191,7 +191,7 @@ class WeblinksModelWeblink extends JModelItem
 	/**
 	 * Method to increment the hit counter for the weblink
 	 *
-	 * @param   integer  $id  Optional ID of the weblink.
+	 * @param   integer  $pk  Optional ID of the weblink.
 	 *
 	 * @return  boolean  True on success
 	 */

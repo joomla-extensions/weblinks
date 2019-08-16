@@ -1,5 +1,7 @@
 sudo: true
 language: php
+services:
+  - xvfb
 
 env:
   global:
@@ -8,29 +10,15 @@ env:
 matrix:
   fast_finish: true
   include:
-    - php: 5.5
     - php: 5.6
       env: RUN_PHPCS="yes"
     - php: 7.0
       sudo: true
       addons:
-        firefox: "47.0.1"
+        firefox: 'latest-esr'
     - php: 7.1
-    - php: hhvm
-      sudo: true
-      dist: trusty
-      group: edge # Until the next stable image update sometime after 2016-12-01
-      addons:
-        apt:
-          packages:
-            - mysql-server-5.6
-            - mysql-client-core-5.6
-            - mysql-client-5.6
-      services:
-        - mysql
-        - postgresql
-  allow_failures:
-    - php: hhvm
+    - php: 7.2
+    - php: 7.3
 
 before_script:
 # Forcing localhost in hosts file
@@ -48,10 +36,6 @@ before_script:
 - sudo sed -e "s?%PHPVERSION%?${TRAVIS_PHP_VERSION:0:1}?g" --in-place /etc/apache2/sites-available/default
 - git submodule update --init --recursive
 - sudo service apache2 restart
-# Xvfb
-- "export DISPLAY=:99.0"
-- "sh -e /etc/init.d/xvfb start"
-- sleep 3 # give xvfb some time to start
 # Fluxbox
 - sudo apt-get install fluxbox -y --force-yes
 - fluxbox &

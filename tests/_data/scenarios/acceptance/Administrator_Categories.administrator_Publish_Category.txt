@@ -11,5 +11,5 @@ I am going to "try to publish a Weblinks Category"
 I click toolbar button "publish"
 I wait for element "['id' => 'system-message-container']"," '60"
 I expect to "see a success message after publishing the category"
-I see "1 category successfully published."," ['id' => 'system-message-container']"
+I see "1 category published."," ['id' => 'system-message-container']"
 

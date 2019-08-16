@@ -1,5 +1,7 @@
 <?php
 
+use Step\Acceptance\Category;
+
 /**
  * @package     Joomla.Administrator
  * @subpackage  com_weblinks
@@ -43,7 +45,7 @@ class AdministratorCategoriesCest
 		$I->see('Invalid field:  Title', ['id' => 'system-message-container']);
 	}
 
-	public function administratorCreateCategory(\Step\Acceptance\category $I)
+	public function administratorCreateCategory(Category $I)
 	{
 		$I->am('Administrator');
 		$I->wantToTest('create a Category in /administrator/');
@@ -62,13 +64,13 @@ class AdministratorCategoriesCest
 		$I->fillField(['id' => 'jform_title'], $this->categoryTitle);
 		$I->clickToolbarButton('Save & Close');
 		$I->expectTo('see a success message after saving the category');
-		$I->see('Category successfully saved', ['id' => 'system-message-container']);
+		$I->see('Category saved', ['id' => 'system-message-container']);
 	}
 
 	/**
 	 * @depends administratorCreateCategory
 	 */
-	public function administratorPublishCategory(\Step\Acceptance\category $I)
+	public function administratorPublishCategory(Category $I)
 	{
 		$I->am('Administrator');
 
@@ -84,13 +86,13 @@ class AdministratorCategoriesCest
 		$I->clickToolbarButton('publish');
 		$I->waitForElement(['id' => 'system-message-container'], '60');
 		$I->expectTo('see a success message after publishing the category');
-		$I->see('1 category successfully published.', ['id' => 'system-message-container']);
+		$I->see('0 categories published.', ['id' => 'system-message-container']);
 	}
 
 	/**
 	 * @depends administratorPublishCategory
 	 */
-	public function administratorUnpublishCategory(\Step\Acceptance\category $I)
+	public function administratorUnpublishCategory(Category $I)
 	{
 		$I->am('Administrator');
 		$I->wantToTest('Unpublish a Category in /administrator/');
@@ -105,13 +107,13 @@ class AdministratorCategoriesCest
 		$I->clickToolbarButton('unpublish');
 		$I->waitForElement(['id' => 'system-message-container'], '60');
 		$I->expectTo('See a success message after unpublishing the category');
-		$I->see('1 category successfully unpublished', ['id' => 'system-message-container']);
+		$I->see('1 category unpublished', ['id' => 'system-message-container']);
 	}
 
 	/**
 	 * @depends administratorUnpublishCategory
 	 */
-	public function administratorArchiveCategory(\Step\Acceptance\category $I)
+	public function administratorArchiveCategory(Category $I)
 	{
 		$I->am('Administrator');
 		$I->wantToTest('Archiving a Category in /administrator/');
@@ -126,13 +128,13 @@ class AdministratorCategoriesCest
 		$I->clickToolbarButton('archive');
 		$I->waitForElement(['id' => 'system-message-container'], '60');
 		$I->expectTo('see a success message after Archiving the category');
-		$I->see('1 category successfully archived.', ['id' => 'system-message-container']);
+		$I->see('1 category archived.', ['id' => 'system-message-container']);
 	}
 
 	/**
 	 * @depends administratorArchiveCategory
 	 */
-	public function administratorTrashCategory(\Step\Acceptance\category $I)
+	public function administratorTrashCategory(Category $I)
 	{
 		$I->am('Administrator');
 		$I->wantToTest('Trashing a Category in /administrator/');
@@ -148,13 +150,13 @@ class AdministratorCategoriesCest
 		$I->clickToolbarButton('Trash');
 		$I->waitForElement(['id' => 'system-message-container'], '60');
 		$I->expectTo('see a success message after Trashing the category');
-		$I->see('1 category successfully trashed.', ['id' => 'system-message-container']);
+		$I->see('1 category trashed.', ['id' => 'system-message-container']);
 	}
 
 	/**
 	 * @depends administratorTrashCategory
 	 */
-	public function administratorDeleteCategory(\Step\Acceptance\category $I)
+	public function administratorDeleteCategory(Category $I)
 	{
 		$I->am('Administrator');
 		$I->wantToTest('Deleting a Category in /administrator/');
@@ -171,10 +173,10 @@ class AdministratorCategoriesCest
 		$I->acceptPopup();
 		$I->waitForElement(['id' => 'system-message-container'], '60');
 		$I->expectTo('see a success message after Deleting the category');
-		$I->see('1 category successfully deleted.', ['id' => 'system-message-container']);
+		$I->see('1 category deleted.', ['id' => 'system-message-container']);
 	}
 
-	public function administratorVerifyAvailableTabs(\Step\Acceptance\category $I)
+	public function administratorVerifyAvailableTabs(Category $I)
 	{
 		$I->am('Administrator');
 		$I->wantToTest('Category Edit View Tabs');

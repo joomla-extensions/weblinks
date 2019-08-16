@@ -12,6 +12,10 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+use Joomla\Jorobo\Tasks\loadTasks as loadReleaseTasks;
+use Joomla\Testing\Robo\Tasks\loadTasks as loadTestingTasks;
+use Robo\Tasks;
+
 require_once 'vendor/autoload.php';
 
 if (!defined('JPATH_BASE'))
@@ -26,11 +30,11 @@ if (!defined('JPATH_BASE'))
  *
  * @since    1.0
  */
-class RoboFile extends \Robo\Tasks
+class RoboFile extends Tasks
 {
 	// Load tasks from composer, see composer.json
-	use \Joomla\Testing\Robo\Tasks\loadTasks;
-	use \Joomla\Jorobo\Tasks\loadTasks;
+	use loadTestingTasks;
+	use loadReleaseTasks;
 
 	/**
 	 * File extension for executables
@@ -77,22 +81,13 @@ class RoboFile extends \Robo\Tasks
 	/**
 	 * Get the executable extension according to Operating System
 	 *
-	 * @return void
+	 * @return string
 	 */
 	private function getExecutableExtension()
 	{
 		if ($this->isWindows())
 		{
-			// Check whether git.exe or git as command should be used,
-			// As on window both is possible
-			if (!$this->_exec('git.exe --version')->getMessage())
-			{
-				return '';
-			}
-			else
-			{
-				return '.exe';
-			}
+			return '.exe';
 		}
 
 		return '';
@@ -102,10 +97,11 @@ class RoboFile extends \Robo\Tasks
 	 * Executes all the Selenium System Tests in a suite on your machine
 	 *
 	 * @param   array  $opts  Array of configuration options:
-	 *          - 'use-htaccess': renames and enable embedded Joomla .htaccess file
-	 *          - 'env': set a specific environment to get configuration from
+	 *                        - 'use-htaccess': renames and enable embedded Joomla .htaccess file
+	 *                        - 'env': set a specific environment to get configuration from
 	 *
 	 * @return mixed
+	 * @throws \Codeception\Exception\ConfigurationException
 	 */
 	public function runTests($opts = ['use-htaccess' => false, 'env' => 'desktop'])
 	{
@@ -166,6 +162,8 @@ class RoboFile extends \Robo\Tasks
 	 * @param   string  $suite           Optional name of the suite containing the tests, Acceptance by default.
 	 *
 	 * @return mixed
+	 * @throws ReflectionException
+	 * @throws \Codeception\Exception\ConfigurationException
 	 */
 	public function runTest($pathToTestFile = null, $suite = 'acceptance')
 	{
@@ -205,8 +203,8 @@ class RoboFile extends \Robo\Tasks
 			}
 
 			$this->say('');
-			$testNumber	= $this->ask('Type the number of the test  in the list that you want to run...');
-			$test = $tests[$testNumber];
+			$testNumber = $this->ask('Type the number of the test  in the list that you want to run...');
+			$test       = $tests[$testNumber];
 		}
 
 		$pathToTestFile = 'tests/' . $suite . '/' . $test;
@@ -215,7 +213,7 @@ class RoboFile extends \Robo\Tasks
 		require 'tests/' . $suite . '/' . $test;
 
 		// Logic to fetch the class name from the file name
-		$fileName = explode("/", $test);
+		$fileName  = explode("/", $test);
 		$className = explode(".", $fileName[1]);
 
 		// If the selected file is cest only than we will give the option to execute individual methods, we don't need this in cept file
@@ -245,7 +243,7 @@ class RoboFile extends \Robo\Tasks
 
 			$this->say('');
 			$methodNumber = $this->ask('Please choose the method in the test that you would want to run...');
-			$method = $methods[$methodNumber];
+			$method       = $methods[$methodNumber];
 		}
 
 		if (isset($method) && $method != 'All')
@@ -441,26 +439,23 @@ class RoboFile extends \Robo\Tasks
 	 * Runs Selenium Standalone Server.
 	 *
 	 * @return void
+	 * @throws \Codeception\Exception\ConfigurationException
 	 */
 	public function runSelenium()
 	{
-		if (!$this->isWindows())
-		{
-			$this->_exec("vendor/bin/selenium-server-standalone " . $this->getWebDriver() . ' >> selenium.log 2>&1 &');
-		}
-		else
-		{
-			$this->_exec('START java.exe -jar' . $this->getWebDriver() .
-					' vendor\joomla-projects\selenium-server-standalone\bin\selenium-server-standalone.jar ');
-		}
-
 		if ($this->isWindows())
 		{
+			// TODO: Move this logic to the selenium standalone server task in the parent joomla repo
+			$this->_exec('START java.exe -jar ' . $this->getWebDriver() .
+				' .\\vendor\\joomla-projects\\selenium-server-standalone\\bin\\selenium-server-standalone.jar ');
 			sleep(3);
 		}
 		else
 		{
-			$this->taskWaitForSeleniumStandaloneServer()
+			$this->taskSeleniumStandaloneServer()
+				->setWebdriver($this->getWebdriver())
+				->runSelenium()
+				->waitForSelenium()
 				->run()
 				->stopOnFail();
 		}
@@ -498,7 +493,12 @@ class RoboFile extends \Robo\Tasks
 	public function killSelenium($host = 'localhost', $port = '4444')
 	{
 		$this->say('Trying to kill the selenium server.');
-		$this->_exec("curl http://$host:$port/selenium-server/driver/?cmd=shutDownSeleniumServer");
+
+		$this->taskSeleniumStandaloneServer()
+			->setUrl("http://$host:$port")
+			->killSelenium()
+			->run()
+			->stopOnFail();
 	}
 
 	/**
@@ -589,6 +589,7 @@ class RoboFile extends \Robo\Tasks
 	 * @return  string the webdriver string to use with selenium
 	 *
 	 * @since version
+	 * @throws \Codeception\Exception\ConfigurationException
 	 */
 	public function getWebdriver()
 	{
@@ -627,8 +628,8 @@ class RoboFile extends \Robo\Tasks
 		else
 		{
 			$this->yell(
-					print_r($codeceptMainConfig) .
-					'No driver for your browser. Check your browser in acceptance.suite.yml and the webDrivers in codeception.yml');
+				print_r($codeceptMainConfig) .
+				'No driver for your browser. Check your browser in acceptance.suite.yml and the webDrivers in codeception.yml');
 
 			// We can't do anything without a driver, exit
 			exit(1);
@@ -699,9 +700,9 @@ class RoboFile extends \Robo\Tasks
 	 *
 	 * @param   String  $target  The target joomla instance
 	 *
+	 * @return  void
 	 * @since __DEPLOY_VERSION__
 	 *
-	 * @return  void
 	 */
 	public function map($target)
 	{
