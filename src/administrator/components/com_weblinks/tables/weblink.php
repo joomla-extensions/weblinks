@@ -38,8 +38,11 @@ class WeblinksTableWeblink extends JTable
 		// Set the published column alias
 		$this->setColumnAlias('published', 'state');
 
-		JTableObserverTags::createObserver($this, array('typeAlias' => 'com_weblinks.weblink'));
-		JTableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_weblinks.weblink'));
+		if (version_compare(JVERSION, '4.0', '<' ) == 1)
+		{
+			JTableObserverTags::createObserver($this, array('typeAlias' => 'com_weblinks.weblink'));
+			JTableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_weblinks.weblink'));
+		}
 	}
 
 	/**
@@ -194,6 +197,6 @@ class WeblinksTableWeblink extends JTable
 			$this->metakey = implode(", ", $clean_keys);
 		}
 
-		return true;
+		return parent::check();
 	}
 }
