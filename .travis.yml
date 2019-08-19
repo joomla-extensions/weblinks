@@ -11,7 +11,6 @@ matrix:
   fast_finish: true
   include:
     - php: 5.6
-      env: RUN_PHPCS="yes"
     - php: 7.0
       env: RUN_PHPCS="yes"
       sudo: true
