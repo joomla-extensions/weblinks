@@ -1,20 +1,30 @@
-cache:
-  mount:
-    - vendor
-    - .git
-build:
-  image: yveshoppe/joomla-systemtests:latest
-  commands:
-    - chmod a+x .drone/build.sh
-    - ./.drone/build.sh
-    - apache2ctl start
-    - service mysql start
-    - cd /tests/www
-    - export DISPLAY=:0
-    - Xvfb -screen 0 1024x768x24 -ac +extension GLX +render -noreset > /dev/null 2>&1 &
-    - sleep 3
-    - fluxbox  > /dev/null 2>&1 &
-    - vendor/bin/robo run:tests
-  clone:
-    depth: 1
-    path: repo
+---
+kind: pipeline
+name: default
+
+steps:
+  - name: weblinks-codeception-tests
+    image: joomlaprojects/docker-systemtests:latest
+    commands:
+      - composer install
+      - chmod a+x .drone/build.sh
+      - ./.drone/build.sh
+      - apache2ctl start
+      - service mysql start
+      - cd /tests/www
+      - export DISPLAY=:0
+      - Xvfb -screen 0 1024x768x24 -ac +extension GLX +render -noreset > /dev/null 2>&1 &
+      - sleep 3
+      - fluxbox  > /dev/null 2>&1 &
+      - vendor/bin/robo run:tests
+
+volumes:
+  - name: weblinks_cache
+    host:
+      path: /tmp/weblinks_cache
+
+---
+kind: signature
+hmac: 41c9d399a788c8e97a0444ee8483682cfcb5b21d920b4012852a48ed3b2e9db8
+
+...

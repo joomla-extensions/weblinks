@@ -131,6 +131,7 @@ class HtmlView extends \Joomla\CMS\MVC\View\HtmlView
 		if ($user->authorise('core.create', 'com_weblinks') && $user->authorise('core.edit', 'com_weblinks')
 			&& $user->authorise('core.edit.state', 'com_weblinks'))
 		{
+			\JHtml::_('bootstrap.renderModal', 'collapseModal');
 			$title = \JText::_('JTOOLBAR_BATCH');
 
 			// Instantiate a new JLayoutFile instance and render the batch button

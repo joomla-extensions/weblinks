@@ -4,20 +4,22 @@
     "license"    : "GPL-2.0+",
     "config": {
         "platform": {
-            "php": "5.5.33"
+            "php": "5.6.0"
         }
     },
     "require"    : {
-        "php": ">=5.3.10"
+        "php": ">=5.4"
     },
     "require-dev": {
-        "codeception/codeception": "^2.2",
-        "joomla-projects/joomla-browser": "v3.6.5.1",
+        "php": ">=5.6",
+        "codeception/codeception": "^3",
+        "phpunit/phpunit": "^5.7.27",
+        "joomla-projects/joomla-browser": "v3.9.0",
         "consolidation/robo": "^1.0.0",
-        "joomla-projects/robo": "~0",
-        "joomla-projects/selenium-server-standalone": "v3.1.0",
+        "joomla-projects/joomla-testing-robo": "~1.0",
+        "joomla-projects/selenium-server-standalone": "^v3.1.0",
         "fzaninotto/faker": "^1.6",
-        "joomla-projects/jorobo": "~0.6",
-        "Behat/Gherkin": "^4.4.1"
+        "joomla-projects/jorobo": "~0.7",
+        "behat/gherkin": "^4.4.1"
     }
 }

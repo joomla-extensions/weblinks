@@ -13,5 +13,5 @@ I wait for text "Category Manager: Add A New Weblinks Category"," '60"," ['css' 
 I fill field "['id' => 'jform_title']"," $this->categoryTitle"
 I click toolbar button "Save & Close"
 I expect to "see a success message after saving the category"
-I see "Category successfully saved"," ['id' => 'system-message-container']"
+I see "Category saved"," ['id' => 'system-message-container']"
 
