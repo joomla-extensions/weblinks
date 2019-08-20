@@ -22,6 +22,7 @@
 		<file type="plugin" id="weblinks" group="search">plg_search_weblinks.zip</file>
 		<file type="plugin" id="weblinks" group="system">plg_system_weblinks.zip</file>
 		<file type="plugin" id="weblinks" group="editors-xtd">plg_editors-xtd_weblink.zip</file>
+		<file type="plugin" id="weblinks" group="webservices">plg_webservices.zip</file>
 	</files>
 	<languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.pkg_weblinks.sys.ini</language>

@@ -63,5 +63,10 @@
 			##BACKEND_LANGUAGE_FILES##
 		</languages>
 	</administration>
+	<api>
+		<files folder="api/components/com_weblinks">
+			##API_COMPONENT_FILES##
+		</files>
+	</api>
 </extension>
 
