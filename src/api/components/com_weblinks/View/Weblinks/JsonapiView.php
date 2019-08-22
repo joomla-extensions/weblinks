@@ -56,7 +56,7 @@ class JsonapiView extends BaseApiView
 		'publish_down',
 		'version',
 		'images',
-		'tags'
+		'tags',
 	];
 
 	/**
@@ -85,7 +85,7 @@ class JsonapiView extends BaseApiView
 		'language_image',
 		'editor',
 		'access_level',
-		'category_title'
+		'category_title',
 	];
 
 	/**

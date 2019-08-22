@@ -21,7 +21,6 @@ use Joomla\CMS\MVC\View\JsonApiView;
 use Joomla\CMS\MVC\Controller\Exception\ResourceNotFound;
 use Joomla\Component\Fields\Administrator\Helper\FieldsHelper;
 use Joomla\Input\Input;
-use Joomla\String\Inflector;
 use Tobscure\JsonApi\Exception\InvalidParameterException;
 
 /**
