@@ -22,17 +22,6 @@ $assoc = JLanguageAssociations::isEnabled();
 // Fieldsets to not automatically render by /layouts/joomla/edit/params.php
 $this->ignore_fieldsets = array('details', 'images', 'item_associations', 'jmetadata');
 
-// TODO: Check with Dimtris - I don't believe this is required anymore in combination with the `form-validate` class
-//JFactory::getDocument()->addScriptDeclaration("
-//	Joomla.submitbutton = function(task)
-//	{
-//		if (task == 'weblink.cancel' || document.formvalidator.isValid(document.getElementById('weblink-form'))) {
-//			" . $this->form->getField('description')->save() . "
-//			Joomla.submitform(task, document.getElementById('weblink-form'));
-//		}
-//	};
-//");
-
 // In case of modal
 $isModal = $input->get('layout') == 'modal' ? true : false;
 $layout  = $isModal ? 'modal' : 'edit';
