@@ -18,6 +18,27 @@ steps:
       - fluxbox  > /dev/null 2>&1 &
       - vendor/bin/robo run:tests
 
+  - name: artifacts-system-tests
+    image: cschlosser/drone-ftps
+    depends_on: [ system-tests-postgres ]
+    environment:
+      FTP_USERNAME:
+        from_secret: ftpusername
+      FTP_PASSWORD:
+        from_secret: ftppassword
+      PLUGIN_HOSTNAME: ci.joomla.org:21
+      PLUGIN_SRC_DIR: /tests/Codeception/_output/
+      PLUGIN_DEST_DIR: /artifacts
+      PLUGIN_SECURE: false
+      PLUGIN_EXCLUDE: ^\.git/$
+    commands:
+      - export PLUGIN_DEST_DIR=$PLUGIN_DEST_DIR/$DRONE_REPO/$DRONE_BRANCH/$DRONE_PULL_REQUEST_$DRONE_BUILD_NUMBER/system-tests
+      - echo https://ci.joomla.org:444$PLUGIN_DEST_DIR
+      - /bin/upload.sh
+    when:
+      status:
+      - failure
+
 volumes:
   - name: weblinks_cache
     host:
@@ -25,6 +46,6 @@ volumes:
 
 ---
 kind: signature
-hmac: 41c9d399a788c8e97a0444ee8483682cfcb5b21d920b4012852a48ed3b2e9db8
+hmac: d923aa6c5902d07ab60350280a17836652e9541a931f84f5e0a686691d4c9cec
 
 ...
