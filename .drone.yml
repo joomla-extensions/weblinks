@@ -27,7 +27,7 @@ steps:
       FTP_PASSWORD:
         from_secret: ftppassword
       PLUGIN_HOSTNAME: ci.joomla.org:21
-      PLUGIN_SRC_DIR: /tests/Codeception/_output/
+      PLUGIN_SRC_DIR: /tests/_output/
       PLUGIN_DEST_DIR: /artifacts
       PLUGIN_SECURE: false
       PLUGIN_EXCLUDE: ^\.git/$
@@ -46,6 +46,6 @@ volumes:
 
 ---
 kind: signature
-hmac: 8ab7587b9957ad1005b33a330b63bfb09ab2394cae3cc1da5972e33895fee4ec
+hmac: 9346f0e74d2605ebe7bc9d33ad0588c1073ba3a9d9b254b71a7a85e219089449
 
 ...
