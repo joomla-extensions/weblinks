@@ -20,7 +20,7 @@ steps:
 
   - name: artifacts-system-tests
     image: cschlosser/drone-ftps
-    depends_on: [ system-tests-postgres ]
+    depends_on: [ weblinks-codeception-tests ]
     environment:
       FTP_USERNAME:
         from_secret: ftpusername
@@ -46,6 +46,6 @@ volumes:
 
 ---
 kind: signature
-hmac: d923aa6c5902d07ab60350280a17836652e9541a931f84f5e0a686691d4c9cec
+hmac: 8ab7587b9957ad1005b33a330b63bfb09ab2394cae3cc1da5972e33895fee4ec
 
 ...
