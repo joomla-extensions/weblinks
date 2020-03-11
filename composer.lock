@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1b0489cad34d1fd663da3e41426498d1",
+    "content-hash": "acdec754259cf00c8daac12e4e86eafd",
     "packages": [],
     "packages-dev": [
         {
@@ -2487,16 +2487,16 @@
         },
         {
             "name": "joomla/string",
-            "version": "1.4.2",
+            "version": "1.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-framework/string.git",
-                "reference": "64ed484157262578b8daddb488bb9bd3552bc4fe"
+                "reference": "fed0eee67f83b68674e8c6542ecfa28390b32fec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joomla-framework/string/zipball/64ed484157262578b8daddb488bb9bd3552bc4fe",
-                "reference": "64ed484157262578b8daddb488bb9bd3552bc4fe",
+                "url": "https://api.github.com/repos/joomla-framework/string/zipball/fed0eee67f83b68674e8c6542ecfa28390b32fec",
+                "reference": "fed0eee67f83b68674e8c6542ecfa28390b32fec",
                 "shasum": ""
             },
             "require": {
@@ -2549,7 +2549,7 @@
                 "joomla",
                 "string"
             ],
-            "time": "2019-06-16T18:18:09+00:00"
+            "time": "2019-08-07T12:34:12+00:00"
         },
         {
             "name": "joomla/uri",
@@ -4985,12 +4985,10 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.4"
+        "php": ">=7.2"
     },
-    "platform-dev": {
-        "php": ">=5.6"
-    },
+    "platform-dev": [],
     "platform-overrides": {
-        "php": "5.6.0"
+        "php": "7.2.0"
     }
 }
