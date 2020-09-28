@@ -92,7 +92,7 @@ class WeblinksModelCategories extends JModelList
 	 */
 	public function getItems()
 	{
-		if (!count($this->_items))
+		if (is_null($this->_items) || !count($this->_items))
 		{
 			$app = JFactory::getApplication();
 			$menu = $app->getMenu();
