@@ -106,10 +106,8 @@ class ModWeblinksHelper
 					$item->link = $item->url;
 				}
 			}
-
-			return $items;
 		}
 
-		return;
+		return $items;
 	}
 }
