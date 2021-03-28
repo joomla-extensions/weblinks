@@ -13,9 +13,6 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
 JHtml::_('behavior.framework');
 
-// Create a shortcut for params.
-$params = &$this->item->params;
-
 // Get the user object.
 $user = JFactory::getUser();
 
@@ -69,7 +66,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 
 					<?php if ($canEdit) : ?>
 						<span class="list-edit pull-left width-50">
-							<?php echo JHtml::_('icon.edit', $item, $params); ?>
+							<?php echo JHtml::_('icon.edit', $item, $item->params); ?>
 						</span>
 					<?php endif; ?>
 
@@ -128,8 +125,8 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 						</div>
 						<?php $tagsData = $item->tags->getItemTags('com_weblinks.weblink', $item->id); ?>
 						<?php if ($this->params->get('show_tags', 1)) : ?>
-							<?php $this->item->tagLayout = new JLayoutFile('joomla.content.tags'); ?>
-							<?php echo $this->item->tagLayout->render($tagsData); ?>
+							<?php $tagLayout = new JLayoutFile('joomla.content.tags'); ?>
+							<?php echo $tagLayout->render($tagsData); ?>
 						<?php endif; ?>
 						<?php if (($this->params->get('show_link_description')) and ($item->description != '')) : ?>
 						<?php $images = json_decode($item->images); ?>
