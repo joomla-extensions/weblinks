@@ -13,9 +13,6 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\Toolbar;
@@ -121,55 +118,64 @@ class HtmlView extends BaseHtmlView
 	 */
 	protected function addToolbar()
 	{
-		$state = $this->get('State');
-		$canDo = ContentHelper::getActions('com_weblinks', 'category', $state->get('filter.category_id'));
-		$user  = Factory::getUser();
+		$canDo = ContentHelper::getActions('com_weblinks', 'category', $this->state->get('filter.category_id'));
+		$user  = Factory::getApplication()->getIdentity();
 
 		// Get the toolbar object instance
-		$bar = Toolbar::getInstance('toolbar');
+		$toolbar = Toolbar::getInstance('toolbar');
 
 		ToolbarHelper::title(\JText::_('COM_WEBLINKS_MANAGER_WEBLINKS'), 'link weblinks');
 
-		if (count($user->getAuthorisedCategories('com_weblinks', 'core.create')) > 0)
+		if ($canDo->get('core.create') || \count($user->getAuthorisedCategories('com_weblinks', 'core.create')) > 0)
 		{
 			ToolbarHelper::addNew('weblink.add');
 		}
 
-		if ($canDo->get('core.edit') || $canDo->get('core.edit.own'))
-		{
-			ToolbarHelper::editList('weblink.edit');
-		}
-
 		if ($canDo->get('core.edit.state'))
 		{
-			ToolbarHelper::publish('weblinks.publish', 'JTOOLBAR_PUBLISH', true);
-			ToolbarHelper::unpublish('weblinks.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			$dropdown = $toolbar->dropdownButton('status-group')
+				->text('JTOOLBAR_CHANGE_STATUS')
+				->toggleSplit(false)
+				->icon('icon-ellipsis-h')
+				->buttonClass('btn btn-action')
+				->listCheck(true);
 
-			ToolbarHelper::archiveList('weblinks.archive');
-			ToolbarHelper::checkin('weblinks.checkin');
+			$childBar = $dropdown->getChildToolbar();
+
+			$childBar->publish('weblinks.publish')->listCheck(true);
+
+			$childBar->unpublish('weblinks.unpublish')->listCheck(true);
+
+			$childBar->archive('weblinks.archive')->listCheck(true);
+
+			if ($user->authorise('core.admin'))
+			{
+				$childBar->checkin('weblinks.checkin')->listCheck(true);
+			}
+
+			if ($this->state->get('filter.published') != -2)
+			{
+				$childBar->trash('weblinks.trash')->listCheck(true);
+			}
+
+			// Add a batch button
+			if ($user->authorise('core.create', 'com_weblinks')
+				&& $user->authorise('core.edit', 'com_weblinks')
+				&& $user->authorise('core.edit.state', 'com_weblinks'))
+			{
+				$childBar->popupButton('batch')
+					->text('JTOOLBAR_BATCH')
+					->selector('collapseModal')
+					->listCheck(true);
+			}
 		}
 
-		if ($state->get('filter.published') == -2 && $canDo->get('core.delete'))
+		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete'))
 		{
-			ToolbarHelper::deleteList('JGLOBAL_CONFIRM_DELETE', 'weblinks.delete', 'JTOOLBAR_EMPTY_TRASH');
-		}
-		elseif ($canDo->get('core.edit.state'))
-		{
-			ToolbarHelper::trash('weblinks.trash');
-		}
-
-		// Add a batch button
-		if ($user->authorise('core.create', 'com_weblinks') && $user->authorise('core.edit', 'com_weblinks')
-			&& $user->authorise('core.edit.state', 'com_weblinks'))
-		{
-			HTMLHelper::_('bootstrap.renderModal', 'collapseModal');
-			$title = Text::_('JTOOLBAR_BATCH');
-
-			// Instantiate a new JLayoutFile instance and render the batch button
-			$layout = new FileLayout('joomla.toolbar.batch');
-
-			$dhtml = $layout->render(array('title' => $title));
-			$bar->appendButton('Custom', $dhtml, 'batch');
+			$toolbar->delete('contacts.delete')
+				->text('JTOOLBAR_EMPTY_TRASH')
+				->message('JGLOBAL_CONFIRM_DELETE')
+				->listCheck(true);
 		}
 
 		if ($user->authorise('core.admin', 'com_weblinks') || $user->authorise('core.options', 'com_weblinks'))
