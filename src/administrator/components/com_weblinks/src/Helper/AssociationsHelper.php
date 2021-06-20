@@ -21,7 +21,7 @@ use Joomla\Component\Weblinks\Site\Helper\AssociationHelper;
  *
  * @since  __DEPLOY_VERSION__
  */
-class WeblinksAssociationsHelper extends AssociationExtensionHelper
+class AssociationsHelper extends AssociationExtensionHelper
 {
 	/**
 	 * The extension name
