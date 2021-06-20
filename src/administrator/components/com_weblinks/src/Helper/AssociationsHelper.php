@@ -124,7 +124,7 @@ class AssociationsHelper extends AssociationExtensionHelper
 		switch ($typeName)
 		{
 			case 'weblink':
-				$table = Table::getInstance('Weblink', 'Joomla\\Component\\Weblinks\\Administrator\\Table\\');
+				$table = Table::getInstance('WeblinkTable', 'Joomla\\Component\\Weblinks\\Administrator\\Table\\');
 				break;
 
 			case 'category':
