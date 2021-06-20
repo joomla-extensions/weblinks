@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @since  1.6
  */
-class WeblinksHelper extends \Joomla\Component\Weblinks\Administrator\Controller\WeblinksHelper
+class WeblinksHelper extends \Joomla\Component\Weblinks\Administrator\Helper\WeblinksHelper
 {
 
 }
