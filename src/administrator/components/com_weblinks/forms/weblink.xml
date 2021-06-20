@@ -120,7 +120,6 @@
 			name="tags"
 			type="tag"
 			label="JTAG"
-			description="JTAG_DESC"
 			multiple="true"
 		/>
 
