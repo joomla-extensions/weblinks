@@ -152,7 +152,7 @@ if ($saveOrder && !empty($this->items))
 								<?php if ($assoc) : ?>
                                     <td class="hidden-phone hidden-tablet">
 										<?php if ($item->association) : ?>
-											<?php echo JHtml::_('weblink.association', $item->id); ?>
+											<?php echo JHtml::_('weblinksadministrator.association', $item->id); ?>
 										<?php endif; ?>
                                     </td>
 								<?php endif; ?>
