@@ -12,6 +12,7 @@ namespace Joomla\Component\Weblinks\Administrator\Controller;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Router\Route;
 use Joomla\Utilities\ArrayHelper;
 
 /**
@@ -33,7 +34,6 @@ class WeblinkController extends FormController
 	protected function allowAdd($data = array())
 	{
 		$categoryId = ArrayHelper::getValue($data, 'catid', $this->input->getInt('filter_category_id'), 'int');
-		$allow      = null;
 
 		if ($categoryId)
 		{
@@ -94,13 +94,13 @@ class WeblinkController extends FormController
 	 */
 	public function batch($model = null)
 	{
-		\JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
+		$this->checkToken();
 
 		// Set the model
 		$model = $this->getModel('Weblink', '', array());
 
 		// Preset the redirect
-		$this->setRedirect(\JRoute::_('index.php?option=com_weblinks&view=weblinks' . $this->getRedirectToListAppend(), false));
+		$this->setRedirect(Route::_('index.php?option=com_weblinks&view=weblinks' . $this->getRedirectToListAppend(), false));
 
 		return parent::batch($model);
 	}
@@ -121,7 +121,7 @@ class WeblinkController extends FormController
 
 		if ($task == 'save')
 		{
-			$this->setRedirect(\JRoute::_('index.php?option=com_weblinks&view=weblinks', false));
+			$this->setRedirect(Route::_('index.php?option=com_weblinks&view=weblinks', false));
 		}
 	}
 }
