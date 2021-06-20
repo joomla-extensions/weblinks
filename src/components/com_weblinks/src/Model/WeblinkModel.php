@@ -55,7 +55,7 @@ class WeblinkModel extends ItemModel
 
 		$user = $app->getIdentity();
 
-		if ((!$user->authorise('core.edit.state', 'com_weblinks')) && (!$user->authorise('core.edit', 'com_weblinks')))
+		if (!$user->authorise('core.edit.state', 'com_weblinks') && !$user->authorise('core.edit', 'com_weblinks'))
 		{
 			$this->setState('filter.published', 1);
 			$this->setState('filter.archived', 2);

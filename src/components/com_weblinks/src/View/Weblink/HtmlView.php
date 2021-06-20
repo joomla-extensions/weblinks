@@ -9,6 +9,9 @@
 
 namespace Joomla\Component\Weblinks\Site\View\Weblink;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+
 defined('_JEXEC') or die;
 
 /**
@@ -16,7 +19,7 @@ defined('_JEXEC') or die;
  *
  * @since  __DEPLOY_VERSION__
  */
-class WeblinksViewWeblink extends JViewLegacy
+class HtmlView extends BaseHtmlView
 {
 	protected $item;
 
@@ -35,7 +38,7 @@ class WeblinksViewWeblink extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$dispatcher = JEventDispatcher::getInstance();
+		$app        = Factory::getApplication();
 
 		$this->item   = $this->get('Item');
 		$this->state  = $this->get('State');
@@ -46,17 +49,17 @@ class WeblinksViewWeblink extends JViewLegacy
 
 		$offset = $this->state->get('list.offset');
 
-		$dispatcher->trigger('onContentPrepare', array ('com_weblinks.weblink', &$item, &$item->params, $offset));
+		$app->triggerEvent('onContentPrepare', array ('com_weblinks.weblink', &$item, &$item->params, $offset));
 
-		$item->event = new stdClass;
+		$item->event = new \stdClass;
 
-		$results = $dispatcher->trigger('onContentAfterTitle', array('com_weblinks.weblink', &$item, &$item->params, $offset));
+		$results = $app->triggerEvent('onContentAfterTitle', array('com_weblinks.weblink', &$item, &$item->params, $offset));
 		$item->event->afterDisplayTitle = trim(implode("\n", $results));
 
-		$results = $dispatcher->trigger('onContentBeforeDisplay', array('com_weblinks.weblink', &$item, &$item->params, $offset));
+		$results = $app->triggerEvent('onContentBeforeDisplay', array('com_weblinks.weblink', &$item, &$item->params, $offset));
 		$item->event->beforeDisplayContent = trim(implode("\n", $results));
 
-		$results = $dispatcher->trigger('onContentAfterDisplay', array('com_weblinks.weblink', &$item, &$item->params, $offset));
+		$results = $app->triggerEvent('onContentAfterDisplay', array('com_weblinks.weblink', &$item, &$item->params, $offset));
 		$item->event->afterDisplayContent = trim(implode("\n", $results));
 
 		parent::display($tpl);
