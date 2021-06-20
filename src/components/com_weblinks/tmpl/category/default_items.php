@@ -69,7 +69,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 
 					<?php if ($canEdit) : ?>
 						<span class="list-edit pull-left width-50">
-							<?php echo JHtml::_('icon.edit', $item, $params); ?>
+							<?php echo JHtml::_('weblinkicon.edit', $item, $params); ?>
 						</span>
 					<?php endif; ?>
 
