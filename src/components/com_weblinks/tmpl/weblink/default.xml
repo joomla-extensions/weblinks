@@ -12,7 +12,7 @@
 	<fields name="request">
 		<fieldset
 			name="request"
-			addfieldpath="/administrator/components/com_weblinks/models/fields"
+			addfieldprefix="Joomla\Component\Weblinks\Administrator\Field"
 		>
 
 			<field name="id"

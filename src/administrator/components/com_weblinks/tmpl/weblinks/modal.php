@@ -8,13 +8,14 @@
  */
 defined('_JEXEC') or die;
 
+use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
+
 $app = JFactory::getApplication();
 
 if ($app->isClient('site'))
 {
 	JSession::checkToken('get') or die(JText::_('JINVALID_TOKEN'));
 }
-JLoader::register('WeblinksHelperRoute', JPATH_ROOT . '/components/com_weblinks/helpers/route.php');
 
 // Include the component HTML helpers.
 
@@ -110,7 +111,7 @@ $iconStates = array(
 								. ' data-id="' . $item->id . '"'
 								. ' data-title="' . $this->escape(addslashes($item->title)) . '"'
 								. ' data-cat-id="' . $this->escape($item->catid) . '"'
-								. ' data-uri="' . $this->escape(WeblinksHelperRoute::getWeblinkRoute($item->id, $item->catid, $item->language)) . '"'
+								. ' data-uri="' . $this->escape(RouteHelper::getWeblinkRoute($item->id, $item->catid, $item->language)) . '"'
 								. ' data-language="' . $this->escape($lang) . '"';
 							?>
 							<a class="select-link" href="javascript:void(0)" <?php echo $attribs; ?>>

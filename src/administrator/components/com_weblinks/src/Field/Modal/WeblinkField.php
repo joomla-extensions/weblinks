@@ -9,6 +9,12 @@
 
 namespace Joomla\Component\Weblinks\Administrator\Field\Modal;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Session\Session;
+
 defined('JPATH_BASE') or die;
 
 /**
@@ -16,7 +22,7 @@ defined('JPATH_BASE') or die;
  *
  * @since  __DEPLOY_VERSION__
  */
-class WeblinkField extends \JFormField
+class WeblinkField extends FormField
 {
 	/**
 	 * The form field type.
@@ -41,7 +47,7 @@ class WeblinkField extends \JFormField
 		$allowSelect = ((string) $this->element['select'] != 'false');
 
 		// Load language
-		\JFactory::getLanguage()->load('com_weblinks', JPATH_ADMINISTRATOR);
+		Factory::getLanguage()->load('com_weblinks', JPATH_ADMINISTRATOR);
 
 		// The active weblink id field.
 		$value = (int) $this->value > 0 ? (int) $this->value : '';
@@ -49,9 +55,11 @@ class WeblinkField extends \JFormField
 		// Create the modal id.
 		$modalId = 'Weblink_' . $this->id;
 
+		/** @var \Joomla\CMS\WebAsset\WebAssetManager $wa */
+		$wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+
 		// Add the modal field script to the document head.
-		\JHtml::_('jquery.framework');
-		\JHtml::_('script', 'system/modal-fields.js', array('version' => 'auto', 'relative' => true));
+		$wa->useScript('field.modal-fields');
 
 		// Script to proxy the select modal function to the modal-fields.js file.
 		if ($allowSelect)
@@ -65,19 +73,24 @@ class WeblinkField extends \JFormField
 
 			if (!isset($scriptSelect[$this->id]))
 			{
-				\JFactory::getDocument()->addScriptDeclaration("
-				function jSelectWeblink_" . $this->id . "(id, title, catid, object, url, language) {
-					window.processModalSelect('Weblink', '" . $this->id . "', id, title, catid, object, url, language);
-				}
-				");
+				$wa->addInlineScript("
+				window.jSelectWeblink_" . $this->id . " = function (id, title, catid, object, url, language) {
+					window.processModalSelect('Article', '" . $this->id . "', id, title, catid, object, url, language);
+				}",
+					[],
+					['type' => 'module']
+				);
+
+				Text::script('JGLOBAL_ASSOCIATIONS_PROPAGATE_FAILED');
+
 				$scriptSelect[$this->id] = true;
 			}
 		}
 
 		// Setup variables for display.
-		$linkWeblinks = 'index.php?option=com_weblinks&amp;view=weblinks&amp;layout=modal&amp;tmpl=component&amp;' . \JSession::getFormToken() . '=1';
-		$linkWeblink  = 'index.php?option=com_weblinks&amp;view=weblink&amp;layout=modal&amp;tmpl=component&amp;' . \JSession::getFormToken() . '=1';
-		$modalTitle   = \JText::_('COM_WEBLINKS_CHANGE_WEBLINK');
+		$linkWeblinks = 'index.php?option=com_weblinks&amp;view=weblinks&amp;layout=modal&amp;tmpl=component&amp;' . Session::getFormToken() . '=1';
+		$linkWeblink  = 'index.php?option=com_weblinks&amp;view=weblink&amp;layout=modal&amp;tmpl=component&amp;' . Session::getFormToken() . '=1';
+		$modalTitle   = Text::_('COM_WEBLINKS_CHANGE_WEBLINK');
 
 		if (isset($this->element['language']))
 		{
@@ -92,7 +105,7 @@ class WeblinkField extends \JFormField
 
 		if ($value)
 		{
-			$db    = \JFactory::getDbo();
+			$db    = Factory::getDbo();
 			$query = $db->getQuery(true)
 				->select($db->quoteName('title'))
 				->from($db->quoteName('#__weblinks'))
@@ -104,81 +117,93 @@ class WeblinkField extends \JFormField
 			}
 			catch (\RuntimeException $e)
 			{
-				\JError::raiseWarning(500, $e->getMessage());
+				Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
 			}
 		}
-		$title = empty($title) ? \JText::_('COM_WEBLINKS_SELECT_A_WEBLINK') : htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
+
+		$title = empty($title) ? Text::_('COM_WEBLINKS_SELECT_A_WEBLINK') : htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
 
 		// The current weblink display field.
-		$html  = '<span class="input-append">';
-		$html .= '<input class="input-medium" id="' . $this->id . '_name" type="text" value="' . $title . '" disabled="disabled" size="35" />';
+		$html = '';
+
+		if ($allowSelect || $allowNew || $allowEdit || $allowClear)
+		{
+			$html .= '<span class="input-group">';
+		}
+
+		$html .= '<input class="form-control" id="' . $this->id . '_name" type="text" value="' . $title . '" readonly size="35">';
 
 		// Select weblink button
 		if ($allowSelect)
 		{
-			$html .= '<a'
-				. ' class="btn hasTooltip' . ($value ? ' hidden' : '') . '"'
+			$html .= '<button'
+				. ' class="btn btn-primary' . ($value ? ' hidden' : '') . '"'
 				. ' id="' . $this->id . '_select"'
-				. ' data-toggle="modal"'
-				. ' role="button"'
-				. ' href="#ModalSelect' . $modalId . '"'
-				. ' title="' . \JHtml::tooltipText('COM_WEBLINKS_CHANGE_WEBLINK') . '">'
-				. '<span class="icon-file" aria-hidden="true"></span> ' . \JText::_('JSELECT')
-				. '</a>';
+				. ' data-bs-toggle="modal"'
+				. ' type="button"'
+				. ' data-bs-target="#ModalSelect' . $modalId . '">'
+				. '<span class="icon-file" aria-hidden="true"></span> ' . Text::_('JSELECT')
+				. '</button>';
 		}
+
 		// New weblink button
 		if ($allowNew)
 		{
-			$html .= '<a'
-				. ' class="btn hasTooltip' . ($value ? ' hidden' : '') . '"'
+			$html .= '<button'
+				. ' class="btn btn-secondary' . ($value ? ' hidden' : '') . '"'
 				. ' id="' . $this->id . '_new"'
-				. ' data-toggle="modal"'
-				. ' role="button"'
-				. ' href="#ModalNew' . $modalId . '"'
-				. ' title="' . \JHtml::tooltipText('COM_WEBLINKS_NEW_WEBLINK') . '">'
-				. '<span class="icon-new" aria-hidden="true"></span> ' . \JText::_('JACTION_CREATE')
-				. '</a>';
+				. ' data-bs-toggle="modal"'
+				. ' type="button"'
+				. ' data-bs-target="#ModalNew' . $modalId . '">'
+				. '<span class="icon-plus" aria-hidden="true"></span> ' . Text::_('JACTION_CREATE')
+				. '</button>';
 		}
+
 		// Edit weblink button
 		if ($allowEdit)
 		{
-			$html .= '<a'
-				. ' class="btn hasTooltip' . ($value ? '' : ' hidden') . '"'
+			$html .= '<button'
+				. ' class="btn btn-primary' . ($value ? '' : ' hidden') . '"'
 				. ' id="' . $this->id . '_edit"'
-				. ' data-toggle="modal"'
-				. ' role="button"'
-				. ' href="#ModalEdit' . $modalId . '"'
-				. ' title="' . \JHtml::tooltipText('COM_WEBLINKS_EDIT_WEBLINK') . '">'
-				. '<span class="icon-edit" aria-hidden="true"></span> ' . \JText::_('JACTION_EDIT')
-				. '</a>';
+				. ' data-bs-toggle="modal"'
+				. ' type="button"'
+				. ' data-bs-target="#ModalEdit' . $modalId . '">'
+				. '<span class="icon-pen-square" aria-hidden="true"></span> ' . Text::_('JACTION_EDIT')
+				. '</button>';
 		}
+
 		// Clear weblink button
 		if ($allowClear)
 		{
-			$html .= '<a'
-				. ' class="btn' . ($value ? '' : ' hidden') . '"'
+			$html .= '<button'
+				. ' class="btn btn-secondary' . ($value ? '' : ' hidden') . '"'
 				. ' id="' . $this->id . '_clear"'
-				. ' href="#"'
+				. ' type="button"'
 				. ' onclick="window.processModalParent(\'' . $this->id . '\'); return false;">'
-				. '<span class="icon-remove" aria-hidden="true"></span>' . \JText::_('JCLEAR')
-				. '</a>';
+				. '<span class="icon-times" aria-hidden="true"></span> ' . Text::_('JCLEAR')
+				. '</button>';
 		}
-		$html .= '</span>';
+
+		if ($allowSelect || $allowNew || $allowEdit || $allowClear)
+		{
+			$html .= '</span>';
+		}
 
 		// Select weblink modal
 		if ($allowSelect)
 		{
-			$html .= \JHtml::_(
+			$html .= HTMLHelper::_(
 				'bootstrap.renderModal',
 				'ModalSelect' . $modalId,
 				array(
-					'title'       => $modalTitle,
-					'url'         => $urlSelect,
-					'height'      => '400px',
-					'width'       => '800px',
-					'bodyHeight'  => '70',
-					'modalWidth'  => '80',
-					'footer'      => '<a role="button" class="btn" data-dismiss="modal" aria-hidden="true">' . \JText::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</a>',
+					'title'      => $modalTitle,
+					'url'        => $urlSelect,
+					'height'     => '400px',
+					'width'      => '800px',
+					'bodyHeight' => 70,
+					'modalWidth' => 80,
+					'footer'     => '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">'
+						. Text::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</button>',
 				)
 			);
 		}
@@ -190,7 +215,7 @@ class WeblinkField extends \JFormField
 				'bootstrap.renderModal',
 				'ModalNew' . $modalId,
 				array(
-					'title'       => JText::_('COM_WEBLINKS_NEW_WEBLINK'),
+					'title'       => Text::_('COM_WEBLINKS_NEW_WEBLINK'),
 					'backdrop'    => 'static',
 					'keyboard'    => false,
 					'closeButton' => false,
@@ -200,14 +225,14 @@ class WeblinkField extends \JFormField
 					'bodyHeight'  => '70',
 					'modalWidth'  => '80',
 					'footer'      => '<a role="button" class="btn" aria-hidden="true"'
-							. ' onclick="window.processModalEdit(this, \'' . $this->id . '\', \'add\', \'weblink\', \'cancel\', \'weblink-form\'); return false;">'
-							. \JText::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</a>'
-							. '<a role="button" class="btn btn-primary" aria-hidden="true"'
-							. ' onclick="window.processModalEdit(this, \'' . $this->id . '\', \'add\', \'weblink\', \'save\', \'weblink-form\'); return false;">'
-							. \JText::_('JSAVE') . '</a>'
-							. '<a role="button" class="btn btn-success" aria-hidden="true"'
-							. ' onclick="window.processModalEdit(this, \'' . $this->id . '\', \'add\', \'weblink\', \'apply\', \'weblink-form\'); return false;">'
-							. \JText::_('JAPPLY') . '</a>',
+						. ' onclick="window.processModalEdit(this, \'' . $this->id . '\', \'add\', \'weblink\', \'cancel\', \'weblink-form\'); return false;">'
+						. Text::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</a>'
+						. '<a role="button" class="btn btn-primary" aria-hidden="true"'
+						. ' onclick="window.processModalEdit(this, \'' . $this->id . '\', \'add\', \'weblink\', \'save\', \'weblink-form\'); return false;">'
+						. Text::_('JSAVE') . '</a>'
+						. '<a role="button" class="btn btn-success" aria-hidden="true"'
+						. ' onclick="window.processModalEdit(this, \'' . $this->id . '\', \'add\', \'weblink\', \'apply\', \'weblink-form\'); return false;">'
+						. Text::_('JAPPLY') . '</a>',
 				)
 			);
 		}
@@ -215,11 +240,11 @@ class WeblinkField extends \JFormField
 		// Edit weblink modal
 		if ($allowEdit)
 		{
-			$html .= \JHtml::_(
+			$html .= HTMLHelper::_(
 				'bootstrap.renderModal',
 				'ModalEdit' . $modalId,
 				array(
-					'title'       => \JText::_('COM_WEBLINKS_EDIT_WEBLINK'),
+					'title'       => Text::_('COM_WEBLINKS_EDIT_WEBLINK'),
 					'backdrop'    => 'static',
 					'keyboard'    => false,
 					'closeButton' => false,
@@ -229,21 +254,22 @@ class WeblinkField extends \JFormField
 					'bodyHeight'  => '70',
 					'modalWidth'  => '80',
 					'footer'      => '<a role="button" class="btn" aria-hidden="true"'
-							. ' onclick="window.processModalEdit(this, \'' . $this->id . '\', \'edit\', \'weblink\', \'cancel\', \'weblink-form\'); return false;">'
-							. \JText::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</a>'
-							. '<a role="button" class="btn btn-primary" aria-hidden="true"'
-							. ' onclick="window.processModalEdit(this, \'' . $this->id . '\', \'edit\', \'weblink\', \'save\', \'weblink-form\'); return false;">'
-							. \JText::_('JSAVE') . '</a>'
-							. '<a role="button" class="btn btn-success" aria-hidden="true"'
-							. ' onclick="window.processModalEdit(this, \'' . $this->id . '\', \'edit\', \'weblink\', \'apply\', \'weblink-form\'); return false;">'
-							. \JText::_('JAPPLY') . '</a>',
+						. ' onclick="window.processModalEdit(this, \'' . $this->id . '\', \'edit\', \'weblink\', \'cancel\', \'weblink-form\'); return false;">'
+						. Text::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</a>'
+						. '<a role="button" class="btn btn-primary" aria-hidden="true"'
+						. ' onclick="window.processModalEdit(this, \'' . $this->id . '\', \'edit\', \'weblink\', \'save\', \'weblink-form\'); return false;">'
+						. Text::_('JSAVE') . '</a>'
+						. '<a role="button" class="btn btn-success" aria-hidden="true"'
+						. ' onclick="window.processModalEdit(this, \'' . $this->id . '\', \'edit\', \'weblink\', \'apply\', \'weblink-form\'); return false;">'
+						. Text::_('JAPPLY') . '</a>',
 				)
 			);
 		}
 		// Note: class='required' for client side validation.
 		$class = $this->required ? ' class="required modal-value"' : '';
-		$html .= '<input type="hidden" id="' . $this->id . '_id" ' . $class . ' data-required="' . (int) $this->required . '" name="' . $this->name
-			. '" data-text="' . htmlspecialchars(\JText::_('COM_WEBLINKS_SELECT_A_WEBLINK', true), ENT_COMPAT, 'UTF-8') . '" value="' . $value . '" />';
+		$html  .= '<input type="hidden" id="' . $this->id . '_id" ' . $class . ' data-required="' . (int) $this->required . '" name="' . $this->name
+			. '" data-text="' . htmlspecialchars(Text::_('COM_WEBLINKS_SELECT_A_WEBLINK', true), ENT_COMPAT, 'UTF-8') . '" value="' . $value . '" />';
+
 		return $html;
 	}
 
