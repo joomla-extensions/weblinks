@@ -13,6 +13,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\Toolbar;
@@ -79,8 +80,6 @@ class HtmlView extends BaseHtmlView
 		if (count($errors = $this->get('Errors')))
 		{
 			throw new GenericDataException(implode("\n", $errors), 500);
-
-			return false;
 		}
 
 		// We don't need toolbar in the modal layout.
@@ -124,7 +123,7 @@ class HtmlView extends BaseHtmlView
 		// Get the toolbar object instance
 		$toolbar = Toolbar::getInstance('toolbar');
 
-		ToolbarHelper::title(\JText::_('COM_WEBLINKS_MANAGER_WEBLINKS'), 'link weblinks');
+		ToolbarHelper::title(Text::_('COM_WEBLINKS_MANAGER_WEBLINKS'), 'link weblinks');
 
 		if ($canDo->get('core.create') || \count($user->getAuthorisedCategories('com_weblinks', 'core.create')) > 0)
 		{
@@ -184,25 +183,5 @@ class HtmlView extends BaseHtmlView
 		}
 
 		ToolbarHelper::help('JHELP_COMPONENTS_WEBLINKS_LINKS');
-	}
-
-	/**
-	 * Returns an array of fields the table can be sorted by
-	 *
-	 * @return  array  Array containing the field name to sort by as the key and display text as value
-	 *
-	 * @since   3.0
-	 */
-	protected function getSortFields()
-	{
-		return array(
-			'a.ordering' => \JText::_('JGRID_HEADING_ORDERING'),
-			'a.state'    => \JText::_('JSTATUS'),
-			'a.title'    => \JText::_('JGLOBAL_TITLE'),
-			'a.access'   => \JText::_('JGRID_HEADING_ACCESS'),
-			'a.hits'     => \JText::_('JGLOBAL_HITS'),
-			'a.language' => \JText::_('JGRID_HEADING_LANGUAGE'),
-			'a.id'       => \JText::_('JGRID_HEADING_ID'),
-		);
 	}
 }
