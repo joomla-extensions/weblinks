@@ -9,8 +9,6 @@
 
 defined('_JEXEC') or die;
 
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
-
 JFactory::getDocument()->addScriptDeclaration("
 jQuery(function($) {
 	$('.categories-list').find('[id^=category-btn-]').each(function(index, btn) {

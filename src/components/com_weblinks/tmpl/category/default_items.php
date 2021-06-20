@@ -9,8 +9,6 @@
 
 defined('_JEXEC') or die;
 
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-
 // JHtml::_('behavior.framework');
 
 // Create a shortcut for params.
