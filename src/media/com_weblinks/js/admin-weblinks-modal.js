@@ -14,8 +14,8 @@
 		var hreflang = '', editor, tag;
 
 		if (!Joomla.getOptions('xtd-weblinks')) {
-			// Something went wrong!
-			window.parent.jModalClose();
+			// Something went wrong
+			window.parent.Joomla.Modal.getCurrent().close();
 			return false;
 		}
 
@@ -28,14 +28,8 @@
 
 		tag = '<a' + hreflang + ' href="' + link + '">' + title + '</a>';
 
-		/** Use the API, if editor supports it **/
-		if (window.Joomla && window.Joomla.editors && Joomla.editors.instances && Joomla.editors.instances.hasOwnProperty(editor)) {
-			Joomla.editors.instances[editor].replaceSelection(tag)
-		} else {
-			window.parent.jInsertEditorText(tag, editor);
-		}
-
-		window.parent.jModalClose();
+		window.parent.Joomla.editors.instances[editor].replaceSelection(tag);
+		window.parent.Joomla.Modal.getCurrent().close();
 	};
 
 	document.addEventListener('DOMContentLoaded', function(){
