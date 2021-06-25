@@ -9,13 +9,25 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\CMSPlugin;
+
 /**
  * System plugin for Joomla Web Links.
  *
  * @since  __DEPLOY_VERSION__
  */
-class PlgSystemWeblinks extends JPlugin
+class PlgSystemWeblinks extends CMSPlugin
 {
+	/**
+	 * Database Driver Instance
+	 *
+	 * @var    \Joomla\Database\DatabaseDriver
+	 * @since  4.0.0
+	 */
+	protected $db;
+
 	/**
 	 * Load the language file on instantiation.
 	 *
@@ -51,17 +63,16 @@ class PlgSystemWeblinks extends JPlugin
 			return array();
 		}
 
-		if (!JComponentHelper::isEnabled('com_weblinks'))
+		if (!ComponentHelper::isEnabled('com_weblinks'))
 		{
 			return array();
 		}
 
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true)
+		$query = $this->db->getQuery(true)
 			->select('COUNT(id) AS count_links')
 			->from('#__weblinks')
 			->where('state = 1');
-		$webLinks = $db->setQuery($query)->loadResult();
+		$webLinks = $this->db->setQuery($query)->loadResult();
 
 		if (!$webLinks)
 		{
@@ -69,7 +80,7 @@ class PlgSystemWeblinks extends JPlugin
 		}
 
 		return array(array(
-			'title' => JText::_('PLG_SYSTEM_WEBLINKS_STATISTICS'),
+			'title' => Text::_('PLG_SYSTEM_WEBLINKS_STATISTICS'),
 			'icon'  => 'out-2',
 			'data'  => $webLinks
 		));
