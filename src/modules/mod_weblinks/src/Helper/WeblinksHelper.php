@@ -7,36 +7,38 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\Module\Weblinks\Site\Helper;
+
 defined('_JEXEC') or die;
 
-require_once JPATH_SITE . '/components/com_weblinks/helpers/route.php';
-require_once JPATH_SITE . '/components/com_weblinks/helpers/category.php';
-
-JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_weblinks/models', 'WeblinksModel');
+use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
+use Joomla\Component\Weblinks\Site\Model\CategoryModel;
+use Joomla\Registry\Registry;
 
 /**
  * Helper for mod_weblinks
  *
  * @since  1.5
  */
-class ModWeblinksHelper
+class WeblinksHelper
 {
 	/**
-	 * Show online member names
+	 * Retrieve list of weblinks
 	 *
-	 * @param   mixed  &$params  The parameters set in the administrator backend
+	 * @param   Registry                 $params  The module parameters
+	 * @param   CategoryModel            $model   The model
+	 * @param   CMSApplicationInterface  $app     The application
 	 *
 	 * @return  mixed   Null if no weblinks based on input parameters else an array containing all the weblinks.
 	 *
 	 * @since   1.5
 	 **/
-	public static function getList(&$params)
+	public static function getList($params, $model, $app)
 	{
-		// Get an instance of the generic articles model
-		$model = JModelLegacy::getInstance('Category', 'WeblinksModel', array('ignore_request' => true));
-
 		// Set application parameters in model
-		$app = JFactory::getApplication();
 		$appParams = $app->getParams();
 		$model->setState('params', $appParams);
 
@@ -48,27 +50,27 @@ class ModWeblinksHelper
 		$model->setState('filter.publish_date', true);
 
 		// Access filter
-		$access = !JComponentHelper::getParams('com_weblinks')->get('show_noauth');
+		$access = !ComponentHelper::getParams('com_weblinks')->get('show_noauth');
 		$model->setState('filter.access', $access);
 
 		$ordering = $params->get('ordering', 'ordering');
 		$model->setState('list.ordering', $ordering == 'order' ? 'ordering' : $ordering);
 		$model->setState('list.direction', $params->get('direction', 'asc'));
 
-		$catid	= (int) $params->get('catid', 0);
+		$catid = (int) $params->get('catid', 0);
 		$model->setState('category.id', $catid);
 		$model->setState('category.group', $params->get('groupby', 0));
 		$model->setState('category.ordering', $params->get('groupby_ordering', 'c.lft'));
 		$model->setState('category.direction', $params->get('groupby_direction', 'ASC'));
 
 		// Create query object
-		$db = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$case_when1 = ' CASE WHEN ';
 		$case_when1 .= $query->charLength('a.alias', '!=', '0');
 		$case_when1 .= ' THEN ';
-		$a_id = $query->castAsChar('a.id');
+		$a_id       = $query->castAsChar('a.id');
 		$case_when1 .= $query->concatenate(array($a_id, 'a.alias'), ':');
 		$case_when1 .= ' ELSE ';
 		$case_when1 .= $a_id . ' END as slug';
@@ -76,7 +78,7 @@ class ModWeblinksHelper
 		$case_when2 = ' CASE WHEN ';
 		$case_when2 .= $query->charLength('c.alias', '!=', '0');
 		$case_when2 .= ' THEN ';
-		$c_id = $query->castAsChar('c.id');
+		$c_id       = $query->castAsChar('c.id');
 		$case_when2 .= $query->concatenate(array($c_id, 'c.alias'), ':');
 		$case_when2 .= ' ELSE ';
 		$case_when2 .= $c_id . ' END as catslug';
@@ -99,7 +101,7 @@ class ModWeblinksHelper
 			{
 				if ($item->params->get('count_clicks', $params->get('count_clicks')) == 1)
 				{
-					$item->link	= JRoute::_('index.php?option=com_weblinks&task=weblink.go&catid=' . $item->catslug . '&id=' . $item->slug);
+					$item->link = RouteHelper::_('index.php?option=com_weblinks&task=weblink.go&catid=' . $item->catslug . '&id=' . $item->slug);
 				}
 				else
 				{

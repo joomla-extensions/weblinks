@@ -9,6 +9,7 @@
 	<authorUrl>www.joomla.org</authorUrl>
 	<version>##VERSION##</version>
 	<description>MOD_WEBLINKS_XML_DESCRIPTION</description>
+	<namespace path="src">Joomla\Module\Weblinks</namespace>
 	<files>
 		##MODULE_FILES##
 		<file module="mod_weblinks">mod_weblinks.php</file>
