@@ -9,13 +9,25 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Session\Session;
+
 /**
  * Editor Web Link button
  *
  * @since  __DEPLOY_VERSION__
  */
-class PlgButtonWeblink extends JPlugin
+class PlgButtonWeblink extends CMSPlugin
 {
+	/**
+	 * Application object
+	 *
+	 * @var    \Joomla\CMS\Application\CMSApplicationInterface
+	 * @since  4.0.0
+	 */
+	protected $app;
+
 	/**
 	 * Load the language file on instantiation.
 	 *
@@ -35,7 +47,7 @@ class PlgButtonWeblink extends JPlugin
 	 */
 	public function onDisplay($name)
 	{
-		$user = JFactory::getUser();
+		$user = $this->app->getIdentity();
 
 		if ($user->authorise('core.create', 'com_weblinks')
 			|| $user->authorise('core.edit', 'com_weblinks')
@@ -43,13 +55,13 @@ class PlgButtonWeblink extends JPlugin
 		{
 			// The URL for the weblinks list
 			$link = 'index.php?option=com_weblinks&amp;view=weblinks&amp;layout=modal&amp;tmpl=component&amp;'
-				. JSession::getFormToken() . '=1&amp;editor=' . $name;
+				. Session::getFormToken() . '=1&amp;editor=' . $name;
 
 			$button          = new JObject;
 			$button->modal   = true;
 			$button->class   = 'btn';
 			$button->link    = $link;
-			$button->text    = JText::_('PLG_EDITORS-XTD_WEBLINK_BUTTON_WEBLINK');
+			$button->text    = Text::_('PLG_EDITORS-XTD_WEBLINK_BUTTON_WEBLINK');
 			$button->name    = 'link';
 			$button->options = "{handler: 'iframe', size: {x: 800, y: 500}}";
 
