@@ -9,15 +9,34 @@
 
 defined('_JEXEC') or die;
 
-require_once JPATH_SITE . '/components/com_weblinks/helpers/route.php';
+use Joomla\CMS\Language\Multilanguage;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
 
 /**
  * Weblinks search plugin.
  *
  * @since  1.6
  */
-class PlgSearchWeblinks extends JPlugin
+class PlgSearchWeblinks extends CMSPlugin
 {
+	/**
+	 * Application object
+	 *
+	 * @var    \Joomla\CMS\Application\CMSApplicationInterface
+	 * @since  4.0.0
+	 */
+	protected $app;
+
+	/**
+	 * Database Driver Instance
+	 *
+	 * @var    \Joomla\Database\DatabaseDriver
+	 * @since  4.0.0
+	 */
+	protected $db;
+
 	/**
 	 * Load the language file on instantiation.
 	 *
@@ -59,8 +78,8 @@ class PlgSearchWeblinks extends JPlugin
 	 */
 	public function onContentSearch($text, $phrase = '', $ordering = '', $areas = null)
 	{
-		$db = JFactory::getDbo();
-		$groups = implode(',', JFactory::getUser()->getAuthorisedViewLevels());
+		$db = $this->db;
+		$groups = implode(',', $this->app->getIdentity()->getAuthorisedViewLevels());
 
 		$searchText = $text;
 
@@ -99,7 +118,7 @@ class PlgSearchWeblinks extends JPlugin
 			return array();
 		}
 
-		$searchWeblinks = JText::_('PLG_SEARCH_WEBLINKS');
+		$searchWeblinks = Text::_('PLG_SEARCH_WEBLINKS');
 
 		switch ($phrase)
 		{
@@ -183,9 +202,9 @@ class PlgSearchWeblinks extends JPlugin
 		->order($order);
 
 		// Filter by language.
-		if (JFactory::getApplication()->isClient('site') && JLanguageMultilang::isEnabled())
+		if ($this->app->isClient('site') && Multilanguage::isEnabled())
 		{
-			$tag = JFactory::getLanguage()->getTag();
+			$tag = $this->app->getLanguage()->getTag();
 			$query->where('a.language in (' . $db->quote($tag) . ',' . $db->quote('*') . ')')
 				->where('c.language in (' . $db->quote($tag) . ',' . $db->quote('*') . ')');
 		}
@@ -199,7 +218,7 @@ class PlgSearchWeblinks extends JPlugin
 		{
 			foreach ($rows as $key => $row)
 			{
-				$rows[$key]->href = WeblinksHelperRoute::getWeblinkRoute($row->slug, $row->catslug);
+				$rows[$key]->href = RouteHelper::getWeblinkRoute($row->slug, $row->catslug);
 			}
 
 			foreach ($rows as $weblink)
