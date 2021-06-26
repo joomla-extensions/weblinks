@@ -41,7 +41,7 @@ $onclick   = $this->escape($function);
 if (!empty($editor))
 {
 	// This view is used also in com_menus. Load the xtd script only if the editor is set!
-	$app->getDocument()->addScriptOptions('xtd-weblinks', array('editor' => $editor));
+	$this->document->addScriptOptions('xtd-weblinks', array('editor' => $editor));
 	$onclick = "jSelectWeblink";
 }
 

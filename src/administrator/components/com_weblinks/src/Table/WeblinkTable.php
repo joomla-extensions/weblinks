@@ -11,6 +11,8 @@ namespace Joomla\Component\Weblinks\Administrator\Table;
 
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\String\PunycodeHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Tag\TaggableTableInterface;
@@ -65,7 +67,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
 	public function store($updateNulls = false)
 	{
 		$date = Factory::getDate();
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		$this->modified = $date->toSql();
 
@@ -107,19 +109,13 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
 		if ($table->load(array('language' => $this->language, 'alias' => $this->alias, 'catid' => $this->catid))
 			&& ($table->id != $this->id || $this->id == 0))
 		{
-			$this->setError(\JText::_('COM_WEBLINKS_ERROR_UNIQUE_ALIAS'));
+			$this->setError(Text::_('COM_WEBLINKS_ERROR_UNIQUE_ALIAS'));
 
 			return false;
 		}
 
 		// Convert IDN urls to punycode
 		$this->url = PunycodeHelper::urlToPunycode($this->url);
-
-		// Set default value for xreference
-		if ($this->xreference === null)
-		{
-			$this->xreference = '';
-		}
 
 		return parent::store($updateNulls);
 	}
@@ -133,9 +129,9 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
 	 */
 	public function check()
 	{
-		if (\JFilterInput::checkAttribute(array('href', $this->url)))
+		if (InputFilter::checkAttribute(array('href', $this->url)))
 		{
-			$this->setError(\JText::_('COM_WEBLINKS_ERR_TABLES_PROVIDE_URL'));
+			$this->setError(Text::_('COM_WEBLINKS_ERR_TABLES_PROVIDE_URL'));
 
 			return false;
 		}
@@ -143,7 +139,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
 		// Check for valid name
 		if (trim($this->title) == '')
 		{
-			$this->setError(\JText::_('COM_WEBLINKS_ERR_TABLES_TITLE'));
+			$this->setError(Text::_('COM_WEBLINKS_ERR_TABLES_TITLE'));
 
 			return false;
 		}
@@ -163,7 +159,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
 
 		if ($xid && $xid != (int) $this->id)
 		{
-			$this->setError(\JText::_('COM_WEBLINKS_ERR_TABLES_NAME'));
+			$this->setError(Text::_('COM_WEBLINKS_ERR_TABLES_NAME'));
 
 			return false;
 		}
@@ -183,7 +179,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
 		// Check the publish down date is not earlier than publish up.
 		if ($this->publish_down > $db->getNullDate() && $this->publish_down < $this->publish_up)
 		{
-			$this->setError(\JText::_('JGLOBAL_START_PUBLISH_AFTER_FINISH'));
+			$this->setError(Text::_('JGLOBAL_START_PUBLISH_AFTER_FINISH'));
 
 			return false;
 		}
@@ -211,6 +207,43 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
 
 			// Put array back together delimited by ", "
 			$this->metakey = implode(", ", $clean_keys);
+		}
+
+		/**
+		 * Ensure any new items have compulsory fields set. This is needed for things like
+		 * frontend editing where we don't show all the fields or using some kind of API
+		 */
+		if (!$this->id)
+		{
+			if (!isset($this->xreference))
+			{
+				$this->xreference = '';
+			}
+
+			if (!isset($this->metakey))
+			{
+				$this->metakey = '';
+			}
+
+			if (!isset($this->metadesc))
+			{
+				$this->metadesc = '';
+			}
+
+			if (!isset($this->images))
+			{
+				$this->images = '{}';
+			}
+
+			if (!isset($this->metadata))
+			{
+				$this->metadata = '{}';
+			}
+
+			if (!isset($this->params))
+			{
+				$this->params = '{}';
+			}
 		}
 
 		return parent::check();
