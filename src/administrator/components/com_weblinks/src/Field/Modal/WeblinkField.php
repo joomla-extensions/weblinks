@@ -111,6 +111,7 @@ class WeblinkField extends FormField
 				->from($db->quoteName('#__weblinks'))
 				->where($db->quoteName('id') . ' = ' . (int) $value);
 			$db->setQuery($query);
+
 			try
 			{
 				$title = $db->loadResult();
@@ -265,6 +266,7 @@ class WeblinkField extends FormField
 				)
 			);
 		}
+
 		// Note: class='required' for client side validation.
 		$class = $this->required ? ' class="required modal-value"' : '';
 		$html  .= '<input type="hidden" id="' . $this->id . '_id" ' . $class . ' data-required="' . (int) $this->required . '" name="' . $this->name

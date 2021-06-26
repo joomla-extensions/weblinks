@@ -57,7 +57,7 @@ class HtmlView extends CategoryView
 
 			$temp = new Registry;
 			$temp->loadString($item->params);
-			$item->params = clone($this->params);
+			$item->params = clone $this->params;
 			$item->params->merge($temp);
 		}
 
@@ -71,10 +71,10 @@ class HtmlView extends CategoryView
 	 */
 	protected function prepareDocument()
 	{
-		parent::prepareDocument();;
+		parent::prepareDocument();
+		;
 
 		parent::addFeed();
-
 
 		if ($this->menuItemMatchCategory)
 		{

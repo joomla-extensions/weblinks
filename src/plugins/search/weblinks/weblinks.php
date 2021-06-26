@@ -194,12 +194,12 @@ class PlgSearchWeblinks extends CMSPlugin
 		$case_when1 .= $c_id . ' END as catslug';
 
 		$query->select('a.title AS title, a.created AS created, a.url, a.description AS text, ' . $case_when . "," . $case_when1)
-		->select($query->concatenate(array($db->quote($searchWeblinks), 'c.title'), " / ") . ' AS section')
-		->select('\'1\' AS browsernav')
-		->from('#__weblinks AS a')
-		->join('INNER', '#__categories as c ON c.id = a.catid')
-		->where('(' . $where . ') AND a.state IN (' . implode(',', $state) . ') AND c.published = 1 AND c.access IN (' . $groups . ')')
-		->order($order);
+			->select($query->concatenate(array($db->quote($searchWeblinks), 'c.title'), " / ") . ' AS section')
+			->select('\'1\' AS browsernav')
+			->from('#__weblinks AS a')
+			->join('INNER', '#__categories as c ON c.id = a.catid')
+			->where('(' . $where . ') AND a.state IN (' . implode(',', $state) . ') AND c.published = 1 AND c.access IN (' . $groups . ')')
+			->order($order);
 
 		// Filter by language.
 		if ($this->app->isClient('site') && Multilanguage::isEnabled())

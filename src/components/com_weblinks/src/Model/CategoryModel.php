@@ -100,7 +100,7 @@ class CategoryModel extends ListModel
 			}
 
 			// Get the tags
-			$item->tags = new TagsHelper();
+			$item->tags = new TagsHelper;
 			$item->tags->getItemTags('com_weblinks.weblink', $item->id);
 		}
 
@@ -195,7 +195,7 @@ class CategoryModel extends ListModel
 			$search = $db->quote('%' . $db->escape($search, true) . '%');
 			$query->where('(a.title LIKE ' . $search . ')');
 		}
-		
+
 		// If grouping by subcategory, add the subcategory list ordering clause.
 		if ($this->getState('category.group', 0))
 		{

@@ -141,7 +141,7 @@ class PlgFinderWeblinks extends Adapter
 	public function onFinderAfterSave($context, $row, $isNew)
 	{
 		// We only want to handle web links here. We need to handle front end and back end editing.
-		if ($context == 'com_weblinks.weblink' || $context == 'com_weblinks.form' )
+		if ($context == 'com_weblinks.weblink' || $context == 'com_weblinks.form')
 		{
 			// Check if the access levels are different.
 			if (!$isNew && $this->old_access != $row->access)

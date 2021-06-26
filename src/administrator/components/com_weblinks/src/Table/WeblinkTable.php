@@ -30,6 +30,7 @@ defined('_JEXEC') or die;
 class WeblinkTable extends Table implements VersionableTableInterface, TaggableTableInterface
 {
 	use TaggableTableTrait;
+
 	/**
 	 * Ensure the params and metadata in json encoded in the bind method
 	 *
