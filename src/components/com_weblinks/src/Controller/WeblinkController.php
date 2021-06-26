@@ -60,7 +60,11 @@ class WeblinkController extends FormController
 		{
 			// Redirect to the return page.
 			$this->setRedirect($this->getReturnPage());
+
+			return false;
 		}
+
+		return true;
 	}
 
 	/**

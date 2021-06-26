@@ -21,10 +21,26 @@ defined('_JEXEC') or die;
  */
 class HtmlView extends BaseHtmlView
 {
+	/**
+	 * The weblink object
+	 *
+	 * @var    \JObject
+	 */
 	protected $item;
 
+	/**
+	 * The page parameters
+	 *
+	 * @var    \Joomla\Registry\Registry|null
+	 */
 	protected $params;
 
+	/**
+	 * The item model state
+	 *
+	 * @var    \Joomla\Registry\Registry
+	 * @since  1.6
+	 */
 	protected $state;
 
 	/**
@@ -38,7 +54,7 @@ class HtmlView extends BaseHtmlView
 	 */
 	public function display($tpl = null)
 	{
-		$app        = Factory::getApplication();
+		$app = Factory::getApplication();
 
 		$this->item   = $this->get('Item');
 		$this->state  = $this->get('State');
@@ -49,17 +65,17 @@ class HtmlView extends BaseHtmlView
 
 		$offset = $this->state->get('list.offset');
 
-		$app->triggerEvent('onContentPrepare', array ('com_weblinks.weblink', &$item, &$item->params, $offset));
+		$app->triggerEvent('onContentPrepare', array('com_weblinks.weblink', &$item, &$item->params, $offset));
 
 		$item->event = new \stdClass;
 
-		$results = $app->triggerEvent('onContentAfterTitle', array('com_weblinks.weblink', &$item, &$item->params, $offset));
+		$results                        = $app->triggerEvent('onContentAfterTitle', array('com_weblinks.weblink', &$item, &$item->params, $offset));
 		$item->event->afterDisplayTitle = trim(implode("\n", $results));
 
-		$results = $app->triggerEvent('onContentBeforeDisplay', array('com_weblinks.weblink', &$item, &$item->params, $offset));
+		$results                           = $app->triggerEvent('onContentBeforeDisplay', array('com_weblinks.weblink', &$item, &$item->params, $offset));
 		$item->event->beforeDisplayContent = trim(implode("\n", $results));
 
-		$results = $app->triggerEvent('onContentAfterDisplay', array('com_weblinks.weblink', &$item, &$item->params, $offset));
+		$results                          = $app->triggerEvent('onContentAfterDisplay', array('com_weblinks.weblink', &$item, &$item->params, $offset));
 		$item->event->afterDisplayContent = trim(implode("\n", $results));
 
 		parent::display($tpl);

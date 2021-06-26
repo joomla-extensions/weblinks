@@ -12,6 +12,7 @@ namespace Joomla\Component\Weblinks\Site\Model;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Categories\Categories;
+use Joomla\CMS\Categories\CategoryNode;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\TagsHelper;
@@ -28,18 +29,24 @@ use Joomla\Registry\Registry;
 class CategoryModel extends ListModel
 {
 	/**
-	 * Category items data
+	 * Category item data
 	 *
-	 * @var array
+	 * @var CategoryNode|null
 	 */
 	protected $_item = null;
 
-	protected $_articles = null;
-
-	protected $_siblings = null;
-
+	/**
+	 * Array of child-categories
+	 *
+	 * @var    CategoryNode[]|null
+	 */
 	protected $_children = null;
 
+	/**
+	 * Parent category of the current one
+	 *
+	 * @var    CategoryNode|null
+	 */
 	protected $_parent = null;
 
 	/**
@@ -65,19 +72,6 @@ class CategoryModel extends ListModel
 		parent::__construct($config);
 	}
 
-	/**
-	 * The category that applies.
-	 *
-	 * @var  object
-	 */
-	protected $_category = null;
-
-	/**
-	 * The list of other weblink categories.
-	 *
-	 * @var  array
-	 */
-	protected $_categories = null;
 
 	/**
 	 * Method to get a list of items.

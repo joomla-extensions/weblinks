@@ -19,8 +19,8 @@ class JHtmlIcon
 	/**
 	 * Create a link to create a new weblink
 	 *
-	 * @param   mixed  $weblink  Unused
-	 * @param   mixed  $params   Unused
+	 * @param   object                     $category  The category information
+	 * @param   \Joomla\Registry\Registry  $params    The item parameters
 	 *
 	 * @return  string
 	 */

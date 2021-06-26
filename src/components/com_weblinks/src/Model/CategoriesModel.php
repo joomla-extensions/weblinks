@@ -10,6 +10,7 @@
 namespace Joomla\Component\Weblinks\Site\Model;
 
 use Joomla\CMS\Categories\Categories;
+use Joomla\CMS\Categories\CategoryNode;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Registry\Registry;
@@ -38,8 +39,18 @@ class CategoriesModel extends ListModel
 	 */
 	protected $_extension = 'com_weblinks';
 
+	/**
+	 * Parent category
+	 *
+	 * @var CategoryNode|null
+	 */
 	private $_parent = null;
 
+	/**
+	 * Categories data
+	 *
+	 * @var false|array
+	 */
 	private $_items = null;
 
 	/**
