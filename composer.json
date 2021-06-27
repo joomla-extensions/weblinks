@@ -18,7 +18,7 @@
         "joomla-projects/joomla-testing-robo": "~1.0",
         "joomla-projects/selenium-server-standalone": "^v3.1.0",
         "fzaninotto/faker": "^1.6",
-        "joomla-projects/jorobo": "~0.7",
+        "joomla-projects/jorobo": "^0.7.6",
         "behat/gherkin": "^4.4.1"
     }
 }
