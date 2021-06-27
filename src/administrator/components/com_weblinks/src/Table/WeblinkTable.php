@@ -90,6 +90,11 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
 			{
 				$this->created_by = $user->id;
 			}
+	
+			if (empty($this->hits))
+			{
+				$this->hits = 0;
+			}
 		}
 
 		// Set publish_up to null date if not set
