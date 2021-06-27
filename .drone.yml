@@ -4,7 +4,7 @@ name: default
 
 steps:
   - name: weblinks-codeception-tests
-    image: joomlaprojects/docker-systemtests:latest
+    image: joomlaprojects/docker-images:systemtests
     commands:
       - composer install
       - chmod a+x .drone/build.sh
