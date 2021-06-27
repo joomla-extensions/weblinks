@@ -112,7 +112,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
 		// Verify that the alias is unique
 		$table = new WeblinkTable($this->getDbo());
 
-		if ($table->load(array('language' => $this->language, 'alias' => $this->alias, 'catid' => $this->catid))
+		if ($table->load(array('language' => $this->language, 'alias' => $this->alias, 'catid' => (int)$this->catid))
 			&& ($table->id != $this->id || $this->id == 0))
 		{
 			$this->setError(Text::_('COM_WEBLINKS_ERROR_UNIQUE_ALIAS'));
