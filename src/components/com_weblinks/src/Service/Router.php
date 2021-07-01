@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     Joomla.Site
- * @subpackage  com_contact
+ * @subpackage  com_weblinks
  *
  * @copyright   (C) 2007 Open Source Matters, Inc. <https://www.joomla.org>
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -25,7 +25,7 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 
 /**
- * Routing class from com_contact
+ * Routing class from com_weblinks
  *
  * @since  3.3
  */

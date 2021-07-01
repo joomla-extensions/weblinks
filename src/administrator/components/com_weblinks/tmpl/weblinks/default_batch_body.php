@@ -30,7 +30,7 @@ $published = $this->state->get('filter.published');
 		<?php if ($published >= 0) : ?>
 			<div class="control-group span6">
 				<div class="controls">
-					<?php echo LayoutHelper::render('joomla.html.batch.item', ['extension' => 'com_contact']); ?>
+					<?php echo LayoutHelper::render('joomla.html.batch.item', ['extension' => 'com_weblinks']); ?>
 				</div>
 			</div>
 		<?php endif; ?>

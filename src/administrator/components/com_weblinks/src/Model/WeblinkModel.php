@@ -70,7 +70,7 @@ class WeblinkModel extends AdminModel
 			return false;
 		}
 
-		return Factory::getUser()->authorise('core.delete', 'com_contact.category.' . (int) $record->catid);
+		return Factory::getUser()->authorise('core.delete', 'com_weblinks.category.' . (int) $record->catid);
 	}
 
 	/**
