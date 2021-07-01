@@ -66,7 +66,7 @@ class Router extends RouterView
 	private $db;
 
 	/**
-	 * Content Component router constructor
+	 * Weblinks Component router constructor
 	 *
 	 * @param   SiteApplication           $app              The application object
 	 * @param   AbstractMenu              $menu             The menu object to work with
@@ -147,7 +147,7 @@ class Router extends RouterView
 	/**
 	 * Method to get the segment(s) for a weblink
 	 *
-	 * @param   string  $id     ID of the contact to retrieve the segments for
+	 * @param   string  $id     ID of the weblink to retrieve the segments for
 	 * @param   array   $query  The request that is built right now
 	 *
 	 * @return  array|string  The segments of this item
@@ -180,7 +180,7 @@ class Router extends RouterView
 	/**
 	 * Method to get the segment(s) for a form
 	 *
-	 * @param   string  $id     ID of the contact form to retrieve the segments for
+	 * @param   string  $id     ID of the weblink form to retrieve the segments for
 	 * @param   array   $query  The request that is built right now
 	 *
 	 * @return  array|string  The segments of this item
@@ -245,9 +245,9 @@ class Router extends RouterView
 	}
 
 	/**
-	 * Method to get the segment(s) for a contact
+	 * Method to get the segment(s) for a weblink
 	 *
-	 * @param   string  $segment  Segment of the contact to retrieve the ID for
+	 * @param   string  $segment  Segment of the weblink to retrieve the ID for
 	 * @param   array   $query    The request that is parsed right now
 	 *
 	 * @return  mixed   The id of this item or false

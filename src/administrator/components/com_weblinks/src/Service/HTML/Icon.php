@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Joomla.Site
+ * @package     Joomla.Administrator
  * @subpackage  com_weblinks
  *
  * @copyright   (C) 2020 Open Source Matters, Inc. <https://www.joomla.org>
@@ -22,7 +22,7 @@ use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
 use Joomla\Registry\Registry;
 
 /**
- * Content Component HTML Helper
+ * Weblinks Component HTML Helper
  *
  * @since  4.0.0
  */
@@ -96,7 +96,7 @@ class Icon
 	 * @param   array     $attribs  Optional attributes for the link
 	 * @param   boolean   $legacy   True to use legacy images, false to use icomoon based graphic
 	 *
-	 * @return  string   The HTML for the contact edit icon.
+	 * @return  string   The HTML for the weblink edit icon.
 	 *
 	 * @since   4.0.0
 	 */

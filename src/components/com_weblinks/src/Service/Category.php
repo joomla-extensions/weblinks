@@ -14,7 +14,7 @@ namespace Joomla\Component\Weblinks\Site\Service;
 use Joomla\CMS\Categories\Categories;
 
 /**
- * Content Component Category Tree
+ * Weblinks Component Category Tree
  *
  * @since  1.6
  */
