@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 // HTMLHelper::_('behavior.framework');
 
@@ -18,7 +19,7 @@ use Joomla\CMS\Language\Text;
 $params = &$this->category->params;
 
 // Get the user object.
-$user = JFactory::getUser();
+$user = Factory::getUser();
 
 // Check if user is allowed to add/edit based on weblinks permissinos.
 $canEdit = $user->authorise('core.edit', 'com_weblinks.category.' . $this->category->id);

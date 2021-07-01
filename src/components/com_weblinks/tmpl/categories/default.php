@@ -9,7 +9,9 @@
 
 defined('_JEXEC') or die;
 
-JFactory::getDocument()->addScriptDeclaration("
+use Joomla\CMS\Factory;
+
+Factory::getDocument()->addScriptDeclaration("
 jQuery(function($) {
 	$('.categories-list').find('[id^=category-btn-]').each(function(index, btn) {
 		var btn = $(btn);

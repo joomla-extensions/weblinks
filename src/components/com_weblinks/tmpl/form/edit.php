@@ -11,13 +11,14 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 HTMLHelper::_('behavior.keepalive');
 HTMLHelper::_('behavior.formvalidator');
 // HTMLHelper::_('behavior.modal', 'a.modal_jform_contenthistory');
 
 $captchaEnabled = false;
-$captchaSet = $this->params->get('captcha', JFactory::getApplication()->get('captcha', '0'));
+$captchaSet = $this->params->get('captcha', Factory::getApplication()->get('captcha', '0'));
 
 foreach (JPluginHelper::getPlugin('captcha') as $plugin)
 {

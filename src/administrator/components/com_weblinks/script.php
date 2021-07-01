@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 
 /**
  * Installation class to perform additional changes during install/uninstall/update
@@ -46,7 +47,7 @@ class Com_WeblinksInstallerScript
 			$category->metadesc = '';
 			$category->metakey = '';
 			$category->language = '*';
-			$category->checked_out_time = JFactory::getDbo()->getNullDate();
+			$category->checked_out_time = Factory::getDbo()->getNullDate();
 			$category->version = 1;
 			$category->hits = 0;
 			$category->modified_user_id = 0;
@@ -58,7 +59,7 @@ class Com_WeblinksInstallerScript
 			// Check to make sure our data is valid
 			if (!$category->check())
 			{
-				JFactory::getApplication()->enqueueMessage(Text::sprintf('COM_WEBLINKS_ERROR_INSTALL_CATEGORY', $category->getError()));
+				Factory::getApplication()->enqueueMessage(Text::sprintf('COM_WEBLINKS_ERROR_INSTALL_CATEGORY', $category->getError()));
 
 				return;
 			}
@@ -66,7 +67,7 @@ class Com_WeblinksInstallerScript
 			// Now store the category
 			if (!$category->store(true))
 			{
-				JFactory::getApplication()->enqueueMessage(Text::sprintf('COM_WEBLINKS_ERROR_INSTALL_CATEGORY', $category->getError()));
+				Factory::getApplication()->enqueueMessage(Text::sprintf('COM_WEBLINKS_ERROR_INSTALL_CATEGORY', $category->getError()));
 
 				return;
 			}
@@ -89,7 +90,7 @@ class Com_WeblinksInstallerScript
 	public function postflight($type, $parent)
 	{
 		// Only execute database changes on MySQL databases
-		$dbName = JFactory::getDbo()->name;
+		$dbName = Factory::getDbo()->name;
 
 		if (strpos($dbName, 'mysql') !== false)
 		{
@@ -114,7 +115,7 @@ class Com_WeblinksInstallerScript
 	private function insertMissingUcmRecords()
 	{
 		// Insert the rows in the #__content_types table if they don't exist already
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 
 		// Get the type ID for a Weblink
 		$query = $db->getQuery(true);
@@ -241,7 +242,7 @@ class Com_WeblinksInstallerScript
 			'approved',
 		);
 
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$table = $db->getTableColumns('#__weblinks');
 
 		$columns = array_intersect($oldColumns, array_keys($table));
@@ -263,7 +264,7 @@ class Com_WeblinksInstallerScript
 	 */
 	private function addColumnsIfNeeded()
 	{
-		$db    = JFactory::getDbo();
+		$db    = Factory::getDbo();
 		$table = $db->getTableColumns('#__weblinks');
 
 		if (!array_key_exists('version', $table))
