@@ -9,9 +9,10 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
 
-JHtml::_('bootstrap.tooltip');
+HTMLHelper::_('bootstrap.tooltip');
 
 $class = ' class="first"';
 
@@ -31,7 +32,7 @@ if (count($this->items[$this->parent->id]) > 0 && $this->maxLevelcat != 0) :
 				<a href="<?php echo JRoute::_(RouteHelper::getCategoryRoute($item->id));?>">
 					<?php echo $this->escape($item->title); ?></a>
 					<?php if ($this->params->get('show_cat_num_links_cat') == 1) :?>
-						<span class="badge badge-info tip hasTooltip" title="<?php echo JHtml::tooltipText('COM_WEBLINKS_NUM_ITEMS'); ?>">
+						<span class="badge badge-info tip hasTooltip" title="<?php echo HTMLHelper::tooltipText('COM_WEBLINKS_NUM_ITEMS'); ?>">
 							<?php echo $item->numitems; ?>
 						</span>
 					<?php endif; ?>
@@ -43,7 +44,7 @@ if (count($this->items[$this->parent->id]) > 0 && $this->maxLevelcat != 0) :
 				<?php if ($this->params->get('show_subcat_desc_cat') == 1) :?>
 					<?php if ($item->description) : ?>
 						<div class="category-desc">
-				<?php echo JHtml::_('content.prepare', $item->description, '', 'com_weblinks.categories'); ?>
+				<?php echo HTMLHelper::_('content.prepare', $item->description, '', 'com_weblinks.categories'); ?>
 						</div>
 					<?php endif; ?>
 				<?php endif; ?>

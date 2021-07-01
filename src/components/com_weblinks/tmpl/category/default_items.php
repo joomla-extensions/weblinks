@@ -9,7 +9,9 @@
 
 defined('_JEXEC') or die;
 
-// JHtml::_('behavior.framework');
+use Joomla\CMS\HTML\HTMLHelper;
+
+// HTMLHelper::_('behavior.framework');
 
 // Create a shortcut for params.
 $params = &$this->category->params;
@@ -67,7 +69,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 
 					<?php if ($canEdit) : ?>
 						<span class="list-edit pull-left width-50">
-							<?php echo JHtml::_('weblinkicon.edit', $item, $params); ?>
+							<?php echo HTMLHelper::_('weblinkicon.edit', $item, $params); ?>
 						</span>
 					<?php endif; ?>
 
@@ -76,7 +78,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 							 <?php echo JText::_('COM_WEBLINKS_LINK'); ?>
 						<?php elseif ($this->params->get('icons', 1) == 1) : ?>
 							<?php if (!$this->params->get('link_icons')) : ?>
-								<?php echo JHtml::_('image', 'system/weblink.png', JText::_('COM_WEBLINKS_LINK'), null, true); ?>
+								<?php echo HTMLHelper::_('image', 'system/weblink.png', JText::_('COM_WEBLINKS_LINK'), null, true); ?>
 							<?php else: ?>
 								<?php echo '<img src="' . $this->params->get('link_icons') . '" alt="' . JText::_('COM_WEBLINKS_LINK') . '" />'; ?>
 							<?php endif; ?>
@@ -111,7 +113,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 								break;
 							case 3:
 								// Open in a modal window
-								JHtml::_('behavior.modal', 'a.modal');
+								HTMLHelper::_('behavior.modal', 'a.modal');
 								echo '<a class="modal" href="' . $link . '"  rel="{handler: \'iframe\', size: {x:' . $this->escape($width) . ', y:' . $this->escape($height) . '}}">' .
 									$this->escape($item->title) . ' </a>';
 								break;

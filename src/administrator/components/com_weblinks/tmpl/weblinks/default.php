@@ -18,7 +18,7 @@ use Joomla\CMS\Router\Route;
 
 /** @var \Joomla\Component\Weblinks\Administrator\View\Weblinks\HtmlView $this */
 
-JHtml::_('behavior.multiselect');
+HTMLHelper::_('behavior.multiselect');
 
 $user      = Factory::getApplication()->getIdentity();
 $userId    = $user->get('id');
@@ -65,13 +65,13 @@ if ($saveOrder && !empty($this->items))
 								<?php echo HTMLHelper::_('searchtools.sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
 							</th>
 							<th scope="col">
-								<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
+								<?php echo HTMLHelper::_('searchtools.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 							</th>
 							<th scope="col" class="w-10 d-none d-md-table-cell">
-								<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_ACCESS', 'access_level', $listDirn, $listOrder); ?>
+								<?php echo HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_ACCESS', 'access_level', $listDirn, $listOrder); ?>
 							</th>
 							<th scope="col" class="w-10 d-none d-md-table-cell">
-								<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
+								<?php echo HTMLHelper::_('searchtools.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
 							</th>
 							<?php if ($assoc) : ?>
 								<th scope="col" class="w-10">
@@ -84,7 +84,7 @@ if ($saveOrder && !empty($this->items))
 								</th>
 							<?php endif; ?>
 							<th scope="col" class="w-5 d-none d-md-table-cell">
-								<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+								<?php echo HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 							</th>
 						</tr>
 						</thead>
@@ -152,7 +152,7 @@ if ($saveOrder && !empty($this->items))
 								<?php if ($assoc) : ?>
 									<td class="hidden-phone hidden-tablet">
 										<?php if ($item->association) : ?>
-											<?php echo JHtml::_('weblinksadministrator.association', $item->id); ?>
+											<?php echo HTMLHelper::_('weblinksadministrator.association', $item->id); ?>
 										<?php endif; ?>
 									</td>
 								<?php endif; ?>

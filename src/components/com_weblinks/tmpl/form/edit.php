@@ -13,7 +13,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 HTMLHelper::_('behavior.keepalive');
 HTMLHelper::_('behavior.formvalidator');
-// JHtml::_('behavior.modal', 'a.modal_jform_contenthistory');
+// HTMLHelper::_('behavior.modal', 'a.modal_jform_contenthistory');
 
 $captchaEnabled = false;
 $captchaSet = $this->params->get('captcha', JFactory::getApplication()->get('captcha', '0'));
@@ -92,6 +92,6 @@ $params = $this->state->get('params');
 
 		<input type="hidden" name="return" value="<?php echo $this->return_page;?>" />
 		<input type="hidden" name="task" value="" />
-		<?php echo JHtml::_('form.token'); ?>
+		<?php echo HTMLHelper::_('form.token'); ?>
 	</form>
 </div>

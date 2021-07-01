@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
 
 $class = ' class="first"';
@@ -32,7 +33,7 @@ if (count($this->children[$this->category->id]) > 0 && $this->maxLevel != 0) :
 			<?php if ($this->params->get('show_subcat_desc') == 1) :?>
 			<?php if ($child->description) : ?>
 				<div class="category-desc">
-					<?php echo JHtml::_('content.prepare', $child->description, '', 'com_weblinks.category'); ?>
+					<?php echo HTMLHelper::_('content.prepare', $child->description, '', 'com_weblinks.category'); ?>
 				</div>
 			<?php endif; ?>
 			<?php endif; ?>

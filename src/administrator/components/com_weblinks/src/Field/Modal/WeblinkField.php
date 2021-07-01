@@ -212,7 +212,7 @@ class WeblinkField extends FormField
 		// New weblink modal
 		if ($allowNew)
 		{
-			$html .= \JHtml::_(
+			$html .= HTMLHelper::_(
 				'bootstrap.renderModal',
 				'ModalNew' . $modalId,
 				array(
