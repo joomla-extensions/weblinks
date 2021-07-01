@@ -8,6 +8,9 @@
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Language\Text;
+
 ?>
 
 <?php if ($params->get('groupby', 0)) : ?>
@@ -64,7 +67,7 @@ defined('_JEXEC') or die;
 						<?php endif; ?>
 
 						<?php if ($params->get('hits', 0)) : ?>
-							<?php echo '(' . $item->hits . ' ' . JText::_('MOD_WEBLINKS_HITS') . ')'; ?>
+							<?php echo '(' . $item->hits . ' ' . Text::_('MOD_WEBLINKS_HITS') . ')'; ?>
 						<?php endif; ?>
 					</li>
 				<?php endforeach; ?>
@@ -109,7 +112,7 @@ defined('_JEXEC') or die;
 				<?php endif; ?>
 
 				<?php if ($params->get('hits', 0)) : ?>
-					<?php echo '(' . $item->hits . ' ' . JText::_('MOD_WEBLINKS_HITS') . ')'; ?>
+					<?php echo '(' . $item->hits . ' ' . Text::_('MOD_WEBLINKS_HITS') . ')'; ?>
 				<?php endif; ?>
 			</li>
 		<?php endforeach; ?>

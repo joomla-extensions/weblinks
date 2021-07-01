@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
 
 $class = ' class="first"';
@@ -40,7 +41,7 @@ if (count($this->children[$this->category->id]) > 0 && $this->maxLevel != 0) :
 
 			<?php if ($this->params->get('show_cat_num_links') == 1) :?>
 			<dl class="weblink-count"><dt>
-				<?php echo JText::_('COM_WEBLINKS_NUM'); ?></dt>
+				<?php echo Text::_('COM_WEBLINKS_NUM'); ?></dt>
 				<dd><?php echo $child->numitems; ?></dd>
 			</dl>
 		<?php endif; ?>

@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 HTMLHelper::_('behavior.keepalive');
 HTMLHelper::_('behavior.formvalidator');
@@ -75,12 +76,12 @@ $params = $this->state->get('params');
 		<div class="btn-toolbar">
 			<div class="btn-group">
 				<button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('weblink.save')">
-					<span class="icon-ok"></span> <?php echo JText::_('JSAVE') ?>
+					<span class="icon-ok"></span> <?php echo Text::_('JSAVE') ?>
 				</button>
 			</div>
 			<div class="btn-group">
 				<button type="button" class="btn" onclick="Joomla.submitbutton('weblink.cancel')">
-					<span class="icon-cancel"></span> <?php echo JText::_('JCANCEL') ?>
+					<span class="icon-cancel"></span> <?php echo Text::_('JCANCEL') ?>
 				</button>
 			</div>
 			<?php if ($params->get('save_history', 0)) : ?>

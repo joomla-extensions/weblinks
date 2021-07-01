@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Language\Text;
+
 /**
  * Installation class to perform additional changes during install/uninstall/update
  *
@@ -56,7 +58,7 @@ class Com_WeblinksInstallerScript
 			// Check to make sure our data is valid
 			if (!$category->check())
 			{
-				JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_WEBLINKS_ERROR_INSTALL_CATEGORY', $category->getError()));
+				JFactory::getApplication()->enqueueMessage(Text::sprintf('COM_WEBLINKS_ERROR_INSTALL_CATEGORY', $category->getError()));
 
 				return;
 			}
@@ -64,7 +66,7 @@ class Com_WeblinksInstallerScript
 			// Now store the category
 			if (!$category->store(true))
 			{
-				JFactory::getApplication()->enqueueMessage(JText::sprintf('COM_WEBLINKS_ERROR_INSTALL_CATEGORY', $category->getError()));
+				JFactory::getApplication()->enqueueMessage(Text::sprintf('COM_WEBLINKS_ERROR_INSTALL_CATEGORY', $category->getError()));
 
 				return;
 			}

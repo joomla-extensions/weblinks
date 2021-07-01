@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
 // HTMLHelper::_('behavior.framework');
 
@@ -30,7 +31,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
 
 <?php if (empty($this->items)) : ?>
-	<p> <?php echo JText::_('COM_WEBLINKS_NO_WEBLINKS'); ?></p>
+	<p> <?php echo Text::_('COM_WEBLINKS_NO_WEBLINKS'); ?></p>
 <?php else : ?>
 
 <form action="<?php echo htmlspecialchars(JUri::getInstance()->toString()); ?>" method="post" name="adminForm" id="adminForm">
@@ -38,15 +39,15 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 	<fieldset class="filters btn-toolbar">
 		<?php if ($this->params->get('filter_field') != 'hide') : ?>
 			<div class="btn-group">
-				<label class="filter-search-lbl element-invisible" for="filter-search"><?php echo JText::_('COM_WEBLINKS_FILTER_LABEL') . '&#160;'; ?></label>
-				<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('list.filter')); ?>" class="inputbox" onchange="document.adminForm.submit();" title="<?php echo JText::_('COM_WEBLINKS_FILTER_SEARCH_DESC'); ?>" placeholder="<?php echo JText::_('COM_WEBLINKS_FILTER_SEARCH_DESC'); ?>" />
+				<label class="filter-search-lbl element-invisible" for="filter-search"><?php echo Text::_('COM_WEBLINKS_FILTER_LABEL') . '&#160;'; ?></label>
+				<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('list.filter')); ?>" class="inputbox" onchange="document.adminForm.submit();" title="<?php echo Text::_('COM_WEBLINKS_FILTER_SEARCH_DESC'); ?>" placeholder="<?php echo Text::_('COM_WEBLINKS_FILTER_SEARCH_DESC'); ?>" />
 			</div>
 		<?php endif; ?>
 
 		<?php if ($this->params->get('show_pagination_limit')) : ?>
 			<div class="btn-group pull-right">
 				<label for="limit" class="element-invisible">
-					<?php echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>
+					<?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>
 				</label>
 				<?php echo $this->pagination->getLimitBox(); ?>
 			</div>
@@ -63,7 +64,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 					<?php endif; ?>
 					<?php if ($this->params->get('show_link_hits', 1)) : ?>
 						<span class="list-hits badge badge-info pull-right">
-							<?php echo JText::sprintf('JGLOBAL_HITS_COUNT', $item->hits); ?>
+							<?php echo Text::sprintf('JGLOBAL_HITS_COUNT', $item->hits); ?>
 						</span>
 					<?php endif; ?>
 
@@ -75,12 +76,12 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 
 					<div class="list-title">
 						<?php if ($this->params->get('icons', 1) == 0) : ?>
-							 <?php echo JText::_('COM_WEBLINKS_LINK'); ?>
+							 <?php echo Text::_('COM_WEBLINKS_LINK'); ?>
 						<?php elseif ($this->params->get('icons', 1) == 1) : ?>
 							<?php if (!$this->params->get('link_icons')) : ?>
-								<?php echo HTMLHelper::_('image', 'system/weblink.png', JText::_('COM_WEBLINKS_LINK'), null, true); ?>
+								<?php echo HTMLHelper::_('image', 'system/weblink.png', Text::_('COM_WEBLINKS_LINK'), null, true); ?>
 							<?php else: ?>
-								<?php echo '<img src="' . $this->params->get('link_icons') . '" alt="' . JText::_('COM_WEBLINKS_LINK') . '" />'; ?>
+								<?php echo '<img src="' . $this->params->get('link_icons') . '" alt="' . Text::_('COM_WEBLINKS_LINK') . '" />'; ?>
 							<?php endif; ?>
 						<?php endif; ?>
 						<?php // Compute the correct link ?>
@@ -93,7 +94,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 							<?php $height = 500; ?>
 						<?php endif; ?>
 						<?php if ($this->items[$i]->state == 0) : ?>
-							<span class="label label-warning"><?php echo JText::_('JUNPUBLISHED'); ?></span>
+							<span class="label label-warning"><?php echo Text::_('JUNPUBLISHED'); ?></span>
 						<?php endif; ?>
 
 						<?php
