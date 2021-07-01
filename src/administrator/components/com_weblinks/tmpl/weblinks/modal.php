@@ -12,6 +12,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
 
 $app = Factory::getApplication();
@@ -55,7 +56,7 @@ $iconStates = array(
 ?>
 <div class="container-popup">
 
-	<form action="<?php echo JRoute::_('index.php?option=com_weblinks&view=weblinks&layout=modal&tmpl=component&function=' . $function . '&' . JSession::getFormToken() . '=1&editor=' . $editor); ?>" method="post" name="adminForm" id="adminForm" class="form-inline">
+	<form action="<?php echo Route::_('index.php?option=com_weblinks&view=weblinks&layout=modal&tmpl=component&function=' . $function . '&' . JSession::getFormToken() . '=1&editor=' . $editor); ?>" method="post" name="adminForm" id="adminForm" class="form-inline">
 		<?php echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this)); ?>
 		<div class="clearfix"></div>
 		<?php if (empty($this->items)) : ?>

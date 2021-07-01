@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
 use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
 
 HTMLHelper::_('bootstrap.tooltip');
@@ -29,7 +30,7 @@ if (count($this->items[$this->parent->id]) > 0 && $this->maxLevelcat != 0) :
 		<div <?php echo $class; ?> >
 		<?php $class = ''; ?>
 			<h3 class="page-header item-title">
-				<a href="<?php echo JRoute::_(RouteHelper::getCategoryRoute($item->id));?>">
+				<a href="<?php echo Route::_(RouteHelper::getCategoryRoute($item->id));?>">
 					<?php echo $this->escape($item->title); ?></a>
 					<?php if ($this->params->get('show_cat_num_links_cat') == 1) :?>
 						<span class="badge badge-info tip hasTooltip" title="<?php echo HTMLHelper::tooltipText('COM_WEBLINKS_NUM_ITEMS'); ?>">

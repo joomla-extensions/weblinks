@@ -9,9 +9,10 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
 
 HTMLHelper::_('behavior.formvalidator');
 
@@ -30,7 +31,7 @@ $layout  = $isModal ? 'modal' : 'edit';
 $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=component' : '';
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_weblinks&layout=' . $layout . $tmpl . '&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="weblink-form" class="form-validate">
+<form action="<?php echo Route::_('index.php?option=com_weblinks&layout=' . $layout . $tmpl . '&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="weblink-form" class="form-validate">
 
 	<?php echo JLayoutHelper::render('joomla.edit.title_alias', $this); ?>
 

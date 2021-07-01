@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
 
 $class = ' class="first"';
@@ -27,7 +28,7 @@ if (count($this->children[$this->category->id]) > 0 && $this->maxLevel != 0) :
 	?>
 	<li<?php echo $class; ?>>
 		<?php $class = ''; ?>
-			<span class="item-title"><a href="<?php echo JRoute::_(RouteHelper::getCategoryRoute($child->id));?>">
+			<span class="item-title"><a href="<?php echo Route::_(RouteHelper::getCategoryRoute($child->id));?>">
 				<?php echo $this->escape($child->title); ?></a>
 			</span>
 

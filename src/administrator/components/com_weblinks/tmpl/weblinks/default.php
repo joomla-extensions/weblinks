@@ -91,7 +91,7 @@ if ($saveOrder && !empty($this->items))
 						<tbody <?php if ($saveOrder) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($listDirn); ?>" data-nested="true"<?php endif; ?>>
 						<?php foreach ($this->items as $i => $item) : ?>
 							<?php $ordering       = ($listOrder == 'a.ordering'); ?>
-							<?php $item->cat_link = JRoute::_('index.php?option=com_categories&extension=com_weblinks&task=edit&type=other&cid[]=' . $item->catid); ?>
+							<?php $item->cat_link = Route::_('index.php?option=com_categories&extension=com_weblinks&task=edit&type=other&cid[]=' . $item->catid); ?>
 							<?php $canCreate      = $user->authorise('core.create',     'com_weblinks.category.' . $item->catid); ?>
 							<?php $canEdit        = $user->authorise('core.edit',       'com_weblinks.category.' . $item->catid); ?>
 							<?php $canCheckin     = $user->authorise('core.manage',     'com_checkin') || $item->checked_out == $user->id || $item->checked_out == 0; ?>
