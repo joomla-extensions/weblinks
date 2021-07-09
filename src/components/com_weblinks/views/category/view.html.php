@@ -61,13 +61,11 @@ class WeblinksViewCategory extends JViewCategory
 		parent::prepareDocument();
 
 		$app		= JFactory::getApplication();
-		$menus		= $app->getMenu();
 		$pathway	= $app->getPathway();
-		$title 		= null;
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
-		$menu = $menus->getActive();
+		$menu = $app->getMenu()->getActive();
 
 		if ($menu)
 		{
@@ -86,7 +84,7 @@ class WeblinksViewCategory extends JViewCategory
 			$path = array(array('title' => $this->category->title, 'link' => ''));
 			$category = $this->category->getParent();
 
-			while (($menu->query['option'] != 'com_weblinks' || $id != $category->id) && $category->id > 1)
+			while ($category !== null && $category->id !== 'root' && ($menu->query['option'] != 'com_weblinks' || $id != $category->id))
 			{
 				$path[] = array('title' => $category->title, 'link' => WeblinksHelperRoute::getCategoryRoute($category->id));
 				$category = $category->getParent();
