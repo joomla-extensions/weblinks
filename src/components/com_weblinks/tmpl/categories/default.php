@@ -9,22 +9,22 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
 
-Factory::getDocument()->addScriptDeclaration("
-jQuery(function($) {
-	$('.categories-list').find('[id^=category-btn-]').each(function(index, btn) {
-		var btn = $(btn);
-		btn.on('click', function() {
-			btn.find('span').toggleClass('icon-plus');
-			btn.find('span').toggleClass('icon-minus');
-		});
-	});
-});");
+// Add strings for translations in Javascript.
+Text::script('JGLOBAL_EXPAND_CATEGORIES');
+Text::script('JGLOBAL_COLLAPSE_CATEGORIES');
+
+/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
+$wa = $this->document->getWebAssetManager();
+$wa->getRegistry()->addExtensionRegistryFile('com_categories');
+$wa->useScript('com_categories.shared-categories-accordion');
+
 ?>
-<div class="categories-list<?php echo $this->pageclass_sfx;?>">
+<div class="com-weblinks-categories categories-list">
 	<?php
-		echo JLayoutHelper::render('joomla.content.categories_default', $this);
-		echo $this->loadTemplate('items');
+	echo LayoutHelper::render('joomla.content.categories_default', $this);
+	echo $this->loadTemplate('items');
 	?>
 </div>
