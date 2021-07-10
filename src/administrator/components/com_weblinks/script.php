@@ -10,7 +10,11 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Table;
 
 /**
  * Installation class to perform additional changes during install/uninstall/update
@@ -19,6 +23,63 @@ use Joomla\CMS\Language\Text;
  */
 class Com_WeblinksInstallerScript
 {
+	/**
+	 * Function called before extension installation/update/removal procedure commences
+	 *
+	 * @param   string            $type    The type of change (install, update or discover_install, not uninstall)
+	 * @param   InstallerAdapter  $parent  The class calling this method
+	 *
+	 * @return  boolean  True on success
+	 *
+	 * @since   4.0
+	 */
+	public function preflight($type, $parent)
+	{
+		$files = [
+			'/administrator/components/com_weblinks/controller.php',
+			'/administrator/components/com_weblinks/weblinks.php',
+			'/administrator/components/com_weblinks/helpers/associations.php',
+			'/administrator/components/com_weblinks/sql/install.sqlsrv.sql',
+			'/administrator/components/com_weblinks/sql/uninstall.sqlsrv.sql',
+			'/components/com_weblinks/helpers/association.php',
+			'/components/com_weblinks/helpers/category.php',
+			'/components/com_weblinks/controller.php',
+			'/components/com_weblinks/weblinks.php',
+			'/components/com_weblinks/metadata.xml',
+			'/components/com_weblinks/router.php',
+		];
+
+		$folders = [
+			'/administrator/components/com_weblinks/controllers',
+			'/administrator/components/com_weblinks/helpers/html',
+			'/administrator/components/com_weblinks/models',
+			'/administrator/components/com_weblinks/sql/updates/sqlsrv',
+			'/administrator/components/com_weblinks/tables',
+			'/administrator/components/com_weblinks/views',
+			'/components/com_weblinks/controllers',
+			'/administrator/components/com_weblinks/models',
+			'/administrator/components/com_weblinks/views',
+		];
+
+		foreach ($files as $file)
+		{
+			if (File::exists(JPATH_ROOT . $file))
+			{
+				File::delete(JPATH_ROOT . $file);
+			}
+		}
+
+		foreach ($folders as $folder)
+		{
+			if (Folder::exists(JPATH_ROOT . $folder))
+			{
+				Folder::delete(JPATH_ROOT . $folder);
+			}
+		}
+
+		return true;
+	}
+
 	/**
 	 * Function to perform changes during install
 	 *
@@ -32,7 +93,7 @@ class Com_WeblinksInstallerScript
 	{
 		// Initialize a new category
 		/** @type  JTableCategory  $category  */
-		$category = JTable::getInstance('Category');
+		$category = Table::getInstance('Category');
 
 		// Check if the Uncategorised category exists before adding it
 		if (!$category->load(array('extension' => 'com_weblinks', 'title' => 'Uncategorised')))
