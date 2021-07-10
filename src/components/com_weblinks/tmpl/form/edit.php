@@ -16,7 +16,6 @@ use Joomla\CMS\Router\Route;
 
 HTMLHelper::_('behavior.keepalive');
 HTMLHelper::_('behavior.formvalidator');
-// HTMLHelper::_('behavior.modal', 'a.modal_jform_contenthistory');
 
 $captchaEnabled = false;
 $captchaSet = $this->params->get('captcha', Factory::getApplication()->get('captcha', '0'));
@@ -33,21 +32,13 @@ foreach (JPluginHelper::getPlugin('captcha') as $plugin)
 // Create shortcut to parameters.
 $params = $this->state->get('params');
 ?>
-
-<script type="text/javascript">
-	Joomla.submitbutton = function(task)
-	{
-		if (task == 'weblink.cancel' || document.formvalidator.isValid(document.getElementById('adminForm')))
-		{
-			Joomla.submitform(task);
-		}
-	}
-</script>
-<div class="edit<?php echo $this->pageclass_sfx; ?>">
+<div class="edit item-page<?php echo $this->pageclass_sfx; ?>">
 	<?php if ($this->params->get('show_page_heading')) : ?>
-	<h1>
-		<?php echo $this->escape($this->params->get('page_heading')); ?>
-	</h1>
+    <div class="page-header">
+        <h1>
+		    <?php echo $this->escape($this->params->get('page_heading')); ?>
+        </h1>
+    </div>
 	<?php endif; ?>
 	<form action="<?php echo Route::_('index.php?option=com_weblinks&view=form&w_id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-vertical">
 
@@ -75,23 +66,19 @@ $params = $this->state->get('params');
 			</div>
 		<?php endif; ?>
 
-		<div class="btn-toolbar">
-			<div class="btn-group">
-				<button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('weblink.save')">
-					<span class="icon-ok"></span> <?php echo Text::_('JSAVE') ?>
-				</button>
-			</div>
-			<div class="btn-group">
-				<button type="button" class="btn" onclick="Joomla.submitbutton('weblink.cancel')">
-					<span class="icon-cancel"></span> <?php echo Text::_('JCANCEL') ?>
-				</button>
-			</div>
-			<?php if ($params->get('save_history', 0)) : ?>
-				<div class="btn-group">
-					<?php echo $this->form->getInput('contenthistory'); ?>
-				</div>
+        <div class="mb-2">
+            <button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('weblink.save')">
+                <span class="icon-check" aria-hidden="true"></span>
+				<?php echo Text::_('JSAVE'); ?>
+            </button>
+            <button type="button" class="btn btn-danger" onclick="Joomla.submitbutton('weblink.cancel')">
+                <span class="icon-times" aria-hidden="true"></span>
+				<?php echo Text::_('JCANCEL'); ?>
+            </button>
+			<?php if ($this->params->get('save_history', 0) && $this->item->id) : ?>
+				<?php echo $this->form->getInput('contenthistory'); ?>
 			<?php endif; ?>
-		</div>
+        </div>
 
 		<input type="hidden" name="return" value="<?php echo $this->return_page;?>" />
 		<input type="hidden" name="task" value="" />

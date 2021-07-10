@@ -32,7 +32,7 @@
 			name="alias"
 			type="text"
 			label="JFIELD_ALIAS_LABEL"
-			description="COM_WEBLINKS_FIELD_ALIAS_DESC"
+			description="JFIELD_ALIAS_DESC"
 			hint="JFIELD_ALIAS_PLACEHOLDER"
 			size="45"
 		/>
@@ -93,8 +93,6 @@
 			name="tags"
 			type="tag"
 			label="JTAG"
-			description="JTAG_DESC"
-			class="inputbox"
 			multiple="true"
 		/>
 
