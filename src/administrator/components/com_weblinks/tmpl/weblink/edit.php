@@ -13,6 +13,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Layout\LayoutHelper;
 
 HTMLHelper::_('behavior.formvalidator');
 
@@ -33,7 +34,7 @@ $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=c
 
 <form action="<?php echo Route::_('index.php?option=com_weblinks&layout=' . $layout . $tmpl . '&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="weblink-form" class="form-validate">
 
-	<?php echo JLayoutHelper::render('joomla.edit.title_alias', $this); ?>
+	<?php echo LayoutHelper::render('joomla.edit.title_alias', $this); ?>
 
 	<div class="form-horizontal">
 		<?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => 'details')); ?>
@@ -47,7 +48,7 @@ $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=c
 				</div>
 			</div>
 			<div class="col-md-3">
-				<?php echo JLayoutHelper::render('joomla.edit.global', $this); ?>
+				<?php echo LayoutHelper::render('joomla.edit.global', $this); ?>
 			</div>
 		</div>
 		<?php echo HTMLHelper::_('uitab.endTab'); ?>
@@ -67,15 +68,15 @@ $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=c
 		<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'publishing', Text::_('JGLOBAL_FIELDSET_PUBLISHING', true)); ?>
 		<div class="row form-horizontal-desktop">
 			<div class="col-md-6">
-				<?php echo JLayoutHelper::render('joomla.edit.publishingdata', $this); ?>
+				<?php echo LayoutHelper::render('joomla.edit.publishingdata', $this); ?>
 			</div>
 			<div class="col-md-6">
-				<?php echo JLayoutHelper::render('joomla.edit.metadata', $this); ?>
+				<?php echo LayoutHelper::render('joomla.edit.metadata', $this); ?>
 			</div>
 		</div>
 		<?php echo HTMLHelper::_('uitab.endTab'); ?>
 
-		<?php echo JLayoutHelper::render('joomla.edit.params', $this); ?>
+		<?php echo LayoutHelper::render('joomla.edit.params', $this); ?>
 
 		<?php if (!$isModal && $assoc) : ?>
 			<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'associations', Text::_('JGLOBAL_FIELDSET_ASSOCIATIONS')); ?>

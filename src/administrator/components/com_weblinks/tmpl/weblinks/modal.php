@@ -14,6 +14,7 @@ use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
+use Joomla\CMS\Layout\LayoutHelper;
 
 $app = Factory::getApplication();
 
@@ -57,7 +58,7 @@ $iconStates = array(
 <div class="container-popup">
 
 	<form action="<?php echo Route::_('index.php?option=com_weblinks&view=weblinks&layout=modal&tmpl=component&function=' . $function . '&' . JSession::getFormToken() . '=1&editor=' . $editor); ?>" method="post" name="adminForm" id="adminForm" class="form-inline">
-		<?php echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this)); ?>
+		<?php echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this)); ?>
 		<div class="clearfix"></div>
 		<?php if (empty($this->items)) : ?>
 			<div class="alert alert-no-items">
@@ -128,7 +129,7 @@ $iconStates = array(
 							<?php echo $this->escape($item->access_level); ?>
 						</td>
 						<td class="small">
-							<?php echo JLayoutHelper::render('joomla.content.language', $item); ?>
+							<?php echo LayoutHelper::render('joomla.content.language', $item); ?>
 						</td>
 						<td class="nowrap small hidden-phone">
 							<?php echo HTMLHelper::_('date', $item->created, Text::_('DATE_FORMAT_LC4')); ?>
