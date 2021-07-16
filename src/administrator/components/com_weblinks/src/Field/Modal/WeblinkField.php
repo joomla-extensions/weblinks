@@ -14,6 +14,7 @@ use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Session\Session;
+use Joomla\Database\ParameterType;
 
 defined('JPATH_BASE') or die;
 
@@ -109,7 +110,8 @@ class WeblinkField extends FormField
 			$query = $db->getQuery(true)
 				->select($db->quoteName('title'))
 				->from($db->quoteName('#__weblinks'))
-				->where($db->quoteName('id') . ' = ' . (int) $value);
+				->where($db->quoteName('id') . ' = :id')
+				->bind(':id', $value, ParameterType::INTEGER);
 			$db->setQuery($query);
 
 			try

@@ -19,6 +19,7 @@ use Joomla\CMS\Helper\TagsHelper;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Table\Table;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 /**
@@ -110,7 +111,7 @@ class CategoryModel extends ListModel
 	 */
 	protected function getListQuery()
 	{
-		$groups = implode(',', Factory::getUser()->getAuthorisedViewLevels());
+		$viewLevels = Factory::getUser()->getAuthorisedViewLevels();
 
 		// Create a new query object.
 		$db = $this->getDbo();
@@ -119,7 +120,7 @@ class CategoryModel extends ListModel
 		// Select required fields from the categories.
 		$query->select($this->getState('list.select', 'a.*'))
 			->from($db->quoteName('#__weblinks') . ' AS a')
-			->where('a.access IN (' . $groups . ')');
+			->whereIn($db->quoteName('a.access'), $viewLevels);
 
 		// Filter by category.
 		if ($categoryId = $this->getState('category.id'))
@@ -128,15 +129,17 @@ class CategoryModel extends ListModel
 			if ($this->getState('category.group', 0))
 			{
 				$query->select('c.title AS category_title')
-					->where('c.parent_id = ' . (int) $categoryId)
+					->where('c.parent_id = :parent_id')
+					->bind(':parent_id', $categoryId, ParameterType::INTEGER)
 					->join('LEFT', '#__categories AS c ON c.id = a.catid')
-					->where('c.access IN (' . $groups . ')');
+					->whereIn($db->quoteName('c.access'), $viewLevels);
 			}
 			else
 			{
-				$query->where('a.catid = ' . (int) $categoryId)
+				$query->where('a.catid = :catid')
+					->bind(':catid', $categoryId, ParameterType::INTEGER)
 					->join('LEFT', '#__categories AS c ON c.id = a.catid')
-					->where('c.access IN (' . $groups . ')');
+					->whereIn($db->quoteName('c.access'), $viewLevels);
 			}
 
 			// Filter by published category
@@ -144,7 +147,8 @@ class CategoryModel extends ListModel
 
 			if (is_numeric($cpublished))
 			{
-				$query->where('c.published = ' . (int) $cpublished);
+				$query->where('c.published = :published')
+					->bind(':published', $cpublished, ParameterType::INTEGER);
 			}
 		}
 
@@ -159,7 +163,8 @@ class CategoryModel extends ListModel
 
 		if (is_numeric($state))
 		{
-			$query->where('a.state = ' . (int) $state);
+			$query->where('a.state = :state')
+				->bind(':state', $state, ParameterType::INTEGER);
 		}
 
 		// Do not show trashed links on the front-end
@@ -178,7 +183,7 @@ class CategoryModel extends ListModel
 		// Filter by language
 		if ($this->getState('filter.language'))
 		{
-			$query->where('a.language in (' . $db->quote(Factory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
+			$query->whereIn($db->quoteName('a.language'), [Factory::getLanguage()->getTag(), '*'], ParameterType::STRING);
 		}
 
 		// Filter by search in title
@@ -186,8 +191,9 @@ class CategoryModel extends ListModel
 
 		if (!empty($search))
 		{
-			$search = $db->quote('%' . $db->escape($search, true) . '%');
-			$query->where('(a.title LIKE ' . $search . ')');
+			$search = '%' . trim($search) . '%';
+			$query->where('(a.title LIKE :search)')
+				->bind(':search', $search);
 		}
 
 		// If grouping by subcategory, add the subcategory list ordering clause.
@@ -258,7 +264,7 @@ class CategoryModel extends ListModel
 
 		$user = Factory::getUser();
 
-		if ((!$user->authorise('core.edit.state', 'com_weblinks')) && (!$user->authorise('core.edit', 'com_weblinks')))
+		if (!$user->authorise('core.edit.state', 'com_weblinks') && !$user->authorise('core.edit', 'com_weblinks'))
 		{
 			// Limit to published for people who can't edit or edit.state.
 			$this->setState('filter.state', 1);

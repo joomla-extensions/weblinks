@@ -16,6 +16,7 @@ use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\ItemModel;
 use Joomla\CMS\Table\Table;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 /**
@@ -90,7 +91,8 @@ class WeblinkModel extends ItemModel
 				$query = $db->getQuery(true)
 					->select($this->getState('item.select', 'a.*'))
 					->from('#__weblinks AS a')
-					->where('a.id = ' . (int) $pk);
+					->where($db->quoteName('id') . ' = :id')
+					->bind(':id', $pk, ParameterType::INTEGER);
 
 				// Join on category table.
 				$query->select('c.title AS category_title, c.alias AS category_alias, c.access AS category_access')
@@ -104,14 +106,14 @@ class WeblinkModel extends ItemModel
 				// Filter by language
 				if ($this->getState('filter.language'))
 				{
-					$query->where('a.language in (' . $db->quote(Factory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
+					$query->whereIn($db->quoteName('a.language'), [Factory::getLanguage()->getTag(), '*'], ParameterType::STRING);
 				}
 
 				// Join over the categories to get parent category titles
 				$query->select('parent.title as parent_title, parent.id as parent_id, parent.path as parent_route, parent.alias as parent_alias')
 					->join('LEFT', '#__categories as parent ON parent.id = c.parent_id');
 
-				if ((!$user->authorise('core.edit.state', 'com_weblinks')) && (!$user->authorise('core.edit', 'com_weblinks')))
+				if (!$user->authorise('core.edit.state', 'com_weblinks') && !$user->authorise('core.edit', 'com_weblinks'))
 				{
 					// Filter by start and end dates.
 					$nullDate = $db->quote($db->getNullDate());
@@ -128,7 +130,7 @@ class WeblinkModel extends ItemModel
 
 				if (is_numeric($published))
 				{
-					$query->where('(a.state = ' . (int) $published . ' OR a.state =' . (int) $archived . ')');
+					$query->whereIn($db->quoteName('a.state'), [$published, $archived]);
 				}
 
 				$db->setQuery($query);
