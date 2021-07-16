@@ -10,8 +10,9 @@
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\String\PunycodeHelper;
 
-$weblinkUrl = JStringPunycode::urlToUTF8($this->item->url);
+$weblinkUrl = PunycodeHelper::urlToUTF8($this->item->url);
 ?>
 <div class="item-page">
 	<meta itemprop="inLanguage" content="<?php echo ($this->item->language === '*') ? Factory::getConfig()->get('language') : $this->item->language; ?>" />

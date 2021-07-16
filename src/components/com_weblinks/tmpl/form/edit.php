@@ -12,6 +12,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Router\Route;
 
 HTMLHelper::_('behavior.keepalive');
@@ -20,7 +21,7 @@ HTMLHelper::_('behavior.formvalidator');
 $captchaEnabled = false;
 $captchaSet = $this->params->get('captcha', Factory::getApplication()->get('captcha', '0'));
 
-foreach (JPluginHelper::getPlugin('captcha') as $plugin)
+foreach (PluginHelper::getPlugin('captcha') as $plugin)
 {
 	if ($captchaSet === $plugin->name)
 	{

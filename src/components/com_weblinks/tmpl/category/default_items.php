@@ -12,6 +12,8 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Uri\Uri;
 
 // HTMLHelper::_('behavior.framework');
 
@@ -35,7 +37,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 	<p> <?php echo Text::_('COM_WEBLINKS_NO_WEBLINKS'); ?></p>
 <?php else : ?>
 
-<form action="<?php echo htmlspecialchars(JUri::getInstance()->toString()); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo htmlspecialchars(Uri::getInstance()->toString()); ?>" method="post" name="adminForm" id="adminForm">
 	<?php if ($this->params->get('filter_field') != 'hide' || $this->params->get('show_pagination_limit')) : ?>
 	<fieldset class="filters btn-toolbar">
 		<?php if ($this->params->get('filter_field') != 'hide') : ?>
@@ -130,7 +132,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 						</div>
 						<?php $tagsData = $item->tags->getItemTags('com_weblinks.weblink', $item->id); ?>
 						<?php if ($this->params->get('show_tags', 1)) : ?>
-							<?php $this->category->tagLayout = new JLayoutFile('joomla.content.tags'); ?>
+							<?php $this->category->tagLayout = new FileLayout('joomla.content.tags'); ?>
 							<?php echo $this->category->tagLayout->render($tagsData); ?>
 						<?php endif; ?>
 						<?php if (($this->params->get('show_link_description')) and ($item->description != '')) : ?>
