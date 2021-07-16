@@ -13,8 +13,10 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Associations;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\Database\ParameterType;
 
 /**
  * Methods supporting a list of weblink records.
@@ -184,7 +186,7 @@ class WeblinksModel extends ListModel
 			->join('LEFT', $db->quoteName('#__categories', 'c') . ' ON ' . $db->qn('c.id') . ' = ' . $db->qn('a.catid'));
 
 		// Join over the associations.
-		$assoc = \JLanguageAssociations::isEnabled();
+		$assoc = Associations::isEnabled();
 
 		if ($assoc)
 		{
@@ -197,14 +199,14 @@ class WeblinksModel extends ListModel
 		// Filter by access level.
 		if ($access = $this->getState('filter.access'))
 		{
-			$query->where($db->quoteName('a.access') . ' = ' . (int) $access);
+			$query->where($db->quoteName('a.access') . ' = :access')
+				->bind(':access', $access, ParameterType::INTEGER);
 		}
 
 		// Implement View Level Access
 		if (!$user->authorise('core.admin'))
 		{
-			$groups = implode(',', $user->getAuthorisedViewLevels());
-			$query->where($db->quoteName('a.access') . ' IN (' . $groups . ')');
+			$query->whereIn($db->quoteName('a.access'), $user->getAuthorisedViewLevels());
 		}
 
 		// Filter by published state
@@ -212,11 +214,12 @@ class WeblinksModel extends ListModel
 
 		if (is_numeric($published))
 		{
-			$query->where($db->quoteName('a.state') . ' = ' . (int) $published);
+			$query->where($db->quoteName('a.state') . ' = :state')
+				->bind(':state', $published, ParameterType::INTEGER);
 		}
 		elseif ($published === '')
 		{
-			$query->where('(' . $db->quoteName('a.state') . ' IN (0, 1))');
+			$query->whereIn($db->quoteName('a.state'), [0, 1]);
 		}
 
 		// Filter by category.
@@ -224,13 +227,15 @@ class WeblinksModel extends ListModel
 
 		if (is_numeric($categoryId))
 		{
-			$query->where($db->quoteName('a.catid') . ' = ' . (int) $categoryId);
+			$query->where($db->quoteName('a.catid') . ' = :catid')
+				->bind(':catid', $categoryId, ParameterType::INTEGER);
 		}
 
 		// Filter on the level.
 		if ($level = $this->getState('filter.level'))
 		{
-			$query->where($db->quoteName('c.level') . ' <= ' . (int) $level);
+			$query->where($db->quoteName('c.level') . ' <= :level')
+				->bind(':level', $level, ParameterType::INTEGER);
 		}
 
 		// Filter by search in title
@@ -240,19 +245,23 @@ class WeblinksModel extends ListModel
 		{
 			if (stripos($search, 'id:') === 0)
 			{
-				$query->where($db->quoteName('a.id') . ' = ' . (int) substr($search, 3));
+				$query->where($db->quoteName('a.id') . ' = :id')
+					->bind(':id', substr($search, 3), ParameterType::INTEGER);
 			}
 			else
 			{
-				$search = $db->quote('%' . str_replace(' ', '%', $db->escape(trim($search), true) . '%'));
-				$query->where('(' . $db->quoteName('a.title') . ' LIKE ' . $search . ' OR ' . $db->quoteName('a.alias') . ' LIKE ' . $search . ')');
+				$search = '%' . str_replace(' ', '%', $db->escape(trim($search), true) . '%');
+				$query->where('(' . $db->quoteName('a.title') . ' LIKE :title OR ' . $db->quoteName('a.alias') . ' LIKE :alias)')
+					->bind(':title', $search)
+					->bind(':alias', $search);
 			}
 		}
 
 		// Filter on the language.
 		if ($language = $this->getState('filter.language'))
 		{
-			$query->where($db->quoteName('a.language') . ' = ' . $db->quote($language));
+			$query->where($db->quoteName('a.language') . ' = :language')
+				->bind(':language', $language);
 		}
 
 		$tagId = $this->getState('filter.tag');
@@ -260,7 +269,8 @@ class WeblinksModel extends ListModel
 		// Filter by a single tag.
 		if (is_numeric($tagId))
 		{
-			$query->where($db->quoteName('tagmap.tag_id') . ' = ' . (int) $tagId)
+			$query->where($db->quoteName('tagmap.tag_id') . ' = :tagId')
+				->bind(':tagId', $tagId, ParameterType::INTEGER)
 				->join(
 					'LEFT', $db->quoteName('#__contentitem_tag_map', 'tagmap')
 					. ' ON ' . $db->quoteName('tagmap.content_item_id') . ' = ' . $db->quoteName('a.id')

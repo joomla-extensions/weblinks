@@ -13,6 +13,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Helper\TagsHelper;
 use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Language\LanguageHelper;
 use Joomla\CMS\MVC\Model\AdminModel;
@@ -153,8 +154,10 @@ class WeblinkModel extends AdminModel
 	 */
 	protected function loadFormData()
 	{
+		$app = Factory::getApplication();
+
 		// Check the session for previously entered form data.
-		$data = Factory::getApplication()->getUserState('com_weblinks.edit.weblink.data', array());
+		$data = $app->getUserState('com_weblinks.edit.weblink.data', array());
 
 		if (empty($data))
 		{
@@ -163,7 +166,6 @@ class WeblinkModel extends AdminModel
 			// Prime some default values.
 			if ($this->getState('weblink.id') == 0)
 			{
-				$app = Factory::getApplication();
 				$data->set('catid', $app->input->get('catid', $app->getUserState('com_weblinks.weblinks.filter.category_id'), 'int'));
 			}
 		}
@@ -216,7 +218,7 @@ class WeblinkModel extends AdminModel
 
 			if (!empty($item->id))
 			{
-				$item->tags = new \JHelperTags;
+				$item->tags = new TagsHelper;
 				$item->tags->getTagIds($item->id, 'com_weblinks.weblink');
 				$item->metadata['tags'] = $item->tags;
 			}
