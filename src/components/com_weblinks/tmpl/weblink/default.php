@@ -15,7 +15,7 @@ use Joomla\CMS\String\PunycodeHelper;
 $weblinkUrl = PunycodeHelper::urlToUTF8($this->item->url);
 ?>
 <div class="item-page">
-	<meta itemprop="inLanguage" content="<?php echo ($this->item->language === '*') ? Factory::getConfig()->get('language') : $this->item->language; ?>" />
+	<meta itemprop="inLanguage" content="<?php echo ($this->item->language === '*') ? Factory::getApplication()->get('language') : $this->item->language; ?>" />
 	<div class="page-header">
 		<h2 itemprop="headline">
 			<?php echo $this->escape($this->item->title); ?>
