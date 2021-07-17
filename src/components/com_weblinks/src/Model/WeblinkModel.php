@@ -91,7 +91,7 @@ class WeblinkModel extends ItemModel
 				$query = $db->getQuery(true)
 					->select($this->getState('item.select', 'a.*'))
 					->from('#__weblinks AS a')
-					->where($db->quoteName('id') . ' = :id')
+					->where($db->quoteName('a.id') . ' = :id')
 					->bind(':id', $pk, ParameterType::INTEGER);
 
 				// Join on category table.
@@ -119,10 +119,12 @@ class WeblinkModel extends ItemModel
 					$nullDate = $db->getNullDate();
 					$nowDate = Factory::getDate()->toSql();
 
-					$query->where('(a.publish_up = :nullDate  OR a.publish_up <= :nowDate)')
-						->where('(a.publish_down = :nullDate OR a.publish_down >= :nowDate)')
-						->bind(':nullDate', $nullDate)
-						->bind(':nowDate', $nowDate);
+					$query->where('(a.publish_up = :publishUpNullDate OR a.publish_up <= :publishUpNowDate)')
+						->where('(a.publish_down = :publishDownNullDate OR a.publish_down >= :publishDownNowDate)')
+						->bind(':publishUpNullDate', $nullDate)
+						->bind(':publishDownNullDate', $nullDate)
+						->bind(':publishUpNowDate', $nowDate)
+						->bind(':publishDownNowDate', $nowDate);
 				}
 
 				// Filter by published state.

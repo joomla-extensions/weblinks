@@ -251,8 +251,9 @@ class WeblinksModel extends ListModel
 			else
 			{
 				$search = '%' . str_replace(' ', '%', $db->escape(trim($search), true) . '%');
-				$query->where('(' . $db->quoteName('a.title') . ' LIKE :search OR ' . $db->quoteName('a.alias') . ' LIKE :search)')
-					->bind(':search', $search);
+				$query->where('(' . $db->quoteName('a.title') . ' LIKE :title OR ' . $db->quoteName('a.alias') . ' LIKE :alias)')
+					->bind(':title', $search)
+					->bind(':alias', $search);
 			}
 		}
 
