@@ -21,7 +21,7 @@ use Joomla\CMS\Uri\Uri;
 $params = &$this->category->params;
 
 // Get the user object.
-$user = Factory::getUser();
+$user = Factory::getApplication()->getIdentity();
 
 // Check if user is allowed to add/edit based on weblinks permissinos.
 $canEdit = $user->authorise('core.edit', 'com_weblinks.category.' . $this->category->id);

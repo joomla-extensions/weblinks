@@ -74,7 +74,7 @@ class WeblinkModel extends ItemModel
 	 */
 	public function getItem($pk = null)
 	{
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		$pk = (!empty($pk)) ? $pk : (int) $this->getState('weblink.id');
 

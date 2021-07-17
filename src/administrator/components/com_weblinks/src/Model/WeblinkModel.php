@@ -71,7 +71,7 @@ class WeblinkModel extends AdminModel
 			return false;
 		}
 
-		return Factory::getUser()->authorise('core.delete', 'com_weblinks.category.' . (int) $record->catid);
+		return Factory::getApplication()->getIdentity()->authorise('core.delete', 'com_weblinks.category.' . (int) $record->catid);
 	}
 
 	/**
@@ -87,7 +87,7 @@ class WeblinkModel extends AdminModel
 	{
 		if (!empty($record->catid))
 		{
-			return Factory::getUser()->authorise('core.edit.state', 'com_weblinks.category.' . (int) $record->catid);
+			return Factory::getApplication()->getIdentity()->authorise('core.edit.state', 'com_weblinks.category.' . (int) $record->catid);
 		}
 
 		return parent::canEditState($record);
@@ -239,7 +239,7 @@ class WeblinkModel extends AdminModel
 	protected function prepareTable($table)
 	{
 		$date = Factory::getDate();
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		$table->title = htmlspecialchars_decode($table->title, ENT_QUOTES);
 		$table->alias = ApplicationHelper::stringURLSafe($table->alias);
@@ -434,6 +434,6 @@ class WeblinkModel extends AdminModel
 	 */
 	private function canCreateCategory()
 	{
-		return Factory::getUser()->authorise('core.create', 'com_weblinks');
+		return Factory::getApplication()->getIdentity()->authorise('core.create', 'com_weblinks');
 	}
 }

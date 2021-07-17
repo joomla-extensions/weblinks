@@ -97,7 +97,7 @@ class FormModel extends WeblinkModel
 		$form = $this->loadForm('com_weblinks.form', 'weblink', array('control' => 'jform', 'load_data' => $loadData));
 
 		// Disable the buttons and just allow editor none for not authenticated users
-		if (Factory::getUser()->guest)
+		if (Factory::getApplication()->getIdentity()->guest)
 		{
 			$form->setFieldAttribute('description', 'editor', 'none');
 			$form->setFieldAttribute('description', 'buttons', 'no');
