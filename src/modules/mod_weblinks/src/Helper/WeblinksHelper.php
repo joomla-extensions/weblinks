@@ -70,7 +70,7 @@ class WeblinksHelper
 		$case_when1 = ' CASE WHEN ';
 		$case_when1 .= $query->charLength('a.alias', '!=', '0');
 		$case_when1 .= ' THEN ';
-		$a_id       = $query->castAsChar('a.id');
+		$a_id       = $query->castAs('CHAR', 'a.id');
 		$case_when1 .= $query->concatenate(array($a_id, 'a.alias'), ':');
 		$case_when1 .= ' ELSE ';
 		$case_when1 .= $a_id . ' END as slug';
@@ -78,7 +78,7 @@ class WeblinksHelper
 		$case_when2 = ' CASE WHEN ';
 		$case_when2 .= $query->charLength('c.alias', '!=', '0');
 		$case_when2 .= ' THEN ';
-		$c_id       = $query->castAsChar('c.id');
+		$c_id       = $query->castAs('CHAR', 'c.id');
 		$case_when2 .= $query->concatenate(array($c_id, 'c.alias'), ':');
 		$case_when2 .= ' ELSE ';
 		$case_when2 .= $c_id . ' END as catslug';
