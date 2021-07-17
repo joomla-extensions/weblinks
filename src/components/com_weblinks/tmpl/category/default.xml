@@ -16,7 +16,6 @@
 				name="id" 
 				type="category"
 				label="COM_WEBLINKS_FIELD_SELECT_CATEGORY_LABEL"
-				description="COM_WEBLINKS_FIELD_SELECT_CATEGORY_DESC"
 				default="0"
 				extension="com_weblinks"
 				required="true"
@@ -26,7 +25,10 @@
 
 	<!-- Add fields to the parameters object for the layout. -->
 	<fields name="params">
-		<fieldset name="basic" label="JGLOBAL_CATEGORY_OPTIONS">
+		<fieldset
+				name="basic"
+				label="JGLOBAL_CATEGORY_OPTIONS"
+				description="JGLOBAL_SUBSLIDER_DRILL_CATEGORIES_LABEL">
 			<field 
 				name="spacer1" 
 				type="spacer" 
@@ -38,8 +40,8 @@
 				name="show_category_title" 
 				type="list"
 				label="JGLOBAL_SHOW_CATEGORY_TITLE"
-				description="JGLOBAL_SHOW_CATEGORY_TITLE_DESC"
 				useglobal="true"
+				class="form-select-color-state"
 				>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
@@ -49,8 +51,8 @@
 				name="show_description" 
 				type="list"
 				label="JGLOBAL_SHOW_CATEGORY_DESCRIPTION_LABEL"
-				description="JGLOBAL_SHOW_CATEGORY_DESCRIPTION_DESC"
 				useglobal="true"
+				class="form-select-color-state"
 				>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
@@ -60,8 +62,8 @@
 				name="show_description_image" 
 				type="list"
 				label="JGLOBAL_SHOW_CATEGORY_IMAGE_LABEL"
-				description="JGLOBAL_SHOW_CATEGORY_IMAGE_DESC"
 				useglobal="true"
+				class="form-select-color-state"
 				>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
@@ -71,7 +73,6 @@
 				name="maxLevel" 
 				type="list"
 				label="JGLOBAL_MAXIMUM_CATEGORY_LEVELS_LABEL"
-				description="JGLOBAL_MAXIMUM_CATEGORY_LEVELS_DESC"
 				useglobal="true"
 				>
 				<option value="0">JNONE</option>
@@ -88,8 +89,8 @@
 				name="show_empty_categories" 
 				type="list"
 				label="JGLOBAL_SHOW_EMPTY_CATEGORIES_LABEL"
-				description="COM_WEBLINKS_SHOW_EMPTY_CATEGORIES_DESC"
 				useglobal="true"
+				class="form-select-color-state"
 				>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
@@ -99,8 +100,8 @@
 				name="show_subcat_desc" 
 				type="list"
 				label="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_LABEL"
-				description="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_DESC"
 				useglobal="true"
+				class="form-select-color-state"
 				>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
@@ -110,8 +111,8 @@
 				name="show_cat_num_links" 
 				type="list"
 				label="COM_WEBLINKS_FIELD_CONFIG_CAT_SHOWNUMBERS_LABEL"
-				description="COM_WEBLINKS_FIELD_CONFIG_CAT_SHOWNUMBERS_DESC"
 				useglobal="true"
+				class="form-select-color-state"
 				>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
@@ -119,7 +120,7 @@
 
 		</fieldset>
 
-		<fieldset name="advanced" label="JGLOBAL_LIST_LAYOUT_OPTIONS">
+		<fieldset name="advanced" label="JGLOBAL_LIST_LAYOUT_OPTIONS" description="JGLOBAL_SUBSLIDER_DRILL_CATEGORIES_LABEL">
 			<field 
 				name="spacer2" 
 				type="spacer" 
@@ -131,9 +132,9 @@
 				name="filter_field"
 				type="list"
 				label="JGLOBAL_FILTER_FIELD_LABEL"
-				description="JGLOBAL_FILTER_FIELD_DESC"
 				default=""
 				useglobal="true"
+				class="form-select-color-state"
 				>
 				<option value="hide">JHIDE</option>
 				<option value="1">JSHOW</option>
@@ -143,8 +144,8 @@
 				name="show_pagination_limit" 
 				type="list"
 				label="JGLOBAL_DISPLAY_SELECT_LABEL"
-				description="JGLOBAL_DISPLAY_SELECT_DESC"
 				useglobal="true"
+				class="form-select-color-state"
 				>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
@@ -154,8 +155,8 @@
 				name="show_headings" 
 				type="list"
 				label="JGLOBAL_SHOW_HEADINGS_LABEL"
-				description="JGLOBAL_SHOW_HEADINGS_DESC"
 				useglobal="true"
+				class="form-select-color-state"
 				>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
@@ -165,8 +166,8 @@
 				name="show_link_description" 
 				type="list"
 				label="COM_WEBLINKS_FIELD_CONFIG_LINKDESCRIPTION_LABEL"
-				description="COM_WEBLINKS_FIELD_CONFIG_LINKDESCRIPTION_DESC"
 				useglobal="true"
+				class="form-select-color-state"
 				>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
@@ -176,8 +177,8 @@
 				name="show_link_hits" 
 				type="list"
 				label="JGLOBAL_HITS"
-				description="COM_WEBLINKS_FIELD_CONFIG_HITS_DESC"
 				useglobal="true"
+				class="form-select-color-state"
 				>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
@@ -187,8 +188,8 @@
 				name="show_pagination" 
 				type="list"
 				label="JGLOBAL_PAGINATION_LABEL"
-				description="JGLOBAL_PAGINATION_DESC"
 				useglobal="true"
+				class="form-select-color-state"
 				>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
@@ -199,8 +200,8 @@
 				name="show_pagination_results" 
 				type="list"
 				label="JGLOBAL_PAGINATION_RESULTS_LABEL"
-				description="JGLOBAL_PAGINATION_RESULTS_DESC"
 				useglobal="true"
+				class="form-select-color-state"
 				>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
@@ -212,8 +213,8 @@
 				name="show_feed_link" 
 				type="list"
 				label="JGLOBAL_SHOW_FEED_LINK_LABEL"
-				description="JGLOBAL_SHOW_FEED_LINK_DESC"
 				useglobal="true"
+				class="form-select-color-state"
 				>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
