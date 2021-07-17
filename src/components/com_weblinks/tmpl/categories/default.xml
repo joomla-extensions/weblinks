@@ -97,13 +97,6 @@
 
 	<fieldset name="category" label="JGLOBAL_CATEGORY_OPTIONS" description="JGLOBAL_SUBSLIDER_DRILL_CATEGORIES_LABEL">
 		<field 
-			name="spacer1" 
-			type="spacer" 
-			label="JGLOBAL_SUBSLIDER_DRILL_CATEGORIES_LABEL"
-			class="text"
-		/>
-
-		<field 
 			name="show_category_title" 
 			type="list"
 			label="JGLOBAL_SHOW_CATEGORY_TITLE"
@@ -186,14 +179,7 @@
 
 	</fieldset>
 
-	<fieldset name="advanced" label="JGLOBAL_LIST_LAYOUT_OPTIONS">
-		<field 
-			name="spacer2" 
-			type="spacer" 
-			label="JGLOBAL_SUBSLIDER_DRILL_CATEGORIES_LABEL"
-			class="text"
-		/>
-
+	<fieldset name="advanced" label="JGLOBAL_LIST_LAYOUT_OPTIONS" description="JGLOBAL_SUBSLIDER_DRILL_CATEGORIES_LABEL">
 		<field
 			name="filter_field"
 			type="list"
