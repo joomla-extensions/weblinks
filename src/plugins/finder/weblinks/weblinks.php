@@ -266,7 +266,6 @@ class PlgFinderWeblinks extends Adapter
 		// Build the necessary route and path information.
 		$item->url = $this->getURL($item->id, $this->extension, $this->layout);
 		$item->route = RouteHelper::getWeblinkRoute($item->slug, $item->catslug, $item->language);
-		$item->path = Helper::getContentPath($item->route);
 
 		/*
 		 * Add the meta-data processing instructions based on the newsfeeds
