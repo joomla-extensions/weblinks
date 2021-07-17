@@ -78,7 +78,7 @@ class HtmlView extends BaseHtmlView
 
 		if (empty($this->item->id))
 		{
-			$authorised = ($user->authorise('core.create', 'com_weblinks') || (count($user->getAuthorisedCategories('com_weblinks', 'core.create'))));
+			$authorised = $user->authorise('core.create', 'com_weblinks') || count($user->getAuthorisedCategories('com_weblinks', 'core.create'));
 		}
 		else
 		{

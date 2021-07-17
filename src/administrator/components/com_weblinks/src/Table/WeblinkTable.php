@@ -18,6 +18,7 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Tag\TaggableTableInterface;
 use Joomla\CMS\Tag\TaggableTableTrait;
 use Joomla\CMS\Versioning\VersionableTableInterface;
+use Joomla\Database\ParameterType;
 use Joomla\String\StringHelper;
 
 defined('_JEXEC') or die;
@@ -156,9 +157,12 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
 		$query = $db->getQuery(true)
 			->select($db->quoteName('id'))
 			->from($db->quoteName('#__weblinks'))
-			->where($db->quoteName('title') . ' = ' . $db->quote($this->title))
-			->where($db->quoteName('language') . ' = ' . $db->quote($this->language))
-			->where($db->quoteName('catid') . ' = ' . (int) $this->catid);
+			->where($db->quoteName('title') . ' = :title')
+			->where($db->quoteName('language') . ' = :language')
+			->where($db->quoteName('catid') . ' = :catid')
+			->bind(':title', $this->title)
+			->bind(':language', $this->language)
+			->bind(':catid', $this->catid, ParameterType::INTEGER);
 		$db->setQuery($query);
 
 		$xid = (int) $db->loadResult();

@@ -116,12 +116,13 @@ class WeblinkModel extends ItemModel
 				if (!$user->authorise('core.edit.state', 'com_weblinks') && !$user->authorise('core.edit', 'com_weblinks'))
 				{
 					// Filter by start and end dates.
-					$nullDate = $db->quote($db->getNullDate());
+					$nullDate = $db->getNullDate();
+					$nowDate = Factory::getDate()->toSql();
 
-					$nowDate = $db->quote(Factory::getDate()->toSql());
-
-					$query->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')')
-						->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
+					$query->where('(a.publish_up = :nullDate  OR a.publish_up <= :nowDate)')
+						->where('(a.publish_down = :nullDate OR a.publish_down >= :nowDate)')
+						->bind(':nullDate', $nullDate)
+						->bind(':nowDate', $nowDate);
 				}
 
 				// Filter by published state.

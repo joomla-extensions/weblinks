@@ -171,13 +171,14 @@ class CategoryModel extends ListModel
 		$query->where('a.state != -2');
 
 		// Filter by start and end dates.
-		$nullDate = $db->quote($db->getNullDate());
-		$nowDate  = $db->quote(Factory::getDate()->toSql());
-
 		if ($this->getState('filter.publish_date'))
 		{
-			$query->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')')
-				->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
+			$nullDate = $db->getNullDate();
+			$nowDate = Factory::getDate()->toSql();
+			$query->where('(a.publish_up = :nullDate OR a.publish_up <= :nowDate)')
+				->where('(a.publish_down = :nullDate OR a.publish_down >= :nowDate)')
+				->bind(':nullDate', $nullDate)
+				->bind(':nowDate', $nowDate);
 		}
 
 		// Filter by language
