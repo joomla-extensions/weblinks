@@ -13,8 +13,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
-use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
+use Joomla\CMS\Router\Route;
 use Joomla\Component\Weblinks\Site\Model\CategoryModel;
 use Joomla\Registry\Registry;
 
@@ -64,7 +63,7 @@ class WeblinksHelper
 		$model->setState('category.direction', $params->get('groupby_direction', 'ASC'));
 
 		// Create query object
-		$db    = Factory::getDbo();
+		$db    = $model->getDbo();
 		$query = $db->getQuery(true);
 
 		$case_when1 = ' CASE WHEN ';
@@ -101,7 +100,7 @@ class WeblinksHelper
 			{
 				if ($item->params->get('count_clicks', $params->get('count_clicks')) == 1)
 				{
-					$item->link = RouteHelper::_('index.php?option=com_weblinks&task=weblink.go&catid=' . $item->catslug . '&id=' . $item->slug);
+					$item->link = Route::_('index.php?option=com_weblinks&task=weblink.go&catid=' . $item->catslug . '&id=' . $item->slug);
 				}
 				else
 				{
