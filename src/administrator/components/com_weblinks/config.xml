@@ -413,7 +413,7 @@
 			description="JGLOBAL_CUSTOM_FIELDS_ENABLE_DESC"
 			default="0"
 		>
-			<option value="0">JHIDE</option>
+			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 	</fieldset>
