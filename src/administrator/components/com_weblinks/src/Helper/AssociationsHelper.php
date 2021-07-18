@@ -128,7 +128,7 @@ class AssociationsHelper extends AssociationExtensionHelper
 				break;
 
 			case 'category':
-				$table = Table::getInstance('Category');
+				$table = Table::getInstance('Category', 'Joomla\\CMS\\Table\\');
 				break;
 		}
 

@@ -9,7 +9,6 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Extension\ExtensionHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
@@ -93,8 +92,8 @@ class Com_WeblinksInstallerScript
 	public function install($parent)
 	{
 		// Initialize a new category
-		/** @type  JTableCategory $category */
-		$category = Table::getInstance('Category');
+		/** @type  Joomla\CMS\Table\Category $category */
+		$category = Table::getInstance('Category', 'Joomla\\CMS\\Table\\');
 
 		// Check if the Uncategorised category exists before adding it
 		if (!$category->load(array('extension' => 'com_weblinks', 'title' => 'Uncategorised')))

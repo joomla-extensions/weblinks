@@ -37,6 +37,20 @@ class CategoryModel extends ListModel
 	protected $_item = null;
 
 	/**
+	 * Category left of this one
+	 *
+	 * @var    CategoryNode|null
+	 */
+	protected $_leftsibling = null;
+
+	/**
+	 * Category right right of this one
+	 *
+	 * @var    CategoryNode|null
+	 */
+	protected $_rightsibling = null;
+
+	/**
 	 * Array of child-categories
 	 *
 	 * @var    CategoryNode[]|null
@@ -114,7 +128,7 @@ class CategoryModel extends ListModel
 		$viewLevels = Factory::getApplication()->getIdentity()->getAuthorisedViewLevels();
 
 		// Create a new query object.
-		$db = $this->getDbo();
+		$db    = $this->getDbo();
 		$query = $db->getQuery(true);
 
 		// Select required fields from the categories.
@@ -174,7 +188,7 @@ class CategoryModel extends ListModel
 		if ($this->getState('filter.publish_date'))
 		{
 			$nullDate = $db->getNullDate();
-			$nowDate = Factory::getDate()->toSql();
+			$nowDate  = Factory::getDate()->toSql();
 			$query->where('(a.publish_up = :publishUpNullDate OR a.publish_up <= :publishUpNowDate)')
 				->where('(a.publish_down = :publishDownNullDate OR a.publish_down >= :publishDownNowDate)')
 				->bind(':publishUpNullDate', $nullDate)
@@ -231,7 +245,7 @@ class CategoryModel extends ListModel
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$params = ComponentHelper::getParams('com_weblinks');
 
 		// List state information
@@ -304,17 +318,17 @@ class CategoryModel extends ListModel
 				$params = new Registry;
 			}
 
-			$options = array();
+			$options               = array();
 			$options['countItems'] = $params->get('show_cat_num_links_cat', 1)
 				|| $params->get('show_empty_categories', 0);
 
-			$categories = Categories::getInstance('Weblinks', $options);
+			$categories  = Categories::getInstance('Weblinks', $options);
 			$this->_item = $categories->get($this->getState('category.id', 'root'));
 
 			if (is_object($this->_item))
 			{
 				$this->_children = $this->_item->getChildren();
-				$this->_parent = false;
+				$this->_parent   = false;
 
 				if ($this->_item->getParent())
 				{
@@ -322,12 +336,12 @@ class CategoryModel extends ListModel
 				}
 
 				$this->_rightsibling = $this->_item->getSibling();
-				$this->_leftsibling = $this->_item->getSibling(false);
+				$this->_leftsibling  = $this->_item->getSibling(false);
 			}
 			else
 			{
 				$this->_children = false;
-				$this->_parent = false;
+				$this->_parent   = false;
 			}
 		}
 
@@ -409,8 +423,8 @@ class CategoryModel extends ListModel
 
 		if ($hitcount)
 		{
-			$pk = (!empty($pk)) ? $pk : (int) $this->getState('category.id');
-			$table = Table::getInstance('Category', 'JTable');
+			$pk    = (!empty($pk)) ? $pk : (int) $this->getState('category.id');
+			$table = Table::getInstance('Category', 'Joomla\\CMS\\Table\\');
 			$table->load($pk);
 			$table->hit($pk);
 		}

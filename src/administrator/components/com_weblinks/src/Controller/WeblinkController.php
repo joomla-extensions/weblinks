@@ -100,7 +100,7 @@ class WeblinkController extends FormController
 		$this->checkToken();
 
 		// Set the model
-		$model = $this->getModel('Weblink', '', array());
+		$model = $this->getModel('Weblink', 'Administrator', array());
 
 		// Preset the redirect
 		$this->setRedirect(Route::_('index.php?option=com_weblinks&view=weblinks' . $this->getRedirectToListAppend(), false));

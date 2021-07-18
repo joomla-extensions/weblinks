@@ -44,19 +44,23 @@ return new class implements ServiceProviderInterface
 	{
 		$container->set(AssociationExtensionInterface::class, new AssociationsHelper);
 
-		$container->registerServiceProvider(new CategoryFactory('\\Joomla\\Component\\Weblinks'));
-		$container->registerServiceProvider(new MVCFactory('\\Joomla\\Component\\Weblinks'));
-		$container->registerServiceProvider(new ComponentDispatcherFactory('\\Joomla\\Component\\Weblinks'));
-		$container->registerServiceProvider(new RouterFactory('\\Joomla\\Component\\Weblinks'));
+		$componentNamespace = '\\Joomla\\Component\\Weblinks';
+
+		$container->registerServiceProvider(new CategoryFactory($componentNamespace));
+		$container->registerServiceProvider(new MVCFactory($componentNamespace));
+		$container->registerServiceProvider(new ComponentDispatcherFactory($componentNamespace));
+		$container->registerServiceProvider(new RouterFactory($componentNamespace));
+
 		$container->set(
 			ComponentInterface::class,
 			function (Container $container) {
 				$component = new WeblinksComponent($container->get(ComponentDispatcherFactoryInterface::class));
+
 				$component->setRegistry($container->get(Registry::class));
 				$component->setMVCFactory($container->get(MVCFactoryInterface::class));
 				$component->setCategoryFactory($container->get(CategoryFactoryInterface::class));
-				$component->setRouterFactory($container->get(RouterFactoryInterface::class));
 				$component->setAssociationExtension($container->get(AssociationExtensionInterface::class));
+				$component->setRouterFactory($container->get(RouterFactoryInterface::class));
 
 				return $component;
 			}
