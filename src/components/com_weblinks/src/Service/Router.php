@@ -90,7 +90,7 @@ class Router extends RouterView
 		$webLink->setKey('id')->setParent($category, 'catid');
 		$this->registerView($webLink);
 		$form = new RouterViewConfiguration('form');
-		$form->setKey('id');
+		$form->setKey('w_id');
 		$this->registerView($form);
 
 		parent::__construct($app, $menu);

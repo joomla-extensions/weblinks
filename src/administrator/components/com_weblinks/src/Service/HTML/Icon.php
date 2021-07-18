@@ -137,7 +137,7 @@ class Icon
 		}
 
 		$weblinkUrl = RouteHelper::getWeblinkRoute($weblink->slug, $weblink->catid, $weblink->language);
-		$url        = $weblinkUrl . '&task=weblink.edit&id=' . $weblink->id . '&return=' . base64_encode($uri);
+		$url        = $weblinkUrl . '&task=weblink.edit&w_id=' . $weblink->id . '&return=' . base64_encode($uri);
 
 		if ((int) $weblink->state === 0)
 		{
