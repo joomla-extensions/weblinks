@@ -156,18 +156,15 @@ class Com_WeblinksInstallerScript
 
 		if (strpos($dbName, 'mysql') !== false)
 		{
-			// Add Missing Table Colums if needed
+			// Add Missing Table Columns if needed
 			$this->addColumnsIfNeeded();
 
-			// Drop the Table Colums if needed
+			// Drop the Table Columns if needed
 			$this->dropColumnsIfNeeded();
 		}
 
 		// Insert missing UCM Records if needed
 		$this->insertMissingUcmRecords();
-
-		// Add Fields and Field Group menu items
-		$this->addFieldsMenuItems();
 	}
 
 	/**
@@ -344,161 +341,6 @@ class Com_WeblinksInstallerScript
 			$sql = 'ALTER TABLE ' . $db->quoteName('#__weblinks') . ' ADD COLUMN ' . $db->quoteName('images') . ' text NOT NULL';
 			$db->setQuery($sql);
 			$db->execute();
-		}
-	}
-
-	/**
-	 * Method to add update component_id of fields and field groups menu items for weblinks
-	 *
-	 * @return  void
-	 *
-	 * @since   4.0.0
-	 */
-	private function addFieldsMenuItems()
-	{
-		$db        = Factory::getDbo();
-		$tableItem = new \Joomla\Component\Menus\Administrator\Table\MenuTable($db);
-
-		// Check for the Contact parent Id Menu Item
-		$keys = [
-			'menutype'  => 'main',
-			'type'      => 'component',
-			'title'     => 'com_weblinks',
-			'parent_id' => 1,
-			'client_id' => 1,
-		];
-
-		if (!$tableItem->load($keys))
-		{
-			return;
-		}
-
-		$parentId    = $tableItem->id;
-		$componentId = ExtensionHelper::getExtensionRecord('com_fields', 'component')->extension_id;
-
-		// Add Weblinks Fields and Field Groups Menu Items.
-		$menuItems = [
-			[
-				'menutype'          => 'main',
-				'title'             => '-',
-				'alias'             => microtime(true),
-				'note'              => '',
-				'path'              => '',
-				'link'              => '#',
-				'type'              => 'separator',
-				'published'         => 1,
-				'parent_id'         => $parentId,
-				'level'             => 2,
-				'component_id'      => $componentId,
-				'checked_out'       => null,
-				'checked_out_time'  => null,
-				'browserNav'        => 0,
-				'access'            => 0,
-				'img'               => '',
-				'template_style_id' => 0,
-				'params'            => '{}',
-				'home'              => 0,
-				'language'          => '*',
-				'client_id'         => 1,
-				'publish_up'        => null,
-				'publish_down'      => null,
-			],
-			[
-				'menutype'          => 'main',
-				'title'             => 'com_weblinks_fields',
-				'alias'             => 'com-weblinks-fields',
-				'note'              => '',
-				'path'              => 'com-weblinks/com-weblinks-fields',
-				'link'              => 'index.php?option=com_fields&context=com_weblinks.weblink',
-				'type'              => 'component',
-				'published'         => 1,
-				'parent_id'         => $parentId,
-				'level'             => 2,
-				'component_id'      => $componentId,
-				'checked_out'       => null,
-				'checked_out_time'  => null,
-				'browserNav'        => 0,
-				'access'            => 0,
-				'img'               => '',
-				'template_style_id' => 0,
-				'params'            => '{}',
-				'home'              => 0,
-				'language'          => '*',
-				'client_id'         => 1,
-				'publish_up'        => null,
-				'publish_down'      => null,
-			],
-			[
-				'menutype'          => 'main',
-				'title'             => 'com_weblinks_field_groups',
-				'alias'             => 'com-weblinks-field-groups',
-				'note'              => '',
-				'path'              => 'com-weblinks/com-weblinks-field-groups',
-				'link'              => 'index.php?option=com_fields&view=groups&context=com_weblinks.weblink',
-				'type'              => 'component',
-				'published'         => 1,
-				'parent_id'         => $parentId,
-				'level'             => 2,
-				'component_id'      => $componentId,
-				'checked_out'       => null,
-				'checked_out_time'  => null,
-				'browserNav'        => 0,
-				'access'            => 0,
-				'img'               => '',
-				'template_style_id' => 0,
-				'params'            => '{}',
-				'home'              => 0,
-				'language'          => '*',
-				'client_id'         => 1,
-				'publish_up'        => null,
-				'publish_down'      => null,
-			],
-		];
-
-
-		foreach ($menuItems as $menuItem)
-		{
-			// Check an existing record
-			$keys = [
-				'menutype'  => $menuItem['menutype'],
-				'type'      => $menuItem['type'],
-				'title'     => $menuItem['title'],
-				'parent_id' => $menuItem['parent_id'],
-				'client_id' => $menuItem['client_id'],
-			];
-
-			if ($tableItem->load($keys))
-			{
-				continue;
-			}
-
-			$newTableItem = new \Joomla\Component\Menus\Administrator\Table\MenuTable($db);
-
-			// Bind the data.
-			if (!$newTableItem->bind($menuItem))
-			{
-				return;
-			}
-
-			$newTableItem->setLocation($menuItem['parent_id'], 'last-child');
-
-			// Check the data.
-			if (!$newTableItem->check())
-			{
-				return;
-			}
-
-			// Store the data.
-			if (!$newTableItem->store())
-			{
-				return;
-			}
-
-			// Rebuild the tree path.
-			if (!$newTableItem->rebuildPath($newTableItem->id))
-			{
-				return;
-			}
 		}
 	}
 }

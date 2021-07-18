@@ -52,6 +52,10 @@
 				alt="Weblinks/Links">com_weblinks_links</menu>
 			<menu link="option=com_categories&amp;extension=com_weblinks"
 				view="categories" img="class:weblinks-cat" alt="Weblinks/Categories">com_weblinks_categories</menu>
+			<menu link="option=com_fields&amp;view=fields&amp;context=com_weblinks.weblink"
+				  alt="Weblinks/Fields">com_weblinks_fields</menu>
+			<menu link="option=com_fields&amp;view=groups&amp;context=com_weblinks.weblink"
+				  alt="Weblinks/Field Groups">com_weblinks_field_groups</menu>
 		</submenu>
 		<files folder="administrator/components/com_weblinks">
 			##BACKEND_COMPONENT_FILES##
