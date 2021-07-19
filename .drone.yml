@@ -28,7 +28,7 @@ steps:
       FTP_PASSWORD:
         from_secret: ftppassword
       PLUGIN_HOSTNAME: artifacts.joomla.org:21
-      PLUGIN_SRC_DIR: /drone/src/tests/_output
+      PLUGIN_SRC_DIR: /tests/_output
       PLUGIN_DEST_DIR: /
       PLUGIN_SECURE: false
       PLUGIN_EXCLUDE: ^\.git/$
