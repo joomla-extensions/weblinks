@@ -28,13 +28,11 @@ steps:
       FTP_PASSWORD:
         from_secret: ftppassword
       PLUGIN_HOSTNAME: artifacts.joomla.org:21
-      PLUGIN_SRC_DIR: /tests/www/tests/_output/
+      PLUGIN_SRC_DIR: /drone/src/tests/_output
       PLUGIN_DEST_DIR: /
       PLUGIN_SECURE: false
       PLUGIN_EXCLUDE: ^\.git/$
     commands:
-      - pwd
-      - find /
       - ls -l /drone/src/tests/_output
       - export PLUGIN_DEST_DIR=$PLUGIN_DEST_DIR/$DRONE_REPO/$DRONE_BRANCH/$DRONE_PULL_REQUEST/system-tests/$DRONE_BUILD_NUMBER
       - echo https://artifacts.joomla.org$PLUGIN_DEST_DIR
