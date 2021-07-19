@@ -20,7 +20,7 @@ steps:
 
   - name: artifacts-codeception-tests
     image: cschlosser/drone-ftps
-    depends_on: [ api-tests ]
+    depends_on: [ weblinks-codeception-tests ]
     environment:
       FTP_USERNAME:
         from_secret: ftpusername
