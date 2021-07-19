@@ -16,11 +16,15 @@ composer install --no-interaction --no-progress
 
 mkdir -p /tests/www
 cp -r ./* /tests/www
+mkdir _output
+ln -s _output /tests/www/tests/_output
 
 cd /tests/www
 
 cp jorobo.dist.ini jorobo.ini
 cp RoboFile.dist.ini RoboFile.ini
+
+
 
 # Build package
 vendor/bin/robo build --dev
