@@ -7,7 +7,6 @@ steps:
     image: joomlaprojects/docker-images:systemtests
     commands:
       - pwd
-      - find
       - composer install
       - chmod a+x .drone/build.sh
       - ./.drone/build.sh
@@ -35,7 +34,7 @@ steps:
       PLUGIN_EXCLUDE: ^\.git/$
     commands:
       - pwd
-      - find
+      - find /
       - ls -l /drone/src/tests/_output
       - export PLUGIN_DEST_DIR=$PLUGIN_DEST_DIR/$DRONE_REPO/$DRONE_BRANCH/$DRONE_PULL_REQUEST/system-tests/$DRONE_BUILD_NUMBER
       - echo https://artifacts.joomla.org$PLUGIN_DEST_DIR
