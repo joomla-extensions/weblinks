@@ -29,12 +29,12 @@ steps:
         from_secret: ftppassword
       PLUGIN_HOSTNAME: artifacts.joomla.org:21
       PLUGIN_SRC_DIR: /tests/_output
-      PLUGIN_DEST_DIR: /
+      PLUGIN_DEST_DIR: /drone
       PLUGIN_SECURE: false
       PLUGIN_EXCLUDE: ^\.git/$
     commands:
       - ls -l /drone/src/tests/_output
-      - export PLUGIN_DEST_DIR=$PLUGIN_DEST_DIR/$DRONE_REPO/$DRONE_BRANCH/$DRONE_PULL_REQUEST/system-tests/$DRONE_BUILD_NUMBER
+      - export PLUGIN_DEST_DIR=$PLUGIN_DEST_DIR/$DRONE_REPO/$DRONE_BRANCH/$DRONE_PULL_REQUEST/codeception-tests/$DRONE_BUILD_NUMBER
       - echo https://artifacts.joomla.org$PLUGIN_DEST_DIR
       - /bin/upload.sh
     when:
@@ -48,6 +48,6 @@ volumes:
 
 ---
 kind: signature
-hmac: bdbb55e8a838f65e5a832cfca09af95d450cbdc9d733e03f0f528abdebfff47f
+hmac: ffe77441ea47d707e8bec14d936fe453e778b8c445e7b2cdd983aea787e43bc9
 
 ...
