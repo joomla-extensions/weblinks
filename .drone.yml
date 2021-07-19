@@ -26,7 +26,7 @@ steps:
         from_secret: ftpusername
       FTP_PASSWORD:
         from_secret: ftppassword
-      PLUGIN_HOSTNAME: ftp.artifacts.joomla.org:21
+      PLUGIN_HOSTNAME: artifacts.joomla.org:21
       PLUGIN_SRC_DIR: /tests/www/tests/_output/
       PLUGIN_DEST_DIR: /
       PLUGIN_SECURE: false
