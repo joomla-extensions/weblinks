@@ -17,6 +17,7 @@ composer install --no-interaction --no-progress
 mkdir -p /tests/www
 cp -r ./* /tests/www
 mkdir _output
+chmod +rwx _output
 ln -s _output /tests/www/tests/_output
 
 cd /tests/www
