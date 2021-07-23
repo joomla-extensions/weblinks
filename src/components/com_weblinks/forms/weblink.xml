@@ -7,7 +7,6 @@
 			label="WEBLINK_ID_LABEL"
 			readonly="true"
 			required="true"
-			size="10"
 			default="0"
 		/>
 
@@ -23,9 +22,7 @@
 			name="title"
 			type="text"
 			label="JGLOBAL_TITLE"
-			description="COM_WEBLINKS_FIELD_TITLE_DESC"
 			required="true"
-			size="30"
 		/>
 
 		<field
@@ -34,14 +31,12 @@
 			label="JFIELD_ALIAS_LABEL"
 			description="JFIELD_ALIAS_DESC"
 			hint="JFIELD_ALIAS_PLACEHOLDER"
-			size="45"
 		/>
 
 		<field
 			name="description"
 			type="editor"
 			label="JGLOBAL_DESCRIPTION"
-			description="COM_WEBLINKS_FIELD_DESCRIPTION_DESC"
 			buttons="true"
 			hide="pagebreak,readmore"
 			filter="safehtml"
@@ -52,9 +47,10 @@
 			name="state"
 			type="list"
 			label="JSTATUS"
-			description="JFIELD_PUBLISHED_DESC"
-			default="1"
+			class="form-select-color-state"
 			size="1"
+			default="1"
+			validate="options"
 			>
 			<option value="1">JPUBLISHED</option>
 			<option value="0">JUNPUBLISHED</option>
@@ -64,7 +60,6 @@
 			name="catid"
 			type="categoryedit"
 			label="JCATEGORY"
-			description="COM_WEBLINKS_FIELD_CATEGORY_DESC"
 			extension="com_weblinks"
 			required="true"
 		/>
@@ -73,18 +68,14 @@
 			name="url"
 			type="url"
 			label="COM_WEBLINKS_FIELD_URL_LABEL"
-			description="COM_WEBLINKS_FIELD_URL_DESC"
 			filter="url"
 			required="true"
-			size="45"
 		/>
 
 		<field
 			name="language"
 			type="contentlanguage"
 			label="JFIELD_LANGUAGE_LABEL"
-			description="JFIELD_LANGUAGE_DESC"
-			class="inputbox"
 			>
 			<option value="*">JALL</option>
 		</field>
@@ -100,17 +91,13 @@
 			name="version_note"
 			type="text"
 			label="JGLOBAL_FIELD_VERSION_NOTE_LABEL"
-			description="JGLOBAL_FIELD_VERSION_NOTE_DESC"
-			class="inputbox"
-			size="45"
-			labelclass="control-label"
+			maxlength="255"
 		/>
 
 		<field
 			name="captcha"
 			type="captcha"
 			label="COM_WEBLINKS_CAPTCHA_LABEL"
-			description="COM_WEBLINKS_CAPTCHA_DESC"
 			validate="captcha"
 			namespace="weblink"
 		/>
@@ -125,9 +112,7 @@
 				name="robots"
 				type="hidden"
 				label="JFIELD_METADATA_ROBOTS_LABEL"
-				description="JFIELD_METADATA_ROBOTS_DESC"
 				filter="unset"
-				labelclass="control-label"
 				>
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="index, follow">JGLOBAL_INDEX_FOLLOW</option>
@@ -140,31 +125,21 @@
 				name="author"
 				type="hidden"
 				label="JAUTHOR"
-				description="JFIELD_METADATA_AUTHOR_DESC"
 				filter="unset"
-				size="20"
-				labelclass="control-label"
 			/>
 
 			<field
 				name="rights"
 				type="hidden"
 				label="JFIELD_META_RIGHTS_LABEL"
-				description="JFIELD_META_RIGHTS_DESC"
 				filter="unset"
-				required="false"
-				labelclass="control-label"
 			/>
 
 			<field
 				name="xreference"
 				type="hidden"
 				label="COM_CONTENT_FIELD_XREFERENCE_LABEL"
-				description="COM_CONTENT_FIELD_XREFERENCE_DESC"
 				filter="unset"
-				class="inputbox"
-				size="20"
-				labelclass="control-label"
 			/>
 		</fieldset>
 	</fields>
