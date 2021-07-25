@@ -192,5 +192,89 @@
 
 		</fieldset>
 
+		<fieldset name="advanced" label="JGLOBAL_LIST_LAYOUT_OPTIONS" description="JGLOBAL_SUBSLIDER_DRILL_CATEGORIES_LABEL">
+			<field
+				name="filter_field"
+				type="list"
+				label="JGLOBAL_FILTER_FIELD_LABEL"
+				default=""
+				useglobal="true"
+				class="form-select-color-state"
+				>
+				<option value="hide">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field
+				name="show_pagination_limit"
+				type="list"
+				label="JGLOBAL_DISPLAY_SELECT_LABEL"
+				useglobal="true"
+				class="form-select-color-state"
+				validate="options"
+				>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field
+				name="show_headings"
+				type="list"
+				label="JGLOBAL_SHOW_HEADINGS_LABEL"
+				useglobal="true"
+				class="form-select-color-state"
+				validate="options"
+				>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field
+				name="show_link_description"
+				type="list"
+				label="COM_WEBLINKS_FIELD_CONFIG_LINKDESCRIPTION_LABEL"
+				useglobal="true"
+				class="form-select-color-state"
+				validate="options"
+				>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field
+				name="show_link_hits"
+				type="list"
+				label="JGLOBAL_HITS"
+				useglobal="true"
+				class="form-select-color-state"
+				>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field
+				name="show_pagination"
+				type="list"
+				label="JGLOBAL_PAGINATION_LABEL"
+				useglobal="true"
+				class="form-select-color-state"
+				>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+				<option value="2">JGLOBAL_AUTO</option>
+			</field>
+
+			<field
+				name="show_pagination_results"
+				type="list"
+				label="JGLOBAL_PAGINATION_RESULTS_LABEL"
+				useglobal="true"
+				class="form-select-color-state"
+				>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+		</fieldset>
+
 	</fields>
 </metadata>
