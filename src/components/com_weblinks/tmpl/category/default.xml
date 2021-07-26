@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="com_weblinks_category_view_default_title" option="com_weblinks_category_view_default_option">
+	<layout title="COM_WEBLINKS_CATEGORY_VIEW_DEFAULT_TITLE" option="com_weblinks_category_view_default_option">
 		<help
 			key="JHELP_MENUS_MENU_ITEM_WEBLINK_CATEGORY"
 		/>
 		<message>
-			<![CDATA[com_weblinks_category_view_default_desc]]>
+			<![CDATA[COM_WEBLINKS_CATEGORY_VIEW_DEFAULT_DESC]]>
 		</message>
 	</layout>
 
 	<!-- Add fields to the request variables for the layout. -->
 	<fields name="request">
 		<fieldset name="request">
-			<field 
-				name="id" 
+			<field
+				name="id"
 				type="category"
 				label="COM_WEBLINKS_FIELD_SELECT_CATEGORY_LABEL"
 				default="0"
@@ -29,8 +29,8 @@
 				name="basic"
 				label="JGLOBAL_CATEGORY_OPTIONS"
 				description="JGLOBAL_SUBSLIDER_DRILL_CATEGORIES_LABEL">
-			<field 
-				name="show_category_title" 
+			<field
+				name="show_category_title"
 				type="list"
 				label="JGLOBAL_SHOW_CATEGORY_TITLE"
 				useglobal="true"
@@ -40,8 +40,8 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-			<field 
-				name="show_description" 
+			<field
+				name="show_description"
 				type="list"
 				label="JGLOBAL_SHOW_CATEGORY_DESCRIPTION_LABEL"
 				useglobal="true"
@@ -51,8 +51,8 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-			<field 
-				name="show_description_image" 
+			<field
+				name="show_description_image"
 				type="list"
 				label="JGLOBAL_SHOW_CATEGORY_IMAGE_LABEL"
 				useglobal="true"
@@ -62,8 +62,8 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-			<field 
-				name="maxLevel" 
+			<field
+				name="maxLevel"
 				type="list"
 				label="JGLOBAL_MAXIMUM_CATEGORY_LEVELS_LABEL"
 				useglobal="true"
@@ -78,8 +78,8 @@
 
 			</field>
 
-			<field 
-				name="show_empty_categories" 
+			<field
+				name="show_empty_categories"
 				type="list"
 				label="JGLOBAL_SHOW_EMPTY_CATEGORIES_LABEL"
 				useglobal="true"
@@ -89,8 +89,8 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-			<field 
-				name="show_subcat_desc" 
+			<field
+				name="show_subcat_desc"
 				type="list"
 				label="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_LABEL"
 				useglobal="true"
@@ -100,8 +100,8 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-			<field 
-				name="show_cat_num_links" 
+			<field
+				name="show_cat_num_links"
 				type="list"
 				label="COM_WEBLINKS_FIELD_CONFIG_CAT_SHOWNUMBERS_LABEL"
 				useglobal="true"
@@ -126,8 +126,8 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-			<field	
-				name="show_pagination_limit" 
+			<field
+				name="show_pagination_limit"
 				type="list"
 				label="JGLOBAL_DISPLAY_SELECT_LABEL"
 				useglobal="true"
@@ -137,8 +137,8 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-			<field 
-				name="show_headings" 
+			<field
+				name="show_headings"
 				type="list"
 				label="JGLOBAL_SHOW_HEADINGS_LABEL"
 				useglobal="true"
@@ -148,8 +148,8 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-			<field 
-				name="show_link_description" 
+			<field
+				name="show_link_description"
 				type="list"
 				label="COM_WEBLINKS_FIELD_CONFIG_LINKDESCRIPTION_LABEL"
 				useglobal="true"
@@ -159,8 +159,8 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-			<field 
-				name="show_link_hits" 
+			<field
+				name="show_link_hits"
 				type="list"
 				label="JGLOBAL_HITS"
 				useglobal="true"
@@ -170,8 +170,8 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-			<field 
-				name="show_pagination" 
+			<field
+				name="show_pagination"
 				type="list"
 				label="JGLOBAL_PAGINATION_LABEL"
 				useglobal="true"
@@ -182,8 +182,8 @@
 				<option value="2">JGLOBAL_AUTO</option>
 			</field>
 
-			<field 
-				name="show_pagination_results" 
+			<field
+				name="show_pagination_results"
 				type="list"
 				label="JGLOBAL_PAGINATION_RESULTS_LABEL"
 				useglobal="true"
@@ -195,8 +195,8 @@
 		</fieldset>
 
 		<fieldset name="integration">
-			<field 
-				name="show_feed_link" 
+			<field
+				name="show_feed_link"
 				type="list"
 				label="JGLOBAL_SHOW_FEED_LINK_LABEL"
 				useglobal="true"
@@ -204,7 +204,7 @@
 				>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
-			</field>			
+			</field>
 		</fieldset>
 	</fields>
 </metadata>
