@@ -28,9 +28,8 @@ if ($app->isClient('site'))
 HTMLHelper::_('behavior.multiselect');
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
-$wa = $this->document->getWebAssetManager();
-$wa->useScript('core')
-	->useScript('com_weblinks.admin-weblinks-modal');
+$wa = $this->document->getWebAssetManager()
+	->registerAndUseScript('com_weblinks.admin-weblinks-modal', 'media/com_weblinks/js/admin-weblinks-modal.js', [], ['defer' => true], ['core']);
 
 $function  = $app->input->getCmd('function', 'jSelectWeblink');
 $editor    = $app->input->getCmd('editor', '');

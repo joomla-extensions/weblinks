@@ -22,14 +22,14 @@ $published = $this->state->get('filter.published');
 					<?php echo LayoutHelper::render('joomla.html.batch.language', []); ?>
 				</div>
 			</div>
-		<?php endif;?>
+		<?php endif; ?>
 		<div class="form-group col-md-6">
 			<div class="controls">
 				<?php echo LayoutHelper::render('joomla.html.batch.access', []); ?>
 			</div>
 		</div>
 	</div>
-	<div class="row-fluid">
+	<div class="row">
 		<?php if ($published >= 0) : ?>
 			<div class="form-group col-md-6">
 				<div class="controls">
