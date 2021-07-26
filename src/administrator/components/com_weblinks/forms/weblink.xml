@@ -7,7 +7,6 @@
 			name="id"
 			type="text"
 			label="JGLOBAL_FIELD_ID_LABEL"
-			description="JGLOBAL_FIELD_ID_DESC"
 			readonly="true"
 			class="readonly"
 			default="0"
@@ -17,17 +16,15 @@
 			name="title"
 			type="text"
 			label="JGLOBAL_TITLE"
-			description="COM_WEBLINKS_FIELD_TITLE_DESC"
-			class="input-xxlarge input-large-text"
-			size="40"
 			required="true"
+			maxlength="250"
 		/>
 
 		<field
 			name="alias"
 			type="text"
 			label="JFIELD_ALIAS_LABEL"
-			size="40"
+			description="JFIELD_ALIAS_DESC"
 			hint="JFIELD_ALIAS_PLACEHOLDER"
 		/>
 
@@ -35,7 +32,6 @@
 			name="catid"
 			type="categoryedit"
 			label="JCATEGORY"
-			description="COM_WEBLINKS_FIELD_CATEGORY_DESC"
 			extension="com_weblinks"
 			addfieldprefix="Joomla\Component\Categories\Administrator\Field"
 			required="true"
@@ -46,10 +42,8 @@
 			name="url"
 			type="url"
 			label="COM_WEBLINKS_FIELD_URL_LABEL"
-			description="COM_WEBLINKS_FIELD_URL_DESC"
-			class="span12"
 			filter="url"
-			size="40"
+			validate="url"
 			required="true"
 		/>
 
@@ -57,7 +51,6 @@
 			name="description"
 			type="editor"
 			label="JGLOBAL_DESCRIPTION"
-			description="COM_WEBLINKS_FIELD_DESCRIPTION_DESC"
 			buttons="true"
 			hide="pagebreak,readmore"
 			filter="JComponentHelper::filterText"
@@ -67,21 +60,19 @@
 			name="hits"
 			type="text"
 			label="JGLOBAL_HITS"
-			description="COM_WEBLINKS_HITS_DESC"
 			class="readonly"
-			size="6"
 			readonly="true"
 			filter="unset"
+			default="0"
 		/>
 
 		<field
 			name="state"
 			type="list"
 			label="JSTATUS"
-			description="COM_WEBLINKS_FIELD_STATE_DESC"
-			class="chzn-color-state"
-			size="1"
+			class="form-select-color-state"
 			default="1"
+			validate="options"
 			>
 			<option value="1">JPUBLISHED</option>
 			<option value="0">JUNPUBLISHED</option>
@@ -94,7 +85,6 @@
 			name="ordering"
 			type="ordering"
 			label="JFIELD_ORDERING_LABEL"
-			description="JFIELD_ORDERING_DESC"
 			content_type="com_weblinks.weblink"
 		/>
 
@@ -102,15 +92,14 @@
 			name="access"
 			type="accesslevel"
 			label="JFIELD_ACCESS_LABEL"
-			description="JFIELD_ACCESS_DESC"
-			size="1"
+			filter="UINT"
+			validate="options"
 		/>
 
 		<field
 			name="language"
 			type="contentlanguage"
 			label="JFIELD_LANGUAGE_LABEL"
-			description="COM_WEBLINKS_FIELD_LANGUAGE_DESC"
 			>
 			<option value="*">JALL</option>
 		</field>
@@ -119,6 +108,7 @@
 			name="tags"
 			type="tag"
 			label="JTAG"
+			class="advancedSelect"
 			multiple="true"
 		/>
 
@@ -126,18 +116,15 @@
 			name="version_note"
 			type="text"
 			label="JGLOBAL_FIELD_VERSION_NOTE_LABEL"
-			description="JGLOBAL_FIELD_VERSION_NOTE_DESC"
-			size="45"
-			labelclass="control-label"
+			maxlength="250"
 		/>
 
 		<field
 			name="created"
 			type="calendar"
 			label="JGLOBAL_FIELD_CREATED_LABEL"
-			description="JGLOBAL_FIELD_CREATED_DESC"
-			size="22"
-			format="%Y-%m-%d %H:%M:%S"
+			translateformat="true"
+			showtime="true"
 			filter="user_utc"
 		/>
 
@@ -145,26 +132,23 @@
 			name="created_by"
 			type="user"
 			label="JGLOBAL_FIELD_CREATED_BY_LABEL"
-			description="JGLOBAL_FIELD_CREATED_BY_Desc"
+			validate="UserId"
 		/>
 
 		<field
 			name="created_by_alias"
 			type="text"
 			label="JGLOBAL_FIELD_CREATED_BY_ALIAS_LABEL"
-			description="JGLOBAL_FIELD_CREATED_BY_ALIAS_DESC"
-			size="20"
 		/>
 
 		<field
 			name="modified"
 			type="calendar"
 			label="JGLOBAL_FIELD_MODIFIED_LABEL"
-			description="COM_WEBLINKS_FIELD_MODIFIED_DESC"
 			class="readonly"
-			size="22"
 			readonly="true"
-			format="%Y-%m-%d %H:%M:%S"
+			translateformat="true"
+			showtime="true"
 			filter="user_utc"
 		/>
 
@@ -175,6 +159,7 @@
 			class="readonly"
 			readonly="true"
 			filter="unset"
+			validate="UserId"
 		/>
 
 		<field
@@ -193,9 +178,8 @@
 			name="publish_up"
 			type="calendar"
 			label="JGLOBAL_FIELD_PUBLISH_UP_LABEL"
-			description="JGLOBAL_FIELD_PUBLISH_UP_DESC"
-			format="%Y-%m-%d %H:%M:%S"
-			size="22"
+			translateformat="true"
+			showtime="true"
 			filter="user_utc"
 		/>
 
@@ -203,9 +187,8 @@
 			name="publish_down"
 			type="calendar"
 			label="JGLOBAL_FIELD_PUBLISH_DOWN_LABEL"
-			description="JGLOBAL_FIELD_PUBLISH_DOWN_DESC"
-			format="%Y-%m-%d %H:%M:%S"
-			size="22"
+			translateformat="true"
+			showtime="true"
 			filter="user_utc"
 		/>
 
@@ -213,9 +196,7 @@
 			name="version"
 			type="text"
 			label="COM_WEBLINKS_FIELD_VERSION_LABEL"
-			description="COM_WEBLINKS_FIELD_VERSION_DESC"
 			class="readonly"
-			size="6"
 			readonly="true"
 			filter="unset"
 		/>
@@ -224,7 +205,6 @@
 			name="metakey"
 			type="textarea"
 			label="JFIELD_META_KEYWORDS_LABEL"
-			description="JFIELD_META_KEYWORDS_DESC"
 			rows="3"
 			cols="30"
 		/>
@@ -233,17 +213,16 @@
 			name="metadesc"
 			type="textarea"
 			label="JFIELD_META_DESCRIPTION_LABEL"
-			description="JFIELD_META_DESCRIPTION_DESC"
 			rows="3"
 			cols="30"
+			maxlength="160"
+			charcounter="true"
 		/>
 
 		<field
 			name="xreference"
 			type="text"
 			label="JFIELD_XREFERENCE_LABEL"
-			description="JFIELD_XREFERENCE_DESC"
-			size="20"
 		/>
 	</fieldset>
 
@@ -259,7 +238,6 @@
 				name="target"
 				type="list"
 				label="COM_WEBLINKS_FIELD_TARGET_LABEL"
-				description="COM_WEBLINKS_FIELD_TARGET_DESC"
 				default=""
 				useglobal="true"
 				>
@@ -273,7 +251,6 @@
 				name="width"
 				type="text"
 				label="COM_WEBLINKS_FIELD_WIDTH_LABEL"
-				description="COM_WEBLINKS_FIELD_WIDTH_DESC"
 				class="validate-numeric"
 			/>
 
@@ -281,17 +258,14 @@
 				name="height"
 				type="text"
 				label="COM_WEBLINKS_FIELD_HEIGHT_LABEL"
-				description="COM_WEBLINKS_FIELD_HEIGHT_DESC"
 				class="validate-numeric"
 			/>
 
 			<field
 				name="count_clicks"
-				type="list"
+				type="radio"
 				label="COM_WEBLINKS_FIELD_COUNTCLICKS_LABEL"
-				description="COM_WEBLINKS_FIELD_COUNTCLICKS_DESC"
-				class="chzn-color"
-				useglobal="true"
+				layout="joomla.form.field.radio.switcher"
 				>
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
@@ -330,7 +304,6 @@
 				type="text"
 				label="COM_WEBLINKS_FIELD_IMAGE_ALT_LABEL"
 				description="COM_WEBLINKS_FIELD_IMAGE_ALT_DESC"
-				size="20"
 			/>
 
 			<field
@@ -338,7 +311,6 @@
 				type="text"
 				label="COM_WEBLINKS_FIELD_IMAGE_CAPTION_LABEL"
 				description="COM_WEBLINKS_FIELD_IMAGE_CAPTION_DESC"
-				size="20"
 			/>
 
 			<field
@@ -358,7 +330,6 @@
 				name="float_second"
 				type="list"
 				label="COM_WEBLINKS_FLOAT_SECOND_LABEL"
-				description="COM_WEBLINKS_FLOAT_SECOND_DESC"
 				>
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="right">COM_WEBLINKS_RIGHT</option>
@@ -371,7 +342,6 @@
 				type="text"
 				label="COM_WEBLINKS_FIELD_IMAGE_ALT_LABEL"
 				description="COM_WEBLINKS_FIELD_IMAGE_ALT_DESC"
-				size="20"
 			/>
 
 			<field
@@ -379,7 +349,6 @@
 				type="text"
 				label="COM_WEBLINKS_FIELD_IMAGE_CAPTION_LABEL"
 				description="COM_WEBLINKS_FIELD_IMAGE_CAPTION_DESC"
-				size="20"
 			/>
 		</fieldset>
 	</fields>
@@ -396,7 +365,7 @@
 				name="robots"
 				type="list"
 				label="JFIELD_METADATA_ROBOTS_LABEL"
-				description="JFIELD_METADATA_ROBOTS_DESC"
+				validate="options"
 				>
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="index, follow">JGLOBAL_INDEX_FOLLOW</option>
@@ -409,11 +378,6 @@
 				name="rights"
 				type="text"
 				label="JFIELD_META_RIGHTS_LABEL"
-				description="JFIELD_META_RIGHTS_DESC"
-				required="false"
-				filter="string"
-				cols="30"
-				rows="2"
 			/>
 		</fieldset>
 	</fields>
