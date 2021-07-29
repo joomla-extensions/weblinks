@@ -16,25 +16,25 @@ use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
 
 if ($this->maxLevel != 0 && count($this->children[$this->category->id]) > 0) :
 ?>
-    <ul class="com-weblinks-category__children list-striped list-condensed">
+	<ul class="com-weblinks-category__children list-group list-unstyled">
 		<?php foreach ($this->children[$this->category->id] as $id => $child) : ?>
 			<?php if ($this->params->get('show_empty_categories') || $child->numitems || count($child->getChildren())) : ?>
-                <li>
-                    <h4 class="item-title">
-                        <a href="<?php echo Route::_(RouteHelper::getCategoryRoute($child->id, $child->language)); ?>">
+				<li class="list-group-item">
+					<div  class="item-title">
+						<a href="<?php echo Route::_(RouteHelper::getCategoryRoute($child->id, $child->language)); ?>">
 							<?php echo $this->escape($child->title); ?>
-                        </a>
+						</a>
 
 						<?php if ($this->params->get('show_cat_items') == 1) : ?>
-                            <span class="badge bg-info float-end" title="<?php echo Text::_('COM_WEBLINKS_CAT_NUM'); ?>"><?php echo $child->numitems; ?></span>
+							<span class="badge bg-info float-end" title="<?php echo Text::_('COM_WEBLINKS_CAT_NUM'); ?>"><?php echo $child->numitems; ?></span>
 						<?php endif; ?>
-                    </h4>
+					</div>
 
 					<?php if ($this->params->get('show_subcat_desc') == 1) : ?>
 						<?php if ($child->description) : ?>
-                            <div class="category-desc">
+							<div class="category-desc">
 								<?php echo HTMLHelper::_('content.prepare', $child->description, '', 'com_weblinks.category'); ?>
-                            </div>
+							</div>
 						<?php endif; ?>
 					<?php endif; ?>
 
@@ -46,8 +46,8 @@ if ($this->maxLevel != 0 && count($this->children[$this->category->id]) > 0) :
 						$this->category = $child->getParent();
 						$this->maxLevel++;
 					endif; ?>
-                </li>
+				</li>
 			<?php endif; ?>
 		<?php endforeach; ?>
-    </ul>
+	</ul>
 <?php endif; ?>
