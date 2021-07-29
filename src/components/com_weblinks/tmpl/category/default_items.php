@@ -77,7 +77,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 						if ($item->state == 0) : ?>
 							<li class="system-unpublished list-group-item">
 						<?php else : ?>
-							<li class="list-group-item" >
+							<li class="list-group-item">
 						<?php endif; ?>
 
 						<?php if ($this->params->get('show_link_hits', 1)) : ?>
