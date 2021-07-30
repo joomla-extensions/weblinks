@@ -12,7 +12,6 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Uri\Uri;
 
@@ -147,10 +146,8 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 							?>
 							</div>
 
-							<?php if ($this->params->get('show_tags', 1)) : ?>
-								<?php $tagsData = $item->tags->getItemTags('com_weblinks.weblink', $item->id); ?>
-								<?php $this->category->tagLayout = new FileLayout('joomla.content.tags'); ?>
-								<?php echo $this->category->tagLayout->render($tagsData); ?>
+							<?php if ($this->params->get('show_tags', 1) && !empty($this->item->tags->itemTags)) : ?>
+							    <?php echo LayoutHelper::render('joomla.content.tags', $this->item->tags->itemTags); ?>
 							<?php endif; ?>
 
 							<?php if (($this->params->get('show_link_description')) && ($item->description != '')) : ?>
