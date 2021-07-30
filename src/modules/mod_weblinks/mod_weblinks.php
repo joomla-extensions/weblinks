@@ -12,10 +12,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\Module\Weblinks\Site\Helper\WeblinksHelper;
 
-$model = $app->bootComponent('com_weblinks')->getMVCFactory()
-	->createModel('Category', 'Site', ['ignore_request' => true]);
-
-$list = WeblinksHelper::getList($params, $model, $app);
+$list = WeblinksHelper::getList($params, $app);
 
 if (!count($list))
 {

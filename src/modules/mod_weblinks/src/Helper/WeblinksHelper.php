@@ -14,7 +14,6 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Router\Route;
-use Joomla\Component\Weblinks\Site\Model\CategoryModel;
 use Joomla\Registry\Registry;
 
 /**
@@ -28,15 +27,18 @@ class WeblinksHelper
 	 * Retrieve list of weblinks
 	 *
 	 * @param   Registry                 $params  The module parameters
-	 * @param   CategoryModel            $model   The model
 	 * @param   CMSApplicationInterface  $app     The application
 	 *
 	 * @return  mixed   Null if no weblinks based on input parameters else an array containing all the weblinks.
 	 *
 	 * @since   1.5
 	 **/
-	public static function getList($params, $model, $app)
+	public static function getList($params, $app)
 	{
+		/* @var \Joomla\Component\Weblinks\Site\Model\CategoryModel $model */
+		$model = $app->bootComponent('com_weblinks')->getMVCFactory()
+			->createModel('Category', 'Site', ['ignore_request' => true]);
+
 		// Set application parameters in model
 		$appParams = $app->getParams();
 		$model->setState('params', $appParams);
