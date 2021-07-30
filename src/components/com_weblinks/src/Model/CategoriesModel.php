@@ -112,21 +112,14 @@ class CategoriesModel extends ListModel
 	{
 		if ($this->_items === null)
 		{
-			$active = Factory::getApplication()->getMenu()->getActive();
+			$params = $this->getState('params', new Registry);
 
-			if ($active)
-			{
-				$params = $active->getParams();
-			}
-			else
-			{
-				$params = new Registry;
-			}
-
-			$options = array();
+			$options               = array();
+			$options['access']     = $this->getState('filter.access');
+			$options['published']  = $this->getState('filter.published');
 			$options['countItems'] = $params->get('show_cat_num_links', 1) || !$params->get('show_empty_categories_cat', 0);
-			$categories = Categories::getInstance('Weblinks', $options);
-			$this->_parent = $categories->get($this->getState('filter.parentId', 'root'));
+			$categories            = Categories::getInstance('Weblinks', $options);
+			$this->_parent         = $categories->get($this->getState('filter.parentId', 'root'));
 
 			if (is_object($this->_parent))
 			{

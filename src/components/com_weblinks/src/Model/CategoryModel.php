@@ -246,7 +246,9 @@ class CategoryModel extends ListModel
 	protected function populateState($ordering = null, $direction = null)
 	{
 		$app    = Factory::getApplication();
-		$params = ComponentHelper::getParams('com_weblinks');
+
+		$params = $app->getParams();
+		$this->setState('params', $params);
 
 		// List state information
 		$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->get('list_limit'), 'uint');
@@ -279,7 +281,7 @@ class CategoryModel extends ListModel
 		$id = $app->input->get('id', 0, 'int');
 		$this->setState('category.id', $id);
 
-		$user = Factory::getApplication()->getIdentity();
+		$user = $app->getIdentity();
 
 		if (!$user->authorise('core.edit.state', 'com_weblinks') && !$user->authorise('core.edit', 'com_weblinks'))
 		{
@@ -291,9 +293,6 @@ class CategoryModel extends ListModel
 		}
 
 		$this->setState('filter.language', Multilanguage::isEnabled());
-
-		// Load the parameters.
-		$this->setState('params', $params);
 	}
 
 	/**
@@ -307,16 +306,7 @@ class CategoryModel extends ListModel
 	{
 		if (!is_object($this->_item))
 		{
-			$active = Factory::getApplication()->getMenu()->getActive();
-
-			if ($active)
-			{
-				$params = $active->getParams();
-			}
-			else
-			{
-				$params = new Registry;
-			}
+			$params = $this->getState('params', new Registry);
 
 			$options               = array();
 			$options['countItems'] = $params->get('show_cat_num_links_cat', 1)
