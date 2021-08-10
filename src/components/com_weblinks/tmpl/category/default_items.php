@@ -80,7 +80,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 						<?php endif; ?>
 
 						<?php if ($this->params->get('show_link_hits', 1)) : ?>
-							<span class="list-hits badge badge-info float-end">
+							<span class="list-hits badge bg-info float-end">
 								<?php echo Text::sprintf('JGLOBAL_HITS_COUNT', $item->hits); ?>
 							</span>
 						<?php endif; ?>
@@ -112,7 +112,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 							<?php endif; ?>
 
 							<?php if ($item->state == 0) : ?>
-								<span class="label label-warning"><?php echo Text::_('JUNPUBLISHED'); ?></span>
+								<span class="badge bg-warning"><?php echo Text::_('JUNPUBLISHED'); ?></span>
 							<?php endif; ?>
 
 							<?php
