@@ -6,7 +6,6 @@
 			type="hidden"
 			label="WEBLINK_ID_LABEL"
 			readonly="true"
-			required="true"
 			default="0"
 		/>
 
@@ -102,6 +101,93 @@
 			namespace="weblink"
 		/>
 	</fieldset>
+
+	<fields
+		name="images"
+		>
+		<fieldset
+			name="images"
+			label="JGLOBAL_FIELDSET_IMAGE_OPTIONS"
+			>
+			<field
+				name="image_first"
+				type="media"
+				label="COM_WEBLINKS_FIELD_FIRST_LABEL"
+			/>
+
+			<field
+				name="float_first"
+				type="list"
+				label="COM_WEBLINKS_FLOAT_FIRST_LABEL"
+				useglobal="true"
+				>
+				<option value="right">COM_WEBLINKS_RIGHT</option>
+				<option value="left">COM_WEBLINKS_LEFT</option>
+				<option value="none">COM_WEBLINKS_NONE</option>
+			</field>
+
+			<field
+				name="image_first_alt"
+				type="text"
+				label="COM_WEBLINKS_FIELD_IMAGE_ALT_LABEL"
+			/>
+
+			<field
+				name="image_first_alt_empty"
+				type="checkbox"
+				label="COM_WEBLINKS_FIELD_IMAGE_ALT_EMPTY_LABEL"
+				description="COM_WEBLINKS_FIELD_IMAGE_ALT_EMPTY_DESC"
+			/>
+
+			<field
+				name="image_first_caption"
+				type="text"
+				label="COM_WEBLINKS_FIELD_IMAGE_CAPTION_LABEL"
+			/>
+
+			<field
+				name="spacer1"
+				type="spacer"
+				hr="true"
+			/>
+
+			<field
+				name="image_second"
+				type="media"
+				label="COM_WEBLINKS_FIELD_SECOND_LABEL"
+			/>
+
+			<field
+				name="float_second"
+				type="list"
+				label="COM_WEBLINKS_FLOAT_SECOND_LABEL"
+				>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="right">COM_WEBLINKS_RIGHT</option>
+				<option value="left">COM_WEBLINKS_LEFT</option>
+				<option value="none">COM_WEBLINKS_NONE</option>
+			</field>
+
+			<field
+				name="image_second_alt"
+				type="text"
+				label="COM_WEBLINKS_FIELD_IMAGE_ALT_LABEL"
+			/>
+
+			<field
+				name="image_second_alt_empty"
+				type="checkbox"
+				label="COM_WEBLINKS_FIELD_IMAGE_ALT_EMPTY_LABEL"
+				description="COM_WEBLINKS_FIELD_IMAGE_ALT_EMPTY_DESC"
+			/>
+
+			<field
+				name="image_second_caption"
+				type="text"
+				label="COM_WEBLINKS_FIELD_IMAGE_CAPTION_LABEL"
+			/>
+		</fieldset>
+	</fields>
 
 	<fields name="metadata">
 		<fieldset
