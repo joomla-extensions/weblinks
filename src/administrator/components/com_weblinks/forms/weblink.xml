@@ -284,7 +284,6 @@
 				name="image_first"
 				type="media"
 				label="COM_WEBLINKS_FIELD_FIRST_LABEL"
-				description="COM_WEBLINKS_FIELD_FIRST_DESC"
 			/>
 
 			<field
