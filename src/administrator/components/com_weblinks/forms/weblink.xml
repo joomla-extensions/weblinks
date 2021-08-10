@@ -291,7 +291,6 @@
 				name="float_first"
 				type="list"
 				label="COM_WEBLINKS_FLOAT_FIRST_LABEL"
-				description="COM_WEBLINKS_FLOAT_FIRST_DESC"
 				useglobal="true"
 				>
 				<option value="right">COM_WEBLINKS_RIGHT</option>
@@ -303,14 +302,19 @@
 				name="image_first_alt"
 				type="text"
 				label="COM_WEBLINKS_FIELD_IMAGE_ALT_LABEL"
-				description="COM_WEBLINKS_FIELD_IMAGE_ALT_DESC"
+			/>
+
+			<field
+				name="image_first_alt_empty"
+				type="checkbox"
+				label="COM_WEBLINKS_FIELD_IMAGE_ALT_EMPTY_LABEL"
+				description="COM_WEBLINKS_FIELD_IMAGE_ALT_EMPTY_DESC"
 			/>
 
 			<field
 				name="image_first_caption"
 				type="text"
 				label="COM_WEBLINKS_FIELD_IMAGE_CAPTION_LABEL"
-				description="COM_WEBLINKS_FIELD_IMAGE_CAPTION_DESC"
 			/>
 
 			<field
@@ -323,7 +327,6 @@
 				name="image_second"
 				type="media"
 				label="COM_WEBLINKS_FIELD_SECOND_LABEL"
-				description="COM_WEBLINKS_FIELD_SECOND_DESC"
 			/>
 
 			<field
@@ -341,14 +344,19 @@
 				name="image_second_alt"
 				type="text"
 				label="COM_WEBLINKS_FIELD_IMAGE_ALT_LABEL"
-				description="COM_WEBLINKS_FIELD_IMAGE_ALT_DESC"
+			/>
+
+			<field
+				name="image_second_alt_empty"
+				type="checkbox"
+				label="COM_WEBLINKS_FIELD_IMAGE_ALT_EMPTY_LABEL"
+				description="COM_WEBLINKS_FIELD_IMAGE_ALT_EMPTY_DESC"
 			/>
 
 			<field
 				name="image_second_caption"
 				type="text"
 				label="COM_WEBLINKS_FIELD_IMAGE_CAPTION_LABEL"
-				description="COM_WEBLINKS_FIELD_IMAGE_CAPTION_DESC"
 			/>
 		</fieldset>
 	</fields>
