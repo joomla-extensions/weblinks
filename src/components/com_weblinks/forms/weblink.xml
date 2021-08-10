@@ -6,7 +6,6 @@
 			type="hidden"
 			label="WEBLINK_ID_LABEL"
 			readonly="true"
-			required="true"
 			default="0"
 		/>
 
