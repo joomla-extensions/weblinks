@@ -64,7 +64,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 				</div>
 			<?php endif; ?>
 
-			<ul class="category list-group list-unstyled">
+			<ul class="category list-unstyled">
 
 				<?php foreach ($this->items as $i => $item) : ?>
 
@@ -73,23 +73,20 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 
 						<?php
 						// Shouldn't this be only for users with admin rights?
+						// @ToDo: what is the difference -class system-unbublished?
 						if ($item->state == 0) : ?>
-							<li class="system-unpublished list-group-item">
+							<li class="system-unpublished list-group mt-3">
 						<?php else : ?>
-							<li class="list-group-item">
-						<?php endif; ?>
-
-						<?php if ($this->params->get('show_link_hits', 1)) : ?>
-							<span class="list-hits badge bg-info float-end">
-								<?php echo Text::sprintf('JGLOBAL_HITS_COUNT', $item->hits); ?>
-							</span>
+							<li class="list-group mt-3">
 						<?php endif; ?>
 
 						<?php if ($canEdit) : ?>
-							<?php echo LayoutHelper::render('joomla.content.icons', array('params' => $params, 'item' => $item)); ?>
+							<div class="icons list-group-item">
+								<?php echo HTMLHelper::_('weblinkicon.edit', $item, $this->params); ?>
+							</div>
 						<?php endif; ?>
 
-						<div class="list-title">
+						<div class="list-title list-group-item ">
 							<?php if (!$this->params->get('icons', 1)) : ?>
 								<?php echo Text::_('COM_WEBLINKS_LINK'); ?>
 							<?php else : ?>
@@ -142,58 +139,78 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 									echo '<a href="' . $link . '" class="' . $menuclass . '" rel="nofollow">' .
 										$this->escape($item->title) . ' </a>';
 									break;
-							}
-							?>
-							</div>
-
-							<?php if ($this->params->get('show_tags', 1) && !empty($item->tags->itemTags)) : ?>
-							    <?php echo LayoutHelper::render('joomla.content.tags', $item->tags->itemTags); ?>
-							<?php endif; ?>
-
-							<?php if (($this->params->get('show_link_description')) && ($item->description != '')) : ?>
-								<?php $images = json_decode($item->images); ?>
-								<?php  if (isset($images->image_first) and !empty($images->image_first)) : ?>
-								<?php $imgfloat = (empty($images->float_first)) ? $this->params->get('float_first') : $images->float_first; ?>
-								<div class="pull-<?php echo htmlspecialchars($imgfloat, ENT_COMPAT, 'UTF-8'); ?> item-image">
-									<img
-									<?php if ($images->image_first_caption) : ?>
-										<?php echo 'class="caption" title="' . htmlspecialchars($images->image_first_caption) . '"'; ?>
-									<?php endif; ?>
-									src="<?php echo htmlspecialchars($images->image_first); ?>"
-									alt="<?php echo htmlspecialchars($images->image_first_alt); ?>"/>
-								</div>
-							<?php endif; ?>
-
-							<?php  if (isset($images->image_second) and !empty($images->image_second)) : ?>
-								<?php $imgfloat = (empty($images->float_second)) ? $this->params->get('float_second') : $images->float_second; ?>
-								<div class="pull-<?php echo htmlspecialchars($imgfloat, ENT_COMPAT, 'UTF-8'); ?> item-image">
-								<img
-									<?php if ($images->image_second_caption) : ?>
-										<?php echo 'class="caption" title="' . htmlspecialchars($images->image_second_caption) . '"'; ?>
-									<?php endif; ?>
-									src="<?php echo htmlspecialchars($images->image_second); ?>"
-									alt="<?php echo htmlspecialchars($images->image_second_alt); ?>"/> </div>
+								}
+								?>
+								<?php if ($this->params->get('show_link_hits', 1)) : ?>
+									<div class="list-hits badge bg-info float-end">
+										<?php echo Text::sprintf('JGLOBAL_HITS_COUNT', $item->hits); ?>
+									</div>
 								<?php endif; ?>
 
-								<?php echo $item->description; ?>
-							<?php endif; ?>
+								<?php if ($this->params->get('show_tags', 1) && !empty($item->tags->itemTags)) : ?>
+									<div class="mt-2 mb-2">
+										<?php echo LayoutHelper::render('joomla.content.tags', $item->tags->itemTags); ?>
+									</div>
+								<?php endif; ?>
+
+								<?php if (($this->params->get('show_link_description')) && ($item->description != '')) : ?>
+									<div class="mt-2 mb-2">
+										<?php $images = json_decode($item->images); ?>
+										<?php  if (!empty($images->image_first)) : ?>
+											<?php $imgfloat = (empty($images->float_first)) ? $this->params->get('float_first') : $images->float_first; ?>
+											<?php $img      = HTMLHelper::cleanImageURL($images->image_first); ?>
+											<?php $alt      = empty($images->image_first_alt) && empty($images->image_first_alt_empty)
+												? ''
+												: 'alt="' . htmlspecialchars($images->image_first_alt, ENT_COMPAT, 'UTF-8') . '"'; ?>
+											<figure class="item-image">
+												<img src="<?php echo htmlspecialchars($img->url, ENT_COMPAT, 'UTF-8'); ?>"
+														<?php echo $alt; ?> itemprop="thumbnail" />
+												<?php if (!empty($images->image_first_caption)) : ?>
+													<figcaption class="caption"><?php echo htmlspecialchars($images->image_first_caption, ENT_COMPAT, 'UTF-8'); ?></figcaption>
+												<?php endif; ?>
+											</figure>
+										<?php endif; ?>
+
+										<?php  if (!empty($images->image_second)) : ?>
+											<?php $imgfloat = (empty($images->float_second)) ? $this->params->get('float_second') : $images->float_second; ?>
+											<?php $img      = HTMLHelper::cleanImageURL($images->image_second); ?>
+											<?php $alt      = empty($images->image_second_alt) && empty($images->image_second_alt_empty)
+												? ''
+												: 'alt="' . htmlspecialchars($images->image_second_alt, ENT_COMPAT, 'UTF-8') . '"'; ?>
+											<figure class="item-image">
+												<img src="<?php echo htmlspecialchars($img->url, ENT_COMPAT, 'UTF-8'); ?>"
+														<?php echo $alt; ?> itemprop="thumbnail" />
+												<?php if (!empty($images->image_first_caption)) : ?>
+													<figcaption class="caption"><?php echo htmlspecialchars($images->image_second_caption, ENT_COMPAT, 'UTF-8'); ?></figcaption>
+												<?php endif; ?>
+											</figure>
+										<?php endif; ?>
+
+										<?php echo $item->description; ?>
+
+									</div>
+								<?php endif; ?>
+
+							</div>
+
 						</li>
 					<?php endif; ?>
 				<?php endforeach; ?>
 			</ul>
 
 			<?php // Code to add a link to submit a weblink. ?>
+
 			<?php if ($this->params->get('show_pagination')) : ?>
-			<div class="pagination">
-				<?php if ($this->params->def('show_pagination_results', 1)) : ?>
-					<p class="counter">
-						<?php echo $this->pagination->getPagesCounter(); ?>
-					</p>
-				<?php endif; ?>
+				<div class="com-contact-category__counter w-100">
+					<?php if ($this->params->def('show_pagination_results', 1)) : ?>
+						<p class="com-contact-category__counter counter float-end pt-3 pe-2">
+							<?php echo $this->pagination->getPagesCounter(); ?>
+						</p>
+					<?php endif; ?>
+
 					<?php echo $this->pagination->getPagesLinks(); ?>
 				</div>
 			<?php endif; ?>
 		</form>
 	</div>
 <?php endif; ?>
-
