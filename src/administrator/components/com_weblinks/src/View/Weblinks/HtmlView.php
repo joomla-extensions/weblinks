@@ -171,7 +171,7 @@ class HtmlView extends BaseHtmlView
 
 		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete'))
 		{
-			$toolbar->delete('contacts.delete')
+			$toolbar->delete('weblinks.delete')
 				->text('JTOOLBAR_EMPTY_TRASH')
 				->message('JGLOBAL_CONFIRM_DELETE')
 				->listCheck(true);
