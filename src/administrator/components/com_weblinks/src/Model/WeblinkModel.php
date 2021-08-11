@@ -66,7 +66,7 @@ class WeblinkModel extends AdminModel
 	 */
 	protected function canDelete($record)
 	{
-		if (empty($record->id) || $record->published != -2)
+		if (empty($record->id) || $record->state != -2)
 		{
 			return false;
 		}
