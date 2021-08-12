@@ -121,9 +121,9 @@
 				label="COM_WEBLINKS_FLOAT_FIRST_LABEL"
 				useglobal="true"
 				>
-				<option value="end">COM_WEBLINKS_FLOAT_RIGHT</option>
-				<option value="start">COM_WEBLINKS_FLOAT_LEFT</option>
-				<option value="none">COM_WEBLINKS_FLOAT_NONE</option>
+				<option value="right">COM_WEBLINKS_RIGHT</option>
+				<option value="left">COM_WEBLINKS_LEFT</option>
+				<option value="none">COM_WEBLINKS_NONE</option>
 			</field>
 
 			<field
@@ -161,11 +161,11 @@
 				name="float_second"
 				type="list"
 				label="COM_WEBLINKS_FLOAT_SECOND_LABEL"
-				useglobal="true"
 				>
-				<option value="end">COM_WEBLINKS_FLOAT_RIGHT</option>
-				<option value="start">COM_WEBLINKS_FLOAT_LEFT</option>
-				<option value="none">COM_WEBLINKS_FLOAT_NONE</option>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="right">COM_WEBLINKS_RIGHT</option>
+				<option value="left">COM_WEBLINKS_LEFT</option>
+				<option value="none">COM_WEBLINKS_NONE</option>
 			</field>
 
 			<field
