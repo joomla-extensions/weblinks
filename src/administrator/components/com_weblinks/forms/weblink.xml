@@ -332,8 +332,8 @@
 				name="float_second"
 				type="list"
 				label="COM_WEBLINKS_FLOAT_SECOND_LABEL"
+				useglobal="true"
 				>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="right">COM_WEBLINKS_RIGHT</option>
 				<option value="left">COM_WEBLINKS_LEFT</option>
 				<option value="none">COM_WEBLINKS_NONE</option>
