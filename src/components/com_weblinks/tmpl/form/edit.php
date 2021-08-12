@@ -60,14 +60,14 @@ $params = $this->state->get('params');
 		<?php echo $this->form->renderField('description'); ?>
 
 		<?php echo $this->form->renderField('image_first', 'images'); ?>
-		<?php echo $this->form->renderField('float_first', 'images'); ?>
 		<?php echo $this->form->renderField('image_first_alt', 'images'); ?>
-		<?php echo $this->form->renderField('float_first_alt_empty', 'images'); ?>
+		<?php echo $this->form->renderField('image_first_alt_empty', 'images'); ?>
+		<?php echo $this->form->renderField('float_first', 'images'); ?>
 
 		<?php echo $this->form->renderField('image_second', 'images'); ?>
-		<?php echo $this->form->renderField('float_second', 'images'); ?>
 		<?php echo $this->form->renderField('image_second_alt', 'images'); ?>
-		<?php echo $this->form->renderField('float_second_alt_empty', 'images'); ?>
+		<?php echo $this->form->renderField('image_second_alt_empty', 'images'); ?>
+		<?php echo $this->form->renderField('float_second', 'images'); ?>
 
 
 		<?php if ($captchaEnabled) : ?>
