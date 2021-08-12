@@ -183,7 +183,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 											<figure class="item-image">
 												<img src="<?php echo htmlspecialchars($img->url, ENT_COMPAT, 'UTF-8'); ?>"
 														<?php echo $alt; ?> itemprop="thumbnail" />
-												<?php if (!empty($images->image_first_caption)) : ?>
+												<?php if (!empty($images->image_second_caption)) : ?>
 													<figcaption class="caption"><?php echo htmlspecialchars($images->image_second_caption, ENT_COMPAT, 'UTF-8'); ?></figcaption>
 												<?php endif; ?>
 											</figure>
