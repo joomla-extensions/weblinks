@@ -33,39 +33,42 @@ $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
 
-<?php if (empty($this->items)) : ?>
-	<p> <?php echo Text::_('COM_WEBLINKS_NO_WEBLINKS'); ?></p>
-<?php else : ?>
-	<div class="com-weblinks-category__items">
-		<form action="<?php echo htmlspecialchars(Uri::getInstance()->toString()); ?>" method="post" name="adminForm" id="adminForm">
-			<?php if ($this->params->get('filter_field')) : ?>
-				<div class="com-weblinks-category__filter btn-group">
-					<label class="filter-search-lbl visually-hidden" for="filter-search">
-						<?php echo Text::_('COM_WEBLINKS_FILTER_SEARCH_DESC'); ?>
-					</label>
-					<input
-						type="text"
-						name="filter-search"
-						id="filter-search"
-						value="<?php echo $this->escape($this->state->get('list.filter')); ?>"
-						class="inputbox" onchange="document.adminForm.submit();"
-						placeholder="<?php echo Text::_('COM_WEBLINKS_FILTER_SEARCH_DESC'); ?>"
-					>
-					<button type="submit" name="filter_submit" class="btn btn-primary"><?php echo Text::_('JGLOBAL_FILTER_BUTTON'); ?></button>
-                    <button type="reset" name="filter-clear-button" class="btn btn-secondary" onclick="document.getElementById('filter-search').value = '';document.adminForm.submit();"><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?></button>
+<div class="com-weblinks-category__items">
+	<form action="<?php echo htmlspecialchars(Uri::getInstance()->toString()); ?>" method="post" name="adminForm" id="adminForm">
+		<?php if ($this->params->get('filter_field')) : ?>
+			<div class="com-weblinks-category__filter btn-group">
+				<label class="filter-search-lbl visually-hidden" for="filter-search">
+					<?php echo Text::_('COM_WEBLINKS_FILTER_SEARCH_DESC'); ?>
+				</label>
+				<input
+					type="text"
+					name="filter-search"
+					id="filter-search"
+					value="<?php echo $this->escape($this->state->get('list.filter')); ?>"
+					class="inputbox" onchange="document.adminForm.submit();"
+					placeholder="<?php echo Text::_('COM_WEBLINKS_FILTER_SEARCH_DESC'); ?>"
+				>
+				<button type="submit" name="filter_submit" class="btn btn-primary"><?php echo Text::_('JGLOBAL_FILTER_BUTTON'); ?></button>
+				<button type="reset" name="filter-clear-button" class="btn btn-secondary"><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?></button>
+			</div>
+		<?php endif; ?>
+		<?php if ($this->params->get('show_pagination_limit')) : ?>
+			<div class="com-weblinks-category__pagination btn-group float-end">
+				<label for="limit" class="visually-hidden">
+					<?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>
+				</label>
+				<?php echo $this->pagination->getLimitBox(); ?>
+			</div>
+		<?php endif; ?>
+		<?php if (empty($this->items)) : ?>
+			<?php if ($this->params->get('show_no_contacts', 1)) : ?>
+				<div class="alert alert-info">
+					<span class="icon-info-circle" aria-hidden="true"></span><span class="visually-hidden"><?php echo Text::_('INFO'); ?></span>
+					<?php echo Text::_('COM_WEBLINKS_NO_WEBLINKS'); ?>
 				</div>
 			<?php endif; ?>
-			<?php if ($this->params->get('show_pagination_limit')) : ?>
-				<div class="com-weblinks-category__pagination btn-group float-end">
-					<label for="limit" class="visually-hidden">
-						<?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>
-					</label>
-					<?php echo $this->pagination->getLimitBox(); ?>
-				</div>
-			<?php endif; ?>
-
+		<?php else : ?>
 			<ul class="category list-unstyled">
-
 				<?php foreach ($this->items as $i => $item) : ?>
 
 					<?php // Shouldn't this be checked in the model?The pagination will be affected
@@ -180,7 +183,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 											<figure class="item-image">
 												<img src="<?php echo htmlspecialchars($img->url, ENT_COMPAT, 'UTF-8'); ?>"
 														<?php echo $alt; ?> itemprop="thumbnail" />
-												<?php if (!empty($images->image_first_caption)) : ?>
+												<?php if (!empty($images->image_second_caption)) : ?>
 													<figcaption class="caption"><?php echo htmlspecialchars($images->image_second_caption, ENT_COMPAT, 'UTF-8'); ?></figcaption>
 												<?php endif; ?>
 											</figure>
@@ -198,8 +201,6 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 				<?php endforeach; ?>
 			</ul>
 
-			<?php // Code to add a link to submit a weblink. ?>
-
 			<?php if ($this->params->get('show_pagination')) : ?>
 				<div class="com-contact-category__counter w-100">
 					<?php if ($this->params->def('show_pagination_results', 1)) : ?>
@@ -211,6 +212,11 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 					<?php echo $this->pagination->getPagesLinks(); ?>
 				</div>
 			<?php endif; ?>
-		</form>
-	</div>
-<?php endif; ?>
+
+		<?php endif; ?>
+
+		<?php if ($canCreate) : ?>
+			<?php echo HTMLHelper::_('weblinkicon.create', $this->category, $this->category->params); ?>
+		<?php endif; ?>
+	</form>
+</div>
