@@ -31,7 +31,7 @@ use Joomla\CMS\Language\Text;
 			<?php if ($k % $cols == 0) : ?>
 				<div class="row row-fluid">
 			<?php endif; ?>
-			<div class="span<?php echo (12 / $cols); ?>">
+			<div class="col-<?php echo (12 / $cols); ?>">
 		<?php endif; ?>
 		<?php if ($params->get('groupby_showtitle', 1)) : ?>
 			<h4><?php echo htmlspecialchars($cat['title'], ENT_COMPAT, 'UTF-8'); ?></h4>
