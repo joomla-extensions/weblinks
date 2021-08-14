@@ -32,9 +32,9 @@ if ($this->maxLevelcat != 0 && count($this->items[$this->parent->id]) > 0) :
 					<button
 							type="button"
 							id="category-btn-<?php echo $item->id; ?>"
-							data-bs-target="#category-<?php echo $item->id; ?>"
-							data-bs-toggle="collapse"
+                            data-category-id="<?php echo $item->id; ?>"
 							class="btn btn-secondary btn-sm float-end"
+                            aria-expanded="false"
 							aria-label="<?php echo Text::_('JGLOBAL_EXPAND_CATEGORIES'); ?>"
 					>
 						<span class="icon-plus" aria-hidden="true"></span>
@@ -50,7 +50,7 @@ if ($this->maxLevelcat != 0 && count($this->items[$this->parent->id]) > 0) :
 			<?php endif; ?>
 
 			<?php if ($this->maxLevelcat > 1 && count($item->getChildren()) > 0) : ?>
-				<div class="collapse fade" id="category-<?php echo $item->id; ?>">
+				<div class="com-weblinks-categories__children" id="category-<?php echo $item->id; ?>" hidden>
 					<?php
 					$this->items[$item->id] = $item->getChildren();
 					$this->parent = $item;
