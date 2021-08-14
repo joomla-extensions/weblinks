@@ -36,8 +36,8 @@
 					layout="joomla.form.field.radio.switcher"
 					default="0"
 					>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field
@@ -48,8 +48,8 @@
 					default="1"
 					showon="groupby:1"
 					>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
 				</field>
 
 				<field
@@ -119,7 +119,7 @@
 					name="follow"
 					type="list"
 					label="MOD_WEBLINKS_FIELD_FOLLOW_LABEL"
-					default="0"
+					default="follow"
 					>
 					<option value="follow">MOD_WEBLINKS_FIELD_VALUE_FOLLOW</option>
 					<option value="nofollow">MOD_WEBLINKS_FIELD_VALUE_NOFOLLOW</option>
