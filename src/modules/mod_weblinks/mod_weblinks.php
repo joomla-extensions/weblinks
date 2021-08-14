@@ -14,7 +14,7 @@ use Joomla\Module\Weblinks\Site\Helper\WeblinksHelper;
 
 $list = WeblinksHelper::getList($params, $app);
 
-if (!count($list))
+if (empty($list))
 {
 	return;
 }

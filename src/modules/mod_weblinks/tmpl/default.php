@@ -14,7 +14,7 @@ use Joomla\CMS\Language\Text;
 ?>
 
 <?php if ($params->get('groupby', 0)) : ?>
-	<?php $cats = array(); ?>
+	<?php $cats = []; ?>
 	<?php $cols = $params->get('groupby_columns', 3); ?>
 	<?php foreach ($list as $l) : ?>
 		<?php $cats[] = array('catid' => $l->catid, 'title' => $l->category_title); ?>
@@ -36,7 +36,7 @@ use Joomla\CMS\Language\Text;
 		<?php if ($params->get('groupby_showtitle', 1)) : ?>
 			<h4><?php echo htmlspecialchars($cat['title'], ENT_COMPAT, 'UTF-8'); ?></h4>
 		<?php endif; ?>
-			<ul class="weblinks<?php echo $moduleclass_sfx; ?>">
+			<ul class="mod-list weblinks <?php echo $moduleclass_sfx; ?>">
 				<?php foreach ($items as $item) : ?>
 					<li>
 						<?php $link = $item->link; ?>
@@ -80,7 +80,7 @@ use Joomla\CMS\Language\Text;
 		<?php endif; ?>
 	<?php endforeach; ?>
 <?php else : ?>
-	<ul class="weblinks<?php echo $moduleclass_sfx; ?>">
+	<ul class="weblinks mod-list  <?php echo $moduleclass_sfx; ?>">
 		<?php foreach ($list as $item) : ?>
 			<li>
 				<?php $link = $item->link; ?>
