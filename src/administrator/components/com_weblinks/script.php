@@ -48,6 +48,9 @@ class Com_WeblinksInstallerScript
 			'/components/com_weblinks/metadata.xml',
 			'/components/com_weblinks/router.php',
 			'/language/en-GB/en-GB.com_weblinks.ini',
+			'/language/en-GB/en-GB.mod_weblinks.ini',
+			'/language/en-GB/en-GB.mod_weblinks.sys.ini',
+			'/language/en-GB/en-GB.pkg_weblinks.sys.ini',
 		];
 
 		$folders = [
@@ -61,6 +64,7 @@ class Com_WeblinksInstallerScript
 			'/administrator/components/com_weblinks/models',
 			'/administrator/components/com_weblinks/views',
 			'/administrator/language/en-GB/en-GB.com_weblinks.ini',
+			'/administrator/language/en-GB/en-GB.com_weblinks.sys.ini',
 		];
 
 		foreach ($files as $file)
