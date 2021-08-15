@@ -126,9 +126,11 @@ class WeblinkModel extends ItemModel
 					// Filter by start and end dates.
 					$nowDate = Factory::getDate()->toSql();
 					$query->where('(' . $db->quoteName('a.publish_up')
-						. ' IS NULL OR ' . $db->quoteName('a.publish_up') . ' <= :publish_up)')
+						. ' IS NULL OR ' . $db->quoteName('a.publish_up') . ' <= :publish_up)'
+					)
 						->where('(' . $db->quoteName('a.publish_down')
-							. ' IS NULL OR ' . $db->quoteName('a.publish_down') . ' >= :publish_down)')
+							. ' IS NULL OR ' . $db->quoteName('a.publish_down') . ' >= :publish_down)'
+						)
 						->bind(':publish_up', $nowDate)
 						->bind(':publish_down', $nowDate);
 				}

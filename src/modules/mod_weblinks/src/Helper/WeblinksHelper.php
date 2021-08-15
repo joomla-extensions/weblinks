@@ -35,7 +35,8 @@ class WeblinksHelper
 	 **/
 	public static function getList($params, $app)
 	{
-		/* @var \Joomla\Component\Weblinks\Site\Model\CategoryModel $model */
+		// @var \Joomla\Component\Weblinks\Site\Model\CategoryModel $model
+
 		$model = $app->bootComponent('com_weblinks')->getMVCFactory()
 			->createModel('Category', 'Site', ['ignore_request' => true]);
 
