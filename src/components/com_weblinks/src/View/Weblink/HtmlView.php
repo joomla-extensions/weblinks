@@ -63,6 +63,8 @@ class HtmlView extends BaseHtmlView
 		// Create a shortcut for $item.
 		$item = $this->item;
 
+		$item->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
+
 		$offset = $this->state->get('list.offset');
 
 		$app->triggerEvent('onContentPrepare', array('com_weblinks.weblink', &$item, &$item->params, $offset));
