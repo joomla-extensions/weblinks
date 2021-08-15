@@ -258,7 +258,7 @@ The tests in Weblinks Extension use Codeception Testing Framework, if you want t
 This is not required, and if in doubt you can just skip this section, but there may be some specific use cases when you need (or want) to override the default behaviour of RoboFile.php. To do this, copy `RoboFile.dist.ini` to `RoboFile.ini` and add options in INI format, one per line, e.g.
 
     skipClone = true
-    cmsPath = tests/joomla-cms3
+    cmsPath = tests/joomla
 
 The currently available options are as follows:
 
