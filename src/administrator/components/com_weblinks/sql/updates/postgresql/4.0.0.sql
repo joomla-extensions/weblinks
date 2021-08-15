@@ -11,8 +11,8 @@ ALTER TABLE "#__weblinks" ALTER COLUMN "publish_down" DROP DEFAULT;
 ALTER TABLE "#__weblinks" ALTER COLUMN "checked_out_time" DROP NOT NULL;
 ALTER TABLE "#__weblinks" ALTER COLUMN "checked_out_time" DROP DEFAULT;
 
-ALTER TABLE "#__weblinks" ALTER COLUMN "checked_out" DROP DEFAULT;
 ALTER TABLE "#__weblinks" ALTER COLUMN "checked_out" DROP NOT NULL;
+ALTER TABLE "#__weblinks" ALTER COLUMN "checked_out" DROP DEFAULT;
 
 UPDATE "#__weblinks" SET "modified" = "created" WHERE "modified" = '1970-01-01 00:00:00';
 
