@@ -398,7 +398,7 @@ class RoboFile extends Tasks
 	 */
 	private function buildGitCloneCommand()
 	{
-		$branch = empty($this->configuration->branch) ? 'staging' : $this->configuration->branch;
+		$branch = empty($this->configuration->branch) ? '4.0-dev' : $this->configuration->branch;
 
 		return "git" . $this->executableExtension . " clone -b $branch --single-branch --depth 1 https://github.com/joomla/joomla-cms.git tests/cache";
 	}
