@@ -58,14 +58,6 @@ class PlgButtonWeblink extends CMSPlugin
 			$link = 'index.php?option=com_weblinks&amp;view=weblinks&amp;layout=modal&amp;tmpl=component&amp;'
 				. Session::getFormToken() . '=1&amp;editor=' . $name;
 
-			$button          = new JObject;
-			$button->modal   = true;
-			$button->class   = 'btn';
-			$button->link    = $link;
-			$button->text    = Text::_('PLG_EDITORS-XTD_WEBLINK_BUTTON_WEBLINK');
-			$button->name    = 'link';
-			$button->options = "{handler: 'iframe', size: {x: 800, y: 500}}";
-
 			$button          = new CMSObject;
 			$button->modal   = true;
 			$button->link    = $link;
