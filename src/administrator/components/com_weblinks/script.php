@@ -41,6 +41,8 @@ class Com_WeblinksInstallerScript
 			'/administrator/components/com_weblinks/helpers/associations.php',
 			'/administrator/components/com_weblinks/sql/install.sqlsrv.sql',
 			'/administrator/components/com_weblinks/sql/uninstall.sqlsrv.sql',
+			'/administrator/language/en-GB/en-GB.com_weblinks.ini',
+			'/administrator/language/en-GB/en-GB.com_weblinks.sys.ini',
 			'/components/com_weblinks/helpers/association.php',
 			'/components/com_weblinks/helpers/category.php',
 			'/components/com_weblinks/controller.php',
@@ -63,8 +65,6 @@ class Com_WeblinksInstallerScript
 			'/components/com_weblinks/controllers',
 			'/administrator/components/com_weblinks/models',
 			'/administrator/components/com_weblinks/views',
-			'/administrator/language/en-GB/en-GB.com_weblinks.ini',
-			'/administrator/language/en-GB/en-GB.com_weblinks.sys.ini',
 		];
 
 		foreach ($files as $file)
