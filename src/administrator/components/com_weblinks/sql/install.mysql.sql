@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `#__weblinks` (
   `description` text NOT NULL,
   `hits` int NOT NULL DEFAULT 0,
   `state` tinyint NOT NULL DEFAULT 0,
-  `checked_out` int NOT NULL DEFAULT 0,
+  `checked_out` int unsigned,
   `checked_out_time` datetime,
   `ordering` int NOT NULL DEFAULT 0,
   `access` int NOT NULL DEFAULT 1,

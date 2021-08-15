@@ -5,11 +5,15 @@ ALTER TABLE `#__weblinks` MODIFY `publish_up` datetime NULL DEFAULT NULL;
 ALTER TABLE `#__weblinks` MODIFY `publish_down` datetime NULL DEFAULT NULL;
 ALTER TABLE `#__weblinks` MODIFY `checked_out_time` datetime NULL DEFAULT NULL;
 
+ALTER TABLE `#__weblinks` MODIFY `checked_out` int unsigned;
+
 UPDATE `#__weblinks` SET `modified` = `created` WHERE `modified` = '0000-00-00 00:00:00';
 
 UPDATE `#__weblinks` SET `publish_up` = NULL WHERE `publish_up` = '0000-00-00 00:00:00';
 UPDATE `#__weblinks` SET `publish_down` = NULL WHERE `publish_down` = '0000-00-00 00:00:00';
 UPDATE `#__weblinks` SET `checked_out_time` = NULL WHERE `checked_out_time` = '0000-00-00 00:00:00';
+
+UPDATE `#__weblinks` SET `checked_out` = null WHERE `checked_out` = 0;
 
 UPDATE `#__categories` SET `modified_time` = `created_time` WHERE `modified_time` = '0000-00-00 00:00:00' AND `extension` = 'com_weblinks';
 

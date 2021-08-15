@@ -17,7 +17,7 @@ CREATE TABLE "#__weblinks" (
   "description" text NOT NULL,
   "hits" bigint DEFAULT 0 NOT NULL,
   "state" smallint DEFAULT 0 NOT NULL,
-  "checked_out" bigint DEFAULT 0 NOT NULL,
+  "checked_out" integer,
   "checked_out_time" timestamp without time zone,
   "ordering" bigint DEFAULT 0 NOT NULL,
   "access" bigint DEFAULT 1 NOT NULL,

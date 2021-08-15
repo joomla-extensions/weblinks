@@ -95,7 +95,7 @@ if ($saveOrder && !empty($this->items))
 							<?php $item->cat_link = Route::_('index.php?option=com_categories&extension=com_weblinks&task=edit&type=other&cid[]=' . $item->catid); ?>
 							<?php $canCreate      = $user->authorise('core.create',     'com_weblinks.category.' . $item->catid); ?>
 							<?php $canEdit        = $user->authorise('core.edit',       'com_weblinks.category.' . $item->catid); ?>
-							<?php $canCheckin     = $user->authorise('core.manage',     'com_checkin') || $item->checked_out == $user->id || $item->checked_out == 0; ?>
+							<?php $canCheckin     = $user->authorise('core.manage',     'com_checkin') || $item->checked_out == $user->id || !$item->checked_out; ?>
 							<?php $canEditOwn     = $user->authorise('core.edit.own',   'com_weblinks.category.' . $item->catid) && $item->created_by == $user->id; ?>
 							<?php $canChange      = $user->authorise('core.edit.state', 'com_weblinks.category.' . $item->catid) && $canCheckin; ?>
 							<tr class="row<?php echo $i % 2; ?>" data-draggable-group="<?php echo $item->catid; ?>">
