@@ -79,7 +79,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
 		$date = Factory::getDate()->toSql();
 		$user = Factory::getApplication()->getIdentity();
 
-		$this->modified = $date->toSql();
+		$this->modified = $date;
 
 		if ($this->id)
 		{
