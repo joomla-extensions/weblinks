@@ -114,7 +114,7 @@ class Com_WeblinksInstallerScript
 			$category->metadesc         = '';
 			$category->metakey          = '';
 			$category->language         = '*';
-			$category->checked_out_time = Factory::getDbo()->getNullDate();
+			$category->checked_out_time = null;
 			$category->version          = 1;
 			$category->hits             = 0;
 			$category->modified_user_id = 0;
