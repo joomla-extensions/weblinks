@@ -33,6 +33,14 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
 	use TaggableTableTrait;
 
 	/**
+	 * Indicates that columns fully support the NULL value in the database
+	 *
+	 * @var    boolean
+	 * @since  __DEPLOY_VERSION__
+	 */
+	protected $_supportNullValue = true;
+
+	/**
 	 * Ensure the params and metadata in json encoded in the bind method
 	 *
 	 * @var    array
@@ -66,9 +74,9 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
 	 *
 	 * @since   1.6
 	 */
-	public function store($updateNulls = false)
+	public function store($updateNulls = true)
 	{
-		$date = Factory::getDate();
+		$date = Factory::getDate()->toSql();
 		$user = Factory::getApplication()->getIdentity();
 
 		$this->modified = $date->toSql();
@@ -77,6 +85,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
 		{
 			// Existing item
 			$this->modified_by = $user->id;
+			$this->modified    = $date;
 		}
 		else
 		{
@@ -84,12 +93,22 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
 			// so we don't touch either of these if they are set.
 			if (!(int) $this->created)
 			{
-				$this->created = $date->toSql();
+				$this->created = $date;
 			}
 
 			if (empty($this->created_by))
 			{
 				$this->created_by = $user->id;
+			}
+
+			if (!(int) $this->modified)
+			{
+				$this->modified = $date;
+			}
+
+			if (empty($this->modified_by))
+			{
+				$this->modified_by = $user->id;
 			}
 
 			if (empty($this->hits))
@@ -98,16 +117,16 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
 			}
 		}
 
-		// Set publish_up to null date if not set
+		// Set publish_up to null if not set
 		if (!$this->publish_up)
 		{
-			$this->publish_up = $this->getDbo()->getNullDate();
+			$this->publish_up = null;
 		}
 
-		// Set publish_down to null date if not set
+		// Set publish_down to null if not set
 		if (!$this->publish_down)
 		{
-			$this->publish_down = $this->getDbo()->getNullDate();
+			$this->publish_down = null;
 		}
 
 		// Verify that the alias is unique
@@ -187,7 +206,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
 		}
 
 		// Check the publish down date is not earlier than publish up.
-		if ($this->publish_down > $db->getNullDate() && $this->publish_down < $this->publish_up)
+		if ((int) $this->publish_down > 0 && $this->publish_down < $this->publish_up)
 		{
 			$this->setError(Text::_('JGLOBAL_START_PUBLISH_AFTER_FINISH'));
 
