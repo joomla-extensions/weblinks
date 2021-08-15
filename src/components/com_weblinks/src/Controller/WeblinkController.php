@@ -79,7 +79,6 @@ class WeblinkController extends FormController
 	protected function allowAdd($data = array())
 	{
 		$categoryId = ArrayHelper::getValue($data, 'catid', $this->input->getInt('id'), 'int');
-		$allow      = null;
 
 		if ($categoryId)
 		{
@@ -104,17 +103,33 @@ class WeblinkController extends FormController
 	protected function allowEdit($data = array(), $key = 'id')
 	{
 		$recordId   = (int) isset($data[$key]) ? $data[$key] : 0;
-		$categoryId = 0;
 
-		if ($recordId)
+		if (!$recordId)
 		{
-			$categoryId = (int) $this->getModel()->getItem($recordId)->catid;
+			return false;
 		}
+
+		$record     = $this->getModel()->getItem($recordId);
+		$categoryId = (int) $record->catid;
 
 		if ($categoryId)
 		{
 			// The category has been set. Check the category permissions.
-			return $this->app->getIdentity()->authorise('core.edit', $this->option . '.category.' . $categoryId);
+			$user = $this->app->getIdentity();
+
+			// First, check edit permission
+			if ($user->authorise('core.edit', $this->option . '.category.' . $categoryId))
+			{
+				return true;
+			}
+
+			// Fallback on edit.own
+			if ($user->authorise('core.edit.own', $this->option . '.category.' . $categoryId) && $record->created_by == $user->id)
+			{
+				return true;
+			}
+
+			return false;
 		}
 
 		// Since there is no asset tracking, revert to the component permissions.
@@ -307,7 +322,6 @@ class WeblinkController extends FormController
 		}
 
 		// Redirect to the URL
-		// @todo: Probably should check for a valid http link
 		if ($link->url)
 		{
 			$modelLink->hit($id);

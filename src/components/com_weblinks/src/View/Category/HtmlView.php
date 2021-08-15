@@ -72,7 +72,6 @@ class HtmlView extends CategoryView
 	protected function prepareDocument()
 	{
 		parent::prepareDocument();
-		;
 
 		parent::addFeed();
 

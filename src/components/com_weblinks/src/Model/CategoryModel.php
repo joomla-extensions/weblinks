@@ -103,9 +103,7 @@ class CategoryModel extends ListModel
 		{
 			if (!isset($this->_params))
 			{
-				$params = new Registry;
-				$params->loadString($item->params);
-				$item->params = $params;
+				$item->params = new Registry($item->params);
 			}
 
 			// Get the tags

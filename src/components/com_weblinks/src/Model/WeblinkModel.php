@@ -27,6 +27,14 @@ use Joomla\Registry\Registry;
 class WeblinkModel extends ItemModel
 {
 	/**
+	 * Store loaded weblink items
+	 *
+	 * @var    array
+	 * @since  1.6
+	 */
+	protected $_item = null;
+
+	/**
 	 * Model context string.
 	 *
 	 * @var  string

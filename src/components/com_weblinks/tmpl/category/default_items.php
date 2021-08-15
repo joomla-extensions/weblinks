@@ -23,10 +23,10 @@ $params = &$this->category->params;
 // Get the user object.
 $user = Factory::getApplication()->getIdentity();
 
-// Check if user is allowed to add/edit based on weblinks permissinos.
-$canEdit = $user->authorise('core.edit', 'com_weblinks.category.' . $this->category->id);
-$canCreate = $user->authorise('core.create', 'com_weblinks');
-$canEditState = $user->authorise('core.edit.state', 'com_weblinks');
+// Check if user is allowed to add/edit based on weblinks permission.
+$canEdit    = $user->authorise('core.edit', 'com_weblinks.category.' . $this->category->id);
+$canEditOwn = $user->authorise('core.edit.own', 'com_weblinks.category.' . $this->category->id);
+$canCreate  = $user->authorise('core.create', 'com_weblinks.category.' . $this->category->id);
 
 $n = count($this->items);
 $listOrder = $this->escape($this->state->get('list.ordering'));
@@ -45,7 +45,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 					name="filter-search"
 					id="filter-search"
 					value="<?php echo $this->escape($this->state->get('list.filter')); ?>"
-					class="inputbox" onchange="document.adminForm.submit();"
+					onchange="document.adminForm.submit();"
 					placeholder="<?php echo Text::_('COM_WEBLINKS_FILTER_SEARCH_DESC'); ?>"
 				>
 				<button type="submit" name="filter_submit" class="btn btn-primary"><?php echo Text::_('JGLOBAL_FILTER_BUTTON'); ?></button>
@@ -79,7 +79,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
                         <li class="list-group mt-3">
                     <?php endif; ?>
 
-                    <?php if ($canEdit) : ?>
+					<?php if ($canEdit || ($canEditOwn && $item->created_by == $userId)) : ?>
                         <div class="icons list-group-item">
                             <?php echo HTMLHelper::_('weblinkicon.edit', $item, $this->params); ?>
                         </div>
@@ -193,9 +193,9 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 			</ul>
 
 			<?php if ($this->params->get('show_pagination')) : ?>
-				<div class="com-contact-category__counter w-100">
+				<div class="com-weblinks-category__counter w-100">
 					<?php if ($this->params->def('show_pagination_results', 1)) : ?>
-						<p class="com-contact-category__counter counter float-end pt-3 pe-2">
+						<p class="com-weblinks-category__counter counter float-end pt-3 pe-2">
 							<?php echo $this->pagination->getPagesCounter(); ?>
 						</p>
 					<?php endif; ?>
