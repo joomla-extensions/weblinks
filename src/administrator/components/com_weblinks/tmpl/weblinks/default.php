@@ -181,7 +181,7 @@ if ($saveOrder && !empty($this->items))
 							'bootstrap.renderModal',
 							'collapseModal',
 							[
-								'title' => Text::_('com_weblinks_BATCH_OPTIONS'),
+								'title' => Text::_('COM_WEBLINKS_BATCH_OPTIONS'),
 								'footer' => $this->loadTemplate('batch_footer')
 							],
 							$this->loadTemplate('batch_body')
