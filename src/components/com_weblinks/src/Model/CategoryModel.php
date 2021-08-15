@@ -13,7 +13,6 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Categories\Categories;
 use Joomla\CMS\Categories\CategoryNode;
-use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\TagsHelper;
 use Joomla\CMS\Language\Multilanguage;
@@ -185,14 +184,13 @@ class CategoryModel extends ListModel
 		// Filter by start and end dates.
 		if ($this->getState('filter.publish_date'))
 		{
-			$nullDate = $db->getNullDate();
-			$nowDate  = Factory::getDate()->toSql();
-			$query->where('(a.publish_up = :publishUpNullDate OR a.publish_up <= :publishUpNowDate)')
-				->where('(a.publish_down = :publishDownNullDate OR a.publish_down >= :publishDownNowDate)')
-				->bind(':publishUpNullDate', $nullDate)
-				->bind(':publishDownNullDate', $nullDate)
-				->bind(':publishUpNowDate', $nowDate)
-				->bind(':publishDownNowDate', $nowDate);
+			$nowDate = Factory::getDate()->toSql();
+			$query->where('(' . $db->quoteName('a.publish_up')
+				. ' IS NULL OR ' . $db->quoteName('a.publish_up') . ' <= :publish_up)')
+				->where('(' . $db->quoteName('a.publish_down')
+					. ' IS NULL OR ' . $db->quoteName('a.publish_down') . ' >= :publish_down)')
+				->bind(':publish_up', $nowDate)
+				->bind(':publish_down', $nowDate);
 		}
 
 		// Filter by language
