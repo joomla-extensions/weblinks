@@ -11,110 +11,126 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
 
-?>
+if ($params->get('groupby', 0)) :
+	$cats = [];
+	$cols = $params->get('groupby_columns', 3);
 
-<?php if ($params->get('groupby', 0)) : ?>
-	<?php $cats = array(); ?>
-	<?php $cols = $params->get('groupby_columns', 3); ?>
-	<?php foreach ($list as $l) : ?>
-		<?php $cats[] = array('catid' => $l->catid, 'title' => $l->category_title); ?>
-	<?php endforeach; ?>
-	<?php $cats = array_values(array_map('unserialize', array_unique(array_map('serialize', $cats)))); ?>
-	<?php foreach ($cats as $k => $cat) : ?>
-		<?php $items = array(); ?>
-		<?php foreach ($list as $item) : ?>
-			<?php if ($item->catid == $cat['catid']) : ?>
-				<?php $items[] = $item; ?>
-			<?php endif; ?>
-		<?php endforeach; ?>
-		<?php if ($cols > 1) : ?>
-			<?php if ($k % $cols == 0) : ?>
-				<div class="row row-fluid">
-			<?php endif; ?>
-			<div class="span<?php echo (12 / $cols); ?>">
-		<?php endif; ?>
-		<?php if ($params->get('groupby_showtitle', 1)) : ?>
-			<h4><?php echo htmlspecialchars($cat['title'], ENT_COMPAT, 'UTF-8'); ?></h4>
-		<?php endif; ?>
-			<ul class="weblinks<?php echo $moduleclass_sfx; ?>">
-				<?php foreach ($items as $item) : ?>
-					<li>
-						<?php $link = $item->link; ?>
-						<?php
-						switch ($item->params->get('target', 3))
-						{
-							case 1:
-								// Open in a new window
-								echo '<a href="' . $link . '" target="_blank" rel="' . $params->get('follow', 'nofollow') . '">' .
-									htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
-								break;
+	foreach ($list as $l) :
+		$cats[] = array('catid' => $l->catid, 'title' => $l->category_title);
+	endforeach;
 
-							case 2:
-								// Open in a popup window
-								echo "<a href=\"#\" onclick=\"window.open('" . $link . "', '', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=780,height=550'); return false\">" .
-									htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
-								break;
+	$cats = array_values(array_map('unserialize', array_unique(array_map('serialize', $cats))));
 
-							default:
-								// Open in parent window
-								echo '<a href="' . $link . '" rel="' . $params->get('follow', 'nofollow') . '">' .
-									htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
-								break;
-						}
-						?>
-						<?php if ($params->get('description', 0)) : ?>
-							<?php echo nl2br($item->description); ?>
-						<?php endif; ?>
+	foreach ($cats as $k => $cat) :
+		$items = [];
 
-						<?php if ($params->get('hits', 0)) : ?>
-							<?php echo '(' . $item->hits . ' ' . Text::_('MOD_WEBLINKS_HITS') . ')'; ?>
-						<?php endif; ?>
-					</li>
-				<?php endforeach; ?>
-			</ul>
-		<?php if ($cols > 1) : ?>
-			</div>
-			<?php if(($k + 1) % $cols == 0 || $k == count($cats) - 1) : ?>
-				</div>
-			<?php endif; ?>
-		<?php endif; ?>
-	<?php endforeach; ?>
-<?php else : ?>
-	<ul class="weblinks<?php echo $moduleclass_sfx; ?>">
-		<?php foreach ($list as $item) : ?>
-			<li>
-				<?php $link = $item->link; ?>
-				<?php
-				switch ($item->params->get('target', 3))
-				{
-					case 1:
-						// Open in a new window
-						echo '<a href="' . $link . '" target="_blank" rel="' . $params->get('follow', 'nofollow') . '">' .
-							htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
-						break;
+		foreach ($list as $item) :
+			if ($item->catid == $cat['catid']) :
+				$items[] = $item;
+			endif;
+		endforeach;
 
-					case 2:
-						// Open in a popup window
-						echo "<a href=\"#\" onclick=\"window.open('" . $link . "', '', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=780,height=550'); return false\">" .
-							htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
-						break;
+		if ($cols > 1) :
+			if ($k % $cols == 0) :
+				echo '<div class="row row-fluid">';
+			endif;
 
-					default:
-						// Open in parent window
-						echo '<a href="' . $link . '" rel="' . $params->get('follow', 'nofollow') . '">' .
-							htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
-						break;
-				}
-				?>
+			echo '<div class="col-' . 12 / $cols . '">';
+		endif;
 
-				<?php if ($params->get('description', 0)) : ?>
-					<?php echo nl2br($item->description); ?>
-				<?php endif; ?>
+		if ($params->get('groupby_showtitle', 1)) :
+			echo '<strong>' . htmlspecialchars($cat['title'], ENT_COMPAT, 'UTF-8') . '</strong>';
+		endif;
 
-				<?php if ($params->get('hits', 0)) : ?>
-					<?php echo '(' . $item->hits . ' ' . Text::_('MOD_WEBLINKS_HITS') . ')'; ?>
-				<?php endif; ?>
-			</li>
-		<?php endforeach; ?>
-	</ul>
-<?php endif; ?>
+		echo '<ul class="mod-list weblinks ' .  $moduleclass_sfx . '">';
+
+		foreach ($items as $item) :
+			echo '<li><div class="d-flex flex-wrap">';
+			echo '<div class="col flex-sm-grow-1">';
+
+			$link = $item->link;
+			switch ($item->params->get('target', 3)) :
+				case 1:
+					// Open in a new window
+					echo '<a href="' . $link . '" target="_blank" rel="' . $params->get('follow', 'nofollow') . '">' .
+						htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
+					break;
+
+				case 2:
+					// Open in a popup window
+					echo "<a href=\"#\" onclick=\"window.open('" . $link . "', '', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=780,height=550'); return false\">" .
+						htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
+					break;
+
+				default:
+					// Open in parent window
+					echo '<a href="' . $link . '" rel="' . $params->get('follow', 'nofollow') . '">' .
+						htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
+					break;
+			endswitch;
+			echo '</div>';
+
+			echo $params->get('description', 0) ? '<div class="colvflex-sm-grow-1">' . nl2br($item->description) . '</div>' : '';
+
+			if ($params->get('hits', 0)) :
+				echo '<div class="col flex-sm-grow-1">';
+					echo '<span class="badge bg-info float-md-end">' . $item->hits . ' ' . Text::_('MOD_WEBLINKS_HITS') . '</span>';
+				echo '</div>';
+			endif;
+
+			echo '</li>';
+
+		endforeach;
+		echo '</ul>';
+
+		if ($cols > 1) :
+			echo '</div>';
+
+			if (($k + 1) % $cols == 0 || $k == count($cats) - 1) :
+				echo '</div>';
+			endif;
+
+		endif;
+	endforeach;
+else :
+	echo '<ul class="mod-list weblinks ' .  $moduleclass_sfx . '">';
+
+	foreach ($list as $item) :
+		echo '<li><div class="d-flex flex-wrap">';
+		echo '<div class="col flex-sm-grow-1">';
+
+		$link = $item->link;
+		switch ($item->params->get('target', 3)) :
+			case 1:
+				// Open in a new window
+				echo '<a href="' . $link . '" target="_blank" rel="' . $params->get('follow', 'nofollow') . '">' .
+					htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
+				break;
+
+			case 2:
+				// Open in a popup window
+				echo "<a href=\"#\" onclick=\"window.open('" . $link . "', '', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=780,height=550'); return false\">" .
+					htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
+				break;
+
+			default:
+				// Open in parent window
+				echo '<a href="' . $link . '" rel="' . $params->get('follow', 'nofollow') . '">' .
+					htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
+				break;
+		endswitch;
+		echo '</div>';
+
+		echo $params->get('description', 0) ? '<div class="col flex-sm-grow-1">' . nl2br($item->description) . '</div>' : '';
+
+		if ($params->get('hits', 0)) :
+			echo '<div class="col  flex-sm-grow-1">';
+				echo '<span class="badge bg-info float-md-end">' . $item->hits . ' ' . Text::_('MOD_WEBLINKS_HITS') . '</span>';
+			echo '</div>';
+		endif;
+
+		echo '</li>';
+
+	endforeach;
+	echo '</ul>';
+endif; ?>
