@@ -124,11 +124,18 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 								break;
 							case 3:
 								// Open in a modal window
-								HTMLHelper::_('behavior.modal', 'a.modal');
-								echo '<a class="modal" href="' . $link . '"  rel="{handler: \'iframe\', size: {x:' . $this->escape($width) . ', y:' . $this->escape($height) . '}}">' .
-									$this->escape($item->title) . ' </a>';
+								$modalId                   = 'weblink-item-modal-' . $item->id;
+								$modalParams['title']      = $this->escape($item->title);
+								$modalParams['url']        = $link;
+								$modalParams['height']     = '100%';
+								$modalParams['width']      = '100%';
+								$modalParams['bodyHeight'] = 70;
+								$modalParams['modalWidth'] = 80;
+								echo HTMLHelper::_('bootstrap.renderModal', $modalId, $modalParams);
+								echo '<button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#' . $modalId . '">
+                                  ' . $item->title . '
+                                </button>';
 								break;
-
 							default:
 								// Open in parent window
 								echo '<a href="' . $link . '" class="' . $menuclass . '" rel="nofollow">' .
