@@ -35,11 +35,11 @@ $params = $this->state->get('params');
 ?>
 <div class="edit item-page<?php echo $this->pageclass_sfx; ?>">
 	<?php if ($this->params->get('show_page_heading')) : ?>
-    <div class="page-header">
-        <h1>
+	<div class="page-header">
+		<h1>
 		    <?php echo $this->escape($this->params->get('page_heading')); ?>
-        </h1>
-    </div>
+		</h1>
+	</div>
 	<?php endif; ?>
 	<form action="<?php echo Route::_('index.php?option=com_weblinks&view=form&w_id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-vertical">
 
@@ -78,19 +78,19 @@ $params = $this->state->get('params');
 			</div>
 		<?php endif; ?>
 
-        <div class="mb-2">
-            <button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('weblink.save')">
-                <span class="icon-check" aria-hidden="true"></span>
+		<div class="mb-2">
+			<button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('weblink.save')">
+				<span class="icon-check" aria-hidden="true"></span>
 				<?php echo Text::_('JSAVE'); ?>
-            </button>
-            <button type="button" class="btn btn-danger" onclick="Joomla.submitbutton('weblink.cancel')">
-                <span class="icon-times" aria-hidden="true"></span>
+			</button>
+			<button type="button" class="btn btn-danger" onclick="Joomla.submitbutton('weblink.cancel')">
+				<span class="icon-times" aria-hidden="true"></span>
 				<?php echo Text::_('JCANCEL'); ?>
-            </button>
+			</button>
 			<?php if ($this->params->get('save_history', 0) && $this->item->id) : ?>
 				<?php echo $this->form->getInput('contenthistory'); ?>
 			<?php endif; ?>
-        </div>
+		</div>
 
 		<input type="hidden" name="return" value="<?php echo $this->return_page;?>" />
 		<input type="hidden" name="task" value="" />
