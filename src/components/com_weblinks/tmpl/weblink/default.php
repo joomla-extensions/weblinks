@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\String\PunycodeHelper;
 
 $weblinkUrl = PunycodeHelper::urlToUTF8($this->item->url);

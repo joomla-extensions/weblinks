@@ -12,6 +12,7 @@ namespace Joomla\Component\Weblinks\Site\Model;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Helper\TagsHelper;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\ItemModel;
@@ -163,6 +164,13 @@ class WeblinkModel extends ItemModel
 				$data->params   = new Registry($data->params);
 				$data->metadata = new Registry($data->metadata);
 
+				// Some contexts may not use tags data at all, so we allow callers to disable loading tag data
+				if ($this->getState('load_tags', true))
+				{
+					$data->tags = new TagsHelper;
+					$data->tags->getItemTags('com_weblinks.weblink', $data->id);
+				}
+
 				// Compute access permissions.
 				if ($access = $this->getState('filter.access'))
 				{
@@ -184,6 +192,7 @@ class WeblinkModel extends ItemModel
 				$this->_item[$pk] = false;
 			}
 		}
+
 
 		return $this->_item[$pk];
 	}
