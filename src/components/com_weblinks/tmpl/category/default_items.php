@@ -60,10 +60,10 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 			</div>
 		<?php endif; ?>
 		<?php if (empty($this->items)) : ?>
-            <div class="alert alert-info">
-                <span class="icon-info-circle" aria-hidden="true"></span><span class="visually-hidden"><?php echo Text::_('INFO'); ?></span>
-                <?php echo Text::_('COM_WEBLINKS_NO_WEBLINKS'); ?>
-            </div>
+			<div class="alert alert-info">
+				<span class="icon-info-circle" aria-hidden="true"></span><span class="visually-hidden"><?php echo Text::_('INFO'); ?></span>
+				<?php echo Text::_('COM_WEBLINKS_NO_WEBLINKS'); ?>
+			</div>
 		<?php else : ?>
 			<ul class="category list-unstyled">
 				<?php foreach ($this->items as $i => $item) : ?>
@@ -156,7 +156,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 								<div class="mt-2 mb-2">
 									<?php $images = json_decode($item->images); ?>
 									<?php if (!empty($images->image_first)) : ?>
-										<?php $imgFloat = '' ;?>
+										<?php $imgFloat = '';?>
 										<?php if (!empty($images->float_first)) : ?>
 											<?php $imgFloat = $images->float_first == 'right' ? 'float-end' : 'float-start'; ?>
 										<?php endif; ?>

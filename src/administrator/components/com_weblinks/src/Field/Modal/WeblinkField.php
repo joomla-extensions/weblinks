@@ -211,6 +211,10 @@ class WeblinkField extends FormField
 			);
 		}
 
+		$closeButtonClick = "window.processModalEdit(this,  '$this->id', 'add', 'weblink', 'cancel', 'weblink-form'); return false;";
+		$saveButtonClick  = "window.processModalEdit(this,  '$this->id', 'add', 'weblink', 'save', 'weblink-form'); return false;";
+		$applyButtonClick = "window.processModalEdit(this,  '$this->id', 'add', 'weblink', 'apply', 'weblink-form'); return false;";
+
 		// New weblink modal
 		if ($allowNew)
 		{
@@ -228,13 +232,13 @@ class WeblinkField extends FormField
 					'bodyHeight'  => '70',
 					'modalWidth'  => '80',
 					'footer'      => '<a role="button" class="btn" aria-hidden="true"'
-						. ' onclick="window.processModalEdit(this, \'' . $this->id . '\', \'add\', \'weblink\', \'cancel\', \'weblink-form\'); return false;">'
+						. ' onclick="' . $closeButtonClick . '">'
 						. Text::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</a>'
 						. '<a role="button" class="btn btn-primary" aria-hidden="true"'
-						. ' onclick="window.processModalEdit(this, \'' . $this->id . '\', \'add\', \'weblink\', \'save\', \'weblink-form\'); return false;">'
+						. ' onclick="' . $saveButtonClick . '">'
 						. Text::_('JSAVE') . '</a>'
 						. '<a role="button" class="btn btn-success" aria-hidden="true"'
-						. ' onclick="window.processModalEdit(this, \'' . $this->id . '\', \'add\', \'weblink\', \'apply\', \'weblink-form\'); return false;">'
+						. ' onclick="' . $applyButtonClick . '">'
 						. Text::_('JAPPLY') . '</a>',
 				)
 			);
@@ -257,13 +261,13 @@ class WeblinkField extends FormField
 					'bodyHeight'  => '70',
 					'modalWidth'  => '80',
 					'footer'      => '<a role="button" class="btn" aria-hidden="true"'
-						. ' onclick="window.processModalEdit(this, \'' . $this->id . '\', \'edit\', \'weblink\', \'cancel\', \'weblink-form\'); return false;">'
+						. ' onclick="' . $closeButtonClick . '">'
 						. Text::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</a>'
 						. '<a role="button" class="btn btn-primary" aria-hidden="true"'
-						. ' onclick="window.processModalEdit(this, \'' . $this->id . '\', \'edit\', \'weblink\', \'save\', \'weblink-form\'); return false;">'
+						. ' onclick="' . $saveButtonClick . '">'
 						. Text::_('JSAVE') . '</a>'
 						. '<a role="button" class="btn btn-success" aria-hidden="true"'
-						. ' onclick="window.processModalEdit(this, \'' . $this->id . '\', \'edit\', \'weblink\', \'apply\', \'weblink-form\'); return false;">'
+						. ' onclick="' . $applyButtonClick . '">'
 						. Text::_('JAPPLY') . '</a>',
 				)
 			);

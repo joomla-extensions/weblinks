@@ -193,7 +193,6 @@ class WeblinkModel extends ItemModel
 			}
 		}
 
-
 		return $this->_item[$pk];
 	}
 

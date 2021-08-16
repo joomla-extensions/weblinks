@@ -64,7 +64,7 @@ if (!$canEdit)
 		<div class="p-3">
 			<?php $images = json_decode($this->item->images); ?>
 			<?php if (!empty($images->image_first)) : ?>
-				<?php $imgFloat = '' ;?>
+				<?php $imgFloat = '';?>
 				<?php if (!empty($images->float_first)) : ?>
 					<?php $imgFloat = $images->float_first == 'right' ? 'float-end' : 'float-start'; ?>
 				<?php endif; ?>

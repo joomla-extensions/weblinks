@@ -81,6 +81,7 @@ class AdministratorService
 
 			if ($items)
 			{
+				$app       = Factory::getApplication();
 				$languages = LanguageHelper::getContentLanguages(array(0, 1));
 				$content_languages = array_column($languages, 'lang_code');
 
@@ -91,7 +92,8 @@ class AdministratorService
 						$text = $item->lang_code;
 						$url = Route::_('index.php?option=com_weblinks&task=weblink.edit&id=' . (int) $item->id);
 						$tooltip = '<strong>' . htmlspecialchars($item->language_title, ENT_QUOTES, 'UTF-8') . '</strong><br>'
-							. htmlspecialchars($item->title, ENT_QUOTES, 'UTF-8') . '<br>' . Text::sprintf('JCATEGORY_SPRINTF', $item->category_title);
+							. htmlspecialchars($item->title, ENT_QUOTES, 'UTF-8')
+							. '<br>' . Text::sprintf('JCATEGORY_SPRINTF', $item->category_title);
 						$classes = 'badge bg-secondary';
 
 						$item->link = '<a href="' . $url . '" class="' . $classes . '">' . $text . '</a>'
@@ -100,7 +102,7 @@ class AdministratorService
 					else
 					{
 						// Display warning if Content Language is trashed or deleted
-						Factory::getApplication()->enqueueMessage(Text::sprintf('JGLOBAL_ASSOCIATIONS_CONTENTLANGUAGE_WARNING', $item->lang_code), 'warning');
+						$app->enqueueMessage(Text::sprintf('JGLOBAL_ASSOCIATIONS_CONTENTLANGUAGE_WARNING', $item->lang_code), 'warning');
 					}
 				}
 			}
