@@ -28,7 +28,6 @@ $canEdit    = $user->authorise('core.edit', 'com_weblinks.category.' . $this->ca
 $canEditOwn = $user->authorise('core.edit.own', 'com_weblinks.category.' . $this->category->id);
 $canCreate  = $user->authorise('core.create', 'com_weblinks.category.' . $this->category->id);
 
-$n = count($this->items);
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
@@ -156,13 +155,16 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 							<?php if (($this->params->get('show_link_description')) && ($item->description != '')) : ?>
 								<div class="mt-2 mb-2">
 									<?php $images = json_decode($item->images); ?>
-									<?php  if (!empty($images->image_first)) : ?>
-										<?php $imgfloat = (empty($images->float_first)) ? $this->params->get('float_first') : $images->float_first; ?>
+									<?php if (!empty($images->image_first)) : ?>
+										<?php $imgFloat = '' ;?>
+										<?php if (!empty($images->float_first)) : ?>
+											<?php $imgFloat = $images->float_first == 'right' ? 'float-end' : 'float-start'; ?>
+										<?php endif; ?>
 										<?php $img      = HTMLHelper::cleanImageURL($images->image_first); ?>
 										<?php $alt      = empty($images->image_first_alt) && empty($images->image_first_alt_empty)
 											? ''
 											: 'alt="' . htmlspecialchars($images->image_first_alt, ENT_COMPAT, 'UTF-8') . '"'; ?>
-										<figure class="item-image">
+										<figure class="item-image <?php echo $imgFloat; ?>">
 											<img src="<?php echo htmlspecialchars($img->url, ENT_COMPAT, 'UTF-8'); ?>"
 													<?php echo $alt; ?> itemprop="thumbnail" />
 											<?php if (!empty($images->image_first_caption)) : ?>
@@ -172,12 +174,15 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 									<?php endif; ?>
 
 									<?php  if (!empty($images->image_second)) : ?>
-										<?php $imgfloat = (empty($images->float_second)) ? $this->params->get('float_second') : $images->float_second; ?>
+										<?php $imgFloat = ''; ?>
+										<?php if (!empty($images->float_second)) : ?>
+											<?php $imgFloat = $images->float_second == 'right' ? 'float-end' : 'float-start'; ?>
+										<?php endif; ?>
 										<?php $img      = HTMLHelper::cleanImageURL($images->image_second); ?>
 										<?php $alt      = empty($images->image_second_alt) && empty($images->image_second_alt_empty)
 											? ''
 											: 'alt="' . htmlspecialchars($images->image_second_alt, ENT_COMPAT, 'UTF-8') . '"'; ?>
-										<figure class="item-image">
+										<figure class="item-image <?php echo $imgFloat; ?>">
 											<img src="<?php echo htmlspecialchars($img->url, ENT_COMPAT, 'UTF-8'); ?>"
 													<?php echo $alt; ?> itemprop="thumbnail" />
 											<?php if (!empty($images->image_second_caption)) : ?>
