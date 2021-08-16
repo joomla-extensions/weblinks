@@ -36,8 +36,6 @@ class Com_WeblinksInstallerScript
 	public function preflight($type, $parent)
 	{
 		$files = [
-			'/administrator/components/com_weblinks/controller.php',
-			'/administrator/components/com_weblinks/weblinks.php',
 			'/administrator/components/com_weblinks/helpers/associations.php',
 			'/administrator/components/com_weblinks/sql/install.sqlsrv.sql',
 			'/administrator/components/com_weblinks/sql/uninstall.sqlsrv.sql',
@@ -45,10 +43,6 @@ class Com_WeblinksInstallerScript
 			'/administrator/language/en-GB/en-GB.com_weblinks.sys.ini',
 			'/components/com_weblinks/helpers/association.php',
 			'/components/com_weblinks/helpers/category.php',
-			'/components/com_weblinks/controller.php',
-			'/components/com_weblinks/weblinks.php',
-			'/components/com_weblinks/metadata.xml',
-			'/components/com_weblinks/router.php',
 			'/language/en-GB/en-GB.com_weblinks.ini',
 			'/language/en-GB/en-GB.mod_weblinks.ini',
 			'/language/en-GB/en-GB.mod_weblinks.sys.ini',
@@ -56,15 +50,8 @@ class Com_WeblinksInstallerScript
 		];
 
 		$folders = [
-			'/administrator/components/com_weblinks/controllers',
 			'/administrator/components/com_weblinks/helpers/html',
-			'/administrator/components/com_weblinks/models',
 			'/administrator/components/com_weblinks/sql/updates/sqlsrv',
-			'/administrator/components/com_weblinks/tables',
-			'/administrator/components/com_weblinks/views',
-			'/components/com_weblinks/controllers',
-			'/administrator/components/com_weblinks/models',
-			'/administrator/components/com_weblinks/views',
 		];
 
 		foreach ($files as $file)
