@@ -245,8 +245,9 @@ class WeblinksModel extends ListModel
 		{
 			if (stripos($search, 'id:') === 0)
 			{
+				$search = substr($search, 3);
 				$query->where($db->quoteName('a.id') . ' = :id')
-					->bind(':id', substr($search, 3), ParameterType::INTEGER);
+					->bind(':id', $search, ParameterType::INTEGER);
 			}
 			else
 			{
