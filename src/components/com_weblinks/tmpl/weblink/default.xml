@@ -23,7 +23,6 @@
 				new="true"
 				edit="true"
 				clear="true"
-				description="COM_WEBLINKS_FIELD_SELECT_WEBLINK_DESC"
 			/>
 		</fieldset>
 	</fields>
