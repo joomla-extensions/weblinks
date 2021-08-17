@@ -30,14 +30,6 @@ class HtmlView extends CategoryView
 	protected  $extension = 'com_weblinks';
 
 	/**
-	 * Run the standard Joomla plugins
-	 *
-	 * @var    boolean
-	 * @since  4.0
-	 */
-	protected $runPlugins = true;
-
-	/**
 	 * Execute and display a template script.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
