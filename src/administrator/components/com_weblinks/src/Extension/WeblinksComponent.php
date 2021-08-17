@@ -80,16 +80,11 @@ class WeblinksComponent extends MVCComponent implements CategoryServiceInterface
 	 */
 	public function validateSection($section, $item = null)
 	{
-		if (Factory::getApplication()->isClient('site'))
+		// On the front end we need to map some sections
+
+		if (Factory::getApplication()->isClient('site') && in_array($section, ['category', 'form']))
 		{
-			// On the front end we need to map some sections
-			switch ($section)
-			{
-				// Adding/Editing a weblink
-				case 'form':
-					$section = 'weblink';
-					break;
-			}
+			$section = 'weblink';
 		}
 
 		if ($section != 'weblink')
