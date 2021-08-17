@@ -142,6 +142,12 @@ class WeblinkModel extends AdminModel
 			$form->setFieldAttribute('publish_down', 'filter', 'unset');
 		}
 
+		// Don't allow to change the created_by user if not allowed to access com_users.
+		if (!Factory::getApplication()->getIdentity()->authorise('core.manage', 'com_users'))
+		{
+			$form->setFieldAttribute('created_by', 'filter', 'unset');
+		}
+
 		return $form;
 	}
 
