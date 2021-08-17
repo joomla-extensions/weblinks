@@ -9,17 +9,19 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Component\Finder\Administrator\Indexer\Adapter;
+use Joomla\Component\Finder\Administrator\Indexer\Helper;
+use Joomla\Component\Finder\Administrator\Indexer\Indexer;
+use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
 use Joomla\Registry\Registry;
-
-// Load the base adapter.
-JLoader::register('FinderIndexerAdapter', JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapter.php');
 
 /**
  * Smart Search adapter for Joomla Web Links.
  *
  * @since  2.5
  */
-class PlgFinderWeblinks extends FinderIndexerAdapter
+class PlgFinderWeblinks extends Adapter
 {
 	/**
 	 * The plugin identifier.
@@ -139,7 +141,7 @@ class PlgFinderWeblinks extends FinderIndexerAdapter
 	public function onFinderAfterSave($context, $row, $isNew)
 	{
 		// We only want to handle web links here. We need to handle front end and back end editing.
-		if ($context == 'com_weblinks.weblink' || $context == 'com_weblinks.form' )
+		if ($context == 'com_weblinks.weblink' || $context == 'com_weblinks.form')
 		{
 			// Check if the access levels are different.
 			if (!$isNew && $this->old_access != $row->access)
@@ -245,7 +247,7 @@ class PlgFinderWeblinks extends FinderIndexerAdapter
 	protected function index(FinderIndexerResult $item, $format = 'html')
 	{
 		// Check if the extension is enabled
-		if (JComponentHelper::isEnabled($this->extension) == false)
+		if (ComponentHelper::isEnabled($this->extension) == false)
 		{
 			return;
 		}
@@ -263,8 +265,7 @@ class PlgFinderWeblinks extends FinderIndexerAdapter
 
 		// Build the necessary route and path information.
 		$item->url = $this->getURL($item->id, $this->extension, $this->layout);
-		$item->route = WeblinksHelperRoute::getWeblinkRoute($item->slug, $item->catslug, $item->language);
-		$item->path = FinderIndexerHelper::getContentPath($item->route);
+		$item->route = RouteHelper::getWeblinkRoute($item->slug, $item->catslug, $item->language);
 
 		/*
 		 * Add the meta-data processing instructions based on the newsfeeds
@@ -274,12 +275,12 @@ class PlgFinderWeblinks extends FinderIndexerAdapter
 		$item->metaauthor = $item->metadata->get('author');
 
 		// Handle the link to the meta-data.
-		$item->addInstruction(FinderIndexer::META_CONTEXT, 'link');
-		$item->addInstruction(FinderIndexer::META_CONTEXT, 'metakey');
-		$item->addInstruction(FinderIndexer::META_CONTEXT, 'metadesc');
-		$item->addInstruction(FinderIndexer::META_CONTEXT, 'metaauthor');
-		$item->addInstruction(FinderIndexer::META_CONTEXT, 'author');
-		$item->addInstruction(FinderIndexer::META_CONTEXT, 'created_by_alias');
+		$item->addInstruction(Indexer::META_CONTEXT, 'link');
+		$item->addInstruction(Indexer::META_CONTEXT, 'metakey');
+		$item->addInstruction(Indexer::META_CONTEXT, 'metadesc');
+		$item->addInstruction(Indexer::META_CONTEXT, 'metaauthor');
+		$item->addInstruction(Indexer::META_CONTEXT, 'author');
+		$item->addInstruction(Indexer::META_CONTEXT, 'created_by_alias');
 
 		// Add the type taxonomy data.
 		$item->addTaxonomy('Type', 'Web Link');
@@ -291,7 +292,7 @@ class PlgFinderWeblinks extends FinderIndexerAdapter
 		$item->addTaxonomy('Language', $item->language);
 
 		// Get content extras.
-		FinderIndexerHelper::getContentExtras($item);
+		Helper::getContentExtras($item);
 
 		// Index the item.
 		$this->indexer->index($item);
@@ -306,9 +307,6 @@ class PlgFinderWeblinks extends FinderIndexerAdapter
 	 */
 	protected function setup()
 	{
-		// Load dependent classes.
-		require_once JPATH_SITE . '/components/com_weblinks/helpers/route.php';
-
 		return true;
 	}
 
@@ -323,7 +321,7 @@ class PlgFinderWeblinks extends FinderIndexerAdapter
 	 */
 	protected function getListQuery($query = null)
 	{
-		$db = JFactory::getDbo();
+		$db = $this->db;
 
 		// Check if we can use the supplied SQL query.
 		$query = $query instanceof JDatabaseQuery ? $query : $db->getQuery(true)
@@ -338,7 +336,7 @@ class PlgFinderWeblinks extends FinderIndexerAdapter
 		$case_when_item_alias = ' CASE WHEN ';
 		$case_when_item_alias .= $query->charLength('a.alias', '!=', '0');
 		$case_when_item_alias .= ' THEN ';
-		$a_id = $query->castAsChar('a.id');
+		$a_id = $query->castAs('CHAR', 'a.id');
 		$case_when_item_alias .= $query->concatenate(array($a_id, 'a.alias'), ':');
 		$case_when_item_alias .= ' ELSE ';
 		$case_when_item_alias .= $a_id . ' END as slug';
@@ -347,7 +345,7 @@ class PlgFinderWeblinks extends FinderIndexerAdapter
 		$case_when_category_alias = ' CASE WHEN ';
 		$case_when_category_alias .= $query->charLength('c.alias', '!=', '0');
 		$case_when_category_alias .= ' THEN ';
-		$c_id = $query->castAsChar('c.id');
+		$c_id = $query->castAs('CHAR', 'c.id');
 		$case_when_category_alias .= $query->concatenate(array($c_id, 'c.alias'), ':');
 		$case_when_category_alias .= ' ELSE ';
 		$case_when_category_alias .= $c_id . ' END as catslug';

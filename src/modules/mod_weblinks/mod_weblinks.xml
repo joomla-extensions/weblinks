@@ -9,6 +9,7 @@
 	<authorUrl>www.joomla.org</authorUrl>
 	<version>##VERSION##</version>
 	<description>MOD_WEBLINKS_XML_DESCRIPTION</description>
+	<namespace path="src">Joomla\Module\Weblinks</namespace>
 	<files>
 		##MODULE_FILES##
 		<file module="mod_weblinks">mod_weblinks.php</file>
@@ -24,7 +25,6 @@
 					name="catid"
 					type="category"
 					label="JCATEGORY"
-					description="MOD_WEBLINKS_FIELD_CATEGORY_DESC"
 					extension="com_weblinks"
 					required="true"
 				/>
@@ -33,32 +33,29 @@
 					name="groupby"
 					type="radio"
 					label="MOD_WEBLINKS_FIELD_GROUPBY_LABEL"
-					description="MOD_WEBLINKS_FIELD_GROUPBY_DESC"
-					class="btn-group btn-group-yesno"
+					layout="joomla.form.field.radio.switcher"
 					default="0"
 					>
-					<option value="1">JYES</option>
 					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field
 					name="groupby_showtitle"
 					type="radio"
 					label="MOD_WEBLINKS_FIELD_GROUPBYSHOWTITLE_LABEL"
-					description="MOD_WEBLINKS_FIELD_GROUPBYSHOWTITLE_DESC"
-					class="btn-group btn-group-yesno"
+					layout="joomla.form.field.radio.switcher"
 					default="1"
 					showon="groupby:1"
 					>
-					<option value="1">JYES</option>
-					<option value="0">JNO</option>
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
 				</field>
 
 				<field
 					name="groupby_ordering"
 					type="list"
 					label="MOD_WEBLINKS_FIELD_GROUPBYORDERING_LABEL"
-					description="MOD_WEBLINKS_FIELD_GROUPBYORDERING_DESC"
 					default="c.lft"
 					showon="groupby:1"
 					>
@@ -70,7 +67,6 @@
 					name="groupby_direction"
 					type="list"
 					label="MOD_WEBLINKS_FIELD_GROUPBYDIRECTION_LABEL"
-					description="MOD_WEBLINKS_FIELD_GROUPBYDIRECTION_DESC"
 					default="asc"
 					showon="groupby:1"
 					>
@@ -82,7 +78,6 @@
 					name="groupby_columns"
 					type="list"
 					label="MOD_WEBLINKS_FIELD_COLUMNS_LABEL"
-					description="MOD_WEBLINKS_FIELD_COLUMNS_DESC"
 					default="3"
 					>
 					<option value="1">J1</option>
@@ -96,7 +91,6 @@
 					name="count"
 					type="text"
 					label="MOD_WEBLINKS_FIELD_COUNT_LABEL"
-					description="MOD_WEBLINKS_FIELD_COUNT_DESC"
 					default="5"
 				/>
 
@@ -104,7 +98,6 @@
 					name="ordering"
 					type="list"
 					label="MOD_WEBLINKS_FIELD_ORDERING_LABEL"
-					description="MOD_WEBLINKS_FIELD_ORDERING_DESC"
 					default="title"
 					>
 					<option value="title">JGLOBAL_TITLE</option>
@@ -116,7 +109,6 @@
 					name="direction"
 					type="list"
 					label="MOD_WEBLINKS_FIELD_ORDERDIRECTION_LABEL"
-					description="MOD_WEBLINKS_FIELD_ORDERDIRECTION_DESC"
 					default="asc"
 					>
 					<option value="asc">MOD_WEBLINKS_FIELD_VALUE_ASCENDING</option>
@@ -127,8 +119,7 @@
 					name="follow"
 					type="list"
 					label="MOD_WEBLINKS_FIELD_FOLLOW_LABEL"
-					description="MOD_WEBLINKS_FIELD_FOLLOW_DESC"
-					default="0"
+					default="follow"
 					>
 					<option value="follow">MOD_WEBLINKS_FIELD_VALUE_FOLLOW</option>
 					<option value="nofollow">MOD_WEBLINKS_FIELD_VALUE_NOFOLLOW</option>
@@ -138,37 +129,33 @@
 					name="description"
 					type="radio"
 					label="MOD_WEBLINKS_FIELD_DESCRIPTION_LABEL"
-					description="MOD_WEBLINKS_FIELD_DESCRIPTION_DESC"
-					class="btn-group btn-group-yesno"
+					layout="joomla.form.field.radio.switcher"
 					default="0"
 					>
-					<option value="1">JSHOW</option>
-					<option value="0">JHIDE</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
 				</field>
 
 				<field
 					name="hits"
 					type="radio"
 					label="MOD_WEBLINKS_FIELD_HITS_LABEL"
-					description="MOD_WEBLINKS_FIELD_HITS_DESC"
-					class="btn-group btn-group-yesno"
+					layout="joomla.form.field.radio.switcher"
 					default="0"
 					>
-					<option value="1">JSHOW</option>
-					<option value="0">JHIDE</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
 				</field>
 
 				<field
 					name="count_clicks"
-					type="list"
+					type="radio"
 					label="MOD_WEBLINKS_FIELD_COUNTCLICKS_LABEL"
-					description="MOD_WEBLINKS_FIELD_COUNTCLICKS_DESC"
-					class="chzn-color"
-					default="0"
+					layout="joomla.form.field.radio.switcher"
+					default="1"
 					>
-					<option value="">JGLOBAL_USE_GLOBAL</option>
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
 				</field>
 			</fieldset>
 
@@ -177,22 +164,23 @@
 					name="layout"
 					type="modulelayout"
 					label="JFIELD_ALT_LAYOUT_LABEL"
-					description="JFIELD_ALT_MODULE_LAYOUT_DESC"
+					class="form-select"
+					validate="moduleLayout"
 				/>
+
 
 				<field
 					name="moduleclass_sfx"
 					type="textarea"
 					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
-					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"
 					rows="3"
+					validate="CssIdentifier"
 				/>
 
 				<field
 					name="cache"
 					type="list"
 					label="COM_MODULES_FIELD_CACHING_LABEL"
-					description="COM_MODULES_FIELD_CACHING_DESC"
 					default="1"
 					>
 					<option value="1">JGLOBAL_USE_GLOBAL</option>
@@ -203,7 +191,6 @@
 					name="cache_time"
 					type="text"
 					label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
-					description="COM_MODULES_FIELD_CACHE_TIME_DESC"
 					default="900"
 				/>
 

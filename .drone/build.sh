@@ -22,6 +22,8 @@ cd /tests/www
 cp jorobo.dist.ini jorobo.ini
 cp RoboFile.dist.ini RoboFile.ini
 
+
+
 # Build package
 vendor/bin/robo build --dev
 

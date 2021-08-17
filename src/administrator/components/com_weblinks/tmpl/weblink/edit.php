@@ -9,18 +9,23 @@
 
 defined('_JEXEC') or die;
 
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Associations;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Router\Route;
 
-JHtml::_('behavior.formvalidator');
-JHtml::_('formbehavior.chosen', 'select', null, array('disable_search_threshold' => 0 ));
+HTMLHelper::_('behavior.formvalidator');
 
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 $input = $app->input;
 
-$assoc = JLanguageAssociations::isEnabled();
+$assoc = Associations::isEnabled();
 
 // Fieldsets to not automatically render by /layouts/joomla/edit/params.php
 $this->ignore_fieldsets = array('details', 'images', 'item_associations', 'jmetadata');
+$this->useCoreUI = true;
 
 // In case of modal
 $isModal = $input->get('layout') == 'modal' ? true : false;
@@ -28,65 +33,83 @@ $layout  = $isModal ? 'modal' : 'edit';
 $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=component' : '';
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_weblinks&layout=' . $layout . $tmpl . '&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="weblink-form" class="form-validate">
+<form action="<?php echo Route::_('index.php?option=com_weblinks&layout=' . $layout . $tmpl . '&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="weblink-form" class="form-validate">
 
-	<?php echo JLayoutHelper::render('joomla.edit.title_alias', $this); ?>
+	<?php echo LayoutHelper::render('joomla.edit.title_alias', $this); ?>
 
-	<div class="form-horizontal">
-		<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
+	<div class="main-card">
+		<?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => 'details')); ?>
 
-		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', empty($this->item->id) ? JText::_('COM_WEBLINKS_NEW_WEBLINK', true) : JText::_('COM_WEBLINKS_EDIT_WEBLINK', true)); ?>
+		<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'details', empty($this->item->id) ? Text::_('COM_WEBLINKS_NEW_WEBLINK', true) : Text::_('COM_WEBLINKS_EDIT_WEBLINK', true)); ?>
 		<div class="row">
 			<div class="col-md-9">
 				<div class="form-vertical">
-					<?php echo $this->form->renderField('url'); ?>
-					<?php echo $this->form->renderField('description'); ?>
+					<div>
+						<fieldset class="adminform">
+							<?php echo $this->form->renderField('url'); ?>
+							<?php echo $this->form->renderField('description'); ?>
+						</fieldset>
+					</div>
 				</div>
 			</div>
 			<div class="col-md-3">
-				<?php echo JLayoutHelper::render('joomla.edit.global', $this); ?>
+				<?php echo LayoutHelper::render('joomla.edit.global', $this); ?>
 			</div>
 		</div>
-		<?php echo JHtml::_('bootstrap.endTab'); ?>
+		<?php echo HTMLHelper::_('uitab.endTab'); ?>
 
-		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'images', JText::_('JGLOBAL_FIELDSET_IMAGE_OPTIONS', true)); ?>
+		<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'images', Text::_('JGLOBAL_FIELDSET_IMAGE_OPTIONS', true)); ?>
+		<div class="row">
+			<div class="col-12">
+				<fieldset id="fieldset-image; ?>" class="options-form">
+					<legend><?php echo Text::_('JGLOBAL_FIELDSET_IMAGE_OPTIONS'); ?></legend>
+					<div>
+						<?php echo $this->form->renderField('imaJGLOBAL_FIELDSET_IMAGE_OPTIONSges'); ?>
+						<?php foreach ($this->form->getGroup('images') as $field) : ?>
+							<?php echo $field->renderField(); ?>
+						<?php endforeach; ?>
+					</div>
+				</fieldset>
+			</div>
+		</div>
+
+		<?php echo HTMLHelper::_('uitab.endTab'); ?>
+
+		<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'publishing', Text::_('JGLOBAL_FIELDSET_PUBLISHING', true)); ?>
 			<div class="row">
-				<div class="col-md-6">
-					<?php echo $this->form->renderField('images'); ?>
-					<?php foreach ($this->form->getGroup('images') as $field) : ?>
-						<?php echo $field->renderField(); ?>
-					<?php endforeach; ?>
+				<div class="col-12 col-lg-6">
+					<fieldset id="fieldset-publishingdata" class="options-form">
+						<legend><?php echo Text::_('JGLOBAL_FIELDSET_PUBLISHING'); ?></legend>
+						<?php echo LayoutHelper::render('joomla.edit.publishingdata', $this); ?>
+					</fieldset>
+				</div>
+				<div class="col-12 col-lg-6">
+					<fieldset id="fieldset-metadata" class="options-form">
+						<legend><?php echo Text::_('JGLOBAL_FIELDSET_METADATA_OPTIONS'); ?></legend>
+						<?php echo LayoutHelper::render('joomla.edit.metadata', $this); ?>
+					</fieldset>
 				</div>
 			</div>
+		<?php echo HTMLHelper::_('uitab.endTab'); ?>
 
-		<?php echo JHtml::_('bootstrap.endTab'); ?>
-
-		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'publishing', JText::_('JGLOBAL_FIELDSET_PUBLISHING', true)); ?>
-		<div class="row form-horizontal-desktop">
-			<div class="col-md-6">
-				<?php echo JLayoutHelper::render('joomla.edit.publishingdata', $this); ?>
-			</div>
-			<div class="col-md-6">
-				<?php echo JLayoutHelper::render('joomla.edit.metadata', $this); ?>
-			</div>
-		</div>
-		<?php echo JHtml::_('bootstrap.endTab'); ?>
-
-		<?php echo JLayoutHelper::render('joomla.edit.params', $this); ?>
+		<?php echo LayoutHelper::render('joomla.edit.params', $this); ?>
 
 		<?php if (!$isModal && $assoc) : ?>
-			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'associations', JText::_('JGLOBAL_FIELDSET_ASSOCIATIONS')); ?>
-			<?php echo $this->loadTemplate('associations'); ?>
-			<?php echo JHtml::_('bootstrap.endTab'); ?>
+			<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'associations', Text::_('JGLOBAL_FIELDSET_ASSOCIATIONS')); ?>
+				<fieldset id="fieldset-associations" class="options-form">
+					<legend><?php echo Text::_('JGLOBAL_FIELDSET_ASSOCIATIONS'); ?></legend>
+					<?php echo LayoutHelper::render('joomla.edit.associations', $this); ?>
+				</fieldset>
+			<?php echo HTMLHelper::_('uitab.endTab'); ?>
 		<?php elseif ($isModal && $assoc) : ?>
 			<div class="hidden"><?php echo $this->loadTemplate('associations'); ?></div>
 		<?php endif; ?>
 
-		<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+		<?php echo HTMLHelper::_('uitab.endTabSet'); ?>
 
 	</div>
 
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="forcedLanguage" value="<?php echo $input->get('forcedLanguage', '', 'cmd'); ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo HTMLHelper::_('form.token'); ?>
 </form>

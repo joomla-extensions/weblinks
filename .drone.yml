@@ -6,6 +6,7 @@ steps:
   - name: weblinks-codeception-tests
     image: joomlaprojects/docker-images:systemtests
     commands:
+      - pwd
       - composer install
       - chmod a+x .drone/build.sh
       - ./.drone/build.sh
@@ -18,6 +19,28 @@ steps:
       - fluxbox  > /dev/null 2>&1 &
       - vendor/bin/robo run:tests
 
+  - name: artifacts-codeception-tests
+    image: cschlosser/drone-ftps
+    depends_on: [ weblinks-codeception-tests ]
+    environment:
+      FTP_USERNAME:
+        from_secret: ftpusername
+      FTP_PASSWORD:
+        from_secret: ftppassword
+      PLUGIN_HOSTNAME: artifacts.joomla.org:21
+      PLUGIN_SRC_DIR: /tests/_output
+      PLUGIN_DEST_DIR: /
+      PLUGIN_SECURE: false
+      PLUGIN_EXCLUDE: ^\.git/$
+    commands:
+      - ls -l /drone/src/tests/_output
+      - export PLUGIN_DEST_DIR=$PLUGIN_DEST_DIR/$DRONE_REPO/$DRONE_BRANCH/$DRONE_PULL_REQUEST/system-tests/$DRONE_BUILD_NUMBER
+      - echo https://artifacts.joomla.org/drone$PLUGIN_DEST_DIR
+      - /bin/upload.sh
+    when:
+      status:
+        - failure
+
 volumes:
   - name: weblinks_cache
     host:
@@ -25,6 +48,6 @@ volumes:
 
 ---
 kind: signature
-hmac: bdbb55e8a838f65e5a832cfca09af95d450cbdc9d733e03f0f528abdebfff47f
+hmac: bcc028d5d9601f1f3355862f17dd2434ba86f47634f0737877db534e49c8265b
 
 ...

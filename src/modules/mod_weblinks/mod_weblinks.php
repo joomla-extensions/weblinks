@@ -9,16 +9,16 @@
 
 defined('_JEXEC') or die;
 
-// Include the weblinks functions only once
-require_once __DIR__ . '/helper.php';
+use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\Module\Weblinks\Site\Helper\WeblinksHelper;
 
-$list = ModWeblinksHelper::getList($params);
+$list = WeblinksHelper::getList($params, $app);
 
-if (!count($list))
+if (empty($list))
 {
 	return;
 }
 
 $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
 
-require JModuleHelper::getLayoutPath('mod_weblinks', $params->get('layout', 'default'));
+require ModuleHelper::getLayoutPath('mod_weblinks', $params->get('layout', 'default'));
