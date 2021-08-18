@@ -11,6 +11,6 @@
 		<downloads>
 			<downloadurl type="full" format="zip">https://downloads.joomla.org/extensions/weblinks/3-7-0/pkg-weblinks-3.7.0.zip</downloadurl>
 		</downloads>
-		<targetplatform name="joomla" version="3.[6789]|10" />
+		<targetplatform name="joomla" version="3.([6789]|10)" />
 	</update>
 </updates>
