@@ -17,9 +17,6 @@ use Joomla\CMS\Uri\Uri;
 
 HTMLHelper::_('behavior.core');
 
-// Create a shortcut for params.
-$params = &$this->category->params;
-
 // Get the user object.
 $user = Factory::getApplication()->getIdentity();
 
@@ -78,7 +75,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 
 					<?php if ($canEdit || ($canEditOwn && $item->created_by == $userId)) : ?>
 						<div class="icons list-group-item">
-							<?php echo HTMLHelper::_('weblinkicon.edit', $item, $this->params); ?>
+							<?php echo HTMLHelper::_('weblinkicon.edit', $item, $item->params); ?>
 						</div>
 					<?php endif; ?>
 
