@@ -123,10 +123,8 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 						}
 						?>
 						</div>
-						<?php $tagsData = $item->tags->getItemTags('com_weblinks.weblink', $item->id); ?>
-						<?php if ($this->params->get('show_tags', 1)) : ?>
-							<?php $tagLayout = new JLayoutFile('joomla.content.tags'); ?>
-							<?php echo $tagLayout->render($tagsData); ?>
+						<?php if ($this->params->get('show_tags', 1) && !empty($item->tags->itemTags)) : ?>
+							<?php echo JLayoutHelper::render('joomla.content.tags', $item->tags->itemTags); ?>
 						<?php endif; ?>
 						<?php if (($this->params->get('show_link_description')) and ($item->description != '')) : ?>
 						<?php $images = json_decode($item->images); ?>
