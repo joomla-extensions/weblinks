@@ -110,6 +110,6 @@ class ModWeblinksHelper
 			return $items;
 		}
 
-		return;
+		return array();
 	}
 }
