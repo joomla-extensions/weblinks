@@ -119,7 +119,6 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 								}
 								?>
 							</div>
-							<?php $tagsData = $item->tags->getItemTags('com_weblinks.weblink', $item->id); ?>
 							<?php if ($this->params->get('show_tags', 1) && !empty($item->tags->itemTags)) : ?>
 								<?php echo JLayoutHelper::render('joomla.content.tags', $item->tags->itemTags); ?>
 							<?php endif; ?>

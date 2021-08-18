@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+use Step\Acceptance\Weblink;
+
 /**
  * Acceptance cest object class for admin steps
  *
@@ -37,7 +39,7 @@ class AdministratorWeblinksCest
 	 *
 	 * @return  void
 	 */
-	public function administratorVerifyAvailableTabs(\Step\Acceptance\weblink $I)
+	public function administratorVerifyAvailableTabs(Weblink $I)
 	{
 		$I->am('Administrator');
 		$I->wantToTest('Weblinks Edit View Tabs');
@@ -49,7 +51,7 @@ class AdministratorWeblinksCest
 		$I->waitForText('Web Links', '30', ['css' => 'h1']);
 		$I->clickToolbarButton('New');
 		$I->waitForText('Web Link: New', '30', ['css' => 'h1']);
-		$I->verifyAvailableTabs(['New Web Link', 'Images', 'Publishing', 'Options', 'Metadata']);
+		$I->verifyAvailableTabs(['New Web Link', 'Images', 'Publishing', 'Options']);
 	}
 
 	/**
@@ -61,7 +63,7 @@ class AdministratorWeblinksCest
 	 *
 	 * @return  void
 	 */
-	public function administratorCreateWeblink(\Step\Acceptance\weblink $I)
+	public function administratorCreateWeblink(Weblink $I)
 	{
 		$I->am('Administrator');
 		$I->wantToTest('Weblink creation in /administrator/');

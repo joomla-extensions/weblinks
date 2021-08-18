@@ -83,7 +83,7 @@ class ModWeblinksHelper
 
 		$model->setState(
 			'list.select',
-			'a.*, c.published AS c_published,' . $case_when1 . ',' . $case_when2 . ',' . 'DATE_FORMAT(a.created, "%Y-%m-%d") AS created'
+			'a.*, c.description AS c_description, c.published AS c_published,' . $case_when1 . ',' . $case_when2 . ',' . 'DATE_FORMAT(a.created, "%Y-%m-%d") AS created'
 		);
 
 		$model->setState('filter.c.published', 1);
@@ -110,6 +110,6 @@ class ModWeblinksHelper
 			return $items;
 		}
 
-		return;
+		return array();
 	}
 }
