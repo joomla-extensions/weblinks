@@ -42,7 +42,7 @@ class WeblinksViewWeblink extends JViewLegacy
 
 			return false;
 		}
-		
+
 		// If we are forcing a language in modal (used for associations).
 		if ($this->getLayout() === 'modal' && $forcedLanguage = JFactory::getApplication()->input->get('forcedLanguage', '', 'cmd'))
 		{
@@ -88,15 +88,23 @@ class WeblinksViewWeblink extends JViewLegacy
 			JToolbarHelper::apply('weblink.apply');
 			JToolbarHelper::save('weblink.save');
 		}
+
 		if (!$checkedOut && (count($user->getAuthorisedCategories('com_weblinks', 'core.create'))))
 		{
 			JToolbarHelper::save2new('weblink.save2new');
 		}
+
 		// If an existing item, can save to a copy.
 		if (!$isNew && (count($user->getAuthorisedCategories('com_weblinks', 'core.create')) > 0))
 		{
 			JToolbarHelper::save2copy('weblink.save2copy');
 		}
+
+		if (JLanguageAssociations::isEnabled() && JComponentHelper::isEnabled('com_associations'))
+		{
+			JToolbarHelper::custom('weblink.editAssociations', 'contract', 'contract', 'JTOOLBAR_ASSOCIATIONS', false, false);
+		}
+
 		if (empty($this->item->id))
 		{
 			JToolbarHelper::cancel('weblink.cancel');
