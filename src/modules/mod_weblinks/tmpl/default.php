@@ -27,7 +27,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 			<?php endif; ?>
 		<?php endforeach; ?>
 		<?php if ($cols > 1) :?>
-			<?php if ($k % $cols == 0) :?>
+			<?php if ($k % $cols == 0) : ?>
 				<div class="row row-fluid">
 				<?php endif; ?>
 			<div class="col-' . 12 / $cols . '">
@@ -36,7 +36,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 			<strong> <?php echo htmlspecialchars($cat['title'], ENT_COMPAT, 'UTF-8'); ?></strong>
 		<?php endif; ?>;
 		<ul class="mod-list weblinks ' .  $moduleclass_sfx . '">
-		<?php foreach ($items as $item) :?>
+		<?php foreach ($items as $item) : ?>
 			<li><div class="d-flex flex-wrap">
 				<div class="col flex-sm-grow-1">
 					<?php $link = $item->link; ?>
@@ -76,7 +76,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 					}
 					?>
 				</div>
-				<?php echo $params->get('description', 0) ? '<div class="col flex-sm-grow-1">' . $item->description . '</div>' : '';?>
+				<?php echo $params->get('description', 0) ? '<div class="col flex-sm-grow-1">' . $item->description . '</div>' : ''; ?>
 				<?php if ($params->get('hits', 0)) : ?>
 				<div class="col flex-sm-grow-1">
 					<span class="badge bg-info float-md-end"> <?php echo $item->hits . ' ' . Text::_('MOD_WEBLINKS_HITS'); ?></span>
@@ -134,7 +134,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 			}
 		?>
 		</div>
-		<?php echo $params->get('description', 0) ? '<div class="col flex-sm-grow-1">' . $item->description . '</div>' : '';?>
+		<?php echo $params->get('description', 0) ? '<div class="col flex-sm-grow-1">' . $item->description . '</div>' : ''; ?>
 		<?php if ($params->get('hits', 0)) : ?>
 			<div class="col  flex-sm-grow-1">
 				<span class="badge bg-info float-md-end"><?php echo $item->hits . ' ' . Text::_('MOD_WEBLINKS_HITS'); ?></span>
