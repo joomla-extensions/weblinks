@@ -317,19 +317,20 @@
 		>
 		<field
 			name="filter_field"
-			type="list"
+			type="radio"
+			layout="joomla.form.field.radio.switcher"
 			label="JGLOBAL_FILTER_FIELD_LABEL"
-			default="1"
+			default="0"
 			>
+			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
-			<option value="hide">JHIDE</option>
 		</field>
 
 		<field
 			name="show_pagination_limit"
 			type="radio"
 			layout="joomla.form.field.radio.switcher"
-			default="1"
+			default="0"
 			label="JGLOBAL_DISPLAY_SELECT_LABEL"
 			>
 			<option value="1">JSHOW</option>
