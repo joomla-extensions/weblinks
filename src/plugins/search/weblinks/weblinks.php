@@ -12,6 +12,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Component\Search\Administrator\Helper\SearchHelper;
 use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
 
 /**
@@ -223,7 +224,7 @@ class PlgSearchWeblinks extends CMSPlugin
 
 			foreach ($rows as $weblink)
 			{
-				if (searchHelper::checkNoHTML($weblink, $searchText, array('url', 'text', 'title')))
+				if (SearchHelper::checkNoHTML($weblink, $searchText, array('url', 'text', 'title')))
 				{
 					$return[] = $weblink;
 				}
