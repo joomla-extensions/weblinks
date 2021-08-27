@@ -12,7 +12,6 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\Component\Search\Administrator\Helper\SearchHelper;
 use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
 
 /**
@@ -79,6 +78,8 @@ class PlgSearchWeblinks extends CMSPlugin
 	 */
 	public function onContentSearch($text, $phrase = '', $ordering = '', $areas = null)
 	{
+		JLoader::register('SearchHelper', JPATH_ADMINISTRATOR . '/components/com_search/helpers/search.php');
+
 		$db = $this->db;
 		$groups = implode(',', $this->app->getIdentity()->getAuthorisedViewLevels());
 
