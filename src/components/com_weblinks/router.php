@@ -65,7 +65,7 @@ class WeblinksRouter extends JComponentRouterBase
 		}
 
 		// Are we dealing with an weblink that is attached to a menu item?
-		if (isset($query['view']) && ($mView == $query['view']) && (isset($query['id'])) && ($mId == (int) $query['id']))
+		if (isset($query['view']) && ($mView == $query['view']) && isset($query['id']) && ($mId == (int) $query['id']))
 		{
 			unset($query['view']);
 			unset($query['catid']);
