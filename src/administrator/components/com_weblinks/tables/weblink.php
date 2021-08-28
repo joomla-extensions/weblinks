@@ -38,7 +38,7 @@ class WeblinksTableWeblink extends JTable
 		// Set the published column alias
 		$this->setColumnAlias('published', 'state');
 
-		if (version_compare(JVERSION, '4.0', '<' ) == 1)
+		if (version_compare(JVERSION, '4.0', '<') == 1)
 		{
 			JTableObserverTags::createObserver($this, array('typeAlias' => 'com_weblinks.weblink'));
 			JTableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_weblinks.weblink'));
@@ -130,6 +130,7 @@ class WeblinksTableWeblink extends JTable
 		if (trim($this->title) == '')
 		{
 			$this->setError(JText::_('COM_WEBLINKS_ERR_TABLES_TITLE'));
+
 			return false;
 		}
 

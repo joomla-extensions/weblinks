@@ -53,6 +53,7 @@ class WeblinksViewCategories extends JViewCategories
 		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseWarning(500, implode("\n", $errors));
+
 			return false;
 		}
 

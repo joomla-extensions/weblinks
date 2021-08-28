@@ -146,14 +146,17 @@ class WeblinksHelper extends JHelperContent
 				{
 					$item->count_published = $weblink->count;
 				}
+
 				if ($weblink->state == 0)
 				{
 					$item->count_unpublished = $weblink->count;
 				}
+
 				if ($weblink->state == 2)
 				{
 					$item->count_archived = $weblink->count;
 				}
+
 				if ($weblink->state == -2)
 				{
 					$item->count_trashed = $weblink->count;
