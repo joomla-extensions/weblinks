@@ -65,7 +65,8 @@ class JFormFieldModal_Weblink extends JFormField
 				function jSelectWeblink_" . $this->id . "(id, title, catid, object, url, language) {
 					window.processModalSelect('Weblink', '" . $this->id . "', id, title, catid, object, url, language);
 				}
-				");
+				"
+				);
 				$scriptSelect[$this->id] = true;
 			}
 		}
@@ -94,6 +95,7 @@ class JFormFieldModal_Weblink extends JFormField
 				->from($db->quoteName('#__weblinks'))
 				->where($db->quoteName('id') . ' = ' . (int) $value);
 			$db->setQuery($query);
+
 			try
 			{
 				$title = $db->loadResult();
@@ -103,6 +105,7 @@ class JFormFieldModal_Weblink extends JFormField
 				JError::raiseWarning(500, $e->getMessage());
 			}
 		}
+
 		$title = empty($title) ? JText::_('COM_WEBLINKS_SELECT_A_WEBLINK') : htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
 
 		// The current weblink display field.
@@ -122,6 +125,7 @@ class JFormFieldModal_Weblink extends JFormField
 				. '<span class="icon-file" aria-hidden="true"></span> ' . JText::_('JSELECT')
 				. '</a>';
 		}
+
 		// New weblink button
 		if ($allowNew)
 		{
@@ -135,6 +139,7 @@ class JFormFieldModal_Weblink extends JFormField
 				. '<span class="icon-new" aria-hidden="true"></span> ' . JText::_('JACTION_CREATE')
 				. '</a>';
 		}
+
 		// Edit weblink button
 		if ($allowEdit)
 		{
@@ -148,6 +153,7 @@ class JFormFieldModal_Weblink extends JFormField
 				. '<span class="icon-edit" aria-hidden="true"></span> ' . JText::_('JACTION_EDIT')
 				. '</a>';
 		}
+
 		// Clear weblink button
 		if ($allowClear)
 		{
@@ -159,6 +165,7 @@ class JFormFieldModal_Weblink extends JFormField
 				. '<span class="icon-remove" aria-hidden="true"></span>' . JText::_('JCLEAR')
 				. '</a>';
 		}
+
 		$html .= '</span>';
 
 		// Select weblink modal
@@ -236,10 +243,12 @@ class JFormFieldModal_Weblink extends JFormField
 				)
 			);
 		}
+
 		// Note: class='required' for client side validation.
 		$class = $this->required ? ' class="required modal-value"' : '';
 		$html .= '<input type="hidden" id="' . $this->id . '_id" ' . $class . ' data-required="' . (int) $this->required . '" name="' . $this->name
 			. '" data-text="' . htmlspecialchars(JText::_('COM_WEBLINKS_SELECT_A_WEBLINK', true), ENT_COMPAT, 'UTF-8') . '" value="' . $value . '" />';
+
 		return $html;
 	}
 
