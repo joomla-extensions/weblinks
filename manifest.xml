@@ -37,7 +37,7 @@
 		<downloads>
 			<downloadurl type="full" format="zip">https://downloads.joomla.org/extensions/weblinks/4-0-0/pkg-weblinks-4.0.0.zip</downloadurl>
 		</downloads>
-		<sha512>ace83da7b00e58b60785e74be8de74c787b5ee24047d07e0384bb897d397bf8a</sha512>
+		<sha512>c14d5bc26dbd50a17ce06ebabef4f155e435c434fa824208248cc5f1ec7a738f</sha512>
 		<targetplatform name="joomla" version="4\.0" />
 	</update>
 </updates>
