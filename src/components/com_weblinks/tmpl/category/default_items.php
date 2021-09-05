@@ -45,7 +45,8 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 					placeholder="<?php echo Text::_('COM_WEBLINKS_FILTER_SEARCH_DESC'); ?>"
 				>
 				<button type="submit" name="filter_submit" class="btn btn-primary"><?php echo Text::_('JGLOBAL_FILTER_BUTTON'); ?></button>
-				<button type="reset" name="filter-clear-button" class="btn btn-secondary"><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?></button>
+                <button type="button" name="filter-clear-button" class="btn btn-secondary"
+                        onclick="this.form.elements['filter-search'].value = ''; this.form.submit();"><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 		<?php endif; ?>
 		<?php if ($this->params->get('show_pagination_limit')) : ?>
