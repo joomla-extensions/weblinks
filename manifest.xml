@@ -11,6 +11,33 @@
 		<downloads>
 			<downloadurl type="full" format="zip">https://downloads.joomla.org/extensions/weblinks/3-7-0/pkg-weblinks-3.7.0.zip</downloadurl>
 		</downloads>
-		<targetplatform name="joomla" version="3.[6789]" />
+		<targetplatform name="joomla" version="3.[678]" />
+	</update>
+	<update>
+		<name>Weblinks Extension Package</name>
+		<description>Joomla! CMS Weblinks Package</description>
+		<element>pkg_weblinks</element>
+		<type>package</type>
+		<version>3.9.0</version>
+		<client>site</client>
+		<infourl title="Weblinks Extension Package">https://github.com/joomla-extensions/weblinks/releases/tag/3.9.0</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://downloads.joomla.org/extensions/weblinks/3-9-0/pkg-weblinks-3.9.0.zip</downloadurl>
+		</downloads>
+		<targetplatform name="joomla" version="((3\.(9|10))|(4\.0))" />
+	</update>
+	<update>
+		<name>Weblinks Extension Package</name>
+		<description>Joomla! CMS Weblinks Package</description>
+		<element>pkg_weblinks</element>
+		<type>package</type>
+		<version>4.0.0</version>
+		<client>site</client>
+		<infourl title="Weblinks Extension Package">https://github.com/joomla-extensions/weblinks/releases/tag/4.0.0</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://downloads.joomla.org/extensions/weblinks/4-0-0/pkg-weblinks-4.0.0.zip</downloadurl>
+		</downloads>
+		<sha512>455bafa7423d15110c02503a5c6cf26897cca974578df5dae3f0c09ab85bc765</sha512>
+		<targetplatform name="joomla" version="4\.0" />
 	</update>
 </updates>
