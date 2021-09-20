@@ -11,6 +11,34 @@
 		<downloads>
 			<downloadurl type="full" format="zip">https://downloads.joomla.org/extensions/weblinks/3-7-0/pkg-weblinks-3.7.0.zip</downloadurl>
 		</downloads>
-		<targetplatform name="joomla" version="3.[6789]" />
+		<targetplatform name="joomla" version="3.[678]" />
+	</update>
+	<update>
+		<name>Weblinks Extension Package</name>
+		<description>Joomla! CMS Weblinks Package</description>
+		<element>pkg_weblinks</element>
+		<type>package</type>
+		<version>3.9.0</version>
+		<client>site</client>
+		<infourl title="Weblinks Extension Package">https://github.com/joomla-extensions/weblinks/releases/tag/3.9.0</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://downloads.joomla.org/extensions/weblinks/3-9-0/pkg-weblinks-3.9.0.zip</downloadurl>
+		</downloads>
+		<sha512>99baa8a622da239b2a0b84414836c494e68b5ff2d1eba2030fccc9d929645a45f7a2459ce2261846a10922f4b77bc6e0f26d34adc1afffb62e51fe45e8f44b53</sha512>
+		<targetplatform name="joomla" version="((3\.(9|10))|(4\.0))" />
+	</update>
+	<update>
+		<name>Weblinks Extension Package</name>
+		<description>Joomla! CMS Weblinks Package</description>
+		<element>pkg_weblinks</element>
+		<type>package</type>
+		<version>4.0.0</version>
+		<client>site</client>
+		<infourl title="Weblinks Extension Package">https://github.com/joomla-extensions/weblinks/releases/tag/4.0.0</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://downloads.joomla.org/extensions/weblinks/4-0-0/pkg-weblinks-4.0.0.zip</downloadurl>
+		</downloads>
+		<sha512>5a58f93ca0019d6d392b0b3240bb71166fdee85870beaef2747b11a27e0aa90fa73e4e09364c814cc4a021688e5f54a3ea8d322c8f7cfe14bac2f08741554a31</sha512>
+		<targetplatform name="joomla" version="4\.0" />
 	</update>
 </updates>
