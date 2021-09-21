@@ -37,7 +37,12 @@ if ($this->maxLevel != 0 && count($this->children[$this->category->id]) > 0) :
 							</div>
 						<?php endif; ?>
 					<?php endif; ?>
-
+					<?php if ($this->params->get('show_cat_num_links') == 1) :?> 
+					<span class="weblink-count badge bg-info"> 
+						<?php echo JText::_('COM_WEBLINKS_NUM'); ?> 
+						<?php echo $child->numitems; ?> </span> 
+					<?php endif; ?>
+					
 					<?php if (count($child->getChildren()) > 0 ) :
 						$this->children[$child->id] = $child->getChildren();
 						$this->category = $child;
