@@ -138,17 +138,6 @@
 			</field>
 
 			<field
-				name="show_headings"
-				type="list"
-				label="JGLOBAL_SHOW_HEADINGS_LABEL"
-				useglobal="true"
-				class="form-select-color-state"
-				>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field
 				name="show_link_description"
 				type="list"
 				label="COM_WEBLINKS_FIELD_CONFIG_LINKDESCRIPTION_LABEL"
