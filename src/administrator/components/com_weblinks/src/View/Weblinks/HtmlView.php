@@ -62,6 +62,14 @@ class HtmlView extends BaseHtmlView
 	public $activeFilters;
 
 	/**
+	* Is this view an Empty State
+	*
+	* @var  boolean
+	* @since 4.0.0
+	*/
+	private $isEmptyState = false;
+
+	/**
 	 * Display the view.
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
@@ -80,6 +88,11 @@ class HtmlView extends BaseHtmlView
 		if (count($errors = $this->get('Errors')))
 		{
 			throw new GenericDataException(implode("\n", $errors), 500);
+		}
+
+		if (!\count($this->items) && $this->isEmptyState = $this->get('IsEmptyState'))
+		{
+			$this->setLayout('emptystate');
 		}
 
 		// We don't need toolbar in the modal layout.
@@ -130,7 +143,7 @@ class HtmlView extends BaseHtmlView
 			ToolbarHelper::addNew('weblink.add');
 		}
 
-		if ($canDo->get('core.edit.state'))
+		if (!$this->isEmptyState && $canDo->get('core.edit.state'))
 		{
 			$dropdown = $toolbar->dropdownButton('status-group')
 				->text('JTOOLBAR_CHANGE_STATUS')
