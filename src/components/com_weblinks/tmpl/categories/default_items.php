@@ -30,7 +30,16 @@ if ($this->maxLevelcat != 0 && count($this->items[$this->parent->id]) > 0) :
 						</span>
 					<?php endif; ?>
 				</div>
-				<?php if ($this->maxLevelcat > 1 && count($item->getChildren()) > 0) : ?>
+				<?php if ($this->params->get('show_subcat_desc_cat') == 1) : ?>
+					<?php if ($item->description) : ?>
+						<div class="category-desc">
+							<?php echo HTMLHelper::_('content.prepare', $item->description, '', 'com_weblinks.categories'); ?>
+						</div>
+					<?php endif; ?>
+				<?php endif; ?>
+				<?php if ($this->params->get('show_description_image') && $item->getParams()->get('image')) : ?>
+					<img src="<?php echo $item->getParams()->get('image'); ?>" alt="<?php echo htmlspecialchars($item->getParams()->get('image_alt'), ENT_COMPAT, 'UTF-8'); ?>">
+				<?php endif; ?>				<?php if ($this->maxLevelcat > 1 && count($item->getChildren()) > 0) : ?>
 					<button
 							type="button"
 							id="category-btn-<?php echo $item->id; ?>"
@@ -41,16 +50,6 @@ if ($this->maxLevelcat != 0 && count($this->items[$this->parent->id]) > 0) :
 					>
 						<span class="icon-plus" aria-hidden="true"></span>
 					</button>
-				<?php endif; ?>
-				<?php if ($this->params->get('show_subcat_desc_cat') == 1) : ?>
-					<?php if ($item->description) : ?>
-						<div class="category-desc">
-							<?php echo HTMLHelper::_('content.prepare', $item->description, '', 'com_weblinks.categories'); ?>
-						</div>
-					<?php endif; ?>
-				<?php endif; ?>
-				<?php if ($this->params->get('show_description_image') && $item->getParams()->get('image')) : ?>
-					<img src="<?php echo $item->getParams()->get('image'); ?>" alt="<?php echo htmlspecialchars($item->getParams()->get('image_alt'), ENT_COMPAT, 'UTF-8'); ?>">
 				<?php endif; ?>
 				<?php if ($this->maxLevelcat > 1 && count($item->getChildren()) > 0) : ?>
 					<div class="com-content-categories__children" id="category-<?php echo $item->id; ?>" hidden>
