@@ -2,7 +2,7 @@
 <metadata>
 	<layout title="COM_WEBLINKS_CATEGORIES_VIEW_DEFAULT_TITLE" option="com_weblinks_categories_view_default_option">
 		<help
-			key="JHELP_MENUS_MENU_ITEM_WEBLINK_CATEGORIES"
+			key="Menus_Menu_Item_Weblink_Categories"
 		/>
 		<message>
 			<![CDATA[COM_WEBLINKS_CATEGORIES_VIEW_DEFAULT_DESC]]>

@@ -17,7 +17,7 @@
 	<languages folder="language">
 		##LANGUAGE_FILES##
 	</languages>
-	<help key="JHELP_EXTENSIONS_MODULE_MANAGER_WEBLINKS" />
+	<help key="Extensions_Module_Manager_Weblinks" />
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
