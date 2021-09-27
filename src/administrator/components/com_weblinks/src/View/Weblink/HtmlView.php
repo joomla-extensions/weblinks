@@ -170,5 +170,7 @@ class HtmlView extends BaseHtmlView
 				ToolbarHelper::custom('weblink.editAssociations', 'contract', '', 'JTOOLBAR_ASSOCIATIONS', false, false);
 			}
 		}
+
+		ToolbarHelper::help('Components_Weblinks_Links_Edit');
 	}
 }
