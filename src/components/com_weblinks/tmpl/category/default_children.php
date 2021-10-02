@@ -25,7 +25,7 @@ if ($this->maxLevel != 0 && count($this->children[$this->category->id]) > 0) :
 							<?php echo $this->escape($child->title); ?>
 						</a>
 
-						<?php if ($this->params->get('show_cat_items') == 1) : ?>
+						<?php if ($this->params->get('show_cat_num_links') == 1) : ?>
 							<span class="badge bg-info float-end" title="<?php echo Text::_('COM_WEBLINKS_CAT_NUM'); ?>"><?php echo $child->numitems; ?></span>
 						<?php endif; ?>
 					</div>
