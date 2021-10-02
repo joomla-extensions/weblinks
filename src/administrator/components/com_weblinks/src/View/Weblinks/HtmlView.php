@@ -195,6 +195,6 @@ class HtmlView extends BaseHtmlView
 			ToolbarHelper::preferences('com_weblinks');
 		}
 
-		ToolbarHelper::help('JHELP_COMPONENTS_WEBLINKS_LINKS');
+		ToolbarHelper::help('Components_Weblinks_Links');
 	}
 }
