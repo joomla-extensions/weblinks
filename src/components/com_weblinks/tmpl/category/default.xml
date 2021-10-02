@@ -122,7 +122,7 @@
 				useglobal="true"
 				class="form-select-color-state"
 				>
-				<option value="hide">JHIDE</option>
+				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
 
