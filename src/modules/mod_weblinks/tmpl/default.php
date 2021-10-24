@@ -51,7 +51,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 							break;
 						case 2:
 							// Open in a popup window
-							$attribs = 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=' . htmlspecialchars($width, ENT_COMPAT, 'UTF-8') . ',height=' . htmlspecialchars($width, ENT_COMPAT, 'UTF-8') . '';
+							$attribs = 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=500';
 							echo "<a href=\"$link\" onclick=\"window.open(this.href, 'targetWindow', '" . $attribs . "'); return false;\">" .
 								htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
 							break;
@@ -109,9 +109,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 				break;
 			case 2:
 				// Open in a popup window
-				$width  = $item->params->get('width', 600);
-				$height = $item->params->get('height', 500);
-				$attribs = 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=' . htmlspecialchars($width, ENT_COMPAT, 'UTF-8') . ',height=' . htmlspecialchars($height, ENT_COMPAT, 'UTF-8') . '';
+				$attribs = 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=500';
 				echo "<a href=\"$link\" onclick=\"window.open(this.href, 'targetWindow', '" . $attribs . "'); return false;\">" .
 					htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
 				break;
