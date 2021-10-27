@@ -25,7 +25,7 @@ use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 
 /**
- * The banners service provider.
+ * The weblinks service provider.
  *
  * @since  4.0.0
  */
