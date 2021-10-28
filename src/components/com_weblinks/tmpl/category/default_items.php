@@ -45,8 +45,8 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 					placeholder="<?php echo Text::_('COM_WEBLINKS_FILTER_SEARCH_DESC'); ?>"
 				>
 				<button type="submit" name="filter_submit" class="btn btn-primary"><?php echo Text::_('JGLOBAL_FILTER_BUTTON'); ?></button>
-                <button type="button" name="filter-clear-button" class="btn btn-secondary"
-                        onclick="this.form.elements['filter-search'].value = ''; this.form.submit();"><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?></button>
+				<button type="button" name="filter-clear-button" class="btn btn-secondary"
+						onclick="this.form.elements['filter-search'].value = ''; this.form.submit();"><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?></button>
 			</div>
 		<?php endif; ?>
 		<?php if ($this->params->get('show_pagination_limit')) : ?>
@@ -81,9 +81,9 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 					<?php endif; ?>
 
 					<div class="list-title list-group-item ">
-						<?php if (!$this->params->get('icons', 1)) : ?>
+						<?php if ($this->params->get('icons', 1) == 0) : ?>
 							<?php echo Text::_('COM_WEBLINKS_LINK'); ?>
-						<?php else : ?>
+						<?php elseif ($this->params->get('icons', 1) == 1) : ?>
 							<?php // ToDo css icons as variables ?>
 							<?php if (!$this->params->get('link_icons')) : ?>
 								<span class="icon-globe" aria-hidden="true"></span>
@@ -128,8 +128,8 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 								$modalParams['modalWidth'] = 80;
 								echo HTMLHelper::_('bootstrap.renderModal', $modalId, $modalParams);
 								echo '<button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#' . $modalId . '">
-                                  ' . $item->title . '
-                                </button>';
+								  ' . $item->title . '
+								</button>';
 								break;
 							default:
 								// Open in parent window
