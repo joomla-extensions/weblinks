@@ -100,7 +100,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 		<div class="col flex-sm-grow-1">
 		<?php $link = $item->link; ?>
 		<?php
-		switch ($item->params->get('target', $params->get('target')))
+		switch ($item->params->get('target'))
 		{
 			case 1:
 				// Open in a new window

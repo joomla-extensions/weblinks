@@ -41,8 +41,8 @@ class WeblinksHelper
 			->createModel('Category', 'Site', ['ignore_request' => true]);
 
 		// Set application parameters in model
-		$appParams = $app->getParams();
-		$model->setState('params', $appParams);
+		$cParams = ComponentHelper::getParams('com_weblinks');
+		$model->setState('params', $cParams);
 
 		// Set the filters based on the module params
 		$model->setState('list.start', 0);
@@ -101,7 +101,11 @@ class WeblinksHelper
 		{
 			foreach ($items as $item)
 			{
-				if ($item->params->get('count_clicks', $params->get('count_clicks')) == 1)
+				$temp         = $item->params;
+				$item->params = clone $cParams;
+				$item->params->merge($temp);
+
+				if ($item->params->get('count_clicks', 1) == 1)
 				{
 					$item->link = Route::_('index.php?option=com_weblinks&task=weblink.go&catid=' . $item->catslug . '&id=' . $item->slug);
 				}
