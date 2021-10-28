@@ -12,7 +12,6 @@ namespace Joomla\Component\Weblinks\Site\View\Category;
 use Joomla\CMS\MVC\View\CategoryView;
 use Joomla\CMS\Router\Route;
 use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
-use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die;
 
@@ -44,9 +43,12 @@ class HtmlView extends CategoryView
 		// Compute the weblink slug & link url.
 		foreach ($this->items as $item)
 		{
-			$item->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
+			$item->slug   = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
+			$temp         = $item->params;
+			$item->params = clone $this->params;
+			$item->params->merge($temp);
 
-			if ($item->params->get('count_clicks', $this->params->get('count_clicks', 1)) == 1)
+			if ($item->params->get('count_clicks', 1) == 1)
 			{
 				$item->link = Route::_('index.php?option=com_weblinks&task=weblink.go&id=' . $item->id);
 			}
@@ -54,11 +56,6 @@ class HtmlView extends CategoryView
 			{
 				$item->link = $item->url;
 			}
-
-			$temp = new Registry;
-			$temp->loadString($item->params);
-			$item->params = clone $this->params;
-			$item->params->merge($temp);
 		}
 
 		return parent::display($tpl);

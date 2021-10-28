@@ -65,6 +65,10 @@ class HtmlView extends BaseHtmlView
 
 		$item->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
 
+		$temp         = $item->params;
+		$item->params = clone $app->getParams();
+		$item->params->merge($temp);
+
 		$offset = $this->state->get('list.offset');
 
 		$app->triggerEvent('onContentPrepare', array('com_weblinks.weblink', &$item, &$item->params, $offset));
