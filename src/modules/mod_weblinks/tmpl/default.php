@@ -55,7 +55,7 @@ use Joomla\CMS\Language\Text;
 							break;
 						case 2:
 							// Open in a popup window
-							$attribs = 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=' . $width . ',height=' . $height . '';
+							$attribs = 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=' . $width . ',height=' . $height;
 							echo "<a href=\"$link\" onclick=\"window.open(this.href, 'targetWindow', '" . $attribs . "'); return false;\">" .
 								htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
 							break;
@@ -116,7 +116,7 @@ use Joomla\CMS\Language\Text;
 				break;
 			case 2:
 				// Open in a popup window
-				$attribs = 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=' . $width . ',height=' . $height . '';
+				$attribs = 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=' . $width . ',height=' . $height;
 				echo "<a href=\"$link\" onclick=\"window.open(this.href, 'targetWindow', '" . $attribs . "'); return false;\">" .
 					htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
 				break;
