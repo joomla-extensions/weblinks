@@ -37,7 +37,7 @@ use Joomla\CMS\Language\Text;
 		<?php if ($params->get('groupby_showtitle', 1)) :?>
 			<strong> <?php echo htmlspecialchars($cat['title'], ENT_COMPAT, 'UTF-8'); ?></strong>
 		<?php endif; ?>;
-        <ul class="weblinks<?php echo $moduleclass_sfx; ?>">
+		<ul class="weblinks<?php echo $moduleclass_sfx; ?>">
 		<?php foreach ($items as $item) : ?>
 			<li><div class="d-flex flex-wrap">
 				<div class="col flex-sm-grow-1">
@@ -98,7 +98,7 @@ use Joomla\CMS\Language\Text;
 		<?php endif; ?>
 	<?php endforeach; ?>
 <?php else : ?>
-    <ul class="weblinks<?php echo $moduleclass_sfx; ?>">
+	<ul class="weblinks<?php echo $moduleclass_sfx; ?>">
 	<?php foreach ($list as $item) :?>
 		<li><div class="d-flex flex-wrap">
 		<div class="col flex-sm-grow-1">
