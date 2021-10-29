@@ -263,9 +263,9 @@
 
 			<field
 				name="count_clicks"
-				type="radio"
+				type="list"
 				label="COM_WEBLINKS_FIELD_COUNTCLICKS_LABEL"
-				layout="joomla.form.field.radio.switcher"
+				useglobal="true"
 				>
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>

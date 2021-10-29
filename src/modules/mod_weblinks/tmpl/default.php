@@ -9,8 +9,9 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+
 ?>
 
 <?php if ($params->get('groupby', 0)) : ?>
@@ -36,22 +37,25 @@ use Joomla\CMS\HTML\HTMLHelper;
 		<?php if ($params->get('groupby_showtitle', 1)) :?>
 			<strong> <?php echo htmlspecialchars($cat['title'], ENT_COMPAT, 'UTF-8'); ?></strong>
 		<?php endif; ?>;
-		<ul class="mod-list weblinks ' .  $moduleclass_sfx . '">
+		<ul class="weblinks<?php echo $moduleclass_sfx; ?>">
 		<?php foreach ($items as $item) : ?>
 			<li><div class="d-flex flex-wrap">
 				<div class="col flex-sm-grow-1">
-					<?php $link = $item->link; ?>
 					<?php
-					switch ($item->params->get('target', $params->get('target')))
+					$link   = $item->link;
+					$width  = (int) $item->params->get('width', 600);
+					$height = (int) $item->params->get('height', 500);
+
+					switch ($item->params->get('target'))
 					{
 						case 1:
 							// Open in a new window
-							echo '<a href="' . $link . '" target="_blank" class="' . $menuclass . '" rel="nofollow">' .
+							echo '<a href="' . $link . '" target="_blank" rel="' . $params->get('follow', 'nofollow') . '">' .
 								htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
 							break;
 						case 2:
 							// Open in a popup window
-							$attribs = 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=' . $this->escape($width) . ',height=' . $this->escape($height) . '';
+							$attribs = 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=' . $width . ',height=' . $height;
 							echo "<a href=\"$link\" onclick=\"window.open(this.href, 'targetWindow', '" . $attribs . "'); return false;\">" .
 								htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
 							break;
@@ -94,22 +98,25 @@ use Joomla\CMS\HTML\HTMLHelper;
 		<?php endif; ?>
 	<?php endforeach; ?>
 <?php else : ?>
-	<ul class="mod-list weblinks ' .  $moduleclass_sfx . '">
+	<ul class="weblinks<?php echo $moduleclass_sfx; ?>">
 	<?php foreach ($list as $item) :?>
 		<li><div class="d-flex flex-wrap">
 		<div class="col flex-sm-grow-1">
-		<?php $link = $item->link; ?>
 		<?php
-		switch ($item->params->get('target', $params->get('target')))
+		$link   = $item->link;
+		$width  = (int) $item->params->get('width', 600);
+		$height = (int) $item->params->get('height', 500);
+
+		switch ($item->params->get('target'))
 		{
 			case 1:
 				// Open in a new window
-				echo '<a href="' . $link . '" target="_blank" class="' . $menuclass . '" rel="nofollow">' .
+				echo '<a href="' . $link . '" target="_blank" rel="' . $params->get('follow', 'nofollow') . '">' .
 					htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
 				break;
 			case 2:
 				// Open in a popup window
-				$attribs = 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=' . $this->escape($width) . ',height=' . $this->escape($height) . '';
+				$attribs = 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=' . $width . ',height=' . $height;
 				echo "<a href=\"$link\" onclick=\"window.open(this.href, 'targetWindow', '" . $attribs . "'); return false;\">" .
 					htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
 				break;
