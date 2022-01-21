@@ -13,6 +13,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Component\Finder\Administrator\Indexer\Adapter;
 use Joomla\Component\Finder\Administrator\Indexer\Helper;
 use Joomla\Component\Finder\Administrator\Indexer\Indexer;
+use Joomla\Component\Finder\Administrator\Indexer\Result;
 use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
 use Joomla\Registry\Registry;
 
@@ -236,15 +237,14 @@ class PlgFinderWeblinks extends Adapter
 	/**
 	 * Method to index an item. The item must be a FinderIndexerResult object.
 	 *
-	 * @param   FinderIndexerResult  $item    The item to index as an FinderIndexerResult object.
-	 * @param   string               $format  The item format.  Not used.
+	 * @param   Result  $item    The item to index as an FinderIndexerResult object.
 	 *
 	 * @return  void
 	 *
 	 * @since   2.5
 	 * @throws  Exception on database error.
 	 */
-	protected function index(FinderIndexerResult $item, $format = 'html')
+	protected function index(Result $item)
 	{
 		// Check if the extension is enabled
 		if (ComponentHelper::isEnabled($this->extension) == false)
@@ -264,7 +264,7 @@ class PlgFinderWeblinks extends Adapter
 		$item->metadata = $registry;
 
 		// Build the necessary route and path information.
-		$item->url = $this->getURL($item->id, $this->extension, $this->layout);
+		$item->url   = $this->getURL($item->id, $this->extension, $this->layout);
 		$item->route = RouteHelper::getWeblinkRoute($item->slug, $item->catslug, $item->language);
 
 		/*
