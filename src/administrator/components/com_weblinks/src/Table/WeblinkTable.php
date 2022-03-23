@@ -55,7 +55,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
 	 *
 	 * @since   1.5
 	 */
-	public function __construct(&$db)
+	public function __construct($db)
 	{
 		$this->typeAlias = 'com_weblinks.weblink';
 

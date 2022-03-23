@@ -40,7 +40,7 @@ class FormModel extends WeblinkModel
 	 */
 	public function getReturnPage()
 	{
-		return base64_encode($this->getState('return_page'));
+		return base64_encode($this->getState('return_page', ''));
 	}
 
 	/**
@@ -66,11 +66,11 @@ class FormModel extends WeblinkModel
 		$categoryId = $app->input->getInt('catid');
 		$this->setState('weblink.catid', $categoryId);
 
-		$return = $app->input->get('return', null, 'base64');
+		$return = $app->input->get('return', '', 'base64');
 
-		if (!Uri::isInternal(base64_decode($return)))
+		if ($return && !Uri::isInternal(base64_decode($return)))
 		{
-			$return = null;
+			$return = '';
 		}
 
 		$this->setState('return_page', base64_decode($return));
