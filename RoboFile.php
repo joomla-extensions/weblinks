@@ -260,7 +260,7 @@ class RoboFile extends Tasks
 	}
 
 	/**
-	 * Run the specified checker tool. Valid options are phpmd, phpcs, phpcpd
+	 * Run the specified checker tool. Valid options are phpmd, phpcs, phpcbf, phpcpd
 	 *
 	 * @param   string  $tool  The tool
 	 *
@@ -268,16 +268,18 @@ class RoboFile extends Tasks
 	 */
 	public function runChecker($tool = null)
 	{
+		$allowedTools = array('phpmd', 'phpcs', 'phpcbf','phpcpd');
+		$allowedToolsString = implode(', ', $allowedTools);
 		if ($tool === null)
 		{
-			$this->say('You have to specify a tool name as argument. Valid tools are phpmd, phpcs, phpcpd.');
+			$this->say(sprintf('You have to specify a tool name as argument. Valid tools are %s', $allowedToolsString));
 
 			return false;
 		}
 
-		if (!in_array($tool, array('phpmd', 'phpcs', 'phpcpd')))
+		if (!in_array($tool, $allowedTools))
 		{
-			$this->say('The tool you required is not known. Valid tools are phpmd, phpcs, phpcpd.');
+			$this->say(sprintf('The tool you required is not known. Valid tools are %s', $allowedToolsString));
 
 			return false;
 		}
@@ -289,7 +291,10 @@ class RoboFile extends Tasks
 
 			case 'phpcs':
 				return $this->runPhpcs();
-
+				
+			case 'phpcbf':
+				return $this->runPhpcbf();
+				
 			case 'phpcpd':
 				return $this->runPhpcpd();
 		}
@@ -521,6 +526,16 @@ class RoboFile extends Tasks
 		$this->_exec('phpcs' . $this->extension . ' ' . __DIR__ . '/src');
 	}
 
+	/**
+	 * Run the phpcbf tool
+	 *
+	 * @return  void
+	 */
+	private function runPhpcbf()
+	{
+		$this->_exec('phpcbf --extensions=php' . $this->extension . ' ' . __DIR__ . '/src');
+	}
+	
 	/**
 	 * Run the phpcpd tool
 	 *
