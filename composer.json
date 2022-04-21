@@ -11,12 +11,12 @@
         "php": ">=7.2"
     },
     "require-dev": {
-        "codeception/codeception": "^3",
+        "codeception/codeception": "^4.1",
         "phpunit/phpunit": "^5.7.27",
-        "joomla-projects/joomla-browser": "v3.9.0",
+        "joomla-projects/joomla-browser": "^4.0",
         "consolidation/robo": "^1.0.0",
         "joomla-projects/joomla-testing-robo": "~1.0",
-        "joomla-projects/selenium-server-standalone": "^v3.1.0",
+        "joomla-projects/selenium-server-standalone": "^3.14",
         "fzaninotto/faker": "^1.6",
         "joomla-projects/jorobo": "^0.7.6",
         "behat/gherkin": "^4.4.1"
