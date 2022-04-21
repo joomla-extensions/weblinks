@@ -6,7 +6,7 @@ Build Status
 | ------------- | ------------- | ------------- |
 | [![Build Status](https://travis-ci.org/joomla-extensions/weblinks.svg?branch=master)](https://travis-ci.org/joomla-extensions/weblinks) | [![Build Status](https://ci.joomla.org/api/badges/joomla-extensions/weblinks/status.svg)](https://ci.joomla.org/joomla-extensions/weblinks) |
 
-Weblinks for Joomla! provides a component and further accompanying extensions to create a directory of weblinks.
+Weblinks for Joomla! provides a component and accompanying extensions to create a directory of weblinks.
 
 # How to test a PR
 
