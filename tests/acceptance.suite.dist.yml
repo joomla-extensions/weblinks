@@ -14,8 +14,8 @@
 class_name: AcceptanceTester
 modules:
     enabled:
-        - JoomlaBrowser
-        - AcceptanceHelper
+        - Joomla\Browser\JoomlaBrowser
+        - Helper\Acceptance
     config:
         JoomlaBrowser:
             url: 'http://localhost/tests/joomla'     # the url that points to the joomla installation at /tests/system/joomla-cms
