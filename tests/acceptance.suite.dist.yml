@@ -14,10 +14,10 @@
 class_name: AcceptanceTester
 modules:
     enabled:
-        - JoomlaBrowser
+        - Joomla\Browser\JoomlaBrowser
         - AcceptanceHelper
     config:
-        JoomlaBrowser:
+        Joomla\Browser\JoomlaBrowser:
             url: 'http://localhost/tests/joomla'     # the url that points to the joomla installation at /tests/system/joomla-cms
             browser: 'firefox'
             window_size: 1024x768
@@ -35,6 +35,7 @@ modules:
             sample data: 'Default English (GB) Sample Data'    # Default Sample Data
             admin email: 'admin@mydomain.com'      # email Id of the Admin
             language: 'English (United Kingdom)'   # Language in which you want the Application to be Installed
+            timeout: 90
         AcceptanceHelper:
             repo_folder: '/home/travis/build/joomla-extensions/weblinks/' # Path to the Extension repository. To be used by tests to install via Install from folder
             counter_test_url: 'http://localhost/tests/joomla' # the url for the weblink item used to test hits counter
@@ -45,10 +46,10 @@ env:
     tablet:
         modules:
             config:
-                JoomlaBrowser:
+                Joomla\Browser\JoomlaBrowser:
                     window_size: 768x1024
     phone:
         modules:
             config:
-                JoomlaBrowser:
+                Joomla\Browser\JoomlaBrowser:
                     window_size: 480x640

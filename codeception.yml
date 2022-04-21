@@ -1,13 +1,13 @@
 actor: Tester
 paths:
     tests: tests
-    log: /drone/src/tests/_output
+    log: tests/_output
     data: tests/_data
     helpers: tests/_support
 settings:
-    bootstrap: _bootstrap.php
     colors: true
     memory_limit: 1024M
+bootstrap: _bootstrap.php
 webdrivers:
   firefox:
     windows: vendor\joomla-projects\selenium-server-standalone\bin\webdrivers\gecko\windows\geckodriver64.exe
