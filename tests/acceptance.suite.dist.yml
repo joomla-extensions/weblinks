@@ -45,10 +45,10 @@ env:
     tablet:
         modules:
             config:
-                JoomlaBrowser:
+                Joomla\Browser\JoomlaBrowser:
                     window_size: 768x1024
     phone:
         modules:
             config:
-                JoomlaBrowser:
+                Joomla\Browser\JoomlaBrowser:
                     window_size: 480x640
