@@ -1,10 +1,12 @@
-# Weblinks for Joomla! Travis:
+# Weblinks for Joomla!
 
-Travis: [![Travis Build Status](https://travis-ci.org/joomla-extensions/weblinks.svg?branch=master)](https://travis-ci.org/joomla-extensions/weblinks) 
+Build Status
+---------------------
+| Drone-CI |
+| ------------- |
+| [![Build Status](https://ci.joomla.org/api/badges/joomla-extensions/weblinks/status.svg)](https://ci.joomla.org/joomla-extensions/weblinks) |
 
-Drone: [![Drone Build Status](http://213.160.72.75/api/badges/joomla-extensions/weblinks/status.svg)](http://213.160.72.75/joomla-extensions/weblinks)
-
-This repo is meant to hold the decoupled com_weblinks component and related code.
+Weblinks for Joomla! provides a component and accompanying extensions to create a directory of weblinks.
 
 # How to test a PR
 
