@@ -595,7 +595,7 @@ class RoboFile extends Tasks
 	{
 		$suiteConfig        = $this->getSuiteConfig();
 		$codeceptMainConfig = \Codeception\Configuration::config();
-		$browser            = $suiteConfig['modules']['config']['JoomlaBrowser']['browser'];
+		$browser            = $suiteConfig['modules']['config']['Joomla\Browser\JoomlaBrowser']['browser'];
 
 		if ($browser == 'chrome')
 		{

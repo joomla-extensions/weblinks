@@ -166,10 +166,10 @@ Bye
 class_name: AcceptanceTester
 modules:
     enabled:
-        - JoomlaBrowser
-        - AcceptanceHelper
+        - Joomla\Browser\JoomlaBrowser
+        - Helper\Acceptance
     config:
-        JoomlaBrowser:
+        Joomla\Browser\JoomlaBrowser:
             url: 'http://localhost/weblinks/tests/joomla-cms3'     # the url that points to the joomla installation at /tests/system/joomla-cms
             browser: 'firefox'
             window_size: 1024x768
@@ -197,12 +197,12 @@ env:
     tablet:
         modules:
             config:
-                JoomlaBrowser:
+                Joomla\Browser\JoomlaBrowser:
                     window_size: 768x1024
     phone:
         modules:
             config:
-                JoomlaBrowser:
+                Joomla\Browser\JoomlaBrowser:
                     window_size: 480x640
 ```
 
