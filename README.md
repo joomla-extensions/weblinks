@@ -2,9 +2,9 @@
 
 Build Status
 ---------------------
-| Travis-CI  | Drone-CI |
-| ------------- | ------------- | ------------- |
-| [![Build Status](https://travis-ci.org/joomla-extensions/weblinks.svg?branch=master)](https://travis-ci.org/joomla-extensions/weblinks) | [![Build Status](https://ci.joomla.org/api/badges/joomla-extensions/weblinks/status.svg)](https://ci.joomla.org/joomla-extensions/weblinks) |
+| Drone-CI |
+| ------------- |
+| [![Build Status](https://ci.joomla.org/api/badges/joomla-extensions/weblinks/status.svg)](https://ci.joomla.org/joomla-extensions/weblinks) |
 
 Weblinks for Joomla! provides a component and accompanying extensions to create a directory of weblinks.
 
