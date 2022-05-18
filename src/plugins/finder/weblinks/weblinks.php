@@ -282,11 +282,14 @@ class PlgFinderWeblinks extends Adapter
 		$item->addInstruction(Indexer::META_CONTEXT, 'author');
 		$item->addInstruction(Indexer::META_CONTEXT, 'created_by_alias');
 
+		// Translate the state. Weblinks should only be published if the category is published and also ensure that 'state' for trashed items is set to zero
+		$item->state = $this->translateState($item->state, $item->cat_state);
+
 		// Add the type taxonomy data.
 		$item->addTaxonomy('Type', 'Web Link');
 
 		// Add the category taxonomy data.
-		$item->addTaxonomy('Category', $item->category, $item->cat_state, $item->cat_access);
+		$item->addTaxonomy('Category', $item->category, $this->translateState($item->cat_state), $item->cat_access);
 
 		// Add the language taxonomy data.
 		$item->addTaxonomy('Language', $item->language);
