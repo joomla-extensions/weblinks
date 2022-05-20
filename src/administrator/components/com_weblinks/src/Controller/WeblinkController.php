@@ -12,6 +12,7 @@ namespace Joomla\Component\Weblinks\Administrator\Controller;
 defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Versioning\VersionableControllerTrait;
 use Joomla\Utilities\ArrayHelper;
@@ -118,7 +119,7 @@ class WeblinkController extends FormController
 	 *
 	 * @since   1.6
 	 */
-	protected function postSaveHook(\JModelLegacy $model, $validData = array())
+	protected function postSaveHook(BaseDatabaseModel $model, $validData = [])
 	{
 		$task = $this->getTask();
 
