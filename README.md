@@ -1,10 +1,12 @@
-# Weblinks for Joomla! Travis:
+# Weblinks for Joomla!
 
-Travis: [![Travis Build Status](https://travis-ci.org/joomla-extensions/weblinks.svg?branch=master)](https://travis-ci.org/joomla-extensions/weblinks) 
+Build Status
+---------------------
+| Drone-CI |
+| ------------- |
+| [![Build Status](https://ci.joomla.org/api/badges/joomla-extensions/weblinks/status.svg)](https://ci.joomla.org/joomla-extensions/weblinks) |
 
-Drone: [![Drone Build Status](http://213.160.72.75/api/badges/joomla-extensions/weblinks/status.svg)](http://213.160.72.75/joomla-extensions/weblinks)
-
-This repo is meant to hold the decoupled com_weblinks component and related code.
+Weblinks for Joomla! provides a component and accompanying extensions to create a directory of weblinks.
 
 # How to test a PR
 
@@ -221,7 +223,7 @@ skipClone = false
 cmsPath = tests/joomla-cms3
 
 ; If you want to clone a different branch, you can set it here
-branch = staging
+branch = 3.10-dev
 
 ; (Linux / Mac only) If you want to set a different owner for the CMS root folder, you can set it here.
 localUser =
@@ -258,13 +260,13 @@ The tests in Weblinks Extension use Codeception Testing Framework, if you want t
 This is not required, and if in doubt you can just skip this section, but there may be some specific use cases when you need (or want) to override the default behaviour of RoboFile.php. To do this, copy `RoboFile.dist.ini` to `RoboFile.ini` and add options in INI format, one per line, e.g.
 
     skipClone = true
-    cmsPath = tests/joomla-cms3
+    cmsPath = tests/joomla
 
 The currently available options are as follows:
 
 * `skipClone`: set to `true` to avoid the cms repo being deleted and re-cloned at each test execution. Useful to save time and bandwidth while you're debugging your test environment. But please be aware that if you don't refresh the repo you'll have to manually check the `installation` folder is present and the `configuration.php` is not.
 * `cmsPath`: set to the local path (absolute or relative) where you'd like the test website to be installed. Default is `tests/joomla-cms3`.
-* `branch`: set to whatever existing branch from the `joomla-cms` project if you want to clone that specific branch. Default is `staging`.
+* `branch`: set to whatever existing branch from the `joomla-cms` project if you want to clone that specific branch. Default is `3.10-dev`.
 
 ## Additional options
 

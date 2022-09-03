@@ -12,7 +12,7 @@ defined('JPATH_BASE') or die;
 use Joomla\Registry\Registry;
 
 // Load the base adapter.
-require_once JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapter.php';
+JLoader::register('FinderIndexerAdapter', JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapter.php');
 
 /**
  * Smart Search adapter for Joomla Web Links.
@@ -139,7 +139,7 @@ class PlgFinderWeblinks extends FinderIndexerAdapter
 	public function onFinderAfterSave($context, $row, $isNew)
 	{
 		// We only want to handle web links here. We need to handle front end and back end editing.
-		if ($context == 'com_weblinks.weblink' || $context == 'com_weblinks.form' )
+		if ($context == 'com_weblinks.weblink' || $context == 'com_weblinks.form')
 		{
 			// Check if the access levels are different.
 			if (!$isNew && $this->old_access != $row->access)

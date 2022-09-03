@@ -38,8 +38,11 @@ class WeblinksTableWeblink extends JTable
 		// Set the published column alias
 		$this->setColumnAlias('published', 'state');
 
-		JTableObserverTags::createObserver($this, array('typeAlias' => 'com_weblinks.weblink'));
-		JTableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_weblinks.weblink'));
+		if (version_compare(JVERSION, '4.0', '<') == 1)
+		{
+			JTableObserverTags::createObserver($this, array('typeAlias' => 'com_weblinks.weblink'));
+			JTableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_weblinks.weblink'));
+		}
 	}
 
 	/**
@@ -91,9 +94,10 @@ class WeblinksTableWeblink extends JTable
 		}
 
 		// Verify that the alias is unique
-		$table = JTable::getInstance('Weblink', 'WeblinksTable');
+		$table = JTable::getInstance('Weblink', 'WeblinksTable', array('dbo' => $this->getDbo()));
 
-		if ($table->load(array('language' => $this->language, 'alias' => $this->alias, 'catid' => $this->catid)) && ($table->id != $this->id || $this->id == 0))
+		if ($table->load(array('language' => $this->language, 'alias' => $this->alias, 'catid' => $this->catid))
+			&& ($table->id != $this->id || $this->id == 0))
 		{
 			$this->setError(JText::_('COM_WEBLINKS_ERROR_UNIQUE_ALIAS'));
 
@@ -126,6 +130,7 @@ class WeblinksTableWeblink extends JTable
 		if (trim($this->title) == '')
 		{
 			$this->setError(JText::_('COM_WEBLINKS_ERR_TABLES_TITLE'));
+
 			return false;
 		}
 
@@ -194,6 +199,6 @@ class WeblinksTableWeblink extends JTable
 			$this->metakey = implode(", ", $clean_keys);
 		}
 
-		return true;
+		return parent::check();
 	}
 }

@@ -35,7 +35,7 @@ class AdministratorSmartSearchCest
 		$I->clickToolbarButton('Save & Close');
 		$I->waitForText('Control Panel', 30, ['class'=> 'page-title']);
 		$I->expectTo('see a success message after saving the configuration');
-		$I->see('Configuration successfully saved', ['id' => 'system-message-container']);
+		$I->see('Configuration saved', ['id' => 'system-message-container']);
 	}
 
 	public function administratorEnableContentPlugin(\Step\Acceptance\weblink $I)
@@ -53,8 +53,8 @@ class AdministratorSmartSearchCest
 		$I->waitForText('Plugins: Content - Smart Search', 30, ['class'=> 'page-title']);
 		$I->selectOptionInChosen('Status', 'Enabled');
 		$I->clickToolbarButton('save & close');
-		$I->waitForText('Plugin successfully saved.', 30, ['id' => 'system-message-container']);
-		$I->see('Plugin successfully saved.', ['id' => 'system-message-container']);
+		$I->waitForText('Plugin saved.', 30, ['id' => 'system-message-container']);
+		$I->see('Plugin saved.', ['id' => 'system-message-container']);
 	}
 
 	/**
@@ -74,8 +74,8 @@ class AdministratorSmartSearchCest
 		$I->waitForText('Plugins: Smart Search - Web Links', 30, ['class'=> 'page-title']);
 		$I->selectOptionInChosen('Status', 'Enabled');
 		$I->clickToolbarButton('save & close');
-		$I->waitForText('Plugin successfully saved.', 30, ['id' => 'system-message-container']);
-		$I->see('Plugin successfully saved.', ['id' => 'system-message-container']);
+		$I->waitForText('Plugin saved.', 30, ['id' => 'system-message-container']);
+		$I->see('Plugin saved.', ['id' => 'system-message-container']);
 	}
 
 	/**
@@ -95,8 +95,8 @@ class AdministratorSmartSearchCest
 
 		$I->click('Clear Index');
 		$I->acceptPopup();
-		$I->waitForText('All items have been successfully deleted', 30, ['class' => 'alert-message']);
-		$I->see('All items have been successfully deleted', ['class' => 'alert-message']);
+		$I->waitForText('All items have been deleted', 30, ['class' => 'alert-message']);
+		$I->see('All items have been deleted', ['class' => 'alert-message']);
 	}
 
 	public function administratorCreateWeblink(\Step\Acceptance\weblink $I, $scenario)
@@ -145,7 +145,7 @@ class AdministratorSmartSearchCest
 		$I->waitForElement(['link' => 'Content - Smart Search']);
 		$I->checkOption(['id' => 'cb0']);
 		$I->clickToolbarButton('Unpublish');		// Note: The button is called "Disable", but we need to call it "Unpublish" here.
-		$I->waitForText('Plugin successfully disabled', 30, ['class' => 'alert-message']);
+		$I->waitForText('Plugin disabled', 30, ['class' => 'alert-message']);
 	}
 
 	/**
@@ -166,7 +166,7 @@ class AdministratorSmartSearchCest
 		$I->waitForElement(['link' => 'Smart Search - Web Links']);
 		$I->checkOption(['id' => 'cb0']);
 		$I->clickToolbarButton('Unpublish');		// Note: The button is called "Disable", but we need to call it "Unpublish" here.
-		$I->waitForText('Plugin successfully disabled', 30, ['class' => 'alert-message']);
+		$I->waitForText('Plugin disabled', 30, ['class' => 'alert-message']);
 	}
 
 	public function cleanUp(\Step\Acceptance\weblink $I, $scenario)

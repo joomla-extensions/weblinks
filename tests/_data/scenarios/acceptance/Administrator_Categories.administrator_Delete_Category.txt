@@ -12,5 +12,5 @@ I am going to "try to delete a Weblinks Category"
 I click toolbar button "Empty trash"
 I wait for element "['id' => 'system-message-container']"," '60"
 I expect to "see a success message after Deleting the category"
-I see "1 category successfully deleted."," ['id' => 'system-message-container']"
+I see "1 category deleted."," ['id' => 'system-message-container']"
 

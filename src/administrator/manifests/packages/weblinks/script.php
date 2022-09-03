@@ -19,8 +19,6 @@ class Pkg_WeblinksInstallerScript extends JInstallerScript
 	/**
 	 * Extension script constructor.
 	 *
-	 * @return  void
-	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
 	public function __construct()
