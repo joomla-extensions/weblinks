@@ -87,7 +87,7 @@ class WeblinksHelper
 
 		$model->setState(
 			'list.select',
-			'a.*, c.description AS c_description, c.published AS c_published,' . $case_when1 . ',' . $case_when2 . ', a.created'
+			'a.*, c.description AS c_description, c.published AS c_published,' . $case_when1 . ',' . $case_when2
 		);
 
 		$model->setState('filter.c.published', 1);
