@@ -9,6 +9,7 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\CMS\Categories\Categories;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Component\Finder\Administrator\Indexer\Adapter;
 use Joomla\Component\Finder\Administrator\Indexer\Helper;
@@ -255,13 +256,8 @@ class PlgFinderWeblinks extends Adapter
 		$item->setLanguage();
 
 		// Initialise the item parameters.
-		$registry = new Registry;
-		$registry->loadString($item->params);
-		$item->params = $registry;
-
-		$registry = new Registry;
-		$registry->loadString($item->metadata);
-		$item->metadata = $registry;
+		$item->params = new Registry($item->params);
+		$item->metadata = new Registry($item->metadata);
 
 		// Build the necessary route and path information.
 		$item->url   = $this->getURL($item->id, $this->extension, $this->layout);
@@ -289,7 +285,16 @@ class PlgFinderWeblinks extends Adapter
 		$item->addTaxonomy('Type', 'Web Link');
 
 		// Add the category taxonomy data.
-		$item->addTaxonomy('Category', $item->category, $this->translateState($item->cat_state), $item->cat_access);
+		$categories = Categories::getInstance('com_weblinks', ['published' => false, 'access' => false]);
+		$category   = $categories->get($item->catid);
+
+		// Category does not exist, stop here
+		if (!$category)
+		{
+			return;
+		}
+
+		$item->addNestedTaxonomy('Category', $category, $this->translateState($category->published), $category->access, $category->language);
 
 		// Add the language taxonomy data.
 		$item->addTaxonomy('Language', $item->language);
