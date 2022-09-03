@@ -97,6 +97,8 @@ class CategoryModel extends ListModel
 		// Invoke the parent getItems method to get the main list
 		$items = parent::getItems();
 
+		$taggedItems = [];
+
 		// Convert the params field into an object, saving original in _params
 		foreach ($items as $item)
 		{
@@ -105,9 +107,24 @@ class CategoryModel extends ListModel
 				$item->params = new Registry($item->params);
 			}
 
-			// Get the tags
-			$item->tags = new TagsHelper;
-			$item->tags->getItemTags('com_weblinks.weblink', $item->id);
+			// Some contexts may not use tags data at all, so we allow callers to disable loading tag data
+			if ($this->getState('load_tags', true))
+			{
+				$item->tags             = new TagsHelper;
+				$taggedItems[$item->id] = $item;
+			}
+		}
+
+		// Load tags of all items.
+		if ($taggedItems)
+		{
+			$tagsHelper = new TagsHelper();
+			$itemIds    = \array_keys($taggedItems);
+
+			foreach ($tagsHelper->getMultipleItemTags('com_weblinks.weblink', $itemIds) as $id => $tags)
+			{
+				$taggedItems[$id]->tags->itemTags = $tags;
+			}
 		}
 
 		return $items;
