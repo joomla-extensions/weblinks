@@ -108,19 +108,20 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 								// Open in a popup window
 								$attribs = 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=' . $this->escape($width) . ',height=' . $this->escape($height) . '';
 								echo "<a href=\"$link\" onclick=\"window.open(this.href, 'targetWindow', '" . $attribs . "'); return false;\">" .
-                                    $this->escape($item->title) . '</a>';
+									$this->escape($item->title) . '</a>';
 								break;
 							case 3:
 								// Open in a modal window
 								$modalId                   = 'weblink-item-modal-' . $item->id;
 								$modalParams['title']      = $this->escape($item->title);
 								$modalParams['url']        = $link;
-								$modalParams['heig$this->escape($item->title)ht']     = '100%';
+								$modalParams['height']     = '100%';
 								$modalParams['width']      = '100%';
 								$modalParams['bodyHeight'] = 70;
 								$modalParams['modalWidth'] = 80;
 								echo HTMLHelper::_('bootstrap.renderModal', $modalId, $modalParams);
-                                echo '<a role="button" class="' . $menuclass . '"  data-bs-toggle="modal" data-bs-target="#' . $modalId . '">' .  $this->escape($item->title) . '</a>';
+								echo '<a role="button" class="' . $menuclass . '" data-bs-toggle="modal" data-bs-target="#' . $modalId . '">' .
+									$this->escape($item->title) . ' </a>';
 								break;
 							default:
 								// Open in parent window
