@@ -96,7 +96,7 @@ class WeblinkModel extends ItemModel
 		{
 			try
 			{
-				$db = $this->getDbo();
+				$db = $this->getDatabase();
 				$query = $db->getQuery(true)
 					->select($this->getState('item.select', 'a.*'))
 					->from('#__weblinks AS a')

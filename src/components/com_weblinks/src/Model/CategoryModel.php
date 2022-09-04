@@ -142,7 +142,7 @@ class CategoryModel extends ListModel
 		$viewLevels = Factory::getApplication()->getIdentity()->getAuthorisedViewLevels();
 
 		// Create a new query object.
-		$db    = $this->getDbo();
+		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
 		// Select required fields from the categories.
