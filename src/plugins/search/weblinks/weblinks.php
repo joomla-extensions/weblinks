@@ -12,7 +12,9 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Component\Search\Administrator\Helper\SearchHelper;
 use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
+use Joomla\Database\ParameterType;
 
 /**
  * Weblinks search plugin.
@@ -78,10 +80,8 @@ class PlgSearchWeblinks extends CMSPlugin
 	 */
 	public function onContentSearch($text, $phrase = '', $ordering = '', $areas = null)
 	{
-		JLoader::register('SearchHelper', JPATH_ADMINISTRATOR . '/components/com_search/helpers/search.php');
-
-		$db = $this->db;
-		$groups = implode(',', $this->app->getIdentity()->getAuthorisedViewLevels());
+		$db     = $this->db;
+		$groups = $this->app->getIdentity()->getAuthorisedViewLevels();
 
 		$searchText = $text;
 
@@ -179,36 +179,39 @@ class PlgSearchWeblinks extends CMSPlugin
 		$query = $db->getQuery(true);
 
 		// SQLSRV changes.
-		$case_when = ' CASE WHEN ';
-		$case_when .= $query->charLength('a.alias', '!=', '0');
-		$case_when .= ' THEN ';
+		$caseWhen = ' CASE WHEN ';
+		$caseWhen .= $query->charLength('a.alias', '!=', '0');
+		$caseWhen .= ' THEN ';
 		$a_id = $query->castAs('CHAR', 'a.id');
-		$case_when .= $query->concatenate(array($a_id, 'a.alias'), ':');
-		$case_when .= ' ELSE ';
-		$case_when .= $a_id . ' END as slug';
+		$caseWhen .= $query->concatenate(array($a_id, 'a.alias'), ':');
+		$caseWhen .= ' ELSE ';
+		$caseWhen .= $a_id . ' END as slug';
 
-		$case_when1 = ' CASE WHEN ';
-		$case_when1 .= $query->charLength('c.alias', '!=', '0');
-		$case_when1 .= ' THEN ';
+		$caseWhen1 = ' CASE WHEN ';
+		$caseWhen1 .= $query->charLength('c.alias', '!=', '0');
+		$caseWhen1 .= ' THEN ';
 		$c_id = $query->castAs('CHAR', 'c.id');
-		$case_when1 .= $query->concatenate(array($c_id, 'c.alias'), ':');
-		$case_when1 .= ' ELSE ';
-		$case_when1 .= $c_id . ' END as catslug';
+		$caseWhen1 .= $query->concatenate(array($c_id, 'c.alias'), ':');
+		$caseWhen1 .= ' ELSE ';
+		$caseWhen1 .= $c_id . ' END as catslug';
 
-		$query->select('a.title AS title, a.created AS created, a.url, a.description AS text, ' . $case_when . "," . $case_when1)
+		$query->select('a.title AS title, a.created AS created, a.url, a.description AS text, ' . $caseWhen . "," . $caseWhen1)
 			->select($query->concatenate(array($db->quote($searchWeblinks), 'c.title'), " / ") . ' AS section')
 			->select('\'1\' AS browsernav')
 			->from('#__weblinks AS a')
 			->join('INNER', '#__categories as c ON c.id = a.catid')
-			->where('(' . $where . ') AND a.state IN (' . implode(',', $state) . ') AND c.published = 1 AND c.access IN (' . $groups . ')')
+			->where('(' . $where . ')')
+			->whereIn($db->quoteName('a.state'), $state)
+			->where($db->quoteName('c.published') . ' = 1')
+			->whereIn($db->quoteName('c.access'), $groups)
 			->order($order);
 
 		// Filter by language.
 		if ($this->app->isClient('site') && Multilanguage::isEnabled())
 		{
-			$tag = $this->app->getLanguage()->getTag();
-			$query->where('a.language in (' . $db->quote($tag) . ',' . $db->quote('*') . ')')
-				->where('c.language in (' . $db->quote($tag) . ',' . $db->quote('*') . ')');
+			$languages = [$this->app->getLanguage()->getTag(), '*'];
+			$query->whereIn($db->quoteName('a.language'), $languages, ParameterType::STRING)
+				->whereIn($db->quoteName('c.language'), $languages, ParameterType::STRING);
 		}
 
 		$db->setQuery($query, 0, $limit);
