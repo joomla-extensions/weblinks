@@ -131,7 +131,7 @@ class HtmlView extends BaseHtmlView
 	protected function addToolbar()
 	{
 		$canDo = ContentHelper::getActions('com_weblinks', 'category', $this->state->get('filter.category_id'));
-		$user  = Factory::getApplication()->getIdentity();
+		$user  = $this->getCurrentUser();
 
 		// Get the toolbar object instance
 		$toolbar = Toolbar::getInstance('toolbar');

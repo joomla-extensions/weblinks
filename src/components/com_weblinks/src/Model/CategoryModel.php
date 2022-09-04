@@ -139,7 +139,7 @@ class CategoryModel extends ListModel
 	 */
 	protected function getListQuery()
 	{
-		$viewLevels = Factory::getApplication()->getIdentity()->getAuthorisedViewLevels();
+		$viewLevels = $this->getCurrentUser()->getAuthorisedViewLevels();
 
 		// Create a new query object.
 		$db    = $this->getDatabase();
@@ -296,7 +296,7 @@ class CategoryModel extends ListModel
 		$id = $app->input->get('id', 0, 'int');
 		$this->setState('category.id', $id);
 
-		$user = $app->getIdentity();
+		$user = $this->getCurrentUser();
 
 		if (!$user->authorise('core.edit.state', 'com_weblinks') && !$user->authorise('core.edit', 'com_weblinks'))
 		{

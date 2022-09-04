@@ -71,7 +71,7 @@ class WeblinkModel extends AdminModel
 			return false;
 		}
 
-		return Factory::getApplication()->getIdentity()->authorise('core.delete', 'com_weblinks.category.' . (int) $record->catid);
+		return $this->getCurrentUser()->authorise('core.delete', 'com_weblinks.category.' . (int) $record->catid);
 	}
 
 	/**
@@ -87,7 +87,7 @@ class WeblinkModel extends AdminModel
 	{
 		if (!empty($record->catid))
 		{
-			return Factory::getApplication()->getIdentity()->authorise('core.edit.state', 'com_weblinks.category.' . (int) $record->catid);
+			return $this->getCurrentUser()->authorise('core.edit.state', 'com_weblinks.category.' . (int) $record->catid);
 		}
 
 		return parent::canEditState($record);
@@ -143,7 +143,7 @@ class WeblinkModel extends AdminModel
 		}
 
 		// Don't allow to change the created_by user if not allowed to access com_users.
-		if (!Factory::getApplication()->getIdentity()->authorise('core.manage', 'com_users'))
+		if (!$this->getCurrentUser()->authorise('core.manage', 'com_users'))
 		{
 			$form->setFieldAttribute('created_by', 'filter', 'unset');
 		}
@@ -243,7 +243,7 @@ class WeblinkModel extends AdminModel
 	protected function prepareTable($table)
 	{
 		$date = Factory::getDate();
-		$user = Factory::getApplication()->getIdentity();
+		$user = $this->getCurrentUser();
 
 		$table->title = htmlspecialchars_decode($table->title, ENT_QUOTES);
 		$table->alias = ApplicationHelper::stringURLSafe($table->alias);
@@ -338,7 +338,7 @@ class WeblinkModel extends AdminModel
 		// Alter the title for save as copy
 		if ($app->input->get('task') == 'save2copy')
 		{
-			list($name, $alias) = $this->generateNewTitle($data['catid'], $data['alias'], $data['title']);
+			[$name, $alias] = $this->generateNewTitle($data['catid'], $data['alias'], $data['title']);
 			$data['title'] = $name;
 			$data['alias'] = $alias;
 			$data['state'] = 0;
@@ -438,6 +438,6 @@ class WeblinkModel extends AdminModel
 	 */
 	private function canCreateCategory()
 	{
-		return Factory::getApplication()->getIdentity()->authorise('core.create', 'com_weblinks');
+		return $this->getCurrentUser()->authorise('core.create', 'com_weblinks');
 	}
 }

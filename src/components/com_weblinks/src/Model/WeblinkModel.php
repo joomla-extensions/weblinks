@@ -63,7 +63,7 @@ class WeblinkModel extends ItemModel
 		$params = $app->getParams();
 		$this->setState('params', $params);
 
-		$user = $app->getIdentity();
+		$user = $this->getCurrentUser();
 
 		if (!$user->authorise('core.edit.state', 'com_weblinks') && !$user->authorise('core.edit', 'com_weblinks'))
 		{
@@ -83,7 +83,7 @@ class WeblinkModel extends ItemModel
 	 */
 	public function getItem($pk = null)
 	{
-		$user = Factory::getApplication()->getIdentity();
+		$user = $this->getCurrentUser();
 
 		$pk = (!empty($pk)) ? $pk : (int) $this->getState('weblink.id');
 

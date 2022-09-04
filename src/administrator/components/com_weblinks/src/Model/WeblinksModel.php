@@ -156,7 +156,7 @@ class WeblinksModel extends ListModel
 		// Create a new query object.
 		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
-		$user  = Factory::getApplication()->getIdentity();
+		$user  = $this->getCurrentUser();
 
 		// Select the required fields from the table.
 		$query->select(
