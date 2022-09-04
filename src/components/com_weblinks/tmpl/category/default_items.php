@@ -65,14 +65,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 		<?php else : ?>
 			<ul class="category list-unstyled">
 				<?php foreach ($this->items as $i => $item) : ?>
-					<?php
-					// Shouldn't this be only for users with admin rights?
-					// @ToDo: what is the difference -class system-unbublished?
-					if ($item->state == 0) : ?>
-						<li class="system-unpublished list-group mt-3">
-					<?php else : ?>
-						<li class="list-group mt-3">
-					<?php endif; ?>
+					<li class="list-group mt-3">
 
 					<?php if ($canEdit || ($canEditOwn && $item->created_by == $userId)) : ?>
 						<div class="icons list-group-item">
@@ -115,21 +108,19 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 								// Open in a popup window
 								$attribs = 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=' . $this->escape($width) . ',height=' . $this->escape($height) . '';
 								echo "<a href=\"$link\" onclick=\"window.open(this.href, 'targetWindow', '" . $attribs . "'); return false;\">" .
-									$this->escape($item->title) . '</a>';
+                                    $this->escape($item->title) . '</a>';
 								break;
 							case 3:
 								// Open in a modal window
 								$modalId                   = 'weblink-item-modal-' . $item->id;
 								$modalParams['title']      = $this->escape($item->title);
 								$modalParams['url']        = $link;
-								$modalParams['height']     = '100%';
+								$modalParams['heig$this->escape($item->title)ht']     = '100%';
 								$modalParams['width']      = '100%';
 								$modalParams['bodyHeight'] = 70;
 								$modalParams['modalWidth'] = 80;
 								echo HTMLHelper::_('bootstrap.renderModal', $modalId, $modalParams);
-								echo '<button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#' . $modalId . '">
-								  ' . $item->title . '
-								</button>';
+                                echo '<a role="button" class="' . $menuclass . '"  data-bs-toggle="modal" data-bs-target="#' . $modalId . '">' .  $this->escape($item->title) . '</a>';
 								break;
 							default:
 								// Open in parent window
