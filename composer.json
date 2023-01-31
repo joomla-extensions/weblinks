@@ -17,7 +17,7 @@
         "fzaninotto/faker": "^1.6",
         "joomla-projects/joomla-browser": "^4.0",
         "joomla-projects/joomla-testing-robo": "~1.0",
-        "joomla-projects/jorobo": "^0.7.6",
+        "joomla-projects/jorobo": "^0.8.0",
         "joomla-projects/selenium-server-standalone": "^3.14",
         "phpunit/phpunit": "^5.7.27",
         "codeception/module-filesystem": "^1.0",
