@@ -9,6 +9,7 @@
 	<authorUrl>www.joomla.org</authorUrl>
 	<version>##VERSION##</version>
 	<description>PLG_EDITORS-XTD_WEBLINK_XML_DESCRIPTION</description>
+	<namespace path="src">Joomla\Plugin\EditorsXtd\Weblink</namespace>
 	<files>
 		##FILES##
 	</files>

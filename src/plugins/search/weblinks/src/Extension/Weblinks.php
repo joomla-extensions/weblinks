@@ -7,37 +7,28 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+namespace Joomla\Plugin\Search\Weblinks\Extension;
 
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\Component\Search\Administrator\Helper\SearchHelper;
 use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
+use Joomla\Database\DatabaseAwareTrait;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
+use Joomla\Event\DispatcherInterface;
+
+defined('_JEXEC') or die;
 
 /**
  * Weblinks search plugin.
  *
  * @since  1.6
  */
-class PlgSearchWeblinks extends CMSPlugin
+final class Weblinks extends CMSPlugin
 {
-	/**
-	 * Application object
-	 *
-	 * @var    \Joomla\CMS\Application\CMSApplicationInterface
-	 * @since  4.0.0
-	 */
-	protected $app;
-
-	/**
-	 * Database Driver Instance
-	 *
-	 * @var    \Joomla\Database\DatabaseDriver
-	 * @since  4.0.0
-	 */
-	protected $db;
+	use DatabaseAwareTrait;
 
 	/**
 	 * Load the language file on instantiation.
@@ -48,6 +39,22 @@ class PlgSearchWeblinks extends CMSPlugin
 	protected $autoloadLanguage = true;
 
 	/**
+	 * Constructor
+	 *
+	 * @param   DispatcherInterface      $dispatcher
+	 * @param   array                    $config
+	 * @param   CMSApplicationInterface  $application
+	 * @param   DatabaseInterface        $database
+	 */
+	public function __construct(DispatcherInterface $dispatcher, array $config, CMSApplicationInterface $application, DatabaseInterface $database)
+	{
+		parent::__construct($dispatcher, $config);
+
+		$this->setApplication($application);
+		$this->setDatabase($database);
+	}
+
+	/**
 	 * Determine areas searchable by this plugin.
 	 *
 	 * @return  array  An array of search areas.
@@ -56,9 +63,9 @@ class PlgSearchWeblinks extends CMSPlugin
 	 */
 	public function onContentSearchAreas()
 	{
-		static $areas = array(
-			'weblinks' => 'PLG_SEARCH_WEBLINKS_WEBLINKS'
-		);
+		static $areas = [
+			'weblinks' => 'PLG_SEARCH_WEBLINKS_WEBLINKS',
+		];
 
 		return $areas;
 	}
@@ -80,23 +87,22 @@ class PlgSearchWeblinks extends CMSPlugin
 	 */
 	public function onContentSearch($text, $phrase = '', $ordering = '', $areas = null)
 	{
-		$db     = $this->db;
-		$groups = $this->app->getIdentity()->getAuthorisedViewLevels();
+		$app    = $this->getApplication();
+		$db     = $this->getDatabase();
+		$groups = $app->getIdentity()->getAuthorisedViewLevels();
 
 		$searchText = $text;
 
-		if (is_array($areas))
+		if (is_array($areas)
+			&& !array_intersect($areas, array_keys($this->onContentSearchAreas())))
 		{
-			if (!array_intersect($areas, array_keys($this->onContentSearchAreas())))
-			{
-				return array();
-			}
+			return [];
 		}
 
-		$sContent = $this->params->get('search_content', 1);
+		$sContent  = $this->params->get('search_content', 1);
 		$sArchived = $this->params->get('search_archived', 1);
-		$limit = $this->params->def('search_limit', 50);
-		$state = array();
+		$limit     = $this->params->def('search_limit', 50);
+		$state     = [];
 
 		if ($sContent)
 		{
@@ -110,14 +116,14 @@ class PlgSearchWeblinks extends CMSPlugin
 
 		if (empty($state))
 		{
-			return array();
+			return [];
 		}
 
 		$text = trim($text);
 
 		if ($text == '')
 		{
-			return array();
+			return [];
 		}
 
 		$searchWeblinks = Text::_('PLG_SEARCH_WEBLINKS');
@@ -125,28 +131,28 @@ class PlgSearchWeblinks extends CMSPlugin
 		switch ($phrase)
 		{
 			case 'exact':
-				$text = $db->quote('%' . $db->escape($text, true) . '%', false);
-				$wheres2 = array();
+				$text      = $db->quote('%' . $db->escape($text, true) . '%', false);
+				$wheres2   = [];
 				$wheres2[] = 'a.url LIKE ' . $text;
 				$wheres2[] = 'a.description LIKE ' . $text;
 				$wheres2[] = 'a.title LIKE ' . $text;
-				$where = '(' . implode(') OR (', $wheres2) . ')';
+				$where     = '(' . implode(') OR (', $wheres2) . ')';
 				break;
 
 			case 'all':
 			case 'any':
 			default:
-				$words = explode(' ', $text);
-				$wheres = array();
+				$words  = explode(' ', $text);
+				$wheres = [];
 
 				foreach ($words as $word)
 				{
-					$word = $db->quote('%' . $db->escape($word, true) . '%', false);
-					$wheres2 = array();
+					$word      = $db->quote('%' . $db->escape($word, true) . '%', false);
+					$wheres2   = [];
 					$wheres2[] = 'a.url LIKE ' . $word;
 					$wheres2[] = 'a.description LIKE ' . $word;
 					$wheres2[] = 'a.title LIKE ' . $word;
-					$wheres[] = implode(' OR ', $wheres2);
+					$wheres[]  = implode(' OR ', $wheres2);
 				}
 
 				$where = '(' . implode(($phrase == 'all' ? ') AND (' : ') OR ('), $wheres) . ')';
@@ -182,21 +188,21 @@ class PlgSearchWeblinks extends CMSPlugin
 		$caseWhen = ' CASE WHEN ';
 		$caseWhen .= $query->charLength('a.alias', '!=', '0');
 		$caseWhen .= ' THEN ';
-		$a_id = $query->castAs('CHAR', 'a.id');
-		$caseWhen .= $query->concatenate(array($a_id, 'a.alias'), ':');
+		$a_id     = $query->castAs('CHAR', 'a.id');
+		$caseWhen .= $query->concatenate([$a_id, 'a.alias'], ':');
 		$caseWhen .= ' ELSE ';
 		$caseWhen .= $a_id . ' END as slug';
 
 		$caseWhen1 = ' CASE WHEN ';
 		$caseWhen1 .= $query->charLength('c.alias', '!=', '0');
 		$caseWhen1 .= ' THEN ';
-		$c_id = $query->castAs('CHAR', 'c.id');
-		$caseWhen1 .= $query->concatenate(array($c_id, 'c.alias'), ':');
+		$c_id      = $query->castAs('CHAR', 'c.id');
+		$caseWhen1 .= $query->concatenate([$c_id, 'c.alias'], ':');
 		$caseWhen1 .= ' ELSE ';
 		$caseWhen1 .= $c_id . ' END as catslug';
 
 		$query->select('a.title AS title, a.created AS created, a.url, a.description AS text, ' . $caseWhen . "," . $caseWhen1)
-			->select($query->concatenate(array($db->quote($searchWeblinks), 'c.title'), " / ") . ' AS section')
+			->select($query->concatenate([$db->quote($searchWeblinks), 'c.title'], " / ") . ' AS section')
 			->select('\'1\' AS browsernav')
 			->from('#__weblinks AS a')
 			->join('INNER', '#__categories as c ON c.id = a.catid')
@@ -207,9 +213,10 @@ class PlgSearchWeblinks extends CMSPlugin
 			->order($order);
 
 		// Filter by language.
-		if ($this->app->isClient('site') && Multilanguage::isEnabled())
+
+		if ($app->isClient('site') && Multilanguage::isEnabled())
 		{
-			$languages = [$this->app->getLanguage()->getTag(), '*'];
+			$languages = [$app->getLanguage()->getTag(), '*'];
 			$query->whereIn($db->quoteName('a.language'), $languages, ParameterType::STRING)
 				->whereIn($db->quoteName('c.language'), $languages, ParameterType::STRING);
 		}
@@ -217,7 +224,7 @@ class PlgSearchWeblinks extends CMSPlugin
 		$db->setQuery($query, 0, $limit);
 		$rows = $db->loadObjectList();
 
-		$return = array();
+		$return = [];
 
 		if ($rows)
 		{
@@ -228,7 +235,7 @@ class PlgSearchWeblinks extends CMSPlugin
 
 			foreach ($rows as $weblink)
 			{
-				if (SearchHelper::checkNoHTML($weblink, $searchText, array('url', 'text', 'title')))
+				if (\searchHelper::checkNoHTML($weblink, $searchText, ['url', 'text', 'title']))
 				{
 					$return[] = $weblink;
 				}

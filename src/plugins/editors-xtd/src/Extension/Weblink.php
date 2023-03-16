@@ -7,28 +7,26 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\Plugin\EditorsXtd\Weblink\Extension;
+
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Session\Session;
+use Joomla\Database\DatabaseAwareTrait;
+use Joomla\Database\DatabaseInterface;
+use Joomla\Event\DispatcherInterface;
 
 /**
  * Editor Web Link button
  *
  * @since  __DEPLOY_VERSION__
  */
-class PlgButtonWeblink extends CMSPlugin
+final class Weblink extends CMSPlugin
 {
-	/**
-	 * Application object
-	 *
-	 * @var    \Joomla\CMS\Application\CMSApplicationInterface
-	 * @since  4.0.0
-	 */
-	protected $app;
-
 	/**
 	 * Load the language file on instantiation.
 	 *
@@ -38,17 +36,31 @@ class PlgButtonWeblink extends CMSPlugin
 	protected $autoloadLanguage = true;
 
 	/**
+	 * Constructor
+	 *
+	 * @param   DispatcherInterface  $dispatcher
+	 * @param   array                $config
+	 * @param   DatabaseInterface    $database
+	 */
+	public function __construct(DispatcherInterface $dispatcher, array $config, CMSApplicationInterface $application)
+	{
+		parent::__construct($dispatcher, $config);
+
+		$this->setApplication($application);
+	}
+
+	/**
 	 * Display the button
 	 *
 	 * @param   string  $name  The name of the button to add
 	 *
-	 * @return  JObject  The button options as JObject
+	 * @return  CMSObject  The button options as JObject
 	 *
 	 * @since  __DEPLOY_VERSION__
 	 */
 	public function onDisplay($name)
 	{
-		$user = $this->app->getIdentity();
+		$user = $this->getApplication()->getIdentity();
 
 		if ($user->authorise('core.create', 'com_weblinks')
 			|| $user->authorise('core.edit', 'com_weblinks')

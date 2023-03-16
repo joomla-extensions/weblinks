@@ -7,15 +7,22 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\Plugin\Finder\Weblinks\Extension;
+
 defined('JPATH_BASE') or die;
 
 use Joomla\CMS\Categories\Categories;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Table\Table;
 use Joomla\Component\Finder\Administrator\Indexer\Adapter;
 use Joomla\Component\Finder\Administrator\Indexer\Helper;
 use Joomla\Component\Finder\Administrator\Indexer\Indexer;
 use Joomla\Component\Finder\Administrator\Indexer\Result;
 use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
+use Joomla\Database\DatabaseAwareTrait;
+use Joomla\Database\DatabaseInterface;
+use Joomla\Database\DatabaseQuery;
+use Joomla\Event\DispatcherInterface;
 use Joomla\Registry\Registry;
 
 /**
@@ -23,8 +30,10 @@ use Joomla\Registry\Registry;
  *
  * @since  2.5
  */
-class PlgFinderWeblinks extends Adapter
+final class Weblinks extends Adapter
 {
+	use DatabaseAwareTrait;
+
 	/**
 	 * The plugin identifier.
 	 *
@@ -74,6 +83,20 @@ class PlgFinderWeblinks extends Adapter
 	protected $autoloadLanguage = true;
 
 	/**
+	 * Constructor
+	 *
+	 * @param   DispatcherInterface  $dispatcher
+	 * @param   array                $config
+	 * @param   DatabaseInterface    $database
+	 */
+	public function __construct(DispatcherInterface $dispatcher, array $config, DatabaseInterface $database)
+	{
+		parent::__construct($dispatcher, $config);
+
+		$this->setDatabase($database);
+	}
+
+	/**
 	 * Method to update the item link information when the item category is
 	 * changed. This is fired when the item category is published or unpublished
 	 * from the list view.
@@ -99,12 +122,12 @@ class PlgFinderWeblinks extends Adapter
 	 * Method to remove the link information for items that have been deleted.
 	 *
 	 * @param   string  $context  The context of the action being performed.
-	 * @param   JTable  $table    A JTable object containing the record to be deleted.
+	 * @param   Table   $table    A JTable object containing the record to be deleted.
 	 *
 	 * @return  boolean  True on success.
 	 *
+	 * @throws  \Exception on database error.
 	 * @since   2.5
-	 * @throws  Exception on database error.
 	 */
 	public function onFinderAfterDelete($context, $table)
 	{
@@ -132,13 +155,13 @@ class PlgFinderWeblinks extends Adapter
 	 * the category to which it belongs has been changed.
 	 *
 	 * @param   string   $context  The context of the content passed to the plugin.
-	 * @param   JTable   $row      A JTable object.
+	 * @param   Table    $row      A JTable object.
 	 * @param   boolean  $isNew    True if the content has just been created.
 	 *
 	 * @return  boolean  True on success.
 	 *
+	 * @throws  \Exception on database error.
 	 * @since   2.5
-	 * @throws  Exception on database error.
 	 */
 	public function onFinderAfterSave($context, $row, $isNew)
 	{
@@ -174,13 +197,13 @@ class PlgFinderWeblinks extends Adapter
 	 * This event is fired before the data is actually saved.
 	 *
 	 * @param   string   $context  The context of the content passed to the plugin.
-	 * @param   JTable   $row      A JTable object.
+	 * @param   Table    $row      A JTable object.
 	 * @param   boolean  $isNew    True if the content is just about to be created.
 	 *
 	 * @return  boolean  True on success.
 	 *
+	 * @throws  \Exception on database error.
 	 * @since   2.5
-	 * @throws  Exception on database error.
 	 */
 	public function onFinderBeforeSave($context, $row, $isNew)
 	{
@@ -238,12 +261,12 @@ class PlgFinderWeblinks extends Adapter
 	/**
 	 * Method to index an item. The item must be a FinderIndexerResult object.
 	 *
-	 * @param   Result  $item    The item to index as an FinderIndexerResult object.
+	 * @param   Result  $item  The item to index as an FinderIndexerResult object.
 	 *
 	 * @return  void
 	 *
+	 * @throws  \Exception on database error.
 	 * @since   2.5
-	 * @throws  Exception on database error.
 	 */
 	protected function index(Result $item)
 	{
@@ -256,7 +279,7 @@ class PlgFinderWeblinks extends Adapter
 		$item->setLanguage();
 
 		// Initialise the item parameters.
-		$item->params = new Registry($item->params);
+		$item->params   = new Registry($item->params);
 		$item->metadata = new Registry($item->metadata);
 
 		// Build the necessary route and path information.
@@ -323,16 +346,16 @@ class PlgFinderWeblinks extends Adapter
 	 *
 	 * @param   mixed  $query  A JDatabaseQuery object or null.
 	 *
-	 * @return  JDatabaseQuery  A database object.
+	 * @return  DatabaseQuery  A database object.
 	 *
 	 * @since   2.5
 	 */
 	protected function getListQuery($query = null)
 	{
-		$db = $this->db;
+		$db = $this->getDatabase();
 
 		// Check if we can use the supplied SQL query.
-		$query = $query instanceof JDatabaseQuery ? $query : $db->getQuery(true)
+		$query = $query instanceof DatabaseQuery ? $query : $db->getQuery(true)
 			->select('a.id, a.catid, a.title, a.alias, a.url AS link, a.description AS summary')
 			->select('a.metakey, a.metadesc, a.metadata, a.language, a.access, a.ordering')
 			->select('a.created_by_alias, a.modified, a.modified_by')
@@ -344,8 +367,8 @@ class PlgFinderWeblinks extends Adapter
 		$case_when_item_alias = ' CASE WHEN ';
 		$case_when_item_alias .= $query->charLength('a.alias', '!=', '0');
 		$case_when_item_alias .= ' THEN ';
-		$a_id = $query->castAs('CHAR', 'a.id');
-		$case_when_item_alias .= $query->concatenate(array($a_id, 'a.alias'), ':');
+		$a_id                 = $query->castAs('CHAR', 'a.id');
+		$case_when_item_alias .= $query->concatenate([$a_id, 'a.alias'], ':');
 		$case_when_item_alias .= ' ELSE ';
 		$case_when_item_alias .= $a_id . ' END as slug';
 		$query->select($case_when_item_alias);
@@ -353,12 +376,11 @@ class PlgFinderWeblinks extends Adapter
 		$case_when_category_alias = ' CASE WHEN ';
 		$case_when_category_alias .= $query->charLength('c.alias', '!=', '0');
 		$case_when_category_alias .= ' THEN ';
-		$c_id = $query->castAs('CHAR', 'c.id');
-		$case_when_category_alias .= $query->concatenate(array($c_id, 'c.alias'), ':');
+		$c_id                     = $query->castAs('CHAR', 'c.id');
+		$case_when_category_alias .= $query->concatenate([$c_id, 'c.alias'], ':');
 		$case_when_category_alias .= ' ELSE ';
 		$case_when_category_alias .= $c_id . ' END as catslug';
 		$query->select($case_when_category_alias)
-
 			->from('#__weblinks AS a')
 			->join('LEFT', '#__categories AS c ON c.id = a.catid');
 
@@ -370,15 +392,16 @@ class PlgFinderWeblinks extends Adapter
 	 *
 	 * @param   string  $time  The modified timestamp.
 	 *
-	 * @return  JDatabaseQuery  A database object.
+	 * @return  DatabaseQuery  A database object.
 	 *
 	 * @since   2.5
 	 */
 	protected function getUpdateQueryByTime($time)
 	{
 		// Build an SQL query based on the modified time.
-		$query = $this->db->getQuery(true)
-			->where('a.date >= ' . $this->db->quote($time));
+		$db    = $this->getDatabase();
+		$query = $db->getQuery(true)
+			->where('a.date >= ' . $db->quote($time));
 
 		return $query;
 	}
