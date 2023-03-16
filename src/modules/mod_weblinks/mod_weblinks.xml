@@ -12,7 +12,6 @@
 	<namespace path="src">Joomla\Module\Weblinks</namespace>
 	<files>
 		##MODULE_FILES##
-		<file module="mod_weblinks">mod_weblinks.php</file>
 	</files>
 	<languages folder="language">
 		##LANGUAGE_FILES##
