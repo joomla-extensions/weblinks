@@ -33,12 +33,13 @@ return new class () implements ServiceProviderInterface {
 		$container->set(
 			PluginInterface::class,
 			function (Container $container) {
+				$app        = Factory::getApplication();
 				$dispatcher = $container->get(DispatcherInterface::class);
 
 				return new Weblink(
 					$dispatcher,
 					(array) PluginHelper::getPlugin('editors-xtd', 'weblink'),
-					Factory::getApplication()
+					$app
 				);
 			}
 		);

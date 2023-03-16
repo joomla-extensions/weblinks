@@ -51,6 +51,7 @@ class Com_WeblinksInstallerScript
 			'/modules/mod_weblinks/mod_weblinks.php',
 			'/plugins/search/weblinks/weblinks.php',
 			'/plugins/finder/weblinks/weblinks.php',
+			'/plugins/editors-xtd/weblink/weblink.php',
 		];
 
 		$folders = [
