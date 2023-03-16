@@ -50,6 +50,7 @@ class Com_WeblinksInstallerScript
 			'/modules/mod_weblinks/helper.php',
 			'/modules/mod_weblinks/mod_weblinks.php',
 			'/plugins/search/weblinks/weblinks.php',
+			'/plugins/finder/weblinks/weblinks.php',
 		];
 
 		$folders = [
