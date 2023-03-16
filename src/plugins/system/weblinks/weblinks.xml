@@ -10,7 +10,8 @@
 	<version>##VERSION##</version>
 	<description>PLG_SYSTEM_WEBLINKS_XML_DESCRIPTION</description>
 	<files>
-		##FILES##
+		<folder plugin="weblinks">services</folder>
+		<folder>src</folder>
 	</files>
 	<languages folder="language">
 		##LANGUAGE_FILES##
