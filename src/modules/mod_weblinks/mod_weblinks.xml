@@ -11,9 +11,7 @@
 	<description>MOD_WEBLINKS_XML_DESCRIPTION</description>
 	<namespace path="src">Joomla\Module\Weblinks</namespace>
 	<files>
-		<folder module="mod_weblinks">services</folder>
-		<folder>src</folder>
-		<folder>tmpl</folder>
+		##MODULE_FILES##
 	</files>
 	<languages folder="language">
 		##LANGUAGE_FILES##
