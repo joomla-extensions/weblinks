@@ -81,7 +81,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
 	 *
 	 * @param   string  $extension  The extension requesting information.
 	 *
-	 * @return  array containing statistical information.
+	 * @return  void
 	 *
 	 * @since   __DEPLOY_VERSION__
 	 */
@@ -89,14 +89,14 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
 	{
 		if (!ComponentHelper::isEnabled('com_weblinks'))
 		{
-			return [];
+			return;
 		}
 
 		[$extension] = $event->getArguments();
 
 		if (!in_array($extension, $this->supportedExtensions))
 		{
-			return [];
+			return;
 		}
 
 		$db       = $this->getDatabase();
@@ -108,7 +108,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
 
 		if (!$webLinks)
 		{
-			return [];
+			return;
 		}
 
 		$result   = $event->getArgument('result', []);

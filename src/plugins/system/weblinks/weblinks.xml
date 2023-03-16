@@ -9,9 +9,9 @@
 	<authorUrl>www.joomla.org</authorUrl>
 	<version>##VERSION##</version>
 	<description>PLG_SYSTEM_WEBLINKS_XML_DESCRIPTION</description>
+	<namespace path="src">Joomla\Plugin\System\Weblinks</namespace>
 	<files>
-		<folder plugin="weblinks">services</folder>
-		<folder>src</folder>
+		##FILES##
 	</files>
 	<languages folder="language">
 		##LANGUAGE_FILES##
