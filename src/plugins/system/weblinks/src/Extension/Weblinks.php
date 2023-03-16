@@ -67,7 +67,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
 	 *
 	 * @return  array
 	 *
-	 * @since   4.2.0
+	 * @since   __DEPLOY_VERSION__
 	 */
 	public static function getSubscribedEvents(): array
 	{
@@ -111,12 +111,15 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
 			return [];
 		}
 
-		return [
+		$result   = $event->getArgument('result', []);
+		$result[] = [
 			[
 				'title' => Text::_('PLG_SYSTEM_WEBLINKS_STATISTICS'),
 				'icon'  => 'out-2',
 				'data'  => $webLinks,
 			],
 		];
+
+		$event->setArgument('result', $result);
 	}
 }
