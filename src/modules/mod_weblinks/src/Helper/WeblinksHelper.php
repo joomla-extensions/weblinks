@@ -29,14 +29,13 @@ class WeblinksHelper
 	 * @param   Registry                 $params  The module parameters
 	 * @param   CMSApplicationInterface  $app     The application
 	 *
-	 * @return  mixed   Null if no weblinks based on input parameters else an array containing all the weblinks.
+	 * @return  array   Array containing all the weblinks.
 	 *
-	 * @since   1.5
+	 * @since   __DEPLOY_VERSION__
 	 **/
-	public static function getList($params, $app)
+	public function getWeblinks($params, $app)
 	{
 		// @var \Joomla\Component\Weblinks\Site\Model\CategoryModel $model
-
 		$model = $app->bootComponent('com_weblinks')->getMVCFactory()
 			->createModel('Category', 'Site', ['ignore_request' => true]);
 
@@ -73,7 +72,7 @@ class WeblinksHelper
 		$case_when1 .= $query->charLength('a.alias', '!=', '0');
 		$case_when1 .= ' THEN ';
 		$a_id       = $query->castAs('CHAR', 'a.id');
-		$case_when1 .= $query->concatenate(array($a_id, 'a.alias'), ':');
+		$case_when1 .= $query->concatenate([$a_id, 'a.alias'], ':');
 		$case_when1 .= ' ELSE ';
 		$case_when1 .= $a_id . ' END as slug';
 
@@ -81,7 +80,7 @@ class WeblinksHelper
 		$case_when2 .= $query->charLength('c.alias', '!=', '0');
 		$case_when2 .= ' THEN ';
 		$c_id       = $query->castAs('CHAR', 'c.id');
-		$case_when2 .= $query->concatenate(array($c_id, 'c.alias'), ':');
+		$case_when2 .= $query->concatenate([$c_id, 'c.alias'], ':');
 		$case_when2 .= ' ELSE ';
 		$case_when2 .= $c_id . ' END as catslug';
 
@@ -119,5 +118,22 @@ class WeblinksHelper
 		}
 
 		return [];
+	}
+
+	/**
+	 * Retrieve list of weblinks
+	 *
+	 * @param   Registry                 $params  The module parameters
+	 * @param   CMSApplicationInterface  $app     The application
+	 *
+	 * @return  mixed   Null if no weblinks based on input parameters else an array containing all the weblinks.
+	 *
+	 * @since   1.5
+	 *
+	 * @deprecated 5.0 Use the none static function getWeblinks
+	 **/
+	public static function getList($params, $app)
+	{
+		return (new self())->getWeblinks($params, $app);
 	}
 }
