@@ -34,12 +34,12 @@ return new class () implements ServiceProviderInterface {
 			PluginInterface::class,
 			function (Container $container) {
 				$dispatcher = $container->get(DispatcherInterface::class);
-				$db         = $container->get(DatabaseInterface::class);
+				$database   = $container->get(DatabaseInterface::class);
 
 				return new Weblinks(
 					$dispatcher,
 					(array) PluginHelper::getPlugin('system', 'weblinks'),
-					$db
+					$database
 				);
 			}
 		);
