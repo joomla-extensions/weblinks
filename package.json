@@ -1,0 +1,25 @@
+{
+  "name": "joomla-weblinks",
+  "version": "4.0.0",
+  "description": "Weblinks extension",
+  "license": "GPL-2.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joomla-extensions/weblinks.git"
+  },
+  "engines": {
+    "node": ">=16",
+    "npm": ">=8.5.5"
+  },
+  "scripts": {
+    "cypress:install": "cypress install",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "cypress": "^12.7.0",
+    "joomla-cypress": "^0.0.16"
+  }
+}

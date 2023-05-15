@@ -3,6 +3,56 @@ kind: pipeline
 name: default
 
 steps:
+  - name: composer
+    image: joomlaprojects/docker-images:php8.2
+    volumes:
+      - name: composer-cache
+        path: /tmp/composer-cache
+    commands:
+      - composer install --no-progress --no-suggest
+
+  - name: npm
+    image: node:16-bullseye-slim
+    depends_on: [ composer ]
+    volumes:
+      - name: npm-cache
+        path: /tmp/npm-cache
+    environment:
+      npm_config_cache: /tmp/npm-cache
+    commands:
+      - npm i --unsafe-perm
+
+  - name: prepare_system_tests
+    depends_on:
+      - npm
+    image: joomlaprojects/docker-images:systemtests
+    volumes:
+      - name: cypress-cache
+        path: /root/.cache/Cypress
+    commands:
+      - mv cypress.config.dist.js cypress.config.js
+      - npx cypress install
+      - npx cypress verify
+      - vendor/bin/robo build
+      - wget -o joomla.zip https://joomla.org/latest
+
+  - name: phpmin-system-mysql
+    depends_on:
+      - prepare_system_tests
+    image: joomlaprojects/docker-images:cypress
+    volumes:
+      - name: cypress-cache
+        path: /root/.cache/Cypress
+    commands:
+      - mkdir /tests/www/mysql/
+      - cp joomla.zip /tests/www/mysql/
+      - cd /tests/www/mysql/
+      - unzip joomla.zip
+      - apache2ctl -D FOREGROUND &
+      - chmod +rwx /root
+      - php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-17082005 --db-type=mysqli --db-host=mysql --db-name=test_joomla --db-pass=joomla_ut --db-user=root --db-encryption=0 --db-prefix=mysql_
+      - npx cypress run --browser=firefox --e2e --config baseUrl=http://localhost/mysql,screenshotsFolder=/drone/src/tests/cypress/output/screenshots
+
   - name: weblinks-codeception-tests
     image: joomlaprojects/docker-images:systemtests
     commands:
@@ -45,6 +95,42 @@ volumes:
   - name: weblinks_cache
     host:
       path: /tmp/weblinks_cache
+  - name: composer-cache
+    host:
+      path: /tmp/composer-cache
+  - name: cypress-cache
+    host:
+      path: /tmp/cypress-cache
+  - name: npm-cache
+    host:
+      path: /tmp/npm-cache
+
+services:
+  - name: mysql
+    image: mysql:5.7
+    environment:
+      MYSQL_USER: joomla_ut
+      MYSQL_PASSWORD: joomla_ut
+      MYSQL_ROOT_PASSWORD: joomla_ut
+      MYSQL_DATABASE: test_joomla
+
+  - name: mysql8
+    image: mysql:8
+    command: ["--default-authentication-plugin=mysql_native_password"]
+    environment:
+      MYSQL_USER: joomla_ut
+      MYSQL_PASSWORD: joomla_ut
+      MYSQL_ROOT_PASSWORD: joomla_ut
+      MYSQL_DATABASE: test_joomla
+
+  - name: postgres
+    image: postgres:11-alpine
+    ports:
+      - 5432
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: joomla_ut
+      POSTGRES_DB: test_joomla
 
 ---
 kind: signature
