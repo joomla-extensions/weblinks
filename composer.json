@@ -20,6 +20,9 @@
         "joomla-projects/selenium-server-standalone": "^3.14",
         "phpunit/phpunit": "^5.7.27",
         "codeception/module-filesystem": "^1.0",
-        "codeception/module-asserts": "^1.3"
+        "codeception/module-asserts": "^1.3",
+        "phpstan/phpstan": "^1.10",
+        "phan/phan": "^5.4",
+        "phpstan/phpstan-deprecation-rules": "^1.1"
     }
 }
