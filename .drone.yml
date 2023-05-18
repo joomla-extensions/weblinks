@@ -50,14 +50,14 @@ steps:
 
   - name: phan
     image: joomlaprojects/docker-images:php8.1-ast
-    depends: [ prepare_system_tests ]
+    depends_on: [ prepare_system_tests ]
     failure: ignore
     commands:
       - vendor/bin/phan
 
   - name: phpstan
     image: joomlaprojects/docker-images:php8.1
-    depends: [ prepare_system_tests ]
+    depends_on: [ prepare_system_tests ]
     failure: ignore
     commands:
       - vendor/bin/phpstan analyse src
@@ -147,6 +147,6 @@ services:
 
 ---
 kind: signature
-hmac: ff922cc5122bd7d61d07916ebfb543221a02027839b84132c7366516619adfd5
+hmac: fe612ea45f89ea6c40bed97bc198d31e391aebbfabd285b6fc740f4f085518b4
 
 ...
