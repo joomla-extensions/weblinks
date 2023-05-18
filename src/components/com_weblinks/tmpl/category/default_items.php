@@ -65,14 +65,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 		<?php else : ?>
 			<ul class="category list-unstyled">
 				<?php foreach ($this->items as $i => $item) : ?>
-					<?php
-					// Shouldn't this be only for users with admin rights?
-					// @ToDo: what is the difference -class system-unbublished?
-					if ($item->state == 0) : ?>
-						<li class="system-unpublished list-group mt-3">
-					<?php else : ?>
-						<li class="list-group mt-3">
-					<?php endif; ?>
+					<li class="list-group mt-3">
 
 					<?php if ($canEdit || ($canEditOwn && $item->created_by == $userId)) : ?>
 						<div class="icons list-group-item">
@@ -127,9 +120,8 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 								$modalParams['bodyHeight'] = 70;
 								$modalParams['modalWidth'] = 80;
 								echo HTMLHelper::_('bootstrap.renderModal', $modalId, $modalParams);
-								echo '<button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#' . $modalId . '">
-								  ' . $item->title . '
-								</button>';
+								echo '<a role="button" class="' . $menuclass . '" data-bs-toggle="modal" data-bs-target="#' . $modalId . '">' .
+									$this->escape($item->title) . ' </a>';
 								break;
 							default:
 								// Open in parent window
