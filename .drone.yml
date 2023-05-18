@@ -9,7 +9,7 @@ steps:
       - name: composer-cache
         path: /tmp/composer-cache
     commands:
-      - composer install --no-progress --no-suggest
+      - composer install --no-progress
 
   - name: npm
     image: node:16-bullseye-slim
@@ -34,7 +34,7 @@ steps:
       - npx cypress install
       - npx cypress verify
       - vendor/bin/robo build
-      - wget -o joomla.zip https://joomla.org/latest
+      - curl https://joomla.org/latest -L --output joomla.zip
 
   - name: phpmin-system-mysql
     depends_on:
@@ -45,51 +45,16 @@ steps:
         path: /root/.cache/Cypress
     commands:
       - mkdir /tests/www/mysql/
-      - cp joomla.zip /tests/www/mysql/
+      - cp joomla.zip /tests/www/mysql/joomla.zip
+      - cp dist/pkg-weblinks-current.zip /tests/www/mysql/pkg-weblinks-current.zip
       - cd /tests/www/mysql/
       - unzip joomla.zip
       - apache2ctl -D FOREGROUND &
       - chmod +rwx /root
       - php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-17082005 --db-type=mysqli --db-host=mysql --db-name=test_joomla --db-pass=joomla_ut --db-user=root --db-encryption=0 --db-prefix=mysql_
+      - php cli/joomla.php config:set debug=true error_reporting=maximum
+      - php cli/joomla.php extension:install --path=/tests/www/mysql/pkg-weblinks-current.zip
       - npx cypress run --browser=firefox --e2e --config baseUrl=http://localhost/mysql,screenshotsFolder=/drone/src/tests/cypress/output/screenshots
-
-  - name: weblinks-codeception-tests
-    image: joomlaprojects/docker-images:systemtests
-    commands:
-      - pwd
-      - composer install
-      - chmod a+x .drone/build.sh
-      - ./.drone/build.sh
-      - apache2ctl start
-      - service mysql start
-      - cd /tests/www
-      - export DISPLAY=:0
-      - Xvfb -screen 0 1024x768x24 -ac +extension GLX +render -noreset > /dev/null 2>&1 &
-      - sleep 3
-      - fluxbox  > /dev/null 2>&1 &
-      - vendor/bin/robo run:tests
-
-  - name: artifacts-codeception-tests
-    image: cschlosser/drone-ftps
-    depends_on: [ weblinks-codeception-tests ]
-    environment:
-      FTP_USERNAME:
-        from_secret: ftpusername
-      FTP_PASSWORD:
-        from_secret: ftppassword
-      PLUGIN_HOSTNAME: artifacts.joomla.org:21
-      PLUGIN_SRC_DIR: /tests/_output
-      PLUGIN_DEST_DIR: /
-      PLUGIN_SECURE: false
-      PLUGIN_EXCLUDE: ^\.git/$
-    commands:
-      - ls -l /drone/src/tests/_output
-      - export PLUGIN_DEST_DIR=$PLUGIN_DEST_DIR/$DRONE_REPO/$DRONE_BRANCH/$DRONE_PULL_REQUEST/system-tests/$DRONE_BUILD_NUMBER
-      - echo https://artifacts.joomla.org/drone$PLUGIN_DEST_DIR
-      - /bin/upload.sh
-    when:
-      status:
-        - failure
 
 volumes:
   - name: weblinks_cache
@@ -134,6 +99,6 @@ services:
 
 ---
 kind: signature
-hmac: bcc028d5d9601f1f3355862f17dd2434ba86f47634f0737877db534e49c8265b
+hmac: 75d22d8b741def46eb475a2fd9b50483b8c938e81de478ecacbf1bfd57782c5c
 
 ...
