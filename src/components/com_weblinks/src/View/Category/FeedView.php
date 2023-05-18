@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package     Joomla.Site
  * @subpackage  com_weblinks
@@ -11,8 +12,9 @@ namespace Joomla\Component\Weblinks\Site\View\Category;
 
 use Joomla\CMS\MVC\View\CategoryFeedView;
 
-defined('_JEXEC') or die;
-
+// phpcs:disable PSR1.Files.SideEffects
+\defined('_JEXEC') or die;
+// phpcs:enable PSR1.Files.SideEffects
 /**
  * HTML View class for the WebLinks component
  *
@@ -20,9 +22,9 @@ defined('_JEXEC') or die;
  */
 class FeedView extends CategoryFeedView
 {
-	/**
-	 * @var    string  The name of the view to link individual items to
-	 * @since  3.2
-	 */
-	protected $viewName = 'weblink';
+    /**
+     * @var    string  The name of the view to link individual items to
+     * @since  3.2
+     */
+    protected $viewName = 'weblink';
 }

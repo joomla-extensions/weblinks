@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package     Joomla.Administrator
  * @subpackage  Weblinks
@@ -7,8 +8,9 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
-
+// phpcs:disable PSR1.Files.SideEffects
+\defined('_JEXEC') or die;
+// phpcs:enable PSR1.Files.SideEffects
 /**
  * Installation class to perform additional changes during install/uninstall/update
  *
@@ -16,14 +18,14 @@ defined('_JEXEC') or die;
  */
 class Pkg_WeblinksInstallerScript extends JInstallerScript
 {
-	/**
-	 * Extension script constructor.
-	 *
-	 * @since   __DEPLOY_VERSION__
-	 */
-	public function __construct()
-	{
-		$this->minimumJoomla = '3.6.3';
-		$this->minimumPhp    = JOOMLA_MINIMUM_PHP;
-	}
+    /**
+     * Extension script constructor.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function __construct()
+    {
+        $this->minimumJoomla = '3.6.3';
+        $this->minimumPhp    = JOOMLA_MINIMUM_PHP;
+    }
 }

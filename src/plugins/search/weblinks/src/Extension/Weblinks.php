@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package     Joomla.Administrator
  * @subpackage  Weblinks
@@ -19,7 +20,9 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 use Joomla\Event\DispatcherInterface;
 
-defined('_JEXEC') or die;
+// phpcs:disable PSR1.Files.SideEffects
+\defined('_JEXEC') or die;
+// phpcs:enable PSR1.Files.SideEffects
 
 /**
  * Weblinks search plugin.
@@ -28,220 +31,209 @@ defined('_JEXEC') or die;
  */
 final class Weblinks extends CMSPlugin
 {
-	use DatabaseAwareTrait;
+    use DatabaseAwareTrait;
 
-	/**
-	 * Load the language file on instantiation.
-	 *
-	 * @var    boolean
-	 * @since  3.1
-	 */
-	protected $autoloadLanguage = true;
+    /**
+     * Load the language file on instantiation.
+     *
+     * @var    boolean
+     * @since  3.1
+     */
+    protected $autoloadLanguage = true;
 
-	/**
-	 * Constructor
-	 *
-	 * @param   DispatcherInterface      $dispatcher
-	 * @param   array                    $config
-	 * @param   CMSApplicationInterface  $application
-	 * @param   DatabaseInterface        $database
-	 */
-	public function __construct(DispatcherInterface $dispatcher, array $config, CMSApplicationInterface $application, DatabaseInterface $database)
-	{
-		parent::__construct($dispatcher, $config);
+    /**
+     * Constructor
+     *
+     * @param   DispatcherInterface      $dispatcher
+     * @param   array                    $config
+     * @param   CMSApplicationInterface  $application
+     * @param   DatabaseInterface        $database
+     */
+    public function __construct(DispatcherInterface $dispatcher, array $config, CMSApplicationInterface $application, DatabaseInterface $database)
+    {
+        parent::__construct($dispatcher, $config);
 
-		$this->setApplication($application);
-		$this->setDatabase($database);
-	}
+        $this->setApplication($application);
+        $this->setDatabase($database);
+    }
 
-	/**
-	 * Determine areas searchable by this plugin.
-	 *
-	 * @return  array  An array of search areas.
-	 *
-	 * @since   1.6
-	 */
-	public function onContentSearchAreas()
-	{
-		static $areas = [
-			'weblinks' => 'PLG_SEARCH_WEBLINKS_WEBLINKS',
-		];
+    /**
+     * Determine areas searchable by this plugin.
+     *
+     * @return  array  An array of search areas.
+     *
+     * @since   1.6
+     */
+    public function onContentSearchAreas()
+    {
+        static $areas = [
+            'weblinks' => 'PLG_SEARCH_WEBLINKS_WEBLINKS',
+        ];
 
-		return $areas;
-	}
+        return $areas;
+    }
 
-	/**
-	 * Search content (weblinks).
-	 *
-	 * The SQL must return the following fields that are used in a common display
-	 * routine: href, title, section, created, text, browsernav
-	 *
-	 * @param   string  $text      Target search string.
-	 * @param   string  $phrase    Matching option (possible values: exact|any|all).  Default is "any".
-	 * @param   string  $ordering  Ordering option (possible values: newest|oldest|popular|alpha|category).  Default is "newest".
-	 * @param   mixed   $areas     An array if the search it to be restricted to areas or null to search all areas.
-	 *
-	 * @return  array  Search results.
-	 *
-	 * @since   1.6
-	 */
-	public function onContentSearch($text, $phrase = '', $ordering = '', $areas = null)
-	{
-		$app    = $this->getApplication();
-		$db     = $this->getDatabase();
-		$groups = $app->getIdentity()->getAuthorisedViewLevels();
+    /**
+     * Search content (weblinks).
+     *
+     * The SQL must return the following fields that are used in a common display
+     * routine: href, title, section, created, text, browsernav
+     *
+     * @param   string  $text      Target search string.
+     * @param   string  $phrase    Matching option (possible values: exact|any|all).  Default is "any".
+     * @param   string  $ordering  Ordering option (possible values: newest|oldest|popular|alpha|category).  Default is "newest".
+     * @param   mixed   $areas     An array if the search it to be restricted to areas or null to search all areas.
+     *
+     * @return  array  Search results.
+     *
+     * @since   1.6
+     */
+    public function onContentSearch($text, $phrase = '', $ordering = '', $areas = null)
+    {
+        $app    = $this->getApplication();
+        $db     = $this->getDatabase();
+        $groups = $app->getIdentity()->getAuthorisedViewLevels();
 
-		$searchText = $text;
+        $searchText = $text;
 
-		if (is_array($areas)
-			&& !array_intersect($areas, array_keys($this->onContentSearchAreas())))
-		{
-			return [];
-		}
+        if (
+            is_array($areas)
+            && !array_intersect($areas, array_keys($this->onContentSearchAreas()))
+        ) {
+            return [];
+        }
 
-		$sContent  = $this->params->get('search_content', 1);
-		$sArchived = $this->params->get('search_archived', 1);
-		$limit     = $this->params->def('search_limit', 50);
-		$state     = [];
+        $sContent  = $this->params->get('search_content', 1);
+        $sArchived = $this->params->get('search_archived', 1);
+        $limit     = $this->params->def('search_limit', 50);
+        $state     = [];
 
-		if ($sContent)
-		{
-			$state[] = 1;
-		}
+        if ($sContent) {
+            $state[] = 1;
+        }
 
-		if ($sArchived)
-		{
-			$state[] = 2;
-		}
+        if ($sArchived) {
+            $state[] = 2;
+        }
 
-		if (empty($state))
-		{
-			return [];
-		}
+        if (empty($state)) {
+            return [];
+        }
 
-		$text = trim($text);
+        $text = trim($text);
 
-		if ($text == '')
-		{
-			return [];
-		}
+        if ($text == '') {
+            return [];
+        }
 
-		$searchWeblinks = Text::_('PLG_SEARCH_WEBLINKS');
+        $searchWeblinks = Text::_('PLG_SEARCH_WEBLINKS');
 
-		switch ($phrase)
-		{
-			case 'exact':
-				$text      = $db->quote('%' . $db->escape($text, true) . '%', false);
-				$wheres2   = [];
-				$wheres2[] = 'a.url LIKE ' . $text;
-				$wheres2[] = 'a.description LIKE ' . $text;
-				$wheres2[] = 'a.title LIKE ' . $text;
-				$where     = '(' . implode(') OR (', $wheres2) . ')';
-				break;
+        switch ($phrase) {
+            case 'exact':
+                $text      = $db->quote('%' . $db->escape($text, true) . '%', false);
+                $wheres2   = [];
+                $wheres2[] = 'a.url LIKE ' . $text;
+                $wheres2[] = 'a.description LIKE ' . $text;
+                $wheres2[] = 'a.title LIKE ' . $text;
+                $where     = '(' . implode(') OR (', $wheres2) . ')';
+                break;
 
-			case 'all':
-			case 'any':
-			default:
-				$words  = explode(' ', $text);
-				$wheres = [];
+            case 'all':
+            case 'any':
+            default:
+                $words  = explode(' ', $text);
+                $wheres = [];
 
-				foreach ($words as $word)
-				{
-					$word      = $db->quote('%' . $db->escape($word, true) . '%', false);
-					$wheres2   = [];
-					$wheres2[] = 'a.url LIKE ' . $word;
-					$wheres2[] = 'a.description LIKE ' . $word;
-					$wheres2[] = 'a.title LIKE ' . $word;
-					$wheres[]  = implode(' OR ', $wheres2);
-				}
+                foreach ($words as $word) {
+                    $word      = $db->quote('%' . $db->escape($word, true) . '%', false);
+                    $wheres2   = [];
+                    $wheres2[] = 'a.url LIKE ' . $word;
+                    $wheres2[] = 'a.description LIKE ' . $word;
+                    $wheres2[] = 'a.title LIKE ' . $word;
+                    $wheres[]  = implode(' OR ', $wheres2);
+                }
 
-				$where = '(' . implode(($phrase == 'all' ? ') AND (' : ') OR ('), $wheres) . ')';
-				break;
-		}
+                $where = '(' . implode(($phrase == 'all' ? ') AND (' : ') OR ('), $wheres) . ')';
+                break;
+        }
 
-		switch ($ordering)
-		{
-			case 'oldest':
-				$order = 'a.created ASC';
-				break;
+        switch ($ordering) {
+            case 'oldest':
+                $order = 'a.created ASC';
+                break;
 
-			case 'popular':
-				$order = 'a.hits DESC';
-				break;
+            case 'popular':
+                $order = 'a.hits DESC';
+                break;
 
-			case 'alpha':
-				$order = 'a.title ASC';
-				break;
+            case 'alpha':
+                $order = 'a.title ASC';
+                break;
 
-			case 'category':
-				$order = 'c.title ASC, a.title ASC';
-				break;
+            case 'category':
+                $order = 'c.title ASC, a.title ASC';
+                break;
 
-			case 'newest':
-			default:
-				$order = 'a.created DESC';
-		}
+            case 'newest':
+            default:
+                $order = 'a.created DESC';
+        }
 
-		$query = $db->getQuery(true);
+        $query = $db->getQuery(true);
 
-		// SQLSRV changes.
-		$caseWhen = ' CASE WHEN ';
-		$caseWhen .= $query->charLength('a.alias', '!=', '0');
-		$caseWhen .= ' THEN ';
-		$a_id     = $query->castAs('CHAR', 'a.id');
-		$caseWhen .= $query->concatenate([$a_id, 'a.alias'], ':');
-		$caseWhen .= ' ELSE ';
-		$caseWhen .= $a_id . ' END as slug';
+        // SQLSRV changes.
+        $caseWhen = ' CASE WHEN ';
+        $caseWhen .= $query->charLength('a.alias', '!=', '0');
+        $caseWhen .= ' THEN ';
+        $a_id     = $query->castAs('CHAR', 'a.id');
+        $caseWhen .= $query->concatenate([$a_id, 'a.alias'], ':');
+        $caseWhen .= ' ELSE ';
+        $caseWhen .= $a_id . ' END as slug';
 
-		$caseWhen1 = ' CASE WHEN ';
-		$caseWhen1 .= $query->charLength('c.alias', '!=', '0');
-		$caseWhen1 .= ' THEN ';
-		$c_id      = $query->castAs('CHAR', 'c.id');
-		$caseWhen1 .= $query->concatenate([$c_id, 'c.alias'], ':');
-		$caseWhen1 .= ' ELSE ';
-		$caseWhen1 .= $c_id . ' END as catslug';
+        $caseWhen1 = ' CASE WHEN ';
+        $caseWhen1 .= $query->charLength('c.alias', '!=', '0');
+        $caseWhen1 .= ' THEN ';
+        $c_id      = $query->castAs('CHAR', 'c.id');
+        $caseWhen1 .= $query->concatenate([$c_id, 'c.alias'], ':');
+        $caseWhen1 .= ' ELSE ';
+        $caseWhen1 .= $c_id . ' END as catslug';
 
-		$query->select('a.title AS title, a.created AS created, a.url, a.description AS text, ' . $caseWhen . "," . $caseWhen1)
-			->select($query->concatenate([$db->quote($searchWeblinks), 'c.title'], " / ") . ' AS section')
-			->select('\'1\' AS browsernav')
-			->from('#__weblinks AS a')
-			->join('INNER', '#__categories as c ON c.id = a.catid')
-			->where('(' . $where . ')')
-			->whereIn($db->quoteName('a.state'), $state)
-			->where($db->quoteName('c.published') . ' = 1')
-			->whereIn($db->quoteName('c.access'), $groups)
-			->order($order);
+        $query->select('a.title AS title, a.created AS created, a.url, a.description AS text, ' . $caseWhen . "," . $caseWhen1)
+            ->select($query->concatenate([$db->quote($searchWeblinks), 'c.title'], " / ") . ' AS section')
+            ->select('\'1\' AS browsernav')
+            ->from('#__weblinks AS a')
+            ->join('INNER', '#__categories as c ON c.id = a.catid')
+            ->where('(' . $where . ')')
+            ->whereIn($db->quoteName('a.state'), $state)
+            ->where($db->quoteName('c.published') . ' = 1')
+            ->whereIn($db->quoteName('c.access'), $groups)
+            ->order($order);
 
-		// Filter by language.
+        // Filter by language.
 
-		if ($app->isClient('site') && Multilanguage::isEnabled())
-		{
-			$languages = [$app->getLanguage()->getTag(), '*'];
-			$query->whereIn($db->quoteName('a.language'), $languages, ParameterType::STRING)
-				->whereIn($db->quoteName('c.language'), $languages, ParameterType::STRING);
-		}
+        if ($app->isClient('site') && Multilanguage::isEnabled()) {
+            $languages = [$app->getLanguage()->getTag(), '*'];
+            $query->whereIn($db->quoteName('a.language'), $languages, ParameterType::STRING)
+                ->whereIn($db->quoteName('c.language'), $languages, ParameterType::STRING);
+        }
 
-		$db->setQuery($query, 0, $limit);
-		$rows = $db->loadObjectList();
+        $db->setQuery($query, 0, $limit);
+        $rows = $db->loadObjectList();
 
-		$return = [];
+        $return = [];
 
-		if ($rows)
-		{
-			foreach ($rows as $key => $row)
-			{
-				$rows[$key]->href = RouteHelper::getWeblinkRoute($row->slug, $row->catslug);
-			}
+        if ($rows) {
+            foreach ($rows as $key => $row) {
+                $rows[$key]->href = RouteHelper::getWeblinkRoute($row->slug, $row->catslug);
+            }
 
-			foreach ($rows as $weblink)
-			{
-				if (\searchHelper::checkNoHTML($weblink, $searchText, ['url', 'text', 'title']))
-				{
-					$return[] = $weblink;
-				}
-			}
-		}
+            foreach ($rows as $weblink) {
+                if (\searchHelper::checkNoHTML($weblink, $searchText, ['url', 'text', 'title'])) {
+                    $return[] = $weblink;
+                }
+            }
+        }
 
-		return $return;
-	}
+        return $return;
+    }
 }

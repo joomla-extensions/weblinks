@@ -15,7 +15,9 @@ use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 
 // phpcs:disable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
+// phpcs:enable PSR1.Files.SideEffects
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -25,26 +27,26 @@ use Joomla\CMS\Helper\HelperFactoryAwareTrait;
  */
 class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareInterface
 {
-	use HelperFactoryAwareTrait;
+    use HelperFactoryAwareTrait;
 
-	/**
-	 * Returns the layout data.
-	 *
-	 * @return  array
-	 *
-	 * @since   __DEPLOY_VERSION__
-	 */
-	protected function getLayoutData()
-	{
-		$data = parent::getLayoutData();
+    /**
+     * Returns the layout data.
+     *
+     * @return  array
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    protected function getLayoutData()
+    {
+        $data = parent::getLayoutData();
 
-		$data['list'] = $this->getHelperFactory()->getHelper('WeblinksHelper')->getWeblinks(
-			$data['params'],
-			$this->getApplication()
-		);
+        $data['list'] = $this->getHelperFactory()->getHelper('WeblinksHelper')->getWeblinks(
+            $data['params'],
+            $this->getApplication()
+        );
 
-		$data['moduleclass_sfx'] = htmlspecialchars($data['params']->get('moduleclass_sfx', ''));
+        $data['moduleclass_sfx'] = htmlspecialchars($data['params']->get('moduleclass_sfx', ''));
 
-		return $data;
-	}
+        return $data;
+    }
 }

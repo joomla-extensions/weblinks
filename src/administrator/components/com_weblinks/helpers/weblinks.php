@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package     Joomla.Administrator
  * @subpackage  Weblinks
@@ -7,7 +8,9 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+// phpcs:disable PSR1.Files.SideEffects
+\defined('_JEXEC') or die;
+// phpcs:enable PSR1.Files.SideEffects
 
 /**
  * Weblinks helper.
@@ -16,5 +19,4 @@ defined('_JEXEC') or die;
  */
 class WeblinksHelper extends \Joomla\Component\Weblinks\Administrator\Helper\WeblinksHelper
 {
-
 }
