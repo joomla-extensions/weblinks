@@ -11,9 +11,18 @@ steps:
     commands:
       - composer install --no-progress
 
+  - name: phpcs
+    image: joomlaprojects/docker-images:php8.1
+    depends_on: [ composer ]
+    commands:
+      - echo $(date)
+      - ./vendor/bin/php-cs-fixer fix -vvv --dry-run --diff
+      - ./vendor/bin/phpcs --extensions=php -p --standard=ruleset.xml src/
+      - echo $(date)
+
   - name: npm
     image: node:16-bullseye-slim
-    depends_on: [ composer ]
+    depends_on: [ phpcs ]
     volumes:
       - name: npm-cache
         path: /tmp/npm-cache
@@ -23,8 +32,7 @@ steps:
       - npm i --unsafe-perm
 
   - name: prepare_system_tests
-    depends_on:
-      - npm
+    depends_on: [ npm ]
     image: joomlaprojects/docker-images:systemtests
     volumes:
       - name: cypress-cache
@@ -37,8 +45,7 @@ steps:
       - curl https://joomla.org/latest -L --output joomla.zip
 
   - name: phpmin-system-mysql
-    depends_on:
-      - prepare_system_tests
+    depends_on: [ prepare_system_tests ]
     image: joomlaprojects/docker-images:cypress
     volumes:
       - name: cypress-cache
