@@ -291,7 +291,8 @@ return [
     //       should be added to the `directory_list` as well as
     //       to `exclude_analysis_directory_list`.
     'exclude_analysis_directory_list' => [
-        'tests/joomla'
+        'joomla/administrator/components/com_finder/src/Indexer',
+        'joomla/libraries'
     ],
 
     // Enable this to enable checks of require/include statements referring to valid paths.
@@ -338,7 +339,8 @@ return [
     // your application should be included in this list.
     'directory_list' => [
         'src',
-        'tests/joomla'
+        'joomla/administrator/components/com_finder/src/Indexer',
+        'joomla/libraries'
     ],
 
     // A list of individual files to include in analysis

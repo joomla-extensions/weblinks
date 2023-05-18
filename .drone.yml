@@ -43,6 +43,24 @@ steps:
       - npx cypress verify
       - vendor/bin/robo build
       - curl https://joomla.org/latest -L --output joomla.zip
+      - mkdir joomla
+      - cp joomla.zip joomla/joomla.zip
+      - cd joomla
+      - unzip joomla.zip
+
+  - name: phan
+    image: joomlaprojects/docker-images:php8.1-ast
+    depends: [ prepare_system_tests ]
+    failure: ignore
+    commands:
+      - vendor/bin/phan
+
+  - name: phpstan
+    image: joomlaprojects/docker-images:php8.1
+    depends: [ prepare_system_tests ]
+    failure: ignore
+    commands:
+      - vendor/bin/phpstan analyse src
 
   - name: phpmin-system-mysql
     depends_on: [ prepare_system_tests ]
@@ -129,6 +147,6 @@ services:
 
 ---
 kind: signature
-hmac: b2d4dd23da55c06ea35eaa184db5172624d15edfa7cdcf5659cce885cd96242b
+hmac: ff922cc5122bd7d61d07916ebfb543221a02027839b84132c7366516619adfd5
 
 ...

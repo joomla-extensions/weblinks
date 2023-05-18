@@ -1,0 +1,11 @@
+includes:
+    - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+parameters:
+  level: 6
+  paths:
+    - src
+  scanDirectories:
+    - joomla/libraries
+    - joomla/administrator/components/com_finder/src/Indexer
+  ignoreErrors:
+  reportUnmatchedIgnoredErrors: false
