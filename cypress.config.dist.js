@@ -30,7 +30,7 @@ module.exports = defineConfig({
     db_host: 'localhost',
     db_name: 'test_joomla',
     db_user: 'root',
-    db_password: '',
+    db_password: 'joomla_ut',
     db_prefix: 'jos_',
   },
 })
