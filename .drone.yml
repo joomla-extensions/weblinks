@@ -79,6 +79,8 @@ steps:
       - php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-17082005 --db-type=mysqli --db-host=mysql --db-name=test_joomla --db-pass=joomla_ut --db-user=root --db-encryption=0 --db-prefix=mysql_
       - php cli/joomla.php config:set debug=true error_reporting=maximum
       - php cli/joomla.php extension:install --path=/tests/www/mysql/pkg-weblinks-current.zip
+      - chmod -R 777 /tests/www/mysql/
+      - chown -R www-data /tests/www/mysql/
       - cd /drone/src
       - npx cypress run --browser=firefox --e2e --config baseUrl=http://localhost/mysql,screenshotsFolder=/drone/src/tests/cypress/output/screenshots
 
@@ -147,6 +149,6 @@ services:
 
 ---
 kind: signature
-hmac: fe612ea45f89ea6c40bed97bc198d31e391aebbfabd285b6fc740f4f085518b4
+hmac: 8b2b4e6fe85da897755c46d961b49c1e53a13e5a2cf6df5cde70aa07233b2494
 
 ...
