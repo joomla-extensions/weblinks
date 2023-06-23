@@ -3,40 +3,105 @@ kind: pipeline
 name: default
 
 steps:
-  - name: weblinks-codeception-tests
-    image: joomlaprojects/docker-images:systemtests
+  - name: composer
+    image: joomlaprojects/docker-images:php8.2
+    volumes:
+      - name: composer-cache
+        path: /tmp/composer-cache
     commands:
-      - pwd
-      - composer install
-      - chmod a+x .drone/build.sh
-      - ./.drone/build.sh
-      - apache2ctl start
-      - service mysql start
-      - cd /tests/www
-      - export DISPLAY=:0
-      - Xvfb -screen 0 1024x768x24 -ac +extension GLX +render -noreset > /dev/null 2>&1 &
-      - sleep 3
-      - fluxbox  > /dev/null 2>&1 &
-      - vendor/bin/robo run:tests
+      - composer install --no-progress
 
-  - name: artifacts-codeception-tests
-    image: cschlosser/drone-ftps
-    depends_on: [ weblinks-codeception-tests ]
+  - name: phpcs
+    image: joomlaprojects/docker-images:php8.1
+    depends_on: [ composer ]
+    commands:
+      - echo $(date)
+      - ./vendor/bin/php-cs-fixer fix -vvv --dry-run --diff
+      - ./vendor/bin/phpcs --extensions=php -p --standard=ruleset.xml src/
+      - echo $(date)
+
+  - name: npm
+    image: node:16-bullseye-slim
+    depends_on: [ phpcs ]
+    volumes:
+      - name: npm-cache
+        path: /tmp/npm-cache
+    environment:
+      npm_config_cache: /tmp/npm-cache
+    commands:
+      - npm i --unsafe-perm
+
+  - name: prepare_system_tests
+    depends_on: [ npm ]
+    image: joomlaprojects/docker-images:systemtests
+    volumes:
+      - name: cypress-cache
+        path: /root/.cache/Cypress
+    commands:
+      - mv cypress.config.dist.js cypress.config.js
+      - npx cypress install
+      - npx cypress verify
+      - vendor/bin/robo build
+      - curl https://joomla.org/latest -L --output joomla.zip
+      - mkdir joomla
+      - cp joomla.zip joomla/joomla.zip
+      - cd joomla
+      - unzip joomla.zip
+
+  - name: phan
+    image: joomlaprojects/docker-images:php8.1-ast
+    depends_on: [ prepare_system_tests ]
+    failure: ignore
+    commands:
+      - vendor/bin/phan
+
+  - name: phpstan
+    image: joomlaprojects/docker-images:php8.1
+    depends_on: [ prepare_system_tests ]
+    failure: ignore
+    commands:
+      - vendor/bin/phpstan analyse src
+
+  - name: phpmin-system-mysql
+    depends_on: [ prepare_system_tests ]
+    image: joomlaprojects/docker-images:cypress
+    volumes:
+      - name: cypress-cache
+        path: /root/.cache/Cypress
+    commands:
+      - mkdir /tests/www/mysql/
+      - cp joomla.zip /tests/www/mysql/joomla.zip
+      - cp dist/pkg-weblinks-current.zip /tests/www/mysql/pkg-weblinks-current.zip
+      - cd /tests/www/mysql/
+      - unzip joomla.zip
+      - apache2ctl -D FOREGROUND &
+      - chmod +rwx /root
+      - php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-17082005 --db-type=mysqli --db-host=mysql --db-name=test_joomla --db-pass=joomla_ut --db-user=root --db-encryption=0 --db-prefix=mysql_
+      - php cli/joomla.php config:set debug=true error_reporting=maximum
+      - php cli/joomla.php extension:install --path=/tests/www/mysql/pkg-weblinks-current.zip
+      - chmod -R 777 /tests/www/mysql/
+      - chown -R www-data /tests/www/mysql/
+      - cd /drone/src
+      - npx cypress run --browser=firefox --e2e --config baseUrl=http://localhost/mysql,screenshotsFolder=/drone/src/tests/cypress/output/screenshots
+
+  - name: artifacts-system-tests
+    image: joomlaprojects/docker-images:packager
+    depends_on:
+      - phpmin-system-mysql
     environment:
       FTP_USERNAME:
         from_secret: ftpusername
       FTP_PASSWORD:
         from_secret: ftppassword
-      PLUGIN_HOSTNAME: artifacts.joomla.org:21
-      PLUGIN_SRC_DIR: /tests/_output
-      PLUGIN_DEST_DIR: /
-      PLUGIN_SECURE: false
-      PLUGIN_EXCLUDE: ^\.git/$
+      GITHUB_TOKEN:
+        from_secret: github_token
     commands:
-      - ls -l /drone/src/tests/_output
-      - export PLUGIN_DEST_DIR=$PLUGIN_DEST_DIR/$DRONE_REPO/$DRONE_BRANCH/$DRONE_PULL_REQUEST/system-tests/$DRONE_BUILD_NUMBER
-      - echo https://artifacts.joomla.org/drone$PLUGIN_DEST_DIR
-      - /bin/upload.sh
+      - export PLUGIN_DEST_DIR=/artifacts/$DRONE_REPO/$DRONE_BRANCH/$DRONE_PULL_REQUEST/system-tests/$DRONE_BUILD_NUMBER
+      - echo https://ci.joomla.org$PLUGIN_DEST_DIR
+      - rclone config create artifacts ftp host ci.joomla.org user $FTP_USERNAME port 21 pass $FTP_PASSWORD
+      - rclone mkdir artifacts:$PLUGIN_DEST_DIR
+      - rclone copy tests/cypress/output/ artifacts:$PLUGIN_DEST_DIR
+      - 'curl -X POST "https://api.github.com/repos/$DRONE_REPO/statuses/$DRONE_COMMIT" -H "Content-Type: application/json" -H "Authorization: token $GITHUB_TOKEN" -d "{\"state\":\"failure\", \"context\": \"Artifacts from Failure\", \"description\": \"You can find artifacts from the failure of the build here:\", \"target_url\": \"https://ci.joomla.org$PLUGIN_DEST_DIR\"}" > /dev/null'
     when:
       status:
         - failure
@@ -45,9 +110,45 @@ volumes:
   - name: weblinks_cache
     host:
       path: /tmp/weblinks_cache
+  - name: composer-cache
+    host:
+      path: /tmp/composer-cache
+  - name: cypress-cache
+    host:
+      path: /tmp/cypress-cache
+  - name: npm-cache
+    host:
+      path: /tmp/npm-cache
+
+services:
+  - name: mysql
+    image: mysql:5.7
+    environment:
+      MYSQL_USER: joomla_ut
+      MYSQL_PASSWORD: joomla_ut
+      MYSQL_ROOT_PASSWORD: joomla_ut
+      MYSQL_DATABASE: test_joomla
+
+  - name: mysql8
+    image: mysql:8
+    command: ["--default-authentication-plugin=mysql_native_password"]
+    environment:
+      MYSQL_USER: joomla_ut
+      MYSQL_PASSWORD: joomla_ut
+      MYSQL_ROOT_PASSWORD: joomla_ut
+      MYSQL_DATABASE: test_joomla
+
+  - name: postgres
+    image: postgres:11-alpine
+    ports:
+      - 5432
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: joomla_ut
+      POSTGRES_DB: test_joomla
 
 ---
 kind: signature
-hmac: bcc028d5d9601f1f3355862f17dd2434ba86f47634f0737877db534e49c8265b
+hmac: 8b2b4e6fe85da897755c46d961b49c1e53a13e5a2cf6df5cde70aa07233b2494
 
 ...

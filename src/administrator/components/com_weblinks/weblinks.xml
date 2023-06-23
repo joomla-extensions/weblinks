@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="3.5" method="upgrade">
 	<name>com_weblinks</name>
+	<element>com_weblinks</element>
 	<author>Joomla! Project</author>
 	<creationDate>##DATE##</creationDate>
 	<copyright>(C) 2005 - ##YEAR## Open Source Matters. All rights reserved.</copyright>

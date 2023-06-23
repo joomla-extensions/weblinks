@@ -58,6 +58,15 @@ codecept.phar
 selenium.log
 tests/cache
 
+#cypress
+node_modules
+/tests/cypress/output/screenshots
+!/tests/cypress/output/screenshots/.gitkeep
+/tests/cypress/output/videos
+!/tests/cypress/output/videos/.gitkeep
+cypress.config.js
+joomla
+
 # Package building related
 /dist
 jorobo.ini

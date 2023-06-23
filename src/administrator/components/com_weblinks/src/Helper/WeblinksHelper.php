@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package     Joomla.Administrator
  * @subpackage  Weblinks
@@ -9,8 +10,9 @@
 
 namespace Joomla\Component\Weblinks\Administrator\Helper;
 
-defined('_JEXEC') or die;
-
+// phpcs:disable PSR1.Files.SideEffects
+\defined('_JEXEC') or die;
+// phpcs:enable PSR1.Files.SideEffects
 use Joomla\CMS\Helper\ContentHelper;
 
 /**
@@ -20,5 +22,4 @@ use Joomla\CMS\Helper\ContentHelper;
  */
 class WeblinksHelper extends ContentHelper
 {
-
 }

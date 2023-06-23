@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="3.5" client="site" method="upgrade">
 	<name>mod_weblinks</name>
+	<element>mod_weblinks</element>
 	<author>Joomla! Project</author>
 	<creationDate>##DATE##</creationDate>
 	<copyright>Copyright (C) 2005 - 2017 Open Source Matters. All rights reserved.</copyright>

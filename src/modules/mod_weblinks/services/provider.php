@@ -8,7 +8,9 @@
  * @license         GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+// phpcs:disable PSR1.Files.SideEffects
+\defined('_JEXEC') or die;
+// phpcs:enable PSR1.Files.SideEffects
 
 use Joomla\CMS\Extension\Service\Provider\HelperFactory;
 use Joomla\CMS\Extension\Service\Provider\Module;
@@ -22,20 +24,20 @@ use Joomla\DI\ServiceProviderInterface;
  * @since  __DEPLOY_VERSION__
  */
 return new class () implements ServiceProviderInterface {
-	/**
-	 * Registers the service provider with a DI container.
-	 *
-	 * @param   Container  $container  The DI container.
-	 *
-	 * @return  void
-	 *
-	 * @since   __DEPLOY_VERSION__
-	 */
-	public function register(Container $container)
-	{
-		$container->registerServiceProvider(new ModuleDispatcherFactory('\\Joomla\\Module\\Weblinks'));
-		$container->registerServiceProvider(new HelperFactory('\\Joomla\\Module\\Weblinks\\Site\\Helper'));
+    /**
+     * Registers the service provider with a DI container.
+     *
+     * @param   Container  $container  The DI container.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function register(Container $container)
+    {
+        $container->registerServiceProvider(new ModuleDispatcherFactory('\\Joomla\\Module\\Weblinks'));
+        $container->registerServiceProvider(new HelperFactory('\\Joomla\\Module\\Weblinks\\Site\\Helper'));
 
-		$container->registerServiceProvider(new Module());
-	}
+        $container->registerServiceProvider(new Module());
+    }
 };

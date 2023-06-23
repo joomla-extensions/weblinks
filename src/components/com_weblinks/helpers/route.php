@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package     Joomla.Site
  * @subpackage  com_weblinks
@@ -7,8 +8,9 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
-
+// phpcs:disable PSR1.Files.SideEffects
+\defined('_JEXEC') or die;
+// phpcs:enable PSR1.Files.SideEffects
 use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
 
 /**
@@ -18,5 +20,4 @@ use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
  */
 abstract class WeblinksHelperRoute extends RouteHelper
 {
-
 }

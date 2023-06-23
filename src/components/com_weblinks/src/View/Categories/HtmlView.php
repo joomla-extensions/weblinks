@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package     Joomla.Site
  * @subpackage  com_weblinks
@@ -11,8 +12,9 @@ namespace Joomla\Component\Weblinks\Site\View\Categories;
 
 use Joomla\CMS\MVC\View\CategoriesView;
 
-defined('_JEXEC') or die;
-
+// phpcs:disable PSR1.Files.SideEffects
+\defined('_JEXEC') or die;
+// phpcs:enable PSR1.Files.SideEffects
 /**
  * Weblinks categories view.
  *
@@ -20,15 +22,14 @@ defined('_JEXEC') or die;
  */
 class HtmlView extends CategoriesView
 {
-	/**
-	 * @var    string  Default title to use for page title
-	 * @since  3.2
-	 */
-	protected $pageHeading = 'COM_WEBLINKS_DEFAULT_PAGE_TITLE';
-
-	/**
-	 * @var    string  The name of the extension for the category
-	 * @since  3.2
-	 */
-	protected $extension = 'com_weblinks';
+    /**
+     * @var    string  Default title to use for page title
+     * @since  3.2
+     */
+    protected $pageHeading = 'COM_WEBLINKS_DEFAULT_PAGE_TITLE';
+    /**
+         * @var    string  The name of the extension for the category
+         * @since  3.2
+         */
+    protected $extension = 'com_weblinks';
 }
