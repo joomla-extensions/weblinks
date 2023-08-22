@@ -180,6 +180,7 @@ else :
           </div>
             <?php
         endif; ?>
+        </div>
      </li>
         <?php
     endforeach; ?>
