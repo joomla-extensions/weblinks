@@ -1903,12 +1903,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-projects/jorobo.git",
-                "reference": "f122f196543a3434af25f570352683917ac836b6"
+                "reference": "9a47ba90a4dee19e80135bfd3cf5a7d64e6f09e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joomla-projects/jorobo/zipball/f122f196543a3434af25f570352683917ac836b6",
-                "reference": "f122f196543a3434af25f570352683917ac836b6",
+                "url": "https://api.github.com/repos/joomla-projects/jorobo/zipball/9a47ba90a4dee19e80135bfd3cf5a7d64e6f09e2",
+                "reference": "9a47ba90a4dee19e80135bfd3cf5a7d64e6f09e2",
                 "shasum": ""
             },
             "require": {
@@ -1958,7 +1958,7 @@
                 "issues": "https://github.com/joomla-projects/jorobo/issues",
                 "source": "https://github.com/joomla-projects/jorobo/tree/develop"
             },
-            "time": "2023-06-06T19:09:34+00:00"
+            "time": "2023-10-19T21:31:58+00:00"
         },
         {
             "name": "joomla-projects/selenium-server-standalone",
@@ -6502,5 +6502,5 @@
     "platform-overrides": {
         "php": "7.2.5"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
