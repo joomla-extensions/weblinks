@@ -11,12 +11,15 @@
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
+
+use Joomla\CMS\Installer\InstallerScript;
+
 /**
  * Installation class to perform additional changes during install/uninstall/update
  *
  * @since  __DEPLOY_VERSION__
  */
-class Pkg_WeblinksInstallerScript extends JInstallerScript
+class Pkg_WeblinksInstallerScript extends InstallerScript
 {
     /**
      * Extension script constructor.
@@ -25,7 +28,7 @@ class Pkg_WeblinksInstallerScript extends JInstallerScript
      */
     public function __construct()
     {
-        $this->minimumJoomla = '3.6.3';
+        $this->minimumJoomla = '4.3.0';
         $this->minimumPhp    = JOOMLA_MINIMUM_PHP;
     }
 }
