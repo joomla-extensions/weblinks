@@ -52,10 +52,6 @@ class Com_WeblinksInstallerScript
             '/language/en-GB/en-GB.pkg_weblinks.sys.ini',
             '/modules/mod_weblinks/helper.php',
             '/modules/mod_weblinks/mod_weblinks.php',
-            '/plugins/search/weblinks/weblinks.php',
-            '/plugins/finder/weblinks/weblinks.php',
-            '/plugins/editors-xtd/weblink/weblink.php',
-            '/plugins/system/weblinks/weblinks.php',
         ];
 
         $folders = [
