@@ -18,7 +18,7 @@ Install the last release of [com_weblinks](https://github.com/joomla-extensions/
 Install the last release of [com_patchtester](https://github.com/joomla-extensions/patchtester/releases/latest) into your Joomla (weblinks is supported since Version 3.0.0 Alpha 2).
 Log into your site's administrator section, go to the Patch Tester Component Options (Components -> Patch Tester -> Options)
 Switch the `GitHub Repository` to `Joomla Weblinks Package`. For this you have to fill the field  `GitHub Project Owner` with `joomla-extensions` and the field `GitHub Project Repository` with `weblinks`.
-Click `Save & Close` and hit the `Fetch Data` Button to the the lastest pull requests
+Click `Save & Close` and hit the `Fetch Data` Button to the the latest pull requests
 Click `Apply Patch` to apply the proposed changes from the pull request.
 Click `Revert Patch` to revert an applied patch.
 
@@ -75,7 +75,7 @@ Löse Unterschiede auf: 100% (1232/1232), Fertig.
 Prüfe Konnektivität ... Fertig.
 ```
 
-Are you new with github? Here you can find informations about setting it up: https://help.github.com/articles/set-up-git/
+Are you new with github? Here you can find information about setting it up: https://help.github.com/articles/set-up-git/
 If you get an error you can try git clone https://github.com:joomla-extensions/weblinks.git instead of git clone git@github.com:joomla-extensions/weblinks.git
 
 
@@ -284,7 +284,7 @@ Note: the first parameter is used by Travis and you should always set it to "0" 
 
 
 ## Video
-[Here](https://www.youtube.com/watch?v=fWO_Ed_wxpw) you can finde a video that shows the installation of com_weblinks for testing.
+[Here](https://www.youtube.com/watch?v=fWO_Ed_wxpw) you can find a video that shows the installation of com_weblinks for testing.
 
 
 # For Windows:

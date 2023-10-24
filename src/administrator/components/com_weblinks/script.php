@@ -91,10 +91,10 @@ class Com_WeblinksInstallerScript
 
 		if (strpos($dbName, 'mysql') !== false)
 		{
-			// Add Missing Table Colums if needed
+			// Add Missing Table Columns if needed
 			$this->addColumnsIfNeeded();
 
-			// Drop the Table Colums if needed
+			// Drop the Table Columns if needed
 			$this->dropColumnsIfNeeded();
 		}
 
@@ -224,7 +224,7 @@ class Com_WeblinksInstallerScript
 	}
 
 	/**
-	 * Method to drop colums from #__weblinks if they still there.
+	 * Method to drop columns from #__weblinks if they still there.
 	 *
 	 * @return  void
 	 *
@@ -253,7 +253,7 @@ class Com_WeblinksInstallerScript
 	}
 
 	/**
-	 * Method to add colums from #__weblinks if they are missing.
+	 * Method to add columns from #__weblinks if they are missing.
 	 *
 	 * @return  void
 	 *
