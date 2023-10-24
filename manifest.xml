@@ -46,13 +46,13 @@
 		<description>Joomla! CMS Weblinks Package</description>
 		<element>pkg_weblinks</element>
 		<type>package</type>
-		<version>4.3.0</version>
+		<version>4.3.1</version>
 		<client>site</client>
-		<infourl title="Weblinks Extension Package">https://github.com/joomla-extensions/weblinks/releases/tag/4.3.0</infourl>
+		<infourl title="Weblinks Extension Package">https://github.com/joomla-extensions/weblinks/releases/tag/4.3.1</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://downloads.joomla.org/extensions/weblinks/4-3-0/pkg-weblinks-4.3.0.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://downloads.joomla.org/extensions/weblinks/4-3-1/pkg-weblinks-4.3.1.zip</downloadurl>
 		</downloads>
-		<sha512>7da491eee68c2f98549692b2028c47096fbbdd23c5105ddd8df3631c3e66a555c205b9af97bbd5acb3ebb0e6fb7b1aef55f5bf83ab2e25a402b2e807834c0460</sha512>
+		<sha512>cbc02c3a4d915b2a4b69d5b425cb22b93c2dadd72829e1dac8f3cd55c2deb4ab4cb244ca75a956dd335c861daa2a17a769390e7cab90988501c16417afefb72f</sha512>
 		<targetplatform name="joomla" version="((4\.[34])|(5\.[01234]))" />
 	</update>
 </updates>
