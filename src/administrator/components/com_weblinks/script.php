@@ -273,7 +273,7 @@ class Com_WeblinksInstallerScript
     }
 
     /**
-     * Method to drop colums from #__weblinks if they still there.
+     * Method to drop columns from #__weblinks if they still there.
      *
      * @return  void
      *
@@ -301,7 +301,7 @@ class Com_WeblinksInstallerScript
     }
 
     /**
-     * Method to add colums from #__weblinks if they are missing.
+     * Method to add columns from #__weblinks if they are missing.
      *
      * @return  void
      *
