@@ -7,7 +7,7 @@
 ALTER TABLE `#__weblinks` MODIFY `alias` varchar(400) NOT NULL DEFAULT '';
 
 --
--- Step 1.2: Convert table to utf8mb4 chracter set with utf8mb4_unicode_ci collation
+-- Step 1.2: Convert table to utf8mb4 character set with utf8mb4_unicode_ci collation
 --
 
 ALTER TABLE `#__weblinks` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
