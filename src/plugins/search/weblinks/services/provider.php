@@ -42,7 +42,7 @@ return new class () implements ServiceProviderInterface {
 
                 return new Weblinks(
                     $dispatcher,
-                    (array) PluginHelper::getPlugin('finder', 'weblinks'),
+                    (array) PluginHelper::getPlugin('search', 'weblinks'),
                     $app,
                     $database
                 );
