@@ -23,8 +23,8 @@ $user = Factory::getApplication()->getIdentity();
 $canEdit    = $user->authorise('core.edit', 'com_weblinks.category.' . $this->category->id);
 $canEditOwn = $user->authorise('core.edit.own', 'com_weblinks.category.' . $this->category->id);
 $canCreate  = $user->authorise('core.create', 'com_weblinks.category.' . $this->category->id);
-$listOrder = $this->escape($this->state->get('list.ordering'));
-$listDirn  = $this->escape($this->state->get('list.direction'));
+$listOrder  = $this->escape($this->state->get('list.ordering'));
+$listDirn   = $this->escape($this->state->get('list.direction'));
 ?>
 
 <div class="com-weblinks-category__items">
@@ -84,7 +84,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
                         <?php
                     endif; ?>
 
-                    <?php if ($canEdit || ($canEditOwn && $item->created_by == $userId)) :
+                    <?php if ($canEdit || ($canEditOwn && $item->created_by == $user->id)) :
                         ?>
                         <div class="icons list-group-item">
                             <?php echo HTMLHelper::_('weblinkicon.edit', $item, $item->params); ?>
