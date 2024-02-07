@@ -174,6 +174,10 @@ class WeblinkModel extends ItemModel
 
                 $this->_item[$pk] = $data;
             } catch (\Exception $e) {
+                if ($e->getCode() == 404) {
+                    // Need to go through the error handler to allow Redirect to work.
+                    throw $e;
+                }
                 $this->setError($e);
                 $this->_item[$pk] = false;
             }
