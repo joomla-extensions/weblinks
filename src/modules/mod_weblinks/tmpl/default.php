@@ -52,7 +52,7 @@ use Joomla\CMS\Language\Text;
             ?>
             <strong> <?php echo htmlspecialchars($cat['title'], ENT_COMPAT, 'UTF-8'); ?></strong>
             <?php
-        endif; ?>;
+        endif; ?>
         <ul class="weblinks<?php echo $moduleclass_sfx; ?>">
         <?php foreach ($items as $item) :
             ?>
