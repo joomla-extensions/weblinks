@@ -1,0 +1,79 @@
+# Project Public Identifier: joomla-official-extensions
+project_id_env: CROWDIN_PROJECT_ID # The numeric project ID.
+api_token_env: CROWDIN_PERSONAL_TOKEN
+base_path: ".."
+base_url: "https://joomla.crowdin.com"
+
+preserve_hierarchy: true
+
+files:
+  - source: /src/administrator/language/en-GB/en-GB.com_weblinks.ini
+    dest: 'Weblinks/administrator/language/en-GB.com_weblinks.ini'
+    translation: /administrator/language/%locale%/%locale%.com_weblinks.ini
+    type: joomla
+    update_option: update_as_unapproved
+  - source: /src/administrator/language/en-GB/en-GB.com_weblinks.sys.ini
+    dest: 'Weblinks/administrator/language/en-GB.com_weblinks.sys.ini'
+    translation: /administrator/language/%locale%/%locale%.com_weblinks.sys.ini
+    type: joomla
+    update_option: update_as_unapproved
+  - source: /src/language/en-GB/en-GB.com_weblinks.ini
+    dest: 'Weblinks/language/en-GB.com_weblinks.ini'
+    translation: /language/%locale%/%locale%.com_weblinks.ini
+    type: joomla
+    update_option: update_as_unapproved
+  - source: /src/language/en-GB/en-GB.mod_weblinks.ini
+    dest: 'Weblinks/language/en-GB.mod_weblinks.ini'
+    translation: /language/%locale%/%locale%.mod_weblinks.ini
+    type: joomla
+    update_option: update_as_unapproved
+  - source: /src/language/en-GB/en-GB.mod_weblinks.sys.ini
+    dest: 'Weblinks/language/en-GB.mod_weblinks.sys.ini'
+    translation: /language/%locale%/%locale%.mod_weblinks.sys.ini
+    type: joomla
+    update_option: update_as_unapproved
+  - source: /src/language/en-GB/en-GB.pkg_weblinks.sys.ini
+    dest: 'Weblinks/language/en-GB.pkg_weblinks.sys.ini'
+    translation: /language/%locale%/%locale%.pkg_weblinks.sys.ini
+    type: joomla
+    update_option: update_as_unapproved
+  - source: /src/plugins/editors-xtd/weblink/language/en-GB/en-GB.plg_editors-xtd_weblink.ini
+    dest: 'Weblinks/plugins/editors-xtd/weblink/language/en-GB.plg_editors-xtd_weblink.ini'
+    translation: /plugins/editors-xtd/weblink/language/%locale%/%locale%.plg_editors-xtd_weblink.ini
+    type: joomla
+    update_option: update_as_unapproved
+  - source: /src/plugins/editors-xtd/weblink/language/en-GB/en-GB.plg_editors-xtd_weblink.sys.ini
+    dest: 'Weblinks/plugins/editors-xtd/weblink/language/en-GB.plg_editors-xtd_weblink.sys.ini'
+    translation: /plugins/editors-xtd/weblink/language/%locale%/%locale%.plg_editors-xtd_weblink.sys.ini
+    type: joomla
+    update_option: update_as_unapproved
+  - source: /src/plugins/finder/weblinks/language/en-GB/en-GB.plg_finder_weblinks.ini
+    dest: 'Weblinks/plugins/finder/weblinks/language/en-GB.plg_finder_weblinks.ini'
+    translation: /plugins/finder/weblinks/language/%locale%/%locale%.plg_finder_weblinks.ini
+    type: joomla
+    update_option: update_as_unapproved
+  - source: /src/plugins/finder/weblinks/language/en-GB/en-GB.plg_finder_weblinks.sys.ini
+    dest: 'Weblinks/plugins/finder/weblinks/language/en-GB.plg_finder_weblinks.sys.ini'
+    translation: /plugins/finder/weblinks/language/%locale%/%locale%.plg_finder_weblinks.sys.ini
+    type: joomla
+    update_option: update_as_unapproved
+  - source: /src/plugins/search/weblinks/language/en-GB/en-GB.plg_search_weblinks.ini
+    dest: 'Weblinks/plugins/search/weblinks/language/en-GB.plg_search_weblinks.ini'
+    translation: /plugins/search/weblinks/language/%locale%/%locale%.plg_search_weblinks.ini
+    type: joomla
+    update_option: update_as_unapproved
+  - source: /src/plugins/search/weblinks/language/en-GB/en-GB.plg_search_weblinks.sys.ini
+    dest: 'Weblinks/plugins/search/weblinks/language/en-GB.plg_search_weblinks.sys.ini'
+    translation: /plugins/search/weblinks/language/%locale%/%locale%.plg_search_weblinks.sys.ini
+    type: joomla
+    update_option: update_as_unapproved
+  - source: /src/plugins/system/weblinks/language/en-GB/en-GB.plg_system_weblinks.ini
+    dest: 'Weblinks/plugins/system/weblinks/language/en-GB.plg_system_weblinks.ini'
+    translation: /plugins/system/weblinks/language/%locale%/%locale%.plg_system_weblinks.ini
+    type: joomla
+    update_option: update_as_unapproved
+  - source: /src/plugins/system/weblinks/language/en-GB/en-GB.plg_system_weblinks.sys.ini
+    dest: 'Weblinks/plugins/system/weblinks/language/en-GB.plg_system_weblinks.sys.ini'
+    translation: /plugins/system/weblinks/language/%locale%/%locale%.plg_system_weblinks.sys.ini
+    type: joomla
+    update_option: update_as_unapproved
