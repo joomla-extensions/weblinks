@@ -9,7 +9,7 @@ preserve_hierarchy: true
 files:
   - source: /src/administrator/language/en-GB/en-GB.com_weblinks.ini
     dest: 'Weblinks/administrator/language/en-GB.com_weblinks.ini'
-    translation: /administrator/language/%locale%/%locale%.com_weblinks.ini
+    translation: /administrator/language/%locale%/com_weblinks.ini
     type: joomla
     update_option: update_as_unapproved
   - source: /src/administrator/language/en-GB/en-GB.com_weblinks.sys.ini
