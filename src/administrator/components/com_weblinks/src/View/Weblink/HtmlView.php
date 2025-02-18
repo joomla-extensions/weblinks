@@ -62,7 +62,7 @@ class HtmlView extends BaseHtmlView
     public function display($tpl = null)
     {
         /** @var WeblinkModel $model */
-        $model = $this->getModel();
+        $model       = $this->getModel();
         $this->state = $model->getState();
         $this->item  = $model->getItem();
         $this->form  = $model->getForm();
