@@ -13,11 +13,11 @@
 // phpcs:enable PSR1.Files.SideEffects
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Table\Table;
+use Joomla\CMS\Table\Category;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Folder;
 
 /**
  * Installation class to perform additional changes during install/uninstall/update
@@ -60,13 +60,13 @@ class Com_WeblinksInstallerScript
         ];
 
         foreach ($files as $file) {
-            if (File::exists(JPATH_ROOT . $file)) {
+            if (is_file(JPATH_ROOT . $file)) {
                 File::delete(JPATH_ROOT . $file);
             }
         }
 
         foreach ($folders as $folder) {
-            if (Folder::exists(JPATH_ROOT . $folder)) {
+            if (is_dir(JPATH_ROOT . $folder)) {
                 Folder::delete(JPATH_ROOT . $folder);
             }
         }
@@ -86,8 +86,7 @@ class Com_WeblinksInstallerScript
     public function install($parent)
     {
         // Initialize a new category
-        /** @type  Joomla\CMS\Table\Category $category */
-        $category = Table::getInstance('Category', 'Joomla\\CMS\\Table\\');
+        $category = new Category(Factory::getDbo());
 
         // Check if the Uncategorised category exists before adding it
         if (!$category->load(['extension' => 'com_weblinks', 'title' => 'Uncategorised'])) {
