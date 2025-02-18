@@ -4,12 +4,12 @@ name: default
 
 steps:
   - name: composer
-    image: joomlaprojects/docker-images:php8.2
+    image: joomlaprojects/docker-images:php8.3
     volumes:
       - name: composer-cache
         path: /tmp/composer-cache
     commands:
-      - composer install --no-progress
+      - composer install --no-progress --ignore-platform-reqs
 
   - name: phpcs
     image: joomlaprojects/docker-images:php8.1
@@ -48,19 +48,12 @@ steps:
       - cd joomla
       - unzip joomla.zip
 
-  - name: phan
-    image: joomlaprojects/docker-images:php8.1-ast
-    depends_on: [ prepare_system_tests ]
-    failure: ignore
-    commands:
-      - vendor/bin/phan
-
   - name: phpstan
-    image: joomlaprojects/docker-images:php8.1
+    image: joomlaprojects/docker-images:php8.2
     depends_on: [ prepare_system_tests ]
     failure: ignore
     commands:
-      - vendor/bin/phpstan analyse src
+      - vendor/bin/phpstan
 
   - name: phpmin-system-mysql
     depends_on: [ prepare_system_tests ]
@@ -149,6 +142,6 @@ services:
 
 ---
 kind: signature
-hmac: 8b2b4e6fe85da897755c46d961b49c1e53a13e5a2cf6df5cde70aa07233b2494
+hmac: 1a3e42b169ad2df6a065972457beea9ecbae1dbf0f9a94cb21c27fa416f773ed
 
 ...
