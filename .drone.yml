@@ -97,7 +97,7 @@ steps:
       - unzip joomla.zip
       - apache2ctl -D FOREGROUND &
       - chmod +rwx /root
-      - php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-17082005 --db-type=pgsql --db-host=postgres --db-name=test_joomla --db-pass=joomla_ut --db-user=joomla_ut --db-encryption=0 --db-prefix=pgsql_
+      - php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-17082005 --db-type=pgsql --db-host=postgres --db-name=root --db-pass=joomla_ut --db-user=joomla_ut --db-encryption=0 --db-prefix=pgsql_
       - php cli/joomla.php config:set debug=true error_reporting=maximum
       - php cli/joomla.php extension:install --path=/tests/www/mysql/pkg-weblinks-current.zip
       - chmod -R 777 /tests/www/mysql/
@@ -165,7 +165,7 @@ services:
       MYSQL_DATABASE: test_joomla
 
   - name: postgres
-    image: postgres:11-alpine
+    image: postgres:12-alpine
     ports:
       - 5432
     environment:
@@ -175,6 +175,6 @@ services:
 
 ---
 kind: signature
-hmac: 68328b184228b764a3ac96f00dc1ebe3b8f4e2dad5c4b0c0519ab0efbf6cec39
+hmac: 4c6995b84567532c996029c9a1520360f120f3a096cb2c66a85b273496997fd9
 
 ...
