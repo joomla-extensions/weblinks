@@ -4,7 +4,7 @@ Build Status
 ---------------------
 | Drone-CI |
 | ------------- |
-| [![Build Status](https://ci.joomla.org/api/badges/joomla-extensions/weblinks/status.svg)](https://ci.joomla.org/joomla-extensions/weblinks) |
+| [![Build Status](https://ci.joomla.org/api/badges/joomla-extensions/weblinks/status.svg?ref=refs/heads/4.0-dev)](https://ci.joomla.org/joomla-extensions/weblinks) |
 
 Weblinks for Joomla! provides a component and accompanying extensions to create a directory of weblinks.
 
