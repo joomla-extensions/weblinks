@@ -15,19 +15,11 @@ if (!defined('JPATH_TESTS'))
 {
 	define('JPATH_TESTS', realpath(__DIR__));
 }
-if (!defined('JPATH_TEST_DATABASE'))
-{
-	define('JPATH_TEST_DATABASE', JPATH_TESTS . '/stubs/database');
-}
-if (!defined('JPATH_TEST_STUBS'))
-{
-	define('JPATH_TEST_STUBS', JPATH_TESTS . '/stubs');
-}
 
 // Installation path of joomla, we use the cache directory here (Robo run testing site)..
 if (!defined('JINSTALL_PATH'))
 {
-	define('JINSTALL_PATH', dirname(JPATH_TESTS) . '/cache');
+	define('JINSTALL_PATH', dirname(JPATH_TESTS, 2) . '/joomla');
 }
 
 if (!defined('JPATH_PLATFORM'))
@@ -93,15 +85,13 @@ if (!defined('JPATH_COMPONENT_ADMINISTRATOR'))
 	define('JPATH_COMPONENT_ADMINISTRATOR', dirname(dirname(JPATH_BASE)) . '/src/administrator/component/com_weblinks');
 }
 
+require_once __DIR__ . '/UnitTestCase.php';
+
 $_SERVER['HTTP_HOST'] = "localhost";
 
-// Import the platform in legacy mode.
-require_once JPATH_PLATFORM . '/import.legacy.php';
-
 // Bootstrap the CMS libraries.
-require_once JPATH_LIBRARIES . '/cms.php';
+require_once JPATH_LIBRARIES . '/bootstrap.php';
 
-require_once JPATH_PLATFORM . '/platform.php';
 require_once JPATH_PLATFORM . '/loader.php';
 
 // Setup the autoloaders.

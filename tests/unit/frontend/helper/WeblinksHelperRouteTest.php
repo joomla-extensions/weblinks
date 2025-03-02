@@ -1,4 +1,8 @@
 <?php
+
+use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
+use Joomla\Tests\Unit\UnitTestCase;
+
 /**
  * @package     Joomla.Administrator
  * @subpackage  com_weblinks
@@ -7,7 +11,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-class WeblinksHelperRouteTest extends \Codeception\TestCase\Test
+class WeblinksHelperRouteTest extends UnitTestCase
 {
 	/**
 	 * @var \UnitTester
@@ -26,6 +30,6 @@ class WeblinksHelperRouteTest extends \Codeception\TestCase\Test
 	// tests
 	public function testGetFormRouteNewWeblink()
 	{
-		$this->tester->assertContains('weblink.add&w_id=0', WeblinksHelperRoute::getFormRoute(null));
+		$this->assertStringContainsString('weblink.add&w_id=0', RouteHelper::getFormRoute(null));
 	}
 }
