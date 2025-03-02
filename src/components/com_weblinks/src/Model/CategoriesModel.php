@@ -112,7 +112,7 @@ class CategoriesModel extends ListModel
             $options['countItems'] = $params->get('show_cat_num_links', 1) || !$params->get('show_empty_categories_cat', 0);
             $categories            = Categories::getInstance('Weblinks', $options);
             $this->_parent         = $categories->get($this->getState('filter.parentId', 'root'));
-            if (is_object($this->_parent)) {
+            if (\is_object($this->_parent)) {
                 $this->_items = $this->_parent->getChildren();
             } else {
                 $this->_items = false;
@@ -129,7 +129,7 @@ class CategoriesModel extends ListModel
      */
     public function getParent()
     {
-        if (!is_object($this->_parent)) {
+        if (!\is_object($this->_parent)) {
             $this->getItems();
         }
 

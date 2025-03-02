@@ -147,7 +147,7 @@ class AssociationsHelper extends AssociationExtensionHelper
         $joins   = [];
         $support = $this->getSupportTemplate();
         $title   = '';
-        if (in_array($typeName, $this->itemTypes)) {
+        if (\in_array($typeName, $this->itemTypes)) {
             switch ($typeName) {
                 case 'weblink':
                     $support['state']     = true;

@@ -96,7 +96,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
 
         [$extension] = $event->getArguments();
 
-        if (!in_array($extension, $this->supportedExtensions)) {
+        if (!\in_array($extension, $this->supportedExtensions)) {
             return;
         }
 

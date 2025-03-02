@@ -68,7 +68,7 @@ class HtmlView extends BaseHtmlView
         $this->form  = $model->getForm();
 
         // Check for errors.
-        if (count($errors = $model->getErrors())) {
+        if (\count($errors = $model->getErrors())) {
             throw new GenericDataException(implode("\n", $errors), 500);
         }
 
@@ -114,7 +114,7 @@ class HtmlView extends BaseHtmlView
         // Build the actions for new and existing records.
         if ($isNew) {
             // For new records, check the create permission.
-            if (count($user->getAuthorisedCategories('com_weblinks', 'core.create')) > 0) {
+            if (\count($user->getAuthorisedCategories('com_weblinks', 'core.create')) > 0) {
                 ToolbarHelper::apply('weblink.apply');
 
                 ToolbarHelper::saveGroup(

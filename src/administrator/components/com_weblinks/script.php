@@ -311,13 +311,13 @@ class Com_WeblinksInstallerScript
         $db    = Factory::getDbo();
         $table = $db->getTableColumns('#__weblinks');
 
-        if (!array_key_exists('version', $table)) {
+        if (!\array_key_exists('version', $table)) {
             $sql = 'ALTER TABLE ' . $db->quoteName('#__weblinks') . ' ADD COLUMN ' . $db->quoteName('version') . " int unsigned NOT NULL DEFAULT '1'";
             $db->setQuery($sql);
             $db->execute();
         }
 
-        if (!array_key_exists('images', $table)) {
+        if (!\array_key_exists('images', $table)) {
             $sql = 'ALTER TABLE ' . $db->quoteName('#__weblinks') . ' ADD COLUMN ' . $db->quoteName('images') . ' text NOT NULL';
             $db->setQuery($sql);
             $db->execute();
