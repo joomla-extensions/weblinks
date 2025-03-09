@@ -1,3 +1,47 @@
+/**
+ * The global cached default categories
+ */
+globalThis.joomlaCategories = [];
+
+/**
+ * Does return the default category id for the given extension with the name 'Uncategorized' from the default installation.
+ *
+ * The data is cached for performance reasons in the globalThis object
+ *
+ * @param {string} extension The extension
+ *
+ * @returns integer
+ */
+function getDefaultCategoryId(extension) {
+  if (globalThis.joomlaCategories[extension] !== undefined) {
+    return cy.wrap(globalThis.joomlaCategories[extension]);
+  }
+
+  return cy.task('queryDB', `SELECT id FROM #__categories where extension = '${extension}' AND title = 'Uncategorised' ORDER BY id ASC LIMIT 1`)
+    .then(async (data) => {
+      // Cache
+      globalThis.joomlaCategories[extension] = data[0].id;
+      return data[0].id;
+    });
+}
+
+/**
+ * Returns an insert query for the given database and fields.
+ *
+ * @param {string} table The DB table name
+ * @param {Object} values The values to insert
+ *
+ * @returns string
+ */
+function createInsertQuery(table, values) {
+  let query = `INSERT INTO #__${table} (\`${Object.keys(values).join('\`, \`')}\`) VALUES (:${Object.keys(values).join(',:')})`;
+
+  Object.keys(values).forEach((variable) => {
+    query = query.replace(`:${variable}`, `'${values[variable]}'`);
+  });
+
+  return query;
+}
 Cypress.Commands.add('createContentCategory', (title) => {
   cy.visit('administrator/index.php?option=com_categories&view=categories&extension=com_content')
   cy.contains('h1', 'Articles: Categories').should('exist')
@@ -127,3 +171,47 @@ Cypress.Commands.add('deleteArticle', (title) => {
   cy.wait('@article_delete')
   cy.wait('@article_delete')
 })
+
+/**
+ * Creates a weblink in the database with the given data. The weblink contains some default values when
+ * not all required fields are passed in the given data. The id of the inserted weblink is returned.
+ *
+ * @param {Object} weblinkData The weblink data to insert
+ *
+ * @returns Object
+ */
+Cypress.Commands.add('db_createWeblink', (weblinkData) => {
+  const defaultWebLinkOptions = {
+    title: 'test weblink',
+    alias: 'test-weblink',
+    url: 'http://example.com',
+    state: 1,
+    hits: 1,
+    language: '*',
+    created: '2025-01-01 20:00:00',
+    modified: '2025-01-01 20:00:00',
+    description: '',
+    params: '',
+    metakey: '',  
+    metadata: '{"robots":"","rights":""}',
+    metadesc: '',
+    xreference: '',
+    images: '',
+  };
+
+  const weblink = { ...defaultWebLinkOptions, ...weblinkData };
+
+  return getDefaultCategoryId('com_weblinks')
+    .then((id) => {
+      if (weblink.catid === undefined) {
+        weblink.catid = id;
+      }
+
+      return cy.task('queryDB', createInsertQuery('weblinks', weblink));
+    })
+    .then(async (info) => {
+      weblink.id = info.insertId;
+
+      return weblink;
+    });
+});
