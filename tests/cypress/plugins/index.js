@@ -1,6 +1,6 @@
-import { getMails, clearEmails, startMailServer } from './mail.mjs';
-import { writeRelativeFile, deleteRelativePath, copyRelativeFile } from './fs.mjs';
-import { queryTestDB, deleteInsertedItems } from './db.mjs';
+import { getMails, clearEmails, startMailServer } from './mail.js';
+import { writeRelativeFile, deleteRelativePath, copyRelativeFile } from './fs.js';
+import { queryTestDB, deleteInsertedItems } from './db.js';
 
 /**
  * Does the setup of the plugins.
