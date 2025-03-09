@@ -1,7 +1,7 @@
 import { defineConfig } from 'cypress';
 import setupPlugins from './tests/cypress/plugins/index.js';
 
-module.exports = defineConfig({
+export default defineConfig({
   fixturesFolder: 'tests/cypress/fixtures',
   videosFolder: 'tests/cypress/output/videos',
   screenshotsFolder: 'tests/cypress/output/screenshots',
