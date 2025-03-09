@@ -31,9 +31,10 @@ export default defineConfig({
     password: 'joomla-17082005',
     db_type: 'MySQLi',
     db_host: 'localhost',
+    db_port: '',
     db_name: 'test_joomla',
-    db_user: 'joomla_ut',
-    db_password: 'joomla_ut',
+    db_user: 'root',
+    db_password: '',
     db_prefix: 'jos_',
   },
 })
