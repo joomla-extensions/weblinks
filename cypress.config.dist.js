@@ -1,4 +1,4 @@
-const { defineConfig } = require('cypress')
+import { defineConfig } = require('cypress')
 import setupPlugins from './tests/cypress/plugins/index.js';
 
 module.exports = defineConfig({
