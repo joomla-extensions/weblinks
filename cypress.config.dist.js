@@ -7,8 +7,10 @@ export default defineConfig({
   screenshotsFolder: 'tests/cypress/output/screenshots',
   viewportHeight: 1000,
   viewportWidth: 1200,
-  e2e: {
-    setupNodeEvents(on, config) {},
+  e2e:  {
+    setupNodeEvents(on, config) {
+      setupPlugins(on, config);
+    },
     baseUrl: 'http://localhost/',
     specPattern: [
       'tests/cypress/integration/install/*.cy.{js,jsx,ts,tsx}',
