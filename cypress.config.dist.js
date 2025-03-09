@@ -1,5 +1,5 @@
 import { defineConfig } from 'cypress';
-import setupPlugins from './tests/cypress/plugins/index.js';
+import setupPlugins from './tests/cypress/plugins/index.mjs';
 
 export default defineConfig({
   fixturesFolder: 'tests/cypress/fixtures',
