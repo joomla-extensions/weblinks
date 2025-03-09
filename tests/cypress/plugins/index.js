@@ -1,4 +1,4 @@
-import { getMails, clearEmails, startMailServer } from './mail.js';
+// import { getMails, clearEmails, startMailServer } from './mail.js';
 import { writeRelativeFile, deleteRelativePath, copyRelativeFile } from './fs.js';
 import { queryTestDB, deleteInsertedItems } from './db.js';
 
