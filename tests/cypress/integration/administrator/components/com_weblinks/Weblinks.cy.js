@@ -1,4 +1,4 @@
-describe('Test in backend that the weblinks list', () => {
+describe('Test in backend that the weblinks component', () => {
   beforeEach(() => {
     cy.doAdministratorLogin();
     cy.visit('/administrator/index.php?option=com_weblinks&view=weblinks&filter=');
