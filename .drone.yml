@@ -81,7 +81,7 @@ steps:
       - chmod -R 777 /tests/www/mysql/
       - chown -R www-data /tests/www/mysql/
       - cd /drone/src
-      - npx cypress run --browser=firefox --e2e --config baseUrl=http://localhost/mysql,screenshotsFolder=/drone/src/tests/cypress/output/screenshots
+      - npx cypress run --browser=firefox --e2e --env cmsPath=/tests/www/mysql,db_type=mysqli,db_host=mysql,db_name=test_joomla,db_user=joomla_ut,db_password=joomla_ut,db_prefix=mysql_ --config baseUrl=http://localhost/mysql,screenshotsFolder=/drone/src/tests/cypress/output/screenshot
 
   - name: phpmin-system-postgres
     depends_on: [ prepare_tests ]
@@ -90,20 +90,20 @@ steps:
       - name: cypress-cache
         path: /root/.cache/Cypress
     commands:
-      - mkdir /tests/www/mysql/
-      - cp joomla.zip /tests/www/mysql/joomla.zip
-      - cp dist/pkg-weblinks-current.zip /tests/www/mysql/pkg-weblinks-current.zip
-      - cd /tests/www/mysql/
+      - mkdir /tests/www/pgsql/
+      - cp joomla.zip /tests/www/pgsql/joomla.zip
+      - cp dist/pkg-weblinks-current.zip /tests/www/pgsql/pkg-weblinks-current.zip
+      - cd /tests/www/pgsql/
       - unzip joomla.zip
       - apache2ctl -D FOREGROUND &
       - chmod +rwx /root
       - php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-17082005 --db-type=pgsql --db-host=postgres --db-name=test_joomla --db-pass=joomla_ut --db-user=root --db-encryption=0 --db-prefix=pgsql_
       - php cli/joomla.php config:set debug=true error_reporting=maximum
-      - php cli/joomla.php extension:install --path=/tests/www/mysql/pkg-weblinks-current.zip
-      - chmod -R 777 /tests/www/mysql/
-      - chown -R www-data /tests/www/mysql/
+      - php cli/joomla.php extension:install --path=/tests/www/pgsql/pkg-weblinks-current.zip
+      - chmod -R 777 /tests/www/pgsql/
+      - chown -R www-data /tests/www/pgsql/
       - cd /drone/src
-      - npx cypress run --browser=firefox --e2e --config baseUrl=http://localhost/mysql,screenshotsFolder=/drone/src/tests/cypress/output/screenshots
+      - npx cypress run --browser=firefox --e2e --env cmsPath=/tests/www/pgsql,db_type=pgsql,db_host=postgres,db_name=test_joomla,db_user=root,db_password=joomla_ut,db_prefix=pgsql_ --config baseUrl=http://localhost/pgsql,screenshotsFolder=/drone/src/tests/cypress/output/screenshot
 
   - name: artifacts-system-tests
     image: joomlaprojects/docker-images:packager
@@ -175,6 +175,6 @@ services:
 
 ---
 kind: signature
-hmac: 5601b424756f623d78fe5831e2362e9335ff2c4ed1dfab9d53937c632ee1f635
+hmac: 35b018583f594e4c80a81cbd6e75e86c7c233e86d0d5fdf50603cb0f6727fece
 
 ...
