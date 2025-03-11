@@ -22,6 +22,16 @@ describe('Test in backend that the weblinks component', () => {
     cy.contains('Web Link: New');
   });
 
+  it('can create a weblink', () => {
+    cy.visit('/administrator/index.php?option=com_weblinks&view=weblink&layout=edit');
+    cy.get('#jform_title').clear().type('Test weblink');
+    cy.get('#jform_url').clear().type('www.example.com');
+    cy.clickToolbarButton('Save & Close');
+
+    cy.checkForSystemMessage('Web link saved.');
+    cy.contains('Test weblink');
+  });
+
   it('can publish the test weblink', () => {
     cy.db_createWeblink({ title: 'Test weblink', state: 0 }).then(() => {
       cy.reload();
