@@ -1,6 +1,7 @@
 describe('Test in backend that the weblinks component', () => {
   beforeEach(() => {
     cy.doAdministratorLogin();
+    cy.task('queryDB', "DELETE FROM #__weblinks WHERE title = 'Test weblink'");
     cy.visit('/administrator/index.php?option=com_weblinks&view=weblinks&filter=');
   });
 
