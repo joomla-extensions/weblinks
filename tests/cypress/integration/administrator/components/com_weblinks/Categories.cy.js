@@ -47,6 +47,18 @@ describe('Test in backend that the categories list', () => {
     });
   });
 
+  it('can archive the test weblink category', () => {
+    cy.db_createCategory({ title: 'Test weblink category', published: 1, extension: 'com_weblinks' }).then(() => {
+      cy.reload();
+      cy.searchForItem('Test weblink category');
+      cy.checkAllResults();
+      cy.clickToolbarButton('Action');
+      cy.contains('Archive').click();
+
+      cy.checkForSystemMessage('Category archived.');
+    });
+  });
+
   it('can trash the test weblink category', () => {
     cy.db_createCategory({ title: 'Test weblink category', extension: 'com_weblinks' }).then(() => {
       cy.reload();
