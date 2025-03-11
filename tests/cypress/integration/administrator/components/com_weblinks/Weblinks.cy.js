@@ -33,6 +33,14 @@ describe('Test in backend that the weblinks component', () => {
     cy.contains('Test weblink');
   });
 
+  it('cannot create a weblink without title', () => {
+    cy.visit('/administrator/index.php?option=com_weblinks&view=weblink&layout=edit');
+    cy.get('#jform_url').clear().type('www.example.com');
+    cy.clickToolbarButton('Save & Close');
+    cy.checkForSystemMessage("The form cannot be submitted as it's missing required data");
+    cy.contains('Test weblink').should('not.exist');
+  });
+
   it('can publish the test weblink', () => {
     cy.db_createWeblink({ title: 'Test weblink', state: 0 }).then(() => {
       cy.reload();
