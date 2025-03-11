@@ -28,7 +28,7 @@ describe('Test in backend that the weblinks component', () => {
     cy.get('#jform_url').clear().type('www.example.com');
     cy.clickToolbarButton('Save & Close');
 
-    cy.checkForSystemMessage('Web link saved.');
+    cy.checkForSystemMessage('Web link saved');
     cy.contains('Test weblink');
   });
 
