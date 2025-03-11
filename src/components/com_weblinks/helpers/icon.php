@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package     Joomla.Site
  * @subpackage  com_weblinks
@@ -7,8 +8,9 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
-
+// phpcs:disable PSR1.Files.SideEffects
+\defined('_JEXEC') or die;
+// phpcs:enable PSR1.Files.SideEffects
 /**
  * Weblink Component HTML Helper.
  *
@@ -16,74 +18,40 @@ defined('_JEXEC') or die;
  */
 class JHtmlIcon
 {
-	/**
-	 * Create a link to create a new weblink
-	 *
-	 * @param   mixed  $weblink  Unused
-	 * @param   mixed  $params   Unused
-	 *
-	 * @return  string
-	 */
-	public static function create($weblink, $params)
-	{
-		JHtml::_('bootstrap.tooltip');
+    /**
+     * Create a link to create a new weblink
+     *
+     * @param   object                     $category  The category information
+     * @param   \Joomla\Registry\Registry  $params    The item parameters
+     *
+     * @return  string
+     */
+    public static function create($category, $params)
+    {
+        return self::getIcon()->create($category, $params);
+    }
 
-		$uri = JUri::getInstance();
-		$url = JRoute::_(WeblinksHelperRoute::getFormRoute(0, base64_encode($uri)));
-		$text = JHtml::_('image', 'system/new.png', JText::_('JNEW'), null, true);
-		$button = JHtml::_('link', $url, $text);
+    /**
+     * Create a link to edit an existing weblink
+     *
+     * @param   object                     $weblink  Weblink data
+     * @param   \Joomla\Registry\Registry  $params   Item params
+     * @param   array                      $attribs  Unused
+     *
+     * @return  string
+     */
+    public static function edit($weblink, $params, $attribs = [])
+    {
+        return self::getIcon()->edit($weblink, $params, $attribs);
+    }
 
-		return '<span class="hasTooltip" title="' . JHtml::tooltipText('COM_WEBLINKS_FORM_CREATE_WEBLINK') . '">' . $button . '</span>';
-	}
-
-	/**
-	 * Create a link to edit an existing weblink
-	 *
-	 * @param   object                     $weblink  Weblink data
-	 * @param   \Joomla\Registry\Registry  $params   Item params
-	 * @param   array                      $attribs  Unused
-	 *
-	 * @return  string
-	 */
-	public static function edit($weblink, $params, $attribs = array())
-	{
-		$uri = JUri::getInstance();
-
-		if ($params && $params->get('popup'))
-		{
-			return;
-		}
-
-		if ($weblink->state < 0)
-		{
-			return;
-		}
-
-		JHtml::_('bootstrap.tooltip');
-
-		$url	= WeblinksHelperRoute::getFormRoute($weblink->id, base64_encode($uri));
-		$icon	= $weblink->state ? 'edit.png' : 'edit_unpublished.png';
-		$text	= JHtml::_('image', 'system/' . $icon, JText::_('JGLOBAL_EDIT'), null, true);
-
-		if ($weblink->state == 0)
-		{
-			$overlib = JText::_('JUNPUBLISHED');
-		}
-		else
-		{
-			$overlib = JText::_('JPUBLISHED');
-		}
-
-		$date = JHtml::_('date', $weblink->created);
-		$author = $weblink->created_by_alias ? $weblink->created_by_alias : $weblink->author;
-
-		$overlib .= '&lt;br /&gt;';
-		$overlib .= $date;
-		$overlib .= '&lt;br /&gt;';
-		$overlib .= htmlspecialchars($author, ENT_COMPAT, 'UTF-8');
-
-		$button = JHtml::_('link', JRoute::_($url), $text);
-
-		return '<span class="hasTooltip" title="' . JHtml::tooltipText('COM_WEBLINKS_EDIT') . ' :: ' . $overlib . '">' . $button . '</span>';
-	}
+    /**
+     * Creates an icon instance.
+     *
+     * @return  \Joomla\Component\Weblinks\Administrator\Service\HTML\Icon
+     */
+    private static function getIcon()
+    {
+        return (new \Joomla\Component\Weblinks\Administrator\Service\HTML\Icon(Joomla\CMS\Factory::getApplication()));
+    }
 }

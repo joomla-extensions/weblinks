@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<ruleset name="Joomla-CMS">
+    <description>The Joomla CMS PSR-12 exceptions.</description>
+
+    <!-- Exclude folders not containing production code -->
+
+    <!-- Exclude 3rd party libraries and Framework code. -->
+    <exclude-pattern type="relative">src/administrator/components/com_weblinks/layouts/*</exclude-pattern>
+
+    <rule ref="PSR12" />
+
+    <!-- temporary extend the line length -->
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="560"/>
+            <property name="absoluteLineLimit" value="560"/>
+        </properties>
+    </rule>
+
+    <rule ref="PSR1.Classes.ClassDeclaration">
+	    <exclude-pattern type="relative">src/administrator/components/com_weblinks/script\.php</exclude-pattern>
+        <exclude-pattern type="relative">src/administrator/manifests/packages/weblinks/script\.php</exclude-pattern>
+	    <exclude-pattern type="relative">src/administrator/components/com_weblinks/helpers/weblinks\.php</exclude-pattern>
+	    <exclude-pattern type="relative">src/components/com_weblinks/helpers/icon\.php</exclude-pattern>
+	    <exclude-pattern type="relative">src/components/com_weblinks/helpers/route\.php</exclude-pattern>
+    </rule>
+
+    <rule ref="PSR2.Classes.PropertyDeclaration.Underscore">
+	    <exclude-pattern type="relative">src/components/com_weblinks/src/Model/CategoriesModel\.php</exclude-pattern>
+	    <exclude-pattern type="relative">src/components/com_weblinks/src/Model/CategoryModel\.php</exclude-pattern>
+	    <exclude-pattern type="relative">src/components/com_weblinks/src/Model/WeblinkModel\.php</exclude-pattern>
+	    <exclude-pattern type="relative">src/administrator/components/com_weblinks/src/Table/*\.php</exclude-pattern>
+    </rule>
+
+    <rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
+        <exclude-pattern type="relative">src/administrator/components/com_weblinks/script\.php</exclude-pattern>
+	    <exclude-pattern type="relative">src/administrator/manifests/packages/weblinks/script\.php</exclude-pattern>
+    </rule>
+
+    <rule ref="PSR2.Methods.MethodDeclaration.Underscore">
+        <exclude-pattern type="relative">src/administrator/components/com_weblinks/src/Table/*\.php</exclude-pattern>
+    </rule>
+
+    <rule ref="Squiz.Classes.ValidClassName">
+        <exclude-pattern type="relative">src/administrator/components/com_weblinks/script\.php</exclude-pattern>
+	    <exclude-pattern type="relative">src/administrator/manifests/packages/weblinks/script\.php</exclude-pattern>
+    </rule>
+</ruleset>

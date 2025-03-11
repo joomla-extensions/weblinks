@@ -1,10 +1,12 @@
 # Weblinks for Joomla! Travis:
 
-Travis: [![Travis Build Status](https://travis-ci.org/joomla-extensions/weblinks.svg?branch=master)](https://travis-ci.org/joomla-extensions/weblinks) 
+Build Status
+---------------------
+| Drone-CI |
+| ------------- |
+| [![Build Status](https://ci.joomla.org/api/badges/joomla-extensions/weblinks/status.svg?ref=refs/heads/4.0-dev)](https://ci.joomla.org/joomla-extensions/weblinks) |
 
-Drone: [![Drone Build Status](http://213.160.72.75/api/badges/joomla-extensions/weblinks/status.svg)](http://213.160.72.75/joomla-extensions/weblinks)
-
-This repo is meant to hold the decoupled com_weblinks component and related code.
+Weblinks for Joomla! provides a component and accompanying extensions to create a directory of weblinks.
 
 # How to test a PR
 
@@ -16,7 +18,7 @@ Install the last release of [com_weblinks](https://github.com/joomla-extensions/
 Install the last release of [com_patchtester](https://github.com/joomla-extensions/patchtester/releases/latest) into your Joomla (weblinks is supported since Version 3.0.0 Alpha 2).
 Log into your site's administrator section, go to the Patch Tester Component Options (Components -> Patch Tester -> Options)
 Switch the `GitHub Repository` to `Joomla Weblinks Package`. For this you have to fill the field  `GitHub Project Owner` with `joomla-extensions` and the field `GitHub Project Repository` with `weblinks`.
-Click `Save & Close` and hit the `Fetch Data` Button to the the lastest pull requests
+Click `Save & Close` and hit the `Fetch Data` Button to the the latest pull requests
 Click `Apply Patch` to apply the proposed changes from the pull request.
 Click `Revert Patch` to revert an applied patch.
 
@@ -73,7 +75,7 @@ Löse Unterschiede auf: 100% (1232/1232), Fertig.
 Prüfe Konnektivität ... Fertig.
 ```
 
-Are you new with github? Here you can find informations about setting it up: https://help.github.com/articles/set-up-git/
+Are you new with github? Here you can find information about setting it up: https://help.github.com/articles/set-up-git/
 If you get an error you can try git clone https://github.com:joomla-extensions/weblinks.git instead of git clone git@github.com:joomla-extensions/weblinks.git
 
 
@@ -166,10 +168,10 @@ Bye
 class_name: AcceptanceTester
 modules:
     enabled:
-        - JoomlaBrowser
-        - AcceptanceHelper
+        - Joomla\Browser\JoomlaBrowser
+        - Helper\Acceptance
     config:
-        JoomlaBrowser:
+        Joomla\Browser\JoomlaBrowser:
             url: 'http://localhost/weblinks/tests/joomla-cms3'     # the url that points to the joomla installation at /tests/system/joomla-cms
             browser: 'firefox'
             window_size: 1024x768
@@ -197,12 +199,12 @@ env:
     tablet:
         modules:
             config:
-                JoomlaBrowser:
+                Joomla\Browser\JoomlaBrowser:
                     window_size: 768x1024
     phone:
         modules:
             config:
-                JoomlaBrowser:
+                Joomla\Browser\JoomlaBrowser:
                     window_size: 480x640
 ```
 
@@ -221,7 +223,7 @@ skipClone = false
 cmsPath = tests/joomla-cms3
 
 ; If you want to clone a different branch, you can set it here
-branch = staging
+branch = 4.0-dev
 
 ; (Linux / Mac only) If you want to set a different owner for the CMS root folder, you can set it here.
 localUser =
@@ -258,13 +260,13 @@ The tests in Weblinks Extension use Codeception Testing Framework, if you want t
 This is not required, and if in doubt you can just skip this section, but there may be some specific use cases when you need (or want) to override the default behaviour of RoboFile.php. To do this, copy `RoboFile.dist.ini` to `RoboFile.ini` and add options in INI format, one per line, e.g.
 
     skipClone = true
-    cmsPath = tests/joomla-cms3
+    cmsPath = tests/joomla
 
 The currently available options are as follows:
 
 * `skipClone`: set to `true` to avoid the cms repo being deleted and re-cloned at each test execution. Useful to save time and bandwidth while you're debugging your test environment. But please be aware that if you don't refresh the repo you'll have to manually check the `installation` folder is present and the `configuration.php` is not.
 * `cmsPath`: set to the local path (absolute or relative) where you'd like the test website to be installed. Default is `tests/joomla-cms3`.
-* `branch`: set to whatever existing branch from the `joomla-cms` project if you want to clone that specific branch. Default is `staging`.
+* `branch`: set to whatever existing branch from the `joomla-cms` project if you want to clone that specific branch. Default is `4.0-dev`.
 
 ## Additional options
 
@@ -282,7 +284,7 @@ Note: the first parameter is used by Travis and you should always set it to "0" 
 
 
 ## Video
-[Here](https://www.youtube.com/watch?v=fWO_Ed_wxpw) you can finde a video that shows the installation of com_weblinks for testing.
+[Here](https://www.youtube.com/watch?v=fWO_Ed_wxpw) you can find a video that shows the installation of com_weblinks for testing.
 
 
 # For Windows:

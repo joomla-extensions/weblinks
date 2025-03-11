@@ -30,35 +30,24 @@ Desktop.ini
 *~.nib
 *~
 
-# Phing
-build.properties
-phing-latest.phar
-
-# Github pages and Jekyll files
-/_site/
-/Gemfile
-/Gemfile.lock
-
 # composer
 composer.phar
-vendor/*
+vendor
 
 # Robo
 robo.phar
 RoboFile.ini
 
-# Test related files
-tests/acceptance.suite.yml
-tests/*/*Tester.php
-tests/_support/_generated/*TesterActions.php
-tests/joomla*
-tests/_output*
-selenium-server-standalone.jar
-codecept.phar
-selenium.log
-tests/cache
+#cypress
+node_modules
+/tests/cypress/output/screenshots
+!/tests/cypress/output/screenshots/.gitkeep
+/tests/cypress/output/videos
+!/tests/cypress/output/videos/.gitkeep
+cypress.config.js
+joomla
 
 # Package building related
-/dist
+dist
 jorobo.ini
 

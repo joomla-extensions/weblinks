@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package     Joomla.Administrator
  * @subpackage  com_weblinks
@@ -7,6 +8,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
-
-echo JLayoutHelper::render('joomla.edit.metadata', $this);
+// phpcs:disable PSR1.Files.SideEffects
+\defined('_JEXEC') or die;
+// phpcs:enable PSR1.Files.SideEffects
+use Joomla\CMS\Layout\LayoutHelper;
+echo LayoutHelper::render('joomla.edit.metadata', $this);

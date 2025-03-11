@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="3.5" method="upgrade">
 	<name>com_weblinks</name>
+	<element>com_weblinks</element>
 	<author>Joomla! Project</author>
 	<creationDate>##DATE##</creationDate>
 	<copyright>(C) 2005 - ##YEAR## Open Source Matters. All rights reserved.</copyright>
@@ -10,27 +11,24 @@
 	<version>##VERSION##</version>
 	<description>COM_WEBLINKS_XML_DESCRIPTION</description>
 	<scriptfile>script.php</scriptfile>
-	<namespace>Joomla\Component\Weblinks</namespace>
+	<namespace path="src">Joomla\Component\Weblinks</namespace>
 
 	<install>
 		<sql>
 			<file charset="utf8" driver="mysql">sql/install.mysql.sql</file>
 			<file charset="utf8" driver="postgresql">sql/install.postgresql.sql</file>
-			<file charset="utf8" driver="sqlsrv">sql/install.sqlsrv.sql</file>
 		</sql>
 	</install>
 	<uninstall>
 		<sql>
 			<file charset="utf8" driver="mysql">sql/uninstall.mysql.sql</file>
 			<file charset="utf8" driver="postgresql">sql/uninstall.postgresql.sql</file>
-			<file charset="utf8" driver="sqlsrv">sql/uninstall.sqlsrv.sql</file>
 		</sql>
 	</uninstall>
 	<update>
 		<schemas>
 			<schemapath type="mysql">sql/updates/mysql</schemapath>
 			<schemapath type="postgresql">sql/updates/postgresql</schemapath>
-			<schemapath type="sqlsrv">sql/updates/sqlsrv</schemapath>
 		</schemas>
 	</update>
 
@@ -55,6 +53,10 @@
 				alt="Weblinks/Links">com_weblinks_links</menu>
 			<menu link="option=com_categories&amp;extension=com_weblinks"
 				view="categories" img="class:weblinks-cat" alt="Weblinks/Categories">com_weblinks_categories</menu>
+			<menu link="option=com_fields&amp;view=fields&amp;context=com_weblinks.weblink"
+				  alt="Weblinks/Fields">com_weblinks_fields</menu>
+			<menu link="option=com_fields&amp;view=groups&amp;context=com_weblinks.weblink"
+				  alt="Weblinks/Field Groups">com_weblinks_field_groups</menu>
 		</submenu>
 		<files folder="administrator/components/com_weblinks">
 			##BACKEND_COMPONENT_FILES##
@@ -63,10 +65,5 @@
 			##BACKEND_LANGUAGE_FILES##
 		</languages>
 	</administration>
-	<api>
-		<files folder="api/components/com_weblinks">
-			##API_COMPONENT_FILES##
-		</files>
-	</api>
 </extension>
 

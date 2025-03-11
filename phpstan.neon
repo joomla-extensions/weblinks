@@ -1,0 +1,10 @@
+includes:
+    - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+parameters:
+  level: 0
+  paths:
+    - src
+  scanDirectories:
+    - joomla
+  ignoreErrors:
+  reportUnmatchedIgnoredErrors: false

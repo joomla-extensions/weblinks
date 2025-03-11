@@ -25,7 +25,7 @@
 		<file type="plugin" id="weblinks" group="webservices">plg_webservices_weblinks.zip</file>
 	</files>
 	<languages folder="language">
-		<language tag="en-GB">en-GB/en-GB.pkg_weblinks.sys.ini</language>
+		<language tag="en-GB">en-GB/pkg_weblinks.sys.ini</language>
 	</languages>
 	<updateservers>
 		<!-- Note: No spaces or linebreaks allowed between the server tags -->

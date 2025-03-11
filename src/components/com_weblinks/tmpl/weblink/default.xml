@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_WEBLINKS_WEBLINK_VIEW_DEFAULT_TITLE" option="COM_WEBLINKS_WEBLINK_VIEW_DEFAULT_OPTION">
+		<message>
+			<![CDATA[COM_WEBLINKS_WEBLINK_VIEW_DEFAULT_DESC]]>
+		</message>
+	</layout>
+
+	<fields name="request">
+		<fieldset
+			name="request"
+			addfieldprefix="Joomla\Component\Weblinks\Administrator\Field"
+		>
+
+			<field name="id"
+				type="modal_weblink"
+				label="COM_WEBLINKS_FIELD_SELECT_WEBLINK_LABEL"
+				required="true"
+				select="true"
+				new="true"
+				edit="true"
+				clear="true"
+			/>
+		</fieldset>
+	</fields>
+</metadata>

@@ -9,6 +9,7 @@
 	<authorUrl>www.joomla.org</authorUrl>
 	<version>##VERSION##</version>
 	<description>PLG_FINDER_WEBLINKS_XML_DESCRIPTION</description>
+	<namespace path="src">Joomla\Plugin\Finder\Weblinks</namespace>
 	<files>
 		##FILES##
 	</files>

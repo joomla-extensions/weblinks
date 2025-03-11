@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package     Joomla.Administrator
  * @subpackage  Weblinks
@@ -7,183 +8,210 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+// phpcs:disable PSR1.Files.SideEffects
+\defined('_JEXEC') or die;
+// phpcs:enable PSR1.Files.SideEffects
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Associations;
+use Joomla\CMS\Language\Multilanguage;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Router\Route;
+/** @var \Joomla\Component\Weblinks\Administrator\View\Weblinks\HtmlView $this */
 
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-
-JHtml::_('bootstrap.tooltip');
-JHtml::_('behavior.multiselect');
-JHtml::_('formbehavior.chosen', 'select');
-
-$user      = JFactory::getUser();
+HTMLHelper::_('behavior.multiselect');
+$user      = Factory::getApplication()->getIdentity();
 $userId    = $user->get('id');
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
-$canOrder  = $user->authorise('core.edit.state', 'com_weblinks.category');
 $saveOrder = $listOrder == 'a.ordering';
-$assoc     = JLanguageAssociations::isEnabled();
-
-if ($saveOrder)
-{
-	$saveOrderingUrl = 'index.php?option=com_weblinks&task=weblinks.saveOrderAjax&tmpl=component';
-	JHtml::_('sortablelist.sortable', 'weblinkList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+$assoc     = Associations::isEnabled();
+if ($saveOrder && !empty($this->items)) {
+    $saveOrderingUrl = 'index.php?option=com_weblinks&task=weblinks.saveOrderAjax&tmpl=component';
+    HTMLHelper::_('draggablelist.draggable');
 }
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_weblinks&view=weblinks'); ?>" method="post" name="adminForm" id="adminForm">
-    <div class="row">
-	<?php if (!empty($this->sidebar)) : ?>
-	<div id="j-sidebar-container" class="col-md-2">
-		<?php echo $this->sidebar; ?>
-	</div>
-	<div id="j-main-container" class="col-md-10">
-	<?php else : ?>
-	<div id="j-main-container">
-	<?php endif;?>
-		<?php echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this)); ?>
-		<div class="clearfix"> </div>
-		<?php if (empty($this->items)) : ?>
-			<div class="alert alert-no-items">
-				<?php echo JText::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
-			</div>
-		<?php else : ?>
-			<table class="table table-striped" id="weblinkList">
-				<thead>
-					<tr>
-						<th width="1%" class="nowrap center hidden-phone">
-							<?php echo JHtml::_('searchtools.sort', '', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-menu-2'); ?>
-						</th>
-						<th width="1%" class="nowrap center">
-							<?php echo JHtml::_('grid.checkall'); ?>
-						</th>
-						<th width="1%" class="nowrap center">
-							<?php echo JHtml::_('searchtools.sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
-						</th>
-						<th class="title">
-							<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
-						</th>
-						<th width="10%" class="nowrap hidden-phone">
-							<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_ACCESS', 'access_level', $listDirn, $listOrder); ?>
-						</th>
-						<th width="5%" class="nowrap center hidden-phone">
-							<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
-						</th>
-						<?php if ($assoc) : ?>
-						<th width="5%" class="nowrap hidden-phone hidden-tablet">
-							<?php echo JHtml::_('searchtools.sort', 'COM_WEBLINKS_HEADING_ASSOCIATION', 'association', $listDirn, $listOrder); ?>
-						</th>
-						<?php endif; ?>
-						<th width="10%" class="nowrap hidden-phone">
-							<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_LANGUAGE', 'language_title', $listDirn, $listOrder); ?>
-						</th>
-						<th width="1%" class="nowrap center hidden-phone">
-							<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
-						</th>
-					</tr>
-				</thead>
-				<tfoot>
-					<tr>
-						<td colspan="8">
-							<?php echo $this->pagination->getListFooter(); ?>
-						</td>
-					</tr>
-				</tfoot>
-				<tbody>
-				<?php foreach ($this->items as $i => $item) : ?>
-					<?php $ordering       = ($listOrder == 'a.ordering'); ?>
-					<?php $item->cat_link = JRoute::_('index.php?option=com_categories&extension=com_weblinks&task=edit&type=other&cid[]=' . $item->catid); ?>
-					<?php $canCreate      = $user->authorise('core.create',     'com_weblinks.category.' . $item->catid); ?>
-					<?php $canEdit        = $user->authorise('core.edit',       'com_weblinks.category.' . $item->catid); ?>
-					<?php $canCheckin     = $user->authorise('core.manage',     'com_checkin') || $item->checked_out == $user->id || $item->checked_out == 0; ?>
-					<?php $canEditOwn     = $user->authorise('core.edit.own',   'com_weblinks.category.' . $item->catid) && $item->created_by == $user->id; ?>
-					<?php $canChange      = $user->authorise('core.edit.state', 'com_weblinks.category.' . $item->catid) && $canCheckin; ?>
-					<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->catid; ?>">
-						<td class="order nowrap center hidden-phone">
-							<?php $iconClass = ''; ?>
-							<?php if (!$canChange) : ?>
-								<?php $iconClass = ' inactive'; ?>
-							<?php elseif (!$saveOrder) : ?>
-								<?php $iconClass = ' inactive tip-top hasTooltip" title="' . JHtml::tooltipText('JORDERINGDISABLED'); ?>
-							<?php endif; ?>
-							<span class="sortable-handler<?php echo $iconClass ?>">
-								<i class="icon-menu" aria-hidden="true"></i>
-							</span>
-							<?php if ($canChange && $saveOrder) : ?>
-								<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering; ?>" class="width-20 text-area-order " />
-							<?php endif; ?>
-						</td>
-						<td class="center">
-							<?php echo JHtml::_('grid.id', $i, $item->id); ?>
-						</td>
-						<td class="center">
-							<div class="btn-group">
-								<?php echo JHtml::_('jgrid.published', $item->state, $i, 'weblinks.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
-								<?php // Create dropdown items and render the dropdown list. ?>
-								<?php if ($canChange) : ?>
-									<?php JHtml::_('actionsdropdown.' . ((int) $item->state === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'weblinks'); ?>
-									<?php JHtml::_('actionsdropdown.' . ((int) $item->state === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'weblinks'); ?>
-									<?php echo JHtml::_('actionsdropdown.render', $this->escape($item->title)); ?>
-								<?php endif; ?>
-							</div>
-						</td>
-						<td class="nowrap has-context">
-							<?php if ($item->checked_out) : ?>
-								<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'weblinks.', $canCheckin); ?>
-							<?php endif; ?>
-							<?php if ($canEdit || $canEditOwn) : ?>
-								<a href="<?php echo JRoute::_('index.php?option=com_weblinks&task=weblink.edit&id=' . (int) $item->id); ?>">
-									<?php echo $this->escape($item->title); ?></a>
-							<?php else : ?>
-									<?php echo $this->escape($item->title); ?>
-							<?php endif; ?>
-							<span class="small">
-								<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
-							</span>
-							<div class="small">
-								<?php echo JText::_('JCATEGORY') . ': ' . $this->escape($item->category_title); ?>
-							</div>
-						</td>
-						<td class="small hidden-phone">
-							<?php echo $this->escape($item->access_level); ?>
-						</td>
-						<td class="center hidden-phone">
-							<?php echo $item->hits; ?>
-						</td>
-						<?php if ($assoc) : ?>
-							<td class="hidden-phone hidden-tablet">
-								<?php if ($item->association) : ?>
-									<?php echo JHtml::_('weblink.association', $item->id); ?>
-								<?php endif; ?>
-							</td>
-						<?php endif; ?>
-						<td class="small hidden-phone">
-							<?php echo JLayoutHelper::render('joomla.content.language', $item); ?>
-						</td>
-						<td class="center hidden-phone">
-							<?php echo (int) $item->id; ?>
-						</td>
-					</tr>
-					<?php endforeach; ?>
-				</tbody>
-			</table>
-			<?php // Load the batch processing form. ?>
-			<?php if ($user->authorise('core.create', 'com_content')
-				&& $user->authorise('core.edit', 'com_content')
-				&& $user->authorise('core.edit.state', 'com_content')) : ?>
-				<?php echo JHtml::_(
-					'bootstrap.renderModal',
-					'collapseModal',
-					array(
-						'title'  => JText::_('COM_WEBLINKS_BATCH_OPTIONS'),
-						'footer' => $this->loadTemplate('batch_footer'),
-					),
-					$this->loadTemplate('batch_body')
-				); ?>
-			<?php endif; ?>
-		<?php endif; ?>
+<form action="<?php echo Route::_('index.php?option=com_weblinks&view=weblinks'); ?>" method="post" name="adminForm" id="adminForm">
+ <div class="row">
+      <div class="col-md-12">
+            <div id="j-main-container" class="j-main-container">
+                <?php
+                // Search tools bar
+                echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]);
+                ?>
+                <?php if (empty($this->items)) :
+                    ?>
+                  <div class="alert alert-info">
+                        <span class="icon-info-circle" aria-hidden="true"></span><span class="visually-hidden"><?php echo Text::_('INFO'); ?></span>
+                        <?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
+                  </div>
+                    <?php
+                else :
+                    ?>
+                 <table class="table" id="weblinkList">
+                     <caption class="visually-hidden">
+                            <?php echo Text::_('COM_WEBLINKS_WEBLINKS_TABLE_CAPTION'); ?>,
+                            <span id="orderedBy"><?php echo Text::_('JGLOBAL_SORTED_BY'); ?> </span>,
+                            <span id="filteredBy"><?php echo Text::_('JGLOBAL_FILTERED_BY'); ?></span>
+                      </caption>
+                     <thead>
+                        <tr>
+                           <td class="w-1 text-center">
+                                <?php echo HTMLHelper::_('grid.checkall'); ?>
+                         </td>
+                          <th scope="col" class="w-1 text-center d-none d-md-table-cell">
+                                <?php echo HTMLHelper::_('searchtools.sort', '', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-sort'); ?>
+                          </th>
+                          <th scope="col" style="min-width:85px" class="w-1 text-center">
+                                <?php echo HTMLHelper::_('searchtools.sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
+                          </th>
+                          <th scope="col">
+                                <?php echo HTMLHelper::_('searchtools.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
+                           </th>
+                          <th scope="col" class="w-10 d-none d-md-table-cell">
+                                <?php echo HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_ACCESS', 'access_level', $listDirn, $listOrder); ?>
+                           </th>
+                          <th scope="col" class="w-10 d-none d-md-table-cell">
+                                <?php echo HTMLHelper::_('searchtools.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
+                         </th>
+                            <?php if ($assoc) :
+                                ?>
+                               <th scope="col" class="w-10">
+                                    <?php echo HTMLHelper::_('searchtools.sort', 'COM_WEBLINKS_HEADING_ASSOCIATION', 'association', $listDirn, $listOrder); ?>
+                               </th>
+                                <?php
+                            endif; ?>
+                            <?php if (Multilanguage::isEnabled()) :
+                                ?>
+                               <th scope="col" class="w-10 d-none d-md-table-cell">
+                                    <?php echo HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_LANGUAGE', 'language_title', $listDirn, $listOrder); ?>
+                               </th>
+                                <?php
+                            endif; ?>
+                          <th scope="col" class="w-5 d-none d-md-table-cell">
+                                <?php echo HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+                            </th>
+                      </tr>
+                      </thead>
+                        <tbody <?php if ($saveOrder) :
+                            ?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($listDirn); ?>" data-nested="true"<?php
+                               endif; ?>>
+                        <?php foreach ($this->items as $i => $item) :
+                            ?>
+                            <?php $item->cat_link = Route::_('index.php?option=com_categories&extension=com_weblinks&task=edit&type=other&cid[]=' . $item->catid); ?>
+                            <?php $canCreate      = $user->authorise('core.create', 'com_weblinks.category.' . $item->catid); ?>
+                            <?php $canEdit        = $user->authorise('core.edit', 'com_weblinks.category.' . $item->catid); ?>
+                            <?php $canCheckin     = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $user->id || !$item->checked_out; ?>
+                            <?php $canEditOwn     = $user->authorise('core.edit.own', 'com_weblinks.category.' . $item->catid) && $item->created_by == $user->id; ?>
+                            <?php $canChange      = $user->authorise('core.edit.state', 'com_weblinks.category.' . $item->catid) && $canCheckin; ?>
+                            <tr class="row<?php echo $i % 2; ?>" data-draggable-group="<?php echo $item->catid; ?>">
+                               <td class="text-center">
+                                    <?php echo HTMLHelper::_('grid.id', $i, $item->id, false, 'cid', 'cb', $item->title); ?>
+                              </td>
+                              <td class="text-center d-none d-md-table-cell">
+                                    <?php
+                                    $iconClass = '';
+                                    if (!$canChange) {
+                                        $iconClass = ' inactive';
+                                    } elseif (!$saveOrder) {
+                                        $iconClass = ' inactive" title="' . Text::_('JORDERINGDISABLED');
+                                    }
+                                    ?>
+                                    <span class="sortable-handler<?php echo $iconClass; ?>">
+                                       <span class="icon-ellipsis-v" aria-hidden="true"></span>
+                                   </span>
+                                    <?php if ($canChange && $saveOrder) :
+                                        ?>
+                                       <input type="text" name="order[]" size="5"
+                                               value="<?php echo $item->ordering; ?>" class="width-20 text-area-order hidden">
+                                        <?php
+                                    endif; ?>
+                              </td>
+                              <td class="text-center">
+                                    <?php echo HTMLHelper::_('jgrid.published', $item->state, $i, 'weblinks.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
+                              </td>
+                              <th scope="row" class="has-context">
+                                   <div>
+                                        <?php if ($item->checked_out) :
+                                            ?>
+                                            <?php echo HTMLHelper::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'weblinks.', $canCheckin); ?>
+                                            <?php
+                                        endif; ?>
+                                        <?php if ($canEdit || $canEditOwn) :
+                                            ?>
+                                            <a href="<?php echo Route::_('index.php?option=com_weblinks&task=weblink.edit&id=' . (int) $item->id); ?>" title="<?php echo Text::_('JACTION_EDIT'); ?> <?php echo $this->escape($item->title); ?>">
+                                                <?php echo $this->escape($item->title); ?></a>
+                                            <?php
+                                        else :
+                                            ?>
+                                            <?php echo $this->escape($item->title); ?>
+                                            <?php
+                                        endif; ?>
+                                        <span class="small">
+                                            <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
+                                       </span>
+                                        <div class="small">
+                                            <?php echo Text::_('JCATEGORY') . ': ' . $this->escape($item->category_title); ?>
+                                      </div>
+                                 </div>
+                             </th>
+                              <td class="small d-none d-md-table-cell">
+                                    <?php echo $this->escape($item->access_level); ?>
+                                </td>
+                              <td class="d-none d-md-table-cell">
+                                    <?php echo $item->hits; ?>
+                             </td>
+                                <?php if ($assoc) :
+                                    ?>
+                                   <td class="hidden-phone hidden-tablet">
+                                        <?php if ($item->association) :
+                                            ?>
+                                            <?php echo HTMLHelper::_('weblinksadministrator.association', $item->id); ?>
+                                            <?php
+                                        endif; ?>
+                                    </td>
+                                    <?php
+                                endif; ?>
+                                <?php if (Multilanguage::isEnabled()) :
+                                    ?>
+                                   <td class="small d-none d-md-table-cell">
+                                        <?php echo LayoutHelper::render('joomla.content.language', $item); ?>
+                                    </td>
+                                    <?php
+                                endif; ?>
+                              <td class="d-none d-md-table-cell">
+                                    <?php echo (int) $item->id; ?>
+                             </td>
+                          </tr>
+                            <?php
+                        endforeach; ?>
+                     </tbody>
+                   </table>
 
-		<input type="hidden" name="task" value="" />
-		<input type="hidden" name="boxchecked" value="0" />
-		<?php echo JHtml::_('form.token'); ?>
-	</div>
-    </div>
+                    <?php // Load the pagination. ?>
+                    <?php echo $this->pagination->getListFooter(); ?>
+
+                    <?php // Load the batch processing form. ?>
+                    <?php if (
+                    $user->authorise('core.create', 'com_weblinks')
+                        && $user->authorise('core.edit', 'com_weblinks')
+                        && $user->authorise('core.edit.state', 'com_weblinks')
+) :
+    ?>
+                        <?php echo HTMLHelper::_('bootstrap.renderModal', 'collapseModal', [
+                                'title' => Text::_('COM_WEBLINKS_BATCH_OPTIONS'),
+                                'footer' => $this->loadTemplate('batch_footer')
+                            ], $this->loadTemplate('batch_body')); ?>
+                    <?php
+                    endif; ?>
+                    <?php
+                endif; ?>
+
+             <input type="hidden" name="task" value="">
+             <input type="hidden" name="boxchecked" value="0">
+                <?php echo HTMLHelper::_('form.token'); ?>
+           </div>
+     </div>
+ </div>
 </form>

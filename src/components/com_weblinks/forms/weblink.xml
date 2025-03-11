@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset addfieldprefix="Joomla\Component\Categories\Administrator\Field">
+		<field
+			name="id"
+			type="hidden"
+			label="WEBLINK_ID_LABEL"
+			readonly="true"
+			default="0"
+		/>
+
+		<field
+			id="contenthistory"
+			name="contenthistory"
+			type="contenthistory"
+			data-typeAlias="com_weblinks.weblink"
+			label="JTOOLBAR_VERSIONS"
+		/>
+
+		<field
+			name="title"
+			type="text"
+			label="JGLOBAL_TITLE"
+			required="true"
+		/>
+
+		<field
+			name="alias"
+			type="text"
+			label="JFIELD_ALIAS_LABEL"
+			description="JFIELD_ALIAS_DESC"
+			hint="JFIELD_ALIAS_PLACEHOLDER"
+		/>
+
+		<field
+			name="description"
+			type="editor"
+			label="JGLOBAL_DESCRIPTION"
+			buttons="true"
+			hide="pagebreak,readmore"
+			filter="safehtml"
+			asset_id="com_weblinks"
+		/>
+
+		<field
+			name="state"
+			type="list"
+			label="JSTATUS"
+			class="form-select-color-state"
+			size="1"
+			default="1"
+			validate="options"
+			>
+			<option value="1">JPUBLISHED</option>
+			<option value="0">JUNPUBLISHED</option>
+		</field>
+
+		<field
+			name="catid"
+			type="categoryedit"
+			label="JCATEGORY"
+			extension="com_weblinks"
+			required="true"
+		/>
+
+		<field
+			name="url"
+			type="url"
+			label="COM_WEBLINKS_FIELD_URL_LABEL"
+			filter="url"
+			required="true"
+		/>
+
+		<field
+			name="language"
+			type="contentlanguage"
+			label="JFIELD_LANGUAGE_LABEL"
+			>
+			<option value="*">JALL</option>
+		</field>
+
+		<field
+			name="tags"
+			type="tag"
+			label="JTAG"
+			multiple="true"
+		/>
+
+		<field
+			name="version_note"
+			type="text"
+			label="JGLOBAL_FIELD_VERSION_NOTE_LABEL"
+			maxlength="255"
+		/>
+
+		<field
+			name="captcha"
+			type="captcha"
+			label="COM_WEBLINKS_CAPTCHA_LABEL"
+			validate="captcha"
+			namespace="weblink"
+		/>
+	</fieldset>
+
+	<fields
+		name="images"
+		>
+		<fieldset
+			name="images"
+			label="JGLOBAL_FIELDSET_IMAGE_OPTIONS"
+			>
+			<field
+				name="image_first"
+				type="media"
+				label="COM_WEBLINKS_FIELD_FIRST_LABEL"
+			/>
+
+			<field
+				name="float_first"
+				type="list"
+				label="COM_WEBLINKS_FLOAT_FIRST_LABEL"
+				useglobal="true"
+				>
+				<option value="right">COM_WEBLINKS_RIGHT</option>
+				<option value="left">COM_WEBLINKS_LEFT</option>
+				<option value="none">COM_WEBLINKS_NONE</option>
+			</field>
+
+			<field
+				name="image_first_alt"
+				type="text"
+				label="COM_WEBLINKS_FIELD_IMAGE_ALT_LABEL"
+			/>
+
+			<field
+				name="image_first_alt_empty"
+				type="checkbox"
+				label="COM_WEBLINKS_FIELD_IMAGE_ALT_EMPTY_LABEL"
+				description="COM_WEBLINKS_FIELD_IMAGE_ALT_EMPTY_DESC"
+			/>
+
+			<field
+				name="image_first_caption"
+				type="text"
+				label="COM_WEBLINKS_FIELD_IMAGE_CAPTION_LABEL"
+			/>
+
+			<field
+				name="spacer1"
+				type="spacer"
+				hr="true"
+			/>
+
+			<field
+				name="image_second"
+				type="media"
+				label="COM_WEBLINKS_FIELD_SECOND_LABEL"
+			/>
+
+			<field
+				name="float_second"
+				type="list"
+				label="COM_WEBLINKS_FLOAT_SECOND_LABEL"
+				useglobal="true"
+				>
+				<option value="right">COM_WEBLINKS_RIGHT</option>
+				<option value="left">COM_WEBLINKS_LEFT</option>
+				<option value="none">COM_WEBLINKS_NONE</option>
+			</field>
+
+			<field
+				name="image_second_alt"
+				type="text"
+				label="COM_WEBLINKS_FIELD_IMAGE_ALT_LABEL"
+			/>
+
+			<field
+				name="image_second_alt_empty"
+				type="checkbox"
+				label="COM_WEBLINKS_FIELD_IMAGE_ALT_EMPTY_LABEL"
+				description="COM_WEBLINKS_FIELD_IMAGE_ALT_EMPTY_DESC"
+			/>
+
+			<field
+				name="image_second_caption"
+				type="text"
+				label="COM_WEBLINKS_FIELD_IMAGE_CAPTION_LABEL"
+			/>
+		</fieldset>
+	</fields>
+
+	<fields name="metadata">
+		<fieldset
+			name="jmetadata"
+			label="JGLOBAL_FIELDSET_METADATA_OPTIONS"
+			>
+			<field
+				name="robots"
+				type="hidden"
+				label="JFIELD_METADATA_ROBOTS_LABEL"
+				filter="unset"
+				>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="index, follow" />
+				<option value="noindex, follow" />
+				<option value="index, nofollow" />
+				<option value="noindex, nofollow" />
+			</field>
+
+			<field
+				name="author"
+				type="hidden"
+				label="JAUTHOR"
+				filter="unset"
+			/>
+
+			<field
+				name="rights"
+				type="hidden"
+				label="JFIELD_META_RIGHTS_LABEL"
+				filter="unset"
+			/>
+
+			<field
+				name="xreference"
+				type="hidden"
+				label="COM_CONTENT_FIELD_XREFERENCE_LABEL"
+				filter="unset"
+			/>
+		</fieldset>
+	</fields>
+</form>

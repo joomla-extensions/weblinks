@@ -22,7 +22,7 @@ class AdministratorSmartSearchCest
 	 */
 	public function administratorDisableEditor(\Step\Acceptance\weblink $I, $scenario)
 	{
-		$scenario->skip('Temporarilly skipped, see: https://github.com/joomla-extensions/weblinks/issues/239');
+		$scenario->skip('Temporarily skipped, see: https://github.com/joomla-extensions/weblinks/issues/239');
 		$I->am('Administrator');
 		$I->wantToTest('Disable the editor before the tests proper');
 
@@ -62,7 +62,7 @@ class AdministratorSmartSearchCest
 	 */
 	public function administratorEnableSmartsearchWeblinksPlugin(\Step\Acceptance\weblink $I, $scenario)
 	{
-		$scenario->skip('Temporarilly skipped, see: https://github.com/joomla-extensions/weblinks/issues/239');
+		$scenario->skip('Temporarily skipped, see: https://github.com/joomla-extensions/weblinks/issues/239');
 		$I->am('Administrator');
 		$I->wantToTest('Enabling the Smart Search Weblinks plugin');
 
@@ -83,7 +83,7 @@ class AdministratorSmartSearchCest
 	 */
 	public function administratorPurgeIndex(\Step\Acceptance\weblink $I, $scenario)
 	{
-		$scenario->skip('Temporarilly skipped, see: https://github.com/joomla-extensions/weblinks/issues/239');
+		$scenario->skip('Temporarily skipped, see: https://github.com/joomla-extensions/weblinks/issues/239');
 		$I->am('Administrator');
 		$I->wantToTest('Purging the index');
 
@@ -101,7 +101,7 @@ class AdministratorSmartSearchCest
 
 	public function administratorCreateWeblink(\Step\Acceptance\weblink $I, $scenario)
 	{
-		$scenario->skip('Temporarilly skipped, see: https://github.com/joomla-extensions/weblinks/issues/239');
+		$scenario->skip('Temporarily skipped, see: https://github.com/joomla-extensions/weblinks/issues/239');
 		$I->doAdministratorLogin();
 
 		$I->createWeblink($this->title, $this->url);
@@ -112,7 +112,7 @@ class AdministratorSmartSearchCest
 	 */
 	public function administratorRunTheIndexer(\Step\Acceptance\weblink $I, $scenario)
 	{
-		$scenario->skip('Temporarilly skipped, see: https://github.com/joomla-extensions/weblinks/issues/239');
+		$scenario->skip('Temporarily skipped, see: https://github.com/joomla-extensions/weblinks/issues/239');
 		$I->am('Administrator');
 		$I->wantToTest('Smart Search Indexer');
 
@@ -132,7 +132,7 @@ class AdministratorSmartSearchCest
 	 */
 	public function administratorDisableContentPlugin(\Step\Acceptance\weblink $I, $scenario)
 	{
-		$scenario->skip('Temporarilly skipped, see: https://github.com/joomla-extensions/weblinks/issues/239');
+		$scenario->skip('Temporarily skipped, see: https://github.com/joomla-extensions/weblinks/issues/239');
 		$I->am('Administrator');
 		$I->wantToTest('Disabling the Smart Search content plugin, ready for the next test run');
 
@@ -153,7 +153,7 @@ class AdministratorSmartSearchCest
 	 */
 	public function administratorDisableSmartsearchWeblinksPlugin(\Step\Acceptance\weblink $I, $scenario)
 	{
-		$scenario->skip('Temporarilly skipped, see: https://github.com/joomla-extensions/weblinks/issues/239');
+		$scenario->skip('Temporarily skipped, see: https://github.com/joomla-extensions/weblinks/issues/239');
 		$I->am('Administrator');
 		$I->wantToTest('Disabling the Smart Search content plugin, ready for the next test run');
 
@@ -171,7 +171,7 @@ class AdministratorSmartSearchCest
 
 	public function cleanUp(\Step\Acceptance\weblink $I, $scenario)
 	{
-		$scenario->skip('Temporarilly skipped, see: https://github.com/joomla-extensions/weblinks/issues/239');
+		$scenario->skip('Temporarily skipped, see: https://github.com/joomla-extensions/weblinks/issues/239');
 		$I->doAdministratorLogin();
 
 		$I->administratorDeleteWeblink($this->title);
