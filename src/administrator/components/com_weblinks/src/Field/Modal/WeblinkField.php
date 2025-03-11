@@ -60,7 +60,7 @@ class WeblinkField extends FormField
         // Script to proxy the select modal function to the modal-fields.js file.
         if ($allowSelect) {
             static $scriptSelect = null;
-            if (is_null($scriptSelect)) {
+            if (\is_null($scriptSelect)) {
                 $scriptSelect = [];
             }
 

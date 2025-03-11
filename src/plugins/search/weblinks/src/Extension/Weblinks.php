@@ -98,7 +98,7 @@ final class Weblinks extends CMSPlugin
         $searchText = $text;
 
         if (
-            is_array($areas)
+            \is_array($areas)
             && !array_intersect($areas, array_keys($this->onContentSearchAreas()))
         ) {
             return [];

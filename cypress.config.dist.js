@@ -1,13 +1,16 @@
-const { defineConfig } = require('cypress')
+import { defineConfig } from 'cypress';
+import setupPlugins from './tests/cypress/plugins/index.mjs';
 
-module.exports = defineConfig({
+export default defineConfig({
   fixturesFolder: 'tests/cypress/fixtures',
   videosFolder: 'tests/cypress/output/videos',
   screenshotsFolder: 'tests/cypress/output/screenshots',
   viewportHeight: 1000,
   viewportWidth: 1200,
-  e2e: {
-    setupNodeEvents(on, config) {},
+  e2e:  {
+    setupNodeEvents(on, config) {
+      setupPlugins(on, config);
+    },
     baseUrl: 'http://localhost/',
     specPattern: [
       'tests/cypress/integration/install/*.cy.{js,jsx,ts,tsx}',
@@ -26,11 +29,12 @@ module.exports = defineConfig({
     email: 'admin@example.com',
     username: 'ci-admin',
     password: 'joomla-17082005',
-    db_type: 'MySQLi',
-    db_host: 'localhost',
-    db_name: 'test_joomla',
-    db_user: 'root',
-    db_password: 'joomla_ut',
-    db_prefix: 'jos_',
+    db_type: process.env.DB_TYPE || 'MySQLi',
+    db_host: process.env.DB_HOST || 'mysql',
+    db_port: process.env.DB_PORT || '',
+    db_name: process.env.DB_NAME || 'test_joomla',
+    db_user: process.env.DB_USER || 'joomla_ut',
+    db_password: process.env.DB_PASSWORD || 'joomla_ut',
+    db_prefix: process.env.DB_PREFIX || 'mysql_',
   },
 })

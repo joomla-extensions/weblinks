@@ -14,8 +14,11 @@ namespace Joomla\Component\Weblinks\Administrator\Helper;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 use Joomla\CMS\Association\AssociationExtensionHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Associations;
+use Joomla\CMS\Table\Category;
 use Joomla\CMS\Table\Table;
+use Joomla\Component\Weblinks\Administrator\Table\WeblinkTable;
 use Joomla\Component\Weblinks\Site\Helper\AssociationHelper;
 
 /**
@@ -111,11 +114,11 @@ class AssociationsHelper extends AssociationExtensionHelper
         $table = null;
         switch ($typeName) {
             case 'weblink':
-                $table = Table::getInstance('WeblinkTable', 'Joomla\\Component\\Weblinks\\Administrator\\Table\\');
+                $table = new WeblinkTable(Factory::getDbo());
 
                 break;
             case 'category':
-                $table = Table::getInstance('Category', 'Joomla\\CMS\\Table\\');
+                $table = new Category(Factory::getDbo());
 
                 break;
         }
@@ -144,7 +147,7 @@ class AssociationsHelper extends AssociationExtensionHelper
         $joins   = [];
         $support = $this->getSupportTemplate();
         $title   = '';
-        if (in_array($typeName, $this->itemTypes)) {
+        if (\in_array($typeName, $this->itemTypes)) {
             switch ($typeName) {
                 case 'weblink':
                     $support['state']     = true;

@@ -22,6 +22,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\Component\Weblinks\Administrator\Model\WeblinkModel;
 
 /**
  * View to edit a weblink.
@@ -60,12 +61,14 @@ class HtmlView extends BaseHtmlView
      */
     public function display($tpl = null)
     {
-        $this->state = $this->get('State');
-        $this->item  = $this->get('Item');
-        $this->form  = $this->get('Form');
+        /** @var WeblinkModel $model */
+        $model       = $this->getModel();
+        $this->state = $model->getState();
+        $this->item  = $model->getItem();
+        $this->form  = $model->getForm();
 
         // Check for errors.
-        if (count($errors = $this->get('Errors'))) {
+        if (\count($errors = $model->getErrors())) {
             throw new GenericDataException(implode("\n", $errors), 500);
         }
 
@@ -101,7 +104,7 @@ class HtmlView extends BaseHtmlView
 
         $user       = $this->getCurrentUser();
         $isNew      = ($this->item->id == 0);
-        $checkedOut = $this->item->checked_out && $this->item->checked_out !== $user->get('id');
+        $checkedOut = $this->item->checked_out && $this->item->checked_out !== $user->id;
 
         // Since we don't track these assets at the item level, use the category id.
         $canDo = ContentHelper::getActions('com_weblinks', 'category', $this->item->catid);
@@ -111,7 +114,7 @@ class HtmlView extends BaseHtmlView
         // Build the actions for new and existing records.
         if ($isNew) {
             // For new records, check the create permission.
-            if (count($user->getAuthorisedCategories('com_weblinks', 'core.create')) > 0) {
+            if (\count($user->getAuthorisedCategories('com_weblinks', 'core.create')) > 0) {
                 ToolbarHelper::apply('weblink.apply');
 
                 ToolbarHelper::saveGroup(

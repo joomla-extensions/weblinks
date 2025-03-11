@@ -269,7 +269,7 @@ class WeblinkController extends FormController
 
         // Check whether item access level allows access.
         $groups = $this->app->getIdentity()->getAuthorisedViewLevels();
-        if (!in_array($link->access, $groups)) {
+        if (!\in_array($link->access, $groups)) {
             throw new \Exception(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
@@ -284,7 +284,7 @@ class WeblinkController extends FormController
         }
 
         // Check whether item access level allows access.
-        if (!in_array($category->access, $groups)) {
+        if (!\in_array($category->access, $groups)) {
             throw new \Exception(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
