@@ -40,7 +40,7 @@ describe('Test in backend that the weblinks component', () => {
       cy.clickToolbarButton('Action');
       cy.contains('Publish').click();
 
-      cy.checkForSystemMessage('Web Link published.');
+      cy.checkForSystemMessage('Web Link published');
     });
   });
 
@@ -52,7 +52,7 @@ describe('Test in backend that the weblinks component', () => {
       cy.clickToolbarButton('Action');
       cy.contains('Unpublish').click();
 
-      cy.checkForSystemMessage('Web Link unpublished.');
+      cy.checkForSystemMessage('Web Link unpublished');
     });
   });
 
@@ -64,7 +64,7 @@ describe('Test in backend that the weblinks component', () => {
       cy.clickToolbarButton('Action');
       cy.contains('Trash').click();
 
-      cy.checkForSystemMessage('Web Link trashed.');
+      cy.checkForSystemMessage('Web Link trashed');
     });
   });
 
@@ -77,7 +77,7 @@ describe('Test in backend that the weblinks component', () => {
       cy.clickToolbarButton('empty trash');
       cy.clickDialogConfirm(true);
 
-      cy.checkForSystemMessage('Web Link deleted.');
+      cy.checkForSystemMessage('Web Link deleted');
     });
   });
 });
