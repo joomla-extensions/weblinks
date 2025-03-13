@@ -89,4 +89,59 @@ describe('Test in backend that the weblinks component', () => {
       cy.checkForSystemMessage('Web Link deleted');
     });
   });
+
+  it('Verifies all web link tabs are present and functional', () => {
+    // Visit the category edit page
+    cy.visit('/administrator/index.php?option=com_weblinks&view=weblink&layout=edit');
+
+    // Define the expected tabs
+    const expectedTabs = [
+      'New Web Link',
+      'Images',
+      'Publishing',
+      'Options'
+    ];
+
+    // Verify tab structure and visibility
+    cy.get('#myTab div[role="tablist"] > button[role="tab"]:visible')
+      .should('have.length', expectedTabs.length)
+      .each(($tab, index) => {
+        // Check tab text and visibility
+        cy.wrap($tab)
+          .should('be.visible')
+          .and('contain.text', expectedTabs[index])
+          .and('have.attr', 'role', 'tab');
+      });
+
+    // Verify initial active tab (New Web Link)
+    cy.get('#myTab div[role="tablist"] > button[role="tab"]:visible:nth-child(1)')
+      .should('have.attr', 'aria-expanded', 'true')
+      .and('contain.text', 'New Web Link');
+
+    // Verify tab panels exist
+    const tabPanels = [
+      'details',
+      'images',
+      'publishing',
+      'attrib-jbasic'
+    ];
+
+    tabPanels.forEach(panelId => {
+      cy.get(`#${panelId}`)
+        .should('exist')
+        .and('have.attr', 'role', 'tabpanel');
+    });
+
+    // Optional: Test tab switching
+    expectedTabs.forEach((tabText, index) => {
+      if (index > 0) { // Skip first tab (already active)
+        cy.contains('#myTab div[role="tablist"] > button[role="tab"]:visible', tabText)
+          .click()
+          .should('have.attr', 'aria-expanded', 'true');
+
+        cy.get(`#${tabPanels[index]}`)
+          .should('be.visible');
+      }
+    });
+  });
 });
