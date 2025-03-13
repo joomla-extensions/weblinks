@@ -43,5 +43,31 @@ describe('Test in frontend that the weblinks', () => {
     // Check if the weblink is successfully saved
     cy.checkForSystemMessage('Web Link successfully submitted.')
   });
+
+  it('Visit a weblink and check the hits is incremented by one', () => {
+    cy.db_createWeblink({ title: 'automated test weblink', url: Cypress.config('baseUrl') })
+      .then((weblink) => {
+        cy.visit(`/index.php?option=com_weblinks&view=category&id=${weblink.catid}`);
+
+        // Get the hits before clicking the link
+        cy.get('div.list-hits.badge.bg-info.float-end').invoke('text').then((text) => {
+          const hitsBefore = parseInt(text.match(/\d+/)[0], 10);
+
+          // Click the link with the specific text
+          cy.contains('a', 'automated test weblink').invoke('removeAttr', 'target').click();
+
+          // Go back to the list page
+          cy.go('back');
+
+          // Get the hits after clicking the link
+          cy.get('div.list-hits.badge.bg-info.float-end').invoke('text').then((text) => {
+            const hitsAfter = parseInt(text.match(/\d+/)[0], 10);
+
+            // Verify that the hits have increased by 1
+            expect(hitsAfter).to.equal(hitsBefore + 1);
+          });
+        });
+      });
+  });
 });
 
