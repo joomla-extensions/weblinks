@@ -41,7 +41,7 @@ describe('Test in frontend that the weblinks', () => {
     cy.get('button.btn.btn-primary[onclick="Joomla.submitbutton(\'weblink.save\')"]').click();
 
     // Check if the weblink is successfully saved
-    cy.checkForSystemMessage('Web link successfully saved.')
+    cy.checkForSystemMessage('Web Link successfully submitted.')
   });
 });
 
