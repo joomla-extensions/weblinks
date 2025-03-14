@@ -34,4 +34,17 @@ describe('Test in backend that the Smart Search', () => {
 
     cy.db_enableExtension('0', 'plg_finder_weblinks');
   });
+
+  it('can delete the indexed weblink items', () => {
+    // Visit the smart search page
+    cy.visit('/administrator/index.php?option=com_finder&view=index');
+    cy.searchForItem('Test weblink');
+    cy.checkAllResults();
+    cy.clickToolbarButton('Action');
+    cy.contains('Delete').click();
+    cy.clickDialogConfirm(true);
+    cy.checkForSystemMessage('items deleted.');
+    cy.contains('Test weblink').should('not.exist');
+    cy.contains('Test weblink category').should('not.exist');
+  });
 });
