@@ -14,7 +14,6 @@ namespace Joomla\Plugin\Finder\Weblinks\Extension;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use Joomla\CMS\Categories\Categories;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Event\Finder as FinderEvent;
 use Joomla\CMS\Table\Table;
@@ -24,10 +23,8 @@ use Joomla\Component\Finder\Administrator\Indexer\Indexer;
 use Joomla\Component\Finder\Administrator\Indexer\Result;
 use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
 use Joomla\Database\DatabaseAwareTrait;
-use Joomla\Database\DatabaseInterface;
-use Joomla\Database\QueryInterface;
 use Joomla\Database\DatabaseQuery;
-use Joomla\Event\DispatcherInterface;
+use Joomla\Database\QueryInterface;
 use Joomla\Event\SubscriberInterface;
 use Joomla\Registry\Registry;
 
@@ -119,9 +116,7 @@ final class Weblinks extends Adapter implements SubscriberInterface
      * changed. This is fired when the item category is published or unpublished
      * from the list view.
      *
-     * @param   string   $extension  The extension whose category has been updated.
-     * @param   array    $pks        An array of primary key ids of the content that has changed state.
-     * @param   integer  $value      The value of the state that the content has been changed to.
+     * @param   FinderEvent\AfterCategoryChangeStateEvent   $event  The event instance.
      *
      * @return  void
      *
@@ -138,10 +133,11 @@ final class Weblinks extends Adapter implements SubscriberInterface
     /**
      * Method to remove the link information for items that have been deleted.
      *
-     * @param   string  $context  The context of the action being performed.
-     * @param   Table   $table    A JTable object containing the record to be deleted.
+     * This event will fire when weblinks are deleted and when an indexed item is deleted.
      *
-     * @return  boolean  True on success.
+     * @param   FinderEvent\AfterDeleteEvent   $event  The event instance.
+     *
+     * @return  void
      *
      * @throws  \Exception on database error.
      * @since   2.5
@@ -169,11 +165,9 @@ final class Weblinks extends Adapter implements SubscriberInterface
      * It also makes adjustments if the access level of a weblink item or
      * the category to which it belongs has been changed.
      *
-     * @param   string   $context  The context of the content passed to the plugin.
-     * @param   Table    $row      A JTable object.
-     * @param   boolean  $isNew    True if the content has just been created.
+     * @param   FinderEvent\AfterSaveEvent   $event  The event instance.
      *
-     * @return  boolean  True on success.
+     * @return  void
      *
      * @throws  \Exception on database error.
      * @since   2.5
@@ -209,11 +203,9 @@ final class Weblinks extends Adapter implements SubscriberInterface
      * Smart Search before content save method.
      * This event is fired before the data is actually saved.
      *
-     * @param   string   $context  The context of the content passed to the plugin.
-     * @param   Table    $row      A JTable object.
-     * @param   boolean  $isNew    True if the content is just about to be created.
+     * @param   FinderEvent\BeforeSaveEvent   $event  The event instance.
      *
-     * @return  boolean  True on success.
+     * @return  void
      *
      * @throws  \Exception on database error.
      * @since   2.5
@@ -246,9 +238,7 @@ final class Weblinks extends Adapter implements SubscriberInterface
      * from outside the edit screen. This is fired when the item is published,
      * unpublished, archived, or unarchived from the list view.
      *
-     * @param   string   $context  The context for the content passed to the plugin.
-     * @param   array    $pks      An array of primary key ids of the content that has changed state.
-     * @param   integer  $value    The value of the state that the content has been changed to.
+     * @param   FinderEvent\AfterChangeStateEvent   $event  The event instance.
      *
      * @return  void
      *
