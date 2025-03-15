@@ -17,7 +17,7 @@ describe('Test that the weblinks extension package', () => {
         cy.log(cy.get('td').eq(2))
         cy.get('td').eq(2).should('contain', 'Site'); // Location column
         cy.get('td').eq(3).should('contain', 'Plugin'); // Type column
-        cy.get('td').eq(7).should('contain', 'finder'); // ID column
+        cy.get('td').eq(7).should('contain', 'finder'); // Folder column
       });
   });
 
@@ -32,15 +32,11 @@ describe('Test that the weblinks extension package', () => {
         cy.log(cy.get('td').eq(2))
         cy.get('td').eq(2).should('contain', 'Site'); // Location column
         cy.get('td').eq(3).should('contain', 'Module'); // Type column
-        cy.get('td').eq(7).should('contain', 'N/A'); // ID column
+        cy.get('td').eq(7).should('contain', 'N/A'); // Folder column
       });
   });
 
   it('has System plugin installed', () => {
-    //cy.visit('/administrator/index.php?option=com_installer&view=manage&filter=');
-    cy.setFilter('core', 'Non-core Extensions');
-    cy.searchForItem('Web Links');
-
     // Check if the row with "System - Web Links" exists
     cy.get('#manageList tbody tr') // Target the table rows
       .contains('th', 'System - Web Links') // Check the <th> in the row
@@ -51,7 +47,7 @@ describe('Test that the weblinks extension package', () => {
         cy.log(cy.get('td').eq(2))
         cy.get('td').eq(2).should('contain', 'Site'); // Location column
         cy.get('td').eq(3).should('contain', 'Plugin'); // Type column
-        cy.get('td').eq(7).should('contain', 'system'); // ID column
+        cy.get('td').eq(7).should('contain', 'system'); // Folder column
       });
   });
 
@@ -66,7 +62,22 @@ describe('Test that the weblinks extension package', () => {
         cy.log(cy.get('td').eq(2))
         cy.get('td').eq(2).should('contain', 'Administrator'); // Location column
         cy.get('td').eq(3).should('contain', 'Component'); // Type column
-        cy.get('td').eq(7).should('contain', 'N/A'); // ID column
+        cy.get('td').eq(7).should('contain', 'N/A'); // Folder column
+      });
+  });
+
+  it('has Web Links Package installed', () => {
+    // Check if the row with "Web Links Package" exists
+    cy.get('#manageList tbody tr') // Target the table rows
+      .contains('th', 'Web Links Extension Package') // Check the <th> in the row
+      .parents('tr') // Navigate to the parent row
+      .should('exist') // Confirm the row exists
+      // Verify other cells in the same row
+      .within(() => {
+        cy.log(cy.get('td').eq(2))
+        cy.get('td').eq(2).should('contain', 'Site'); // Location column
+        cy.get('td').eq(3).should('contain', 'Package'); // Type column
+        cy.get('td').eq(7).should('contain', 'N/A'); // Folder column
       });
   });
 })
