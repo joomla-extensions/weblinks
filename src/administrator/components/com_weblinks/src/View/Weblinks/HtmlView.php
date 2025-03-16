@@ -12,6 +12,7 @@ namespace Joomla\Component\Weblinks\Administrator\View\Weblinks;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
+
 // phpcs:enable PSR1.Files.SideEffects
 
 use Joomla\CMS\Factory;
@@ -19,7 +20,6 @@ use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
-use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Component\Weblinks\Administrator\Model\WeblinksModel;
 
@@ -66,11 +66,11 @@ class HtmlView extends BaseHtmlView
     public $activeFilters;
 
     /**
-    * Is this view an Empty State
-    *
-    * @var  boolean
-    * @since 4.0.0
-    */
+     * Is this view an Empty State
+     *
+     * @var  boolean
+     * @since 4.0.0
+     */
     private $isEmptyState = false;
 
     /**
@@ -92,7 +92,7 @@ class HtmlView extends BaseHtmlView
         $this->activeFilters = $model->getActiveFilters();
 
         // Check for errors.
-        if (\count($errors = $this->get('Errors'))) {
+        if (\count($errors = $model->getErrors())) {
             throw new GenericDataException(implode("\n", $errors), 500);
         }
 

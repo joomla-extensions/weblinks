@@ -157,7 +157,7 @@ class HtmlView extends BaseHtmlView
 
             ToolbarHelper::cancel('weblink.cancel', 'JTOOLBAR_CLOSE');
 
-            if (ComponentHelper::isEnabled('com_contenthistory') && $this->state->params->get('save_history', 0) && $itemEditable) {
+            if (ComponentHelper::isEnabled('com_contenthistory') && $this->state->get('params')->get('save_history', 0) && $itemEditable) {
                 ToolbarHelper::versions('com_weblinks.weblink', $this->item->id);
             }
 
