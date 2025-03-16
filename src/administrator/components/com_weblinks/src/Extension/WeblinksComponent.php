@@ -75,7 +75,6 @@ class WeblinksComponent extends MVCComponent implements
         $this->getRegistry()->register(
             'weblinksadministrator',
             new AdministratorService(
-                $container->get(AdministratorApplication::class),
                 $container->get(DatabaseInterface::class)
             )
         );
