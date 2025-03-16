@@ -105,7 +105,7 @@ class WeblinksComponent extends MVCComponent implements
      */
     public function getContexts(): array
     {
-        Factory::getLanguage()->load('com_weblinks', JPATH_ADMINISTRATOR);
+        Factory::getApplication()->getLanguage()->load('com_weblinks', JPATH_ADMINISTRATOR);
         $contexts = [
             'com_weblinks.weblink' => Text::_('COM_WEBLINKS'),
         ];

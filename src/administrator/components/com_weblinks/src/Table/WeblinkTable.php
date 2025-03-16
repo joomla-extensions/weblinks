@@ -35,28 +35,29 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
     use TaggableTableTrait;
 
     /**
-         * Indicates that columns fully support the NULL value in the database
-         *
-         * @var    boolean
-         * @since  __DEPLOY_VERSION__
-         */
-
+     * Indicates that columns fully support the NULL value in the database
+     *
+     * @var    boolean
+     * @since  __DEPLOY_VERSION__
+     */
 
     protected $_supportNullValue = true;
     /**
-         * Ensure the params and metadata in json encoded in the bind method
-         *
-         * @var    array
-         * @since  3.4
-         */
+     * Ensure the params and metadata in json encoded in the bind method
+     *
+     * @var    array
+     * @since  3.4
+     */
+
     protected $_jsonEncode = ['params', 'metadata', 'images'];
+
     /**
-         * Constructor
-         *
-         * @param   \JDatabaseDriver  &$db  A database connector object
-         *
-         * @since   1.5
-         */
+     * Constructor
+     *
+     * @param   \JDatabaseDriver  &$db  A database connector object
+     *
+     * @since   1.5
+     */
     public function __construct($db)
     {
         $this->typeAlias = 'com_weblinks.weblink';
@@ -79,6 +80,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
         $date           = Factory::getDate()->toSql();
         $user           = Factory::getApplication()->getIdentity();
         $this->modified = $date;
+
         if ($this->id) {
             // Existing item
             $this->modified_by = $user->id;
@@ -148,7 +150,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
         }
 
         // Check for valid name
-        if (trim($this->title) == '') {
+        if (trim($this->title) === '') {
             $this->setError(Text::_('COM_WEBLINKS_ERR_TABLES_TITLE'));
             return false;
         }
