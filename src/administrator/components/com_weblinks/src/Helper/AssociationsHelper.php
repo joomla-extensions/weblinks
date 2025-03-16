@@ -20,6 +20,7 @@ use Joomla\CMS\Table\Category;
 use Joomla\CMS\Table\Table;
 use Joomla\Component\Weblinks\Administrator\Table\WeblinkTable;
 use Joomla\Component\Weblinks\Site\Helper\AssociationHelper;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * Content associations helper.
@@ -114,11 +115,11 @@ class AssociationsHelper extends AssociationExtensionHelper
         $table = null;
         switch ($typeName) {
             case 'weblink':
-                $table = new WeblinkTable(Factory::getDbo());
+                $table = new WeblinkTable(Factory::getContainer()->get(DatabaseInterface::class));
 
                 break;
             case 'category':
-                $table = new Category(Factory::getDbo());
+                $table = new Category(Factory::getContainer()->get(DatabaseInterface::class));
 
                 break;
         }

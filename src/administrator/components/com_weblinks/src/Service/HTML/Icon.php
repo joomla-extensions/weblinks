@@ -138,8 +138,7 @@ class Icon
 
         if (
             ($weblink->publish_up !== null && strtotime($weblink->publish_up) > $nowDate)
-            || ($weblink->publish_down !== null && strtotime($weblink->publish_down) < $nowDate
-            && $weblink->publish_down !== Factory::getDbo()->getNullDate())
+            || ($weblink->publish_down !== null && strtotime($weblink->publish_down) < $nowDate)
         ) {
             $icon = 'eye-slash';
         }
