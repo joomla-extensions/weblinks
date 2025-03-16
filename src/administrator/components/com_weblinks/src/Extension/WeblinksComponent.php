@@ -30,6 +30,7 @@ use Joomla\CMS\Tag\TagServiceInterface;
 use Joomla\CMS\Tag\TagServiceTrait;
 use Joomla\Component\Weblinks\Administrator\Service\HTML\AdministratorService;
 use Joomla\Component\Weblinks\Administrator\Service\HTML\Icon;
+use Joomla\Database\DatabaseInterface;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -68,10 +69,15 @@ class WeblinksComponent extends MVCComponent implements
      * @since   4.0.0
      */
 
-
     public function boot(ContainerInterface $container)
     {
-        $this->getRegistry()->register('weblinksadministrator', new AdministratorService());
+        $this->getRegistry()->register(
+            'weblinksadministrator',
+            new AdministratorService(
+                $container->get(DatabaseInterface::class)
+            )
+        );
+
         $this->getRegistry()->register('weblinkicon', new Icon($container->get(SiteApplication::class)));
     }
 

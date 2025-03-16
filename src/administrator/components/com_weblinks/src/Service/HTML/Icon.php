@@ -38,13 +38,14 @@ class Icon
      * @since  4.0.0
      */
     private $application;
+
     /**
-         * Service constructor
-         *
-         * @param   CMSApplication  $application  The application
-         *
-         * @since   4.0.0
-         */
+     * Service constructor
+     *
+     * @param   CMSApplication  $application  The application
+     *
+     * @since   4.0.0
+     */
     public function __construct(CMSApplication $application)
     {
         $this->application = $application;
@@ -61,7 +62,7 @@ class Icon
      *
      * @since  4.0.0
      */
-    public static function create($category, $params, $attribs = [])
+    public function create($category, $params, $attribs = [])
     {
         $uri  = Uri::getInstance();
         $url  = 'index.php?option=com_weblinks&task=weblink.add&return=' . base64_encode($uri) . '&w_id=0&catid=' . $category->id;
@@ -93,9 +94,9 @@ class Icon
      *
      * @since   4.0.0
      */
-    public static function edit($weblink, $params, $attribs = [], $legacy = false)
+    public function edit($weblink, $params, $attribs = [], $legacy = false)
     {
-        $user = Factory::getApplication()->getIdentity();
+        $user = $this->application->getIdentity();
         $uri  = Uri::getInstance();
         // Ignore if in a popup window.
         if ($params && $params->get('popup')) {
