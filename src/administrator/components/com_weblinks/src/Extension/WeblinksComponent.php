@@ -13,6 +13,7 @@ namespace Joomla\Component\Weblinks\Administrator\Extension;
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Association\AssociationServiceInterface;
 use Joomla\CMS\Association\AssociationServiceTrait;
@@ -30,6 +31,7 @@ use Joomla\CMS\Tag\TagServiceInterface;
 use Joomla\CMS\Tag\TagServiceTrait;
 use Joomla\Component\Weblinks\Administrator\Service\HTML\AdministratorService;
 use Joomla\Component\Weblinks\Administrator\Service\HTML\Icon;
+use Joomla\Database\DatabaseInterface;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -68,10 +70,16 @@ class WeblinksComponent extends MVCComponent implements
      * @since   4.0.0
      */
 
-
     public function boot(ContainerInterface $container)
     {
-        $this->getRegistry()->register('weblinksadministrator', new AdministratorService());
+        $this->getRegistry()->register(
+            'weblinksadministrator',
+            new AdministratorService(
+                $container->get(AdministratorApplication::class),
+                $container->get(DatabaseInterface::class)
+            )
+        );
+
         $this->getRegistry()->register('weblinkicon', new Icon($container->get(SiteApplication::class)));
     }
 

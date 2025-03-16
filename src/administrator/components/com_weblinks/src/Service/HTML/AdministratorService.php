@@ -13,12 +13,15 @@ namespace Joomla\Component\Weblinks\Administrator\Service\HTML;
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
+use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Language\LanguageHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
+use Joomla\Database\DatabaseAwareTrait;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 
 /**
@@ -28,6 +31,33 @@ use Joomla\Database\ParameterType;
  */
 class AdministratorService
 {
+    use DatabaseAwareTrait;
+
+    /**
+     * The application
+     *
+     * @var    CMSApplication
+     *
+     * @since  4.0.0
+     */
+    private $application;
+
+    /**
+     * Service constructor
+     *
+     * @param   CMSApplication  $application  The application
+     *
+     * @package DatabaseInterface $database
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function __construct(CMSApplication $application, DatabaseInterface $database)
+    {
+        $this->application = $application;
+
+        $this->setDatabase($database);
+    }
+
     /**
      * Get the associated language flags
      *
@@ -48,7 +78,7 @@ class AdministratorService
             }
 
             // Get the associated contact items
-            $db    = Factory::getDbo();
+            $db    = $this->getDatabase();
             $query = $db->getQuery(true)
                 ->select([
                         $db->quoteName('c.id'),
@@ -73,7 +103,7 @@ class AdministratorService
             }
 
             if ($items) {
-                $app               = Factory::getApplication();
+                $app               = $this->application;
                 $languages         = LanguageHelper::getContentLanguages([0, 1]);
                 $content_languages = array_column($languages, 'lang_code');
                 foreach ($items as &$item) {
