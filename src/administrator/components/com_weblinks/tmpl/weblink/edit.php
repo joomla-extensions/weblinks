@@ -17,6 +17,7 @@ use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
+
 HTMLHelper::_('behavior.formvalidator');
 $app = Factory::getApplication();
 $input = $app->input;

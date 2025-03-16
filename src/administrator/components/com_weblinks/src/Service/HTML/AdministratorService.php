@@ -13,7 +13,6 @@ namespace Joomla\Component\Weblinks\Administrator\Service\HTML;
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
-use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Language\LanguageHelper;
@@ -35,8 +34,6 @@ class AdministratorService
 
     /**
      * Service constructor
-     *
-     * @param   CMSApplication     $application  The application
      *
      * @param   DatabaseInterface  $database
      *

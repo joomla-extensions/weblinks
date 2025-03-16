@@ -18,6 +18,7 @@ use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
+
 /** @var \Joomla\Component\Weblinks\Administrator\View\Weblinks\HtmlView $this */
 
 HTMLHelper::_('behavior.multiselect');
