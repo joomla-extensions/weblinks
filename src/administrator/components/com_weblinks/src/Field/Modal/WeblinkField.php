@@ -43,18 +43,21 @@ class WeblinkField extends FormField
          */
     protected function getInput()
     {
+        $app = Factory::getApplication();
+
         $allowNew    = ((string) $this->element['new'] == 'true');
         $allowEdit   = ((string) $this->element['edit'] == 'true');
         $allowClear  = ((string) $this->element['clear'] != 'false');
         $allowSelect = ((string) $this->element['select'] != 'false');
+
         // Load language
-        Factory::getLanguage()->load('com_weblinks', JPATH_ADMINISTRATOR);
+        $app->getLanguage()->load('com_weblinks', JPATH_ADMINISTRATOR);
         // The active weblink id field.
         $value = (int) $this->value > 0 ? (int) $this->value : '';
         // Create the modal id.
         $modalId = 'Weblink_' . $this->id;
         /** @var \Joomla\CMS\WebAsset\WebAssetManager $wa */
-        $wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+        $wa = $app->getDocument()->getWebAssetManager();
         // Add the modal field script to the document head.
         $wa->useScript('field.modal-fields');
         // Script to proxy the select modal function to the modal-fields.js file.
@@ -92,7 +95,7 @@ class WeblinkField extends FormField
         $urlEdit   = $linkWeblink . '&amp;task=weblink.edit&amp;id=\' + document.getElementById("' . $this->id . '_id").value + \'';
         $urlNew    = $linkWeblink . '&amp;task=weblink.add';
         if ($value) {
-            $db    = Factory::getDbo();
+            $db    = $this->getDatabase();
             $query = $db->getQuery(true)
                 ->select($db->quoteName('title'))
                 ->from($db->quoteName('#__weblinks'))
@@ -102,7 +105,7 @@ class WeblinkField extends FormField
             try {
                 $title = $db->loadResult();
             } catch (\RuntimeException $e) {
-                Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                $app->enqueueMessage($e->getMessage(), 'error');
             }
         }
 

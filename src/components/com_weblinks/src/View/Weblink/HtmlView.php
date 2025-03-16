@@ -12,10 +12,12 @@ namespace Joomla\Component\Weblinks\Site\View\Weblink;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\Component\Weblinks\Site\Model\WeblinkModel;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
+
 /**
  * HTML Weblink View class for the Weblinks component
  *
@@ -29,33 +31,39 @@ class HtmlView extends BaseHtmlView
      * @var    \JObject
      */
     protected $item;
+
     /**
-         * The page parameters
-         *
-         * @var    \Joomla\Registry\Registry|null
-         */
+     * The page parameters
+     *
+     * @var    \Joomla\Registry\Registry|null
+     */
     protected $params;
+
     /**
-         * The item model state
-         *
-         * @var    \Joomla\Registry\Registry
-         * @since  1.6
-         */
+     * The item model state
+     *
+     * @var    \Joomla\Registry\Registry
+     * @since  1.6
+     */
     protected $state;
+
     /**
-         * Execute and display a template script.
-         *
-         * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
-         *
-         * @return  mixed  A string if successful, otherwise an Error object.
-         *
-         * @since   __DEPLOY_VERSION__
-         */
+     * Execute and display a template script.
+     *
+     * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+     *
+     * @return  mixed  A string if successful, otherwise an Error object.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
     public function display($tpl = null)
     {
         $app          = Factory::getApplication();
-        $this->item   = $this->get('Item');
-        $this->state  = $this->get('State');
+
+        /* @var WeblinkModel $model*/
+        $model        = $this->getModel();
+        $this->item   = $model->getItem();
+        $this->state  = $model->getState();
         $this->params = $this->state->get('params');
         // Create a shortcut for $item.
         $item         = $this->item;

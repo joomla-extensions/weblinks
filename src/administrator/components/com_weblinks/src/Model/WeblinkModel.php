@@ -110,10 +110,6 @@ class WeblinkModel extends AdminModel
         // Get the form.
         $form = $this->loadForm('com_weblinks.weblink', 'weblink', ['control' => 'jform', 'load_data' => $loadData]);
 
-        if (empty($form)) {
-            return false;
-        }
-
         // Determine correct permissions to check.
         if ($this->getState('weblink.id')) {
             // Existing record. Can only edit in selected categories.
@@ -294,8 +290,6 @@ class WeblinkModel extends AdminModel
      */
     public function save($data)
     {
-        $app = Factory::getApplication();
-
         // Cast catid to integer for comparison
         $catid = (int) $data['catid'];
 
@@ -318,7 +312,7 @@ class WeblinkModel extends AdminModel
         }
 
         // Alter the title for save as copy
-        if ($app->input->get('task') == 'save2copy') {
+        if ($this->getState('task') === 'save2copy') {
             [$name, $alias] = $this->generateNewTitle($data['catid'], $data['alias'], $data['title']);
             $data['title']  = $name;
             $data['alias']  = $alias;

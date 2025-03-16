@@ -39,10 +39,10 @@ class DisplayController extends BaseController
         // Huh? Why not just put that in the constructor?
         $cacheable = true;
         /**
-                 * Set the default view name and format from the Request.
-                 * Note we are using w_id to avoid collisions with the router and the return page.
-                 * Frontend is a bit messier than the backend.
-                 */
+         * Set the default view name and format from the Request.
+         * Note we are using w_id to avoid collisions with the router and the return page.
+         * Frontend is a bit messier than the backend.
+         */
         $id    = $this->input->getInt('w_id');
         $vName = $this->input->get('view', 'categories');
         $this->input->set('view', $vName);
