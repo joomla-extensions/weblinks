@@ -60,16 +60,16 @@ class FormModel extends WeblinkModel
         $app = Factory::getApplication();
 
         // Load state from the request.
-        $pk = $app->input->getInt('w_id');
+        $pk = $app->getInput()->getInt('w_id');
         $this->setState('weblink.id', $pk);
 
         // Add compatibility variable for default naming conventions.
         $this->setState('form.id', $pk);
 
-        $categoryId = $app->input->getInt('catid');
+        $categoryId = $app->getInput()->getInt('catid');
         $this->setState('weblink.catid', $categoryId);
 
-        $return = $app->input->get('return', '', 'base64');
+        $return = $app->getInput()->get('return', '', 'base64');
 
         if ($return && !Uri::isInternal(base64_decode($return))) {
             $return = '';
@@ -81,7 +81,7 @@ class FormModel extends WeblinkModel
         $params = $app->getParams();
         $this->setState('params', $params);
 
-        $this->setState('layout', $app->input->getString('layout'));
+        $this->setState('layout', $app->getInput()->getString('layout'));
     }
 
     /**
