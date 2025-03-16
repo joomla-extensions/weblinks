@@ -18,6 +18,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\Component\Weblinks\Site\Model\FormModel;
 
 /**
  * HTML Article View class for the Weblinks component
@@ -74,10 +75,18 @@ class HtmlView extends BaseHtmlView
         $user = $this->getCurrentUser();
 
         // Get model data.
-        $this->state       = $this->get('State');
-        $this->item        = $this->get('Item');
-        $this->form        = $this->get('Form');
-        $this->return_page = $this->get('ReturnPage');
+        /* @var FormModel $model */
+        $model = $this->getModel();
+
+        $this->state       = $model->getState();
+        $this->item        = $model->getItem();
+        $this->form        = $model->getForm();
+        $this->return_page = $model->getReturnPage();
+
+        // Check for errors.
+        if (\count($errors = $model->getErrors())) {
+            throw new GenericDataException(implode("\n", $errors), 500);
+        }
 
         if (empty($this->item->id)) {
             $authorised = $user->authorise('core.create', 'com_weblinks') || \count($user->getAuthorisedCategories('com_weblinks', 'core.create'));
@@ -98,11 +107,6 @@ class HtmlView extends BaseHtmlView
             }
 
             $this->form->bind($this->item);
-        }
-
-        // Check for errors.
-        if (\count($errors = $this->get('Errors'))) {
-            throw new GenericDataException(implode("\n", $errors), 500);
         }
 
         // Create a shortcut to the parameters.
@@ -126,11 +130,9 @@ class HtmlView extends BaseHtmlView
      */
     protected function prepareDocument()
     {
-        $app   = Factory::getApplication();
-
         // Because the application sets a default page title,
         // we need to get it from the menu item itself
-        $menu = $app->getMenu()->getActive();
+        $menu = Factory::getApplication()->getMenu()->getActive();
 
         if (empty($this->item->id)) {
             $head = Text::_('COM_WEBLINKS_FORM_SUBMIT_WEBLINK');
@@ -149,15 +151,15 @@ class HtmlView extends BaseHtmlView
         $this->setDocumentTitle($title);
 
         if ($this->params->get('menu-meta_description')) {
-            $this->document->setDescription($this->params->get('menu-meta_description'));
+            $this->getDocument()->setDescription($this->params->get('menu-meta_description'));
         }
 
         if ($this->params->get('menu-meta_keywords')) {
-            $this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
+            $this->getDocument()->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
         }
 
         if ($this->params->get('robots')) {
-            $this->document->setMetadata('robots', $this->params->get('robots'));
+            $this->getDocument()->setMetadata('robots', $this->params->get('robots'));
         }
     }
 }
