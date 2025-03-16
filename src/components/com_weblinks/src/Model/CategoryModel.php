@@ -21,7 +21,6 @@ use Joomla\CMS\Helper\TagsHelper;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Table\Category;
-use Joomla\CMS\Table\Table;
 use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
