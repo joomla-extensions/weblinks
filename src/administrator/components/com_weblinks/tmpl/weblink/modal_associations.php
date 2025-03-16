@@ -12,4 +12,5 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 use Joomla\CMS\Layout\LayoutHelper;
+
 echo LayoutHelper::render('joomla.edit.associations', $this);
