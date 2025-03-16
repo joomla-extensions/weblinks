@@ -45,11 +45,11 @@ class AdministratorService
     /**
      * Service constructor
      *
-     * @param   CMSApplication  $application  The application
+     * @param   CMSApplication     $application  The application
      *
-     * @package DatabaseInterface $database
+     * @param   DatabaseInterface  $database
      *
-     * @since   __DEPLOY_VERSION__
+     * @since    __DEPLOY_VERSION__
      */
     public function __construct(CMSApplication $application, DatabaseInterface $database)
     {
