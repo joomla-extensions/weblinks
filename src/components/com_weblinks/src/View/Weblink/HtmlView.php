@@ -70,7 +70,7 @@ class HtmlView extends BaseHtmlView
 
         $errors = $model->getErrors();
 
-        if (count($errors) > 0) {
+        if (\count($errors) > 0) {
             $this->handleModelErrors($errors);
         }
 
