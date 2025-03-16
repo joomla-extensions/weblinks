@@ -14,6 +14,7 @@ namespace Joomla\Component\Weblinks\Administrator\Service\HTML;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Language\LanguageHelper;
 use Joomla\CMS\Language\Text;
@@ -33,15 +34,6 @@ class AdministratorService
     use DatabaseAwareTrait;
 
     /**
-     * The application
-     *
-     * @var    CMSApplication
-     *
-     * @since  4.0.0
-     */
-    private $application;
-
-    /**
      * Service constructor
      *
      * @param   CMSApplication     $application  The application
@@ -50,10 +42,8 @@ class AdministratorService
      *
      * @since    __DEPLOY_VERSION__
      */
-    public function __construct(CMSApplication $application, DatabaseInterface $database)
+    public function __construct(DatabaseInterface $database)
     {
-        $this->application = $application;
-
         $this->setDatabase($database);
     }
 
@@ -103,7 +93,7 @@ class AdministratorService
             }
 
             if ($items) {
-                $app               = $this->application;
+                $app               = Factory::getApplication();
                 $languages         = LanguageHelper::getContentLanguages([0, 1]);
                 $content_languages = array_column($languages, 'lang_code');
                 foreach ($items as &$item) {
