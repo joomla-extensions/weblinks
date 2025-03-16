@@ -13,6 +13,7 @@
 // phpcs:enable PSR1.Files.SideEffects
 use Joomla\CMS\Factory;
 use Joomla\CMS\Layout\LayoutHelper;
+
 $displayData = [
     'textPrefix' => 'COM_WEBLINKS',
     'formURL'    => 'index.php?option=com_weblinks',

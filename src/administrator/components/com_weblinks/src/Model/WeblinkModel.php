@@ -162,7 +162,7 @@ class WeblinkModel extends AdminModel
 
             // Prime some default values.
             if ($this->getState('weblink.id') == 0) {
-                $data->set('catid', $app->input->get('catid', $app->getUserState('com_weblinks.weblinks.filter.category_id'), 'int'));
+                $data->set('catid', $app->getInput()->get('catid', $app->getUserState('com_weblinks.weblinks.filter.category_id'), 'int'));
             }
         }
 

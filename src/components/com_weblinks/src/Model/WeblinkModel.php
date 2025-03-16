@@ -59,7 +59,7 @@ class WeblinkModel extends ItemModel
         $app = Factory::getApplication();
 
         // Load the object state.
-        $pk = $app->input->getInt('id');
+        $pk = $app->getInput()->getInt('id');
         $this->setState('weblink.id', $pk);
 
         // Load the parameters.

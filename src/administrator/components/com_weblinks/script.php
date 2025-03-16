@@ -16,6 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Category;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Filesystem\File;
 use Joomla\Filesystem\Folder;
 
@@ -86,7 +87,7 @@ class Com_WeblinksInstallerScript
     public function install($parent)
     {
         // Initialize a new category
-        $category = new Category(Factory::getDbo());
+        $category = new Category(Factory::getContainer()->get(DatabaseInterface::class));
 
         // Check if the Uncategorised category exists before adding it
         if (!$category->load(['extension' => 'com_weblinks', 'title' => 'Uncategorised'])) {
@@ -141,7 +142,7 @@ class Com_WeblinksInstallerScript
     public function postflight($type, $parent)
     {
         // Only execute database changes on MySQL databases
-        $dbName = Factory::getDbo()->name;
+        $dbName = Factory::getContainer()->get(DatabaseInterface::class)->name;
 
         if (strpos($dbName, 'mysql') !== false) {
             // Add Missing Table Columns if needed
@@ -165,7 +166,7 @@ class Com_WeblinksInstallerScript
     private function insertMissingUcmRecords()
     {
         // Insert the rows in the #__content_types table if they don't exist already
-        $db = Factory::getDbo();
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
 
         // Get the type ID for a Weblink
         $query = $db->getQuery(true);
@@ -287,7 +288,7 @@ class Com_WeblinksInstallerScript
             'approved',
         ];
 
-        $db    = Factory::getDbo();
+        $db    = Factory::getContainer()->get(DatabaseInterface::class);
         $table = $db->getTableColumns('#__weblinks');
 
         $columns = array_intersect($oldColumns, array_keys($table));
@@ -308,7 +309,7 @@ class Com_WeblinksInstallerScript
      */
     private function addColumnsIfNeeded()
     {
-        $db    = Factory::getDbo();
+        $db    = Factory::getContainer()->get(DatabaseInterface::class);
         $table = $db->getTableColumns('#__weblinks');
 
         if (!\array_key_exists('version', $table)) {

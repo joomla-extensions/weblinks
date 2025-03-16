@@ -16,6 +16,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Uri\Uri;
+
 HTMLHelper::_('behavior.core');
 // Get the user object.
 $user = Factory::getApplication()->getIdentity();

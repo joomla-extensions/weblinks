@@ -13,6 +13,7 @@
 // phpcs:enable PSR1.Files.SideEffects
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Layout\LayoutHelper;
+
 $published = $this->state->get('filter.published');
 ?>
 
