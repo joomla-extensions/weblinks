@@ -20,7 +20,7 @@ use Joomla\CMS\Router\Route;
 
 HTMLHelper::_('behavior.formvalidator');
 $app = Factory::getApplication();
-$input = $app->input;
+$input = $app->getInput();
 $assoc = Associations::isEnabled();
 // Fieldsets to not automatically render by /layouts/joomla/edit/params.php
 $this->ignore_fieldsets = array('details', 'images', 'item_associations', 'jmetadata');
