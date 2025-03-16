@@ -95,6 +95,7 @@ class AdministratorService
                 ->where($db->quoteName('c.id') . ' != :id')
                 ->bind(':id', $weblinkid, ParameterType::INTEGER);
             $db->setQuery($query);
+
             try {
                 $items = $db->loadObjectList('id');
             } catch (\RuntimeException $e) {
