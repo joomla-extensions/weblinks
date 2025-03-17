@@ -85,4 +85,61 @@ describe('Test in backend that the categories list', () => {
 
     cy.checkForSystemMessage('Category deleted.');
   });
+
+  it('Verifies all category tabs are present and functional', () => {
+    // Visit the category edit page
+    cy.visit('/administrator/index.php?option=com_categories&task=category.add&extension=com_weblinks');
+
+    // Define the expected tabs
+    const expectedTabs = [
+      'Category',
+      'Options',
+      'Publishing',
+      //'Associations',
+      'Permissions'
+    ];
+
+    // Verify tab structure and visibility
+    cy.get('#myTab div[role="tablist"] > button[role="tab"]:visible')
+      .should('have.length', expectedTabs.length)
+      .each(($tab, index) => {
+        // Check tab text and visibility
+        cy.wrap($tab)
+          .should('be.visible')
+          .and('contain.text', expectedTabs[index])
+          .and('have.attr', 'role', 'tab');
+      });
+
+    // Verify initial active tab (Category)
+    cy.get('#myTab div[role="tablist"] > button[role="tab"]:visible:nth-child(1)')
+      .should('have.attr', 'aria-expanded', 'true')
+      .and('contain.text', 'Category');
+
+    // Verify tab panels exist
+    const tabPanels = [
+      'general',
+      'attrib-options',
+      'publishing',
+    //  'associations',
+      'rules'
+    ];
+
+    tabPanels.forEach(panelId => {
+      cy.get(`#${panelId}`)
+        .should('exist')
+        .and('have.attr', 'role', 'tabpanel');
+    });
+
+    // Optional: Test tab switching
+    expectedTabs.forEach((tabText, index) => {
+      if (index > 0) { // Skip first tab (already active)
+        cy.contains('#myTab div[role="tablist"] > button[role="tab"]:visible', tabText)
+          .click()
+          .should('have.attr', 'aria-expanded', 'true');
+
+        cy.get(`#${tabPanels[index]}`)
+          .should('be.visible');
+      }
+    });
+  });
 });
