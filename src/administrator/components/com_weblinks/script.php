@@ -16,6 +16,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Category;
+use Joomla\Database\DatabaseAwareInterface;
+use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Filesystem\File;
 use Joomla\Filesystem\Folder;
@@ -25,8 +27,10 @@ use Joomla\Filesystem\Folder;
  *
  * @since  3.4
  */
-class Com_WeblinksInstallerScript
+class Com_WeblinksInstallerScript implements DatabaseAwareInterface
 {
+    use DatabaseAwareTrait;
+
     /**
      * Function called before extension installation/update/removal procedure commences
      *
@@ -87,7 +91,7 @@ class Com_WeblinksInstallerScript
     public function install($parent)
     {
         // Initialize a new category
-        $category = new Category(Factory::getContainer()->get(DatabaseInterface::class));
+        $category = new Category($this->getDatabase());
 
         // Check if the Uncategorised category exists before adding it
         if (!$category->load(['extension' => 'com_weblinks', 'title' => 'Uncategorised'])) {
@@ -142,7 +146,7 @@ class Com_WeblinksInstallerScript
     public function postflight($type, $parent)
     {
         // Only execute database changes on MySQL databases
-        $dbName = Factory::getContainer()->get(DatabaseInterface::class)->name;
+        $dbName = $this->getDatabase()->name;
 
         if (strpos($dbName, 'mysql') !== false) {
             // Add Missing Table Columns if needed
@@ -166,7 +170,7 @@ class Com_WeblinksInstallerScript
     private function insertMissingUcmRecords()
     {
         // Insert the rows in the #__content_types table if they don't exist already
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = $this->getDatabase();
 
         // Get the type ID for a Weblink
         $query = $db->getQuery(true);
@@ -288,7 +292,7 @@ class Com_WeblinksInstallerScript
             'approved',
         ];
 
-        $db    = Factory::getContainer()->get(DatabaseInterface::class);
+        $db    = $this->getDatabase();
         $table = $db->getTableColumns('#__weblinks');
 
         $columns = array_intersect($oldColumns, array_keys($table));
@@ -309,7 +313,7 @@ class Com_WeblinksInstallerScript
      */
     private function addColumnsIfNeeded()
     {
-        $db    = Factory::getContainer()->get(DatabaseInterface::class);
+        $db    = $this->getDatabase();
         $table = $db->getTableColumns('#__weblinks');
 
         if (!\array_key_exists('version', $table)) {
