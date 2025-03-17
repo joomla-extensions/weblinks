@@ -1,17 +1,18 @@
 <?php
 
 /**
- * @package     Joomla.Site
- * @subpackage  com_weblinks
+ * @package         Joomla.Site
+ * @subpackage      com_weblinks
  *
  * @copyright   (C) 2007 Open Source Matters, Inc. <https://www.joomla.org>
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @license         GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 namespace Joomla\Component\Weblinks\Site\Service;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
+
 // phpcs:enable PSR1.Files.SideEffects
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Categories\CategoryFactoryInterface;
@@ -39,44 +40,48 @@ class Router extends RouterView
      * @var    boolean
      */
     protected $noIDs = false;
+
     /**
-         * The category factory
-         *
-         * @var CategoryFactoryInterface
-         *
-         * @since  4.0.0
-         */
+     * The category factory
+     *
+     * @var CategoryFactoryInterface
+     *
+     * @since  4.0.0
+     */
     private $categoryFactory;
+
     /**
-         * The category cache
-         *
-         * @var  array
-         *
-         * @since  4.0.0
-         */
+     * The category cache
+     *
+     * @var  array
+     *
+     * @since  4.0.0
+     */
     private $categoryCache = [];
+
     /**
-         * The db
-         *
-         * @var DatabaseInterface
-         *
-         * @since  4.0.0
-         */
+     * The db
+     *
+     * @var DatabaseInterface
+     *
+     * @since  4.0.0
+     */
     private $db;
+
     /**
-         * Weblinks Component router constructor
-         *
-         * @param   SiteApplication           $app              The application object
-         * @param   AbstractMenu              $menu             The menu object to work with
-         * @param   CategoryFactoryInterface  $categoryFactory  The category object
-         * @param   DatabaseInterface         $db               The database object
-         */
+     * Weblinks Component router constructor
+     *
+     * @param   SiteApplication           $app              The application object
+     * @param   AbstractMenu              $menu             The menu object to work with
+     * @param   CategoryFactoryInterface  $categoryFactory  The category object
+     * @param   DatabaseInterface         $db               The database object
+     */
     public function __construct(SiteApplication $app, AbstractMenu $menu, CategoryFactoryInterface $categoryFactory, DatabaseInterface $db)
     {
         $this->categoryFactory = $categoryFactory;
         $this->db              = $db;
         $params                = ComponentHelper::getParams('com_weblinks');
-        $this->noIDs           = (bool) $params->get('sef_ids');
+        $this->noIDs           = (bool)$params->get('sef_ids');
         $categories            = new RouterViewConfiguration('categories');
         $categories->setKey('id');
         $this->registerView($categories);
@@ -145,7 +150,7 @@ class Router extends RouterView
     public function getWeblinkSegment($id, $query)
     {
         if (!strpos($id, ':')) {
-            $id      = (int) $id;
+            $id      = (int)$id;
             $dbquery = $this->db->getQuery(true);
             $dbquery->select($this->db->quoteName('alias'))
                 ->from($this->db->quoteName('#__weblinks'))
@@ -157,10 +162,11 @@ class Router extends RouterView
 
         if ($this->noIDs) {
             list($void, $segment) = explode(':', $id, 2);
+
             return [$void => $segment];
         }
 
-        return [(int) $id => $id];
+        return [(int)$id => $id];
     }
 
     /**
@@ -197,7 +203,7 @@ class Router extends RouterView
                             return $child->id;
                         }
                     } else {
-                        if ($child->id == (int) $segment) {
+                        if ($child->id == (int)$segment) {
                             return $child->id;
                         }
                     }
@@ -236,22 +242,23 @@ class Router extends RouterView
             $dbquery->select($this->db->quoteName('id'))
                 ->from($this->db->quoteName('#__weblinks'))
                 ->where([
-                        $this->db->quoteName('alias') . ' = :alias',
-                        $this->db->quoteName('catid') . ' = :catid',
-                    ])
+                    $this->db->quoteName('alias') . ' = :alias',
+                    $this->db->quoteName('catid') . ' = :catid',
+                ])
                 ->bind(':alias', $segment)
                 ->bind(':catid', $query['id'], ParameterType::INTEGER);
             $this->db->setQuery($dbquery);
-            return (int) $this->db->loadResult();
+
+            return (int)$this->db->loadResult();
         }
 
-        return (int) $segment;
+        return (int)$segment;
     }
 
     /**
      * Method to get categories from cache
      *
-     * @param   array  $options   The options for retrieving categories
+     * @param   array  $options  The options for retrieving categories
      *
      * @return  CategoryInterface  The object containing categories
      *

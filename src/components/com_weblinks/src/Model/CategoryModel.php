@@ -20,7 +20,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\TagsHelper;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\MVC\Model\ListModel;
-use Joomla\CMS\Table\Table;
+use Joomla\CMS\Table\Category;
 use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
@@ -254,13 +254,13 @@ class CategoryModel extends ListModel
         $limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->get('list_limit'), 'uint');
         $this->setState('list.limit', $limit);
 
-        $limitstart = $app->input->get('limitstart', 0, 'uint');
+        $limitstart = $app->getInput()->get('limitstart', 0, 'uint');
         $this->setState('list.start', $limitstart);
 
         // Optional filter text
-        $this->setState('list.filter', $app->input->getString('filter-search'));
+        $this->setState('list.filter', $app->getInput()->getString('filter-search'));
 
-        $orderCol = $app->input->get('filter_order', 'ordering');
+        $orderCol = $app->getInput()->get('filter_order', 'ordering');
 
         if (!\in_array($orderCol, $this->filter_fields)) {
             $orderCol = 'ordering';
@@ -268,7 +268,7 @@ class CategoryModel extends ListModel
 
         $this->setState('list.ordering', $orderCol);
 
-        $listOrder = $app->input->get('filter_order_Dir', 'ASC');
+        $listOrder = $app->getInput()->get('filter_order_Dir', 'ASC');
 
         if (!\in_array(strtoupper($listOrder), ['ASC', 'DESC', ''])) {
             $listOrder = 'ASC';
@@ -276,7 +276,7 @@ class CategoryModel extends ListModel
 
         $this->setState('list.direction', $listOrder);
 
-        $id = $app->input->get('id', 0, 'int');
+        $id = $app->getInput()->get('id', 0, 'int');
         $this->setState('category.id', $id);
 
         $user = $this->getCurrentUser();
@@ -397,11 +397,11 @@ class CategoryModel extends ListModel
      */
     public function hit($pk = 0)
     {
-        $hitcount = Factory::getApplication()->input->getInt('hitcount', 1);
+        $hitcount = Factory::getApplication()->getInput()->getInt('hitcount', 1);
 
         if ($hitcount) {
             $pk    = (!empty($pk)) ? $pk : (int) $this->getState('category.id');
-            $table = Table::getInstance('Category', 'Joomla\\CMS\\Table\\');
+            $table = new Category($this->getDatabase());
             $table->load($pk);
             $table->hit($pk);
         }

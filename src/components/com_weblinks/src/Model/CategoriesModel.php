@@ -19,6 +19,7 @@ use Joomla\Registry\Registry;
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
+
 /**
  * This models supports retrieving lists of article categories.
  *
@@ -33,42 +34,46 @@ class CategoriesModel extends ListModel
      * @var  string
      */
     protected $context = 'com_weblinks.categories';
+
     /**
-         * The category context (allows other extensions to derived from this model).
-         *
-         * @var  string
-         */
+     * The category context (allows other extensions to derived from this model).
+     *
+     * @var  string
+     */
     protected $_extension = 'com_weblinks';
+
     /**
-         * Parent category
-         *
-         * @var CategoryNode|null
-         */
+     * Parent category
+     *
+     * @var CategoryNode|null
+     */
     private $_parent = null;
+
     /**
-         * Categories data
-         *
-         * @var false|array
-         */
+     * Categories data
+     *
+     * @var false|array
+     */
     private $_items = null;
+
     /**
-         * Method to auto-populate the model state.
-         *
-         * Note. Calling getState in this method will result in recursion.
-         *
-         * @param   string  $ordering   An optional ordering field.
-         * @param   string  $direction  An optional direction (asc|desc).
-         *
-         * @return  void
-         *
-         * @since   1.6
-         */
+     * Method to auto-populate the model state.
+     *
+     * Note. Calling getState in this method will result in recursion.
+     *
+     * @param   string  $ordering   An optional ordering field.
+     * @param   string  $direction  An optional direction (asc|desc).
+     *
+     * @return  void
+     *
+     * @since   1.6
+     */
     protected function populateState($ordering = null, $direction = null)
     {
         $app = Factory::getApplication();
         $this->setState('filter.extension', $this->_extension);
         // Get the parent id if defined.
-        $parentId = $app->input->getInt('id');
+        $parentId = $app->getInput()->getInt('id');
         $this->setState('filter.parentId', $parentId);
         $params = $app->getParams();
         $this->setState('params', $params);
@@ -94,6 +99,7 @@ class CategoriesModel extends ListModel
         $id .= ':' . $this->getState('filter.published');
         $id .= ':' . $this->getState('filter.access');
         $id .= ':' . $this->getState('filter.parentId');
+
         return parent::getStoreId($id);
     }
 

@@ -12,6 +12,7 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 use Joomla\CMS\Language\Text;
+
 $fieldSets = $this->form->getFieldsets('params'); ?>
 <?php foreach ($fieldSets as $name => $fieldSet) :
     ?>

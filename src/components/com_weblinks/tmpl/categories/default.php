@@ -13,6 +13,7 @@
 // phpcs:enable PSR1.Files.SideEffects
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
+
 // Add strings for translations in Javascript.
 Text::script('JGLOBAL_EXPAND_CATEGORIES');
 Text::script('JGLOBAL_COLLAPSE_CATEGORIES');

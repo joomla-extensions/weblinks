@@ -19,6 +19,8 @@ use Joomla\CMS\Language\LanguageHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
+use Joomla\Database\DatabaseAwareTrait;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 
 /**
@@ -28,6 +30,20 @@ use Joomla\Database\ParameterType;
  */
 class AdministratorService
 {
+    use DatabaseAwareTrait;
+
+    /**
+     * Service constructor
+     *
+     * @param   DatabaseInterface  $database
+     *
+     * @since    __DEPLOY_VERSION__
+     */
+    public function __construct(DatabaseInterface $database)
+    {
+        $this->setDatabase($database);
+    }
+
     /**
      * Get the associated language flags
      *
@@ -48,7 +64,7 @@ class AdministratorService
             }
 
             // Get the associated contact items
-            $db    = Factory::getDbo();
+            $db    = $this->getDatabase();
             $query = $db->getQuery(true)
                 ->select([
                         $db->quoteName('c.id'),
@@ -66,6 +82,7 @@ class AdministratorService
                 ->where($db->quoteName('c.id') . ' != :id')
                 ->bind(':id', $weblinkid, ParameterType::INTEGER);
             $db->setQuery($query);
+
             try {
                 $items = $db->loadObjectList('id');
             } catch (\RuntimeException $e) {

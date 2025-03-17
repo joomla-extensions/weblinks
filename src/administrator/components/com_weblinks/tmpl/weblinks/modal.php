@@ -19,6 +19,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
+
 $app = Factory::getApplication();
 if ($app->isClient('site')) {
     Session::checkToken('get') or die(Text::_('JINVALID_TOKEN'));
@@ -27,8 +28,8 @@ if ($app->isClient('site')) {
 HTMLHelper::_('behavior.multiselect');
 $this->document->getWebAssetManager()
     ->registerAndUseScript('com_weblinks.admin-weblinks-modal', 'media/com_weblinks/js/admin-weblinks-modal.js', [], ['defer' => true], ['core']);
-$function  = $app->input->getCmd('function', 'jSelectWeblink');
-$editor    = $app->input->getCmd('editor', '');
+$function  = $app->getInput()->getCmd('function', 'jSelectWeblink');
+$editor    = $app->getInput()->getCmd('editor', '');
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 $onclick   = $this->escape($function);
@@ -159,7 +160,7 @@ $iconStates = array(
 
       <input type="hidden" name="task" value="" />
        <input type="hidden" name="boxchecked" value="0" />
-        <input type="hidden" name="forcedLanguage" value="<?php echo $app->input->get('forcedLanguage', '', 'CMD'); ?>" />
+        <input type="hidden" name="forcedLanguage" value="<?php echo $app->getInput()->get('forcedLanguage', '', 'CMD'); ?>" />
         <?php echo HTMLHelper::_('form.token'); ?>
 
  </form>

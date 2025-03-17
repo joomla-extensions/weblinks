@@ -15,6 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\String\PunycodeHelper;
+
 $weblinkUrl = PunycodeHelper::urlToUTF8($this->item->url);
 $user      = Factory::getApplication()->getIdentity();
 $canEdit = $user->authorise('core.edit', 'com_weblinks.category.' . $this->item->catid);
