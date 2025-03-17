@@ -14,7 +14,6 @@ describe('Test that the weblinks extension package', () => {
       .should('exist') // Confirm the row exists
       // Verify other cells in the same row
       .within(() => {
-        cy.log(cy.get('td').eq(2))
         cy.get('td').eq(2).should('contain', 'Site'); // Location column
         cy.get('td').eq(3).should('contain', 'Plugin'); // Type column
         cy.get('td').eq(7).should('contain', 'finder'); // Folder column
@@ -29,7 +28,6 @@ describe('Test that the weblinks extension package', () => {
       .should('exist') // Confirm the row exists
       // Verify other cells in the same row
       .within(() => {
-        cy.log(cy.get('td').eq(2))
         cy.get('td').eq(2).should('contain', 'Site'); // Location column
         cy.get('td').eq(3).should('contain', 'Module'); // Type column
         cy.get('td').eq(7).should('contain', 'N/A'); // Folder column
@@ -44,7 +42,6 @@ describe('Test that the weblinks extension package', () => {
       .should('exist') // Confirm the row exists
       // Verify other cells in the same row
       .within(() => {
-        cy.log(cy.get('td').eq(2))
         cy.get('td').eq(2).should('contain', 'Site'); // Location column
         cy.get('td').eq(3).should('contain', 'Plugin'); // Type column
         cy.get('td').eq(7).should('contain', 'system'); // Folder column
@@ -59,7 +56,6 @@ describe('Test that the weblinks extension package', () => {
       .should('exist') // Confirm the row exists
       // Verify other cells in the same row
       .within(() => {
-        cy.log(cy.get('td').eq(2))
         cy.get('td').eq(2).should('contain', 'Administrator'); // Location column
         cy.get('td').eq(3).should('contain', 'Component'); // Type column
         cy.get('td').eq(7).should('contain', 'N/A'); // Folder column
@@ -74,7 +70,6 @@ describe('Test that the weblinks extension package', () => {
       .should('exist') // Confirm the row exists
       // Verify other cells in the same row
       .within(() => {
-        cy.log(cy.get('td').eq(2))
         cy.get('td').eq(2).should('contain', 'Site'); // Location column
         cy.get('td').eq(3).should('contain', 'Package'); // Type column
         cy.get('td').eq(7).should('contain', 'N/A'); // Folder column
