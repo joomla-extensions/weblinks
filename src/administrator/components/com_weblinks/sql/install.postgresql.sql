@@ -50,3 +50,7 @@ CREATE INDEX "#__weblinks_idx_xreference" ON "#__weblinks" ("xreference");
 
 COMMENT ON COLUMN "#__weblinks"."featured" IS 'Set if link is featured.';
 COMMENT ON COLUMN "#__weblinks"."xreference" IS 'A reference to enable linkages to external data sets.';
+
+INSERT INTO "#__action_logs_extensions" ("extension") VALUES ('com_weblinks');
+INSERT INTO "#__action_log_config" ("type_title", "type_alias", "id_holder", "title_holder", "table_name", "text_prefix") VALUES
+('weblinks', 'com_weblinks.form', 'id', 'name', '#__weblinks', 'PLG_ACTIONLOG_JOOMLA');
