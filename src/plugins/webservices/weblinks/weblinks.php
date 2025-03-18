@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package     Joomla.Plugin
  * @subpackage  Webservices.Weblinks
@@ -19,57 +20,57 @@ use Joomla\CMS\Router\ApiRouter;
  */
 class PlgWebservicesWeblinks extends CMSPlugin
 {
-	/**
-	 * Load the language file on instantiation.
-	 *
-	 * @var    boolean
-	 * @since  4.0.0
-	 */
-	protected $autoloadLanguage = true;
+    /**
+     * Load the language file on instantiation.
+     *
+     * @var    boolean
+     * @since  4.0.0
+     */
+    protected $autoloadLanguage = true;
 
-	/**
-	 * Registers com_weblinks's API's routes in the application
-	 *
-	 * @param   ApiRouter  &$router  The API Routing object
-	 *
-	 * @return  void
-	 *
-	 * @since   4.0.0
-	 */
-	public function onBeforeApiRoute(&$router)
-	{
-		$router->createCRUDRoutes('v1/weblinks', 'weblinks', ['component' => 'com_weblinks']);
+    /**
+     * Registers com_weblinks's API's routes in the application
+     *
+     * @param   ApiRouter  &$router  The API Routing object
+     *
+     * @return  void
+     *
+     * @since   4.0.0
+     */
+    public function onBeforeApiRoute(&$router)
+    {
+        $router->createCRUDRoutes('v1/weblinks', 'weblinks', ['component' => 'com_weblinks']);
 
-		$router->createCRUDRoutes(
-			'v1/weblinks/categories',
-			'categories',
-			['component' => 'com_categories', 'extension' => 'com_weblinks']
-		);
+        $router->createCRUDRoutes(
+            'v1/weblinks/categories',
+            'categories',
+            ['component' => 'com_categories', 'extension' => 'com_weblinks']
+        );
 
-		$this->createFieldsRoutes($router);
-	}
+        $this->createFieldsRoutes($router);
+    }
 
-	/**
-	 * Create fields routes
-	 *
-	 * @param   ApiRouter  &$router  The API Routing object
-	 *
-	 * @return  void
-	 *
-	 * @since   4.0.0
-	 */
-	private function createFieldsRoutes(&$router)
-	{
-		$router->createCRUDRoutes(
-			'v1/fields/weblinks',
-			'fields',
-			['component' => 'com_fields', 'context' => 'com_weblinks.weblink']
-		);
+    /**
+     * Create fields routes
+     *
+     * @param   ApiRouter  &$router  The API Routing object
+     *
+     * @return  void
+     *
+     * @since   4.0.0
+     */
+    private function createFieldsRoutes(&$router)
+    {
+        $router->createCRUDRoutes(
+            'v1/fields/weblinks',
+            'fields',
+            ['component' => 'com_fields', 'context' => 'com_weblinks.weblink']
+        );
 
-		$router->createCRUDRoutes(
-			'v1/fields/groups/weblinks',
-			'groups',
-			['component' => 'com_fields', 'context' => 'com_weblinks.weblink']
-		);
-	}
+        $router->createCRUDRoutes(
+            'v1/fields/groups/weblinks',
+            'groups',
+            ['component' => 'com_fields', 'context' => 'com_weblinks.weblink']
+        );
+    }
 }
