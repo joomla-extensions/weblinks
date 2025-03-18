@@ -10,8 +10,6 @@
 
 namespace Joomla\Plugin\WebServices\Weblinks\Extension;
 
-defined('_JEXEC') or die;
-
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Router\ApiRouter;
 
