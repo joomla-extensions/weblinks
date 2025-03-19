@@ -29,7 +29,7 @@ class Pkg_WeblinksInstallerScript extends InstallerScript
      * @var    boolean
      * @since  __DEPLOY_VERSION__
      */
-    protected $allowDowngrades = false;
+    protected $allowDowngrades = true;
 
     /**
      * Extension script constructor.
