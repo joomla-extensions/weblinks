@@ -51,7 +51,7 @@ if (!$canEdit) {
 
     <div itemprop="articleBody">
        <div class="p-3">
-            <a href="<?php echo $weblinkUrl; ?>" target="_blank" itemprop="url">
+            <a href="<?php echo $weblinkUrl; ?>" target="_blank" rel="<?php echo $this->params->get('follow', 'follow'); ?>" itemprop="url">
                 <?php echo $weblinkUrl; ?>
           </a>
        </div>
