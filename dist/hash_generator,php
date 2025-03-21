@@ -2,7 +2,7 @@
 <?php
 
 /**
- * Script used to generate SHA384 hashes for release packages
+ * Script used to generate SHA512 hashes for release packages
  *
  * Usage: php dist/hash_generator.php
  *
@@ -20,7 +20,7 @@ foreach (new \DirectoryIterator($extensionsDir) as $file) {
         continue;
     }
 
-    $hashes[$file->getFilename()] = ['sha384' => hash_file('sha384', $file->getPathname())];
+    $hashes[$file->getFilename()] = ['sha512' => hash_file('sha512', $file->getPathname())];
 }
 
 $jsonOptions = JSON_PRETTY_PRINT;
@@ -34,7 +34,7 @@ foreach (new \DirectoryIterator($packageDir) as $file) {
         continue;
     }
 
-    $hashes[$file->getFilename()] = ['sha384' => hash_file('sha384', $file->getPathname())];
+    $hashes[$file->getFilename()] = ['sha512' => hash_file('sha512', $file->getPathname())];
 }
 
 @file_put_contents($packageDir . '/weblinks-checksums.json', json_encode($hashes, $jsonOptions));
