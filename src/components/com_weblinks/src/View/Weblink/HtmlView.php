@@ -13,6 +13,7 @@ namespace Joomla\Component\Weblinks\Site\View\Weblink;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Component\Weblinks\Site\Model\WeblinkModel;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -73,6 +74,8 @@ class HtmlView extends BaseHtmlView
         if (\count($errors) > 0) {
             $this->handleModelErrors($errors);
         }
+
+        PluginHelper::importPlugin('content');
 
         // Create a shortcut for $item.
         $item         = $this->item;

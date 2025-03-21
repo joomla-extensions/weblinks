@@ -22,6 +22,16 @@ use Joomla\CMS\Installer\InstallerScript;
 class Pkg_WeblinksInstallerScript extends InstallerScript
 {
     /**
+     * Allow downgrades of your extension
+     *
+     * Use at your own risk as if there is a change in functionality people may wish to downgrade.
+     *
+     * @var    boolean
+     * @since  __DEPLOY_VERSION__
+     */
+    protected $allowDowngrades = true;
+
+    /**
      * Extension script constructor.
      *
      * @since   __DEPLOY_VERSION__
