@@ -37,7 +37,7 @@ class WeblinksModel extends ListModel
      * @see     JControllerLegacy
      * @since   1.6
      */
-    public function __construct($config = [], ?MVCFactoryInterface $factory = null)
+    public function __construct($config = [], MVCFactoryInterface $factory = null)
     {
         if (empty($config['filter_fields'])) {
             $config['filter_fields'] = [
@@ -53,6 +53,7 @@ class WeblinksModel extends ListModel
                 'ag.title', 'access_level',
                 'created', 'a.created',
                 'created_by', 'a.created_by',
+                'modified','a.modified',
                 'ordering', 'a.ordering',
                 'featured', 'a.featured',
                 'language', 'a.language',
@@ -90,10 +91,10 @@ class WeblinksModel extends ListModel
     {
         $app = Factory::getApplication();
 
-        $forcedLanguage = $app->getInput()->get('forcedLanguage', '', 'cmd');
+        $forcedLanguage = $app->input()->get('forcedLanguage', '', 'cmd');
 
         // Adjust the context to support modal layouts.
-        if ($layout = $app->getInput()->get('layout')) {
+        if ($layout = $app->input()->get('layout')) {
             $this->context .= '.' . $layout;
         }
 
@@ -160,7 +161,7 @@ class WeblinksModel extends ListModel
         $query->select(
             $this->getState(
                 'list.select',
-                'a.id, a.title, a.alias, a.checked_out, a.checked_out_time, a.catid, a.created, a.created_by, ' .
+                'a.id, a.title, a.alias, a.checked_out, a.checked_out_time, a.catid, a.created, a.created_by, a.modified, a.modified_by,' .
                 'a.hits, a.state, a.access, a.ordering, a.language, a.publish_up, a.publish_down'
             )
         );

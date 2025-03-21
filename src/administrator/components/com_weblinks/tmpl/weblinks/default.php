@@ -27,6 +27,12 @@ $userId    = $user->get('id');
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 $saveOrder = $listOrder == 'a.ordering';
+
+$orderingColumn = 'created';
+if (strpos($listOrder, 'modified') !== false) {
+    $orderingColumn = 'modified';
+}
+
 $assoc     = Associations::isEnabled();
 if ($saveOrder && !empty($this->items)) {
     $saveOrderingUrl = 'index.php?option=com_weblinks&task=weblinks.saveOrderAjax&tmpl=component';
@@ -69,6 +75,9 @@ if ($saveOrder && !empty($this->items)) {
                           </th>
                           <th scope="col">
                                 <?php echo HTMLHelper::_('searchtools.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
+                           </th>
+                           <th scope="col" class="w-10 d-none d-md-table-cell text-center">
+                                <?php echo HTMLHelper::_('searchtools.sort', 'COM_WEBLINKS_HEADING_DATE_' . strtoupper($orderingColumn), 'a.' . $orderingColumn, $listDirn, $listOrder); ?>
                            </th>
                           <th scope="col" class="w-10 d-none d-md-table-cell">
                                 <?php echo HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_ACCESS', 'access_level', $listDirn, $listOrder); ?>
@@ -129,6 +138,7 @@ if ($saveOrder && !empty($this->items)) {
                                         <?php
                                     endif; ?>
                               </td>
+
                               <td class="text-center">
                                     <?php echo HTMLHelper::_('jgrid.published', $item->state, $i, 'weblinks.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
                               </td>
@@ -157,6 +167,12 @@ if ($saveOrder && !empty($this->items)) {
                                       </div>
                                  </div>
                              </th>
+                             <td class="text-center">
+                                    <?php
+                                        $date = $item->{$orderingColumn};
+                                        echo $date > 0 ? HTMLHelper::_('date', $date, Text::_('DATE_FORMAT_LC4')) : '-';
+                                    ?>
+                              </td>
                               <td class="small d-none d-md-table-cell">
                                     <?php echo $this->escape($item->access_level); ?>
                                 </td>

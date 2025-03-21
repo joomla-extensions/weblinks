@@ -80,6 +80,10 @@
 			<option value="a.title DESC">JGLOBAL_TITLE_DESC</option>
 			<option value="category_title ASC">JCATEGORY_ASC</option>
 			<option value="category_title DESC">JCATEGORY_DESC</option>
+			<option value="a.created ASC">JDATE_ASC</option>
+			<option value="a.created DESC">JDATE_DESC</option>
+			<option value="a.modified ASC">COM_WEBLINKS_MODIFIED_ASC</option>
+			<option value="a.modified DESC">COM_WEBLINKS_MODIFIED_DESC</option>
 			<option value="access_level ASC">JGRID_HEADING_ACCESS_ASC</option>
 			<option value="access_level DESC">JGRID_HEADING_ACCESS_DESC</option>
 			<option value="a.hits ASC">JGLOBAL_HITS_ASC</option>
