@@ -20,7 +20,7 @@ use Joomla\Component\Fields\Administrator\Helper\FieldsHelper;
 /**
  * The weblinks controller
  *
- * @since  4.0.0
+ * @since  __DEPLOY_VERSION__
  */
 class WeblinksController extends ApiController
 {
@@ -28,7 +28,7 @@ class WeblinksController extends ApiController
      * The content type of the item.
      *
      * @var    string
-     * @since  4.0.0
+     * @since  __DEPLOY_VERSION__
      */
     protected $contentType = 'weblinks';
 
@@ -36,7 +36,7 @@ class WeblinksController extends ApiController
      * The default view for the display method.
      *
      * @var    string
-     * @since  3.0
+     * @since  __DEPLOY_VERSION__
      */
     protected $default_view = 'weblinks';
 
@@ -47,7 +47,7 @@ class WeblinksController extends ApiController
      *
      * @return  integer  The record ID on success, false on failure
      *
-     * @since   4.0.0
+     * @since   __DEPLOY_VERSION__
      */
     protected function save($recordKey = null)
     {
