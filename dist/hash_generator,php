@@ -1,0 +1,42 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * Script used to generate SHA384 hashes for release packages
+ *
+ * Usage: php dist/hash_generator.php
+ *
+ * @copyright  Copyright (C) 2025 Open Source Matters, Inc. All rights reserved.
+ * @license    GNU General Public License version 2 or later
+ */
+
+$extensionsDir = dirname(__DIR__) . '/dist/zips';
+
+$hashes = array();
+
+/** @var DirectoryIterator $file */
+foreach (new \DirectoryIterator($extensionsDir) as $file) {
+    if ($file->isDir() || $file->isDot()) {
+        continue;
+    }
+
+    $hashes[$file->getFilename()] = ['sha384' => hash_file('sha384', $file->getPathname())];
+}
+
+$jsonOptions = JSON_PRETTY_PRINT;
+$packageDir = dirname(__DIR__) . '/dist';
+
+@file_put_contents($packageDir . '/weblinks-checksums.json', json_encode($hashes, $jsonOptions));
+
+/** @var DirectoryIterator $file */
+foreach (new \DirectoryIterator($packageDir) as $file) {
+    if ($file->isDir() || $file->isDot() || pathinfo($file->getFilename(), PATHINFO_EXTENSION) !== 'zip') {
+        continue;
+    }
+
+    $hashes[$file->getFilename()] = ['sha384' => hash_file('sha384', $file->getPathname())];
+}
+
+@file_put_contents($packageDir . '/weblinks-checksums.json', json_encode($hashes, $jsonOptions));
+
+echo 'Checksums of package files generated' . PHP_EOL . PHP_EOL;
