@@ -14,7 +14,7 @@
 		<folder plugin="weblinks">services</folder>
 		<folder>src</folder>
 	</files>
-	<languages folder="administrator/language">
+	<languages folder="language">
 		##LANGUAGE_FILES##
 	</languages>
 </extension>

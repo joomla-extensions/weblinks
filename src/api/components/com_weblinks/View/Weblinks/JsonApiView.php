@@ -20,7 +20,7 @@ use Joomla\Component\Fields\Administrator\Helper\FieldsHelper;
 /**
  * The weblinks view
  *
- * @since  4.0.0
+ * @since  __DEPLOY_VERSION__
  */
 class JsonApiView extends BaseApiView
 {
@@ -28,7 +28,7 @@ class JsonApiView extends BaseApiView
      * The fields to render item in the documents
      *
      * @var  array
-     * @since  4.0.0
+     * @since  __DEPLOY_VERSION__
      */
     protected $fieldsToRenderItem = [
         'id',
@@ -66,7 +66,7 @@ class JsonApiView extends BaseApiView
      * The fields to render items in the documents
      *
      * @var  array
-     * @since  4.0.0
+     * @since  __DEPLOY_VERSION__
      */
     protected $fieldsToRenderList = [
         'id',
@@ -98,7 +98,7 @@ class JsonApiView extends BaseApiView
      *
      * @return  string
      *
-     * @since   4.0.0
+     * @since   __DEPLOY_VERSION__
      */
     public function displayList(?array $items = null)
     {
@@ -116,7 +116,7 @@ class JsonApiView extends BaseApiView
      *
      * @return  string
      *
-     * @since   4.0.0
+     * @since   __DEPLOY_VERSION__
      */
     public function displayItem($item = null)
     {
@@ -134,7 +134,7 @@ class JsonApiView extends BaseApiView
      *
      * @return  object
      *
-     * @since   4.0.0
+     * @since   __DEPLOY_VERSION__
      */
     protected function prepareItem($item)
     {

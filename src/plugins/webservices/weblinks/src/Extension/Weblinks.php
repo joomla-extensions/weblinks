@@ -20,15 +20,15 @@ use Joomla\CMS\Router\ApiRouter;
 /**
  * Web Services adapter for com_weblinks.
  *
- * @since  4.0.0
+ * @since  __DEPLOY_VERSION__
  */
-final class Weblinks extends CMSPlugin
+class Weblinks extends CMSPlugin
 {
     /**
      * Load the language file on instantiation.
      *
      * @var    boolean
-     * @since  4.0.0
+     * @since  __DEPLOY_VERSION__
      */
     protected $autoloadLanguage = true;
 
@@ -39,7 +39,7 @@ final class Weblinks extends CMSPlugin
      *
      * @return  void
      *
-     * @since   4.0.0
+     * @since   __DEPLOY_VERSION__
      */
     public function onBeforeApiRoute(&$router)
     {
@@ -61,7 +61,7 @@ final class Weblinks extends CMSPlugin
      *
      * @return  void
      *
-     * @since   4.0.0
+     * @since   __DEPLOY_VERSION__
      */
     private function createFieldsRoutes(&$router)
     {
