@@ -66,8 +66,8 @@
 		</languages>
 	</administration>
 	<api>
-		<files folder="api">
-			<folder>src</folder>
+		<files folder="api/components/com_weblinks">
+			##API_COMPONENT_FILES##
 		</files>
 	</api>
 </extension>
