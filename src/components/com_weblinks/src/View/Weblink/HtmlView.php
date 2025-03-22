@@ -10,6 +10,7 @@
 
 namespace Joomla\Component\Weblinks\Site\View\Weblink;
 
+use Joomla\CMS\Event\Content;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -75,8 +76,6 @@ class HtmlView extends BaseHtmlView
             $this->handleModelErrors($errors);
         }
 
-        PluginHelper::importPlugin('content');
-
         // Create a shortcut for $item.
         $item         = $this->item;
         $item->slug   = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
@@ -84,14 +83,38 @@ class HtmlView extends BaseHtmlView
         $item->params = clone $app->getParams();
         $item->params->merge($temp);
         $offset = $this->state->get('list.offset');
-        $app->triggerEvent('onContentPrepare', ['com_weblinks.weblink', &$item, &$item->params, $offset]);
-        $item->event                       = new \stdClass();
-        $results                           = $app->triggerEvent('onContentAfterTitle', ['com_weblinks.weblink', &$item, &$item->params, $offset]);
-        $item->event->afterDisplayTitle    = trim(implode("\n", $results));
-        $results                           = $app->triggerEvent('onContentBeforeDisplay', ['com_weblinks.weblink', &$item, &$item->params, $offset]);
-        $item->event->beforeDisplayContent = trim(implode("\n", $results));
-        $results                           = $app->triggerEvent('onContentAfterDisplay', ['com_weblinks.weblink', &$item, &$item->params, $offset]);
-        $item->event->afterDisplayContent  = trim(implode("\n", $results));
+
+        $dispatcher = $this->getDispatcher();
+
+        // Process the content plugins.
+        PluginHelper::importPlugin('content', null, true, $dispatcher);
+
+        $contentEventArguments = [
+            'context' => 'com_weblinks.weblink',
+            'subject' => $item,
+            'params'  => $item->params,
+            'page'    => $offset,
+        ];
+
+        $dispatcher->dispatch(
+            'onContentPrepare',
+            new Content\ContentPrepareEvent('onContentPrepare', $contentEventArguments)
+        );
+
+        // Extra content from events
+        $item->event   = new \stdClass();
+        $contentEvents = [
+            'afterDisplayTitle'    => new Content\AfterTitleEvent('onContentAfterTitle', $contentEventArguments),
+            'beforeDisplayContent' => new Content\BeforeDisplayEvent('onContentBeforeDisplay', $contentEventArguments),
+            'afterDisplayContent'  => new Content\AfterDisplayEvent('onContentAfterDisplay', $contentEventArguments),
+        ];
+
+        foreach ($contentEvents as $resultKey => $event) {
+            $results = $dispatcher->dispatch($event->getName(), $event)->getArgument('result', []);
+
+            $item->event->{$resultKey} = $results ? trim(implode("\n", $results)) : '';
+        }
+
         parent::display($tpl);
     }
 
