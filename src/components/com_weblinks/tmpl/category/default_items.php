@@ -130,7 +130,7 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
                             case 1:
                                 // Open in a new window
                                 echo '<a href="' . $link . '" target="_blank" class="' . $menuclass . '"
-                                rel="'  . $item->params->get('follow', 'follow') . '">'
+                                rel="'  . $item->params->get('follow', 'nofollow') . '">'
                                 . $this->escape($item->title) . '</a>';
 
                                 break;
@@ -159,7 +159,7 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
                             default:
                                 // Open in parent window
                                 echo '<a href="' . $link . '" target="_blank" class="' . $menuclass . '"
-                                rel="'  . $item->params->get('follow', 'follow') . '">'
+                                rel="'  . $item->params->get('follow', 'nofollow') . '">'
                                 . $this->escape($item->title) . '</a>';
 
                                 break;
