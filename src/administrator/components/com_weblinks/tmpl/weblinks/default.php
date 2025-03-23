@@ -40,7 +40,7 @@ if ($saveOrder && !empty($this->items)) {
                 <?php
                 // Search tools bar
                 echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]);
-                ?>
+?>
                 <?php if (empty($this->items)) :
                     ?>
                   <div class="alert alert-info">
@@ -97,7 +97,7 @@ if ($saveOrder && !empty($this->items)) {
                       </thead>
                         <tbody <?php if ($saveOrder) :
                             ?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($listDirn); ?>" data-nested="true"<?php
-                               endif; ?>>
+                        endif; ?>>
                         <?php foreach ($this->items as $i => $item) :
                             ?>
                             <?php $item->cat_link = Route::_('index.php?option=com_categories&extension=com_weblinks&task=edit&type=other&cid[]=' . $item->catid); ?>
@@ -113,12 +113,12 @@ if ($saveOrder && !empty($this->items)) {
                               <td class="text-center d-none d-md-table-cell">
                                     <?php
                                     $iconClass = '';
-                                    if (!$canChange) {
-                                        $iconClass = ' inactive';
-                                    } elseif (!$saveOrder) {
-                                        $iconClass = ' inactive" title="' . Text::_('JORDERINGDISABLED');
-                                    }
-                                    ?>
+                            if (!$canChange) {
+                                $iconClass = ' inactive';
+                            } elseif (!$saveOrder) {
+                                $iconClass = ' inactive" title="' . Text::_('JORDERINGDISABLED');
+                            }
+                            ?>
                                     <span class="sortable-handler<?php echo $iconClass; ?>">
                                        <span class="icon-ellipsis-v" aria-hidden="true"></span>
                                    </span>
@@ -190,20 +190,20 @@ if ($saveOrder && !empty($this->items)) {
                      </tbody>
                    </table>
 
-                    <?php // Load the pagination. ?>
+                    <?php // Load the pagination.?>
                     <?php echo $this->pagination->getListFooter(); ?>
 
-                    <?php // Load the batch processing form. ?>
+                    <?php // Load the batch processing form.?>
                     <?php if (
-                    $user->authorise('core.create', 'com_weblinks')
-                        && $user->authorise('core.edit', 'com_weblinks')
-                        && $user->authorise('core.edit.state', 'com_weblinks')
-) :
-    ?>
+                        $user->authorise('core.create', 'com_weblinks')
+                            && $user->authorise('core.edit', 'com_weblinks')
+                            && $user->authorise('core.edit.state', 'com_weblinks')
+                    ) :
+                        ?>
                         <?php echo HTMLHelper::_('bootstrap.renderModal', 'collapseModal', [
-                                'title' => Text::_('COM_WEBLINKS_BATCH_OPTIONS'),
-                                'footer' => $this->loadTemplate('batch_footer')
-                            ], $this->loadTemplate('batch_body')); ?>
+                                                    'title'  => Text::_('COM_WEBLINKS_BATCH_OPTIONS'),
+                                                    'footer' => $this->loadTemplate('batch_footer'),
+                                                ], $this->loadTemplate('batch_body')); ?>
                     <?php
                     endif; ?>
                     <?php

@@ -17,6 +17,6 @@ use Joomla\CMS\Layout\LayoutHelper;
 <div class="com-weblinks-category">
     <?php
     $this->subtemplatename = 'items';
-    echo LayoutHelper::render('joomla.content.category_default', $this);
-    ?>
+echo LayoutHelper::render('joomla.content.category_default', $this);
+?>
 </div>

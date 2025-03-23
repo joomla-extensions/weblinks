@@ -16,12 +16,12 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
 
-if ($this->maxLevel != 0 && count($this->children[$this->category->id]) > 0) :
+if ($this->maxLevel != 0 && \count($this->children[$this->category->id]) > 0) :
     ?>
    <ul class="com-weblinks-category__children list-group list-unstyled">
         <?php foreach ($this->children[$this->category->id] as $id => $child) :
             ?>
-            <?php if ($this->params->get('show_empty_categories') || $child->numitems || count($child->getChildren())) :
+            <?php if ($this->params->get('show_empty_categories') || $child->numitems || \count($child->getChildren())) :
                 ?>
                <li class="list-group-item">
                    <div  class="item-title">
@@ -48,9 +48,9 @@ if ($this->maxLevel != 0 && count($this->children[$this->category->id]) > 0) :
                         <?php
                     endif; ?>
 
-                    <?php if (count($child->getChildren()) > 0) :
+                    <?php if (\count($child->getChildren()) > 0) :
                         $this->children[$child->id] = $child->getChildren();
-                        $this->category = $child;
+                        $this->category             = $child;
                         $this->maxLevel--;
                         echo $this->loadTemplate('children');
                         $this->category = $child->getParent();

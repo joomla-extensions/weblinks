@@ -100,7 +100,7 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
                             <?php
                         elseif ($this->params->get('icons', 1) == 1) :
                             ?>
-                            <?php // ToDo css icons as variables ?>
+                            <?php // ToDo css icons as variables?>
                             <?php if (!$this->params->get('link_icons')) :
                                 ?>
                                 <span class="icon-globe" aria-hidden="true"></span>
@@ -113,11 +113,11 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
                             <?php
                         endif; ?>
 
-                        <?php // Compute the correct link ?>
+                        <?php // Compute the correct link?>
                         <?php $menuclass = 'category' . $this->pageclass_sfx; ?>
-                        <?php $link   = $item->link; ?>
-                        <?php $width  = $item->params->get('width', 600); ?>
-                        <?php $height = $item->params->get('height', 500); ?>
+                        <?php $link      = $item->link; ?>
+                        <?php $width     = $item->params->get('width', 600); ?>
+                        <?php $height    = $item->params->get('height', 500); ?>
 
                         <?php if ($item->state == 0) :
                             ?>
@@ -162,7 +162,7 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
 
                                 break;
                         }
-                        ?>
+                    ?>
                             <?php if ($this->params->get('show_link_hits', 1)) :
                                 ?>
                                 <div class="list-hits badge bg-info float-end">

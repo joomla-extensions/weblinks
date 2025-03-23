@@ -15,10 +15,10 @@ namespace Joomla\Module\Weblinks\Site\Helper;
 // phpcs:enable PSR1.Files.SideEffects
 
 use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Categories\Categories;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\Registry\Registry;
-use Joomla\CMS\Categories\Categories;
 
 /**
  * Helper for mod_weblinks
@@ -39,37 +39,37 @@ class WeblinksHelper
      **/
     public function getWeblinks($params, $app)
     {
-        $catid = (int) $params->get('catid', 0);
+        $catid                = (int) $params->get('catid', 0);
         $groupBySubcategories = $params->get('groupby', 0);
-        $recursive = $params->get('recursive', 1);
-        
+        $recursive            = $params->get('recursive', 1);
+
         // If not grouping by subcategories or not recursive, use the original method
         if (!$groupBySubcategories || !$recursive) {
             return $this->getWeblinksByCategory($catid, $params, $app);
         }
-        
+
         // Get all subcategories recursively
-        $categories = Categories::getInstance('Weblinks');
+        $categories     = Categories::getInstance('Weblinks');
         $parentCategory = $categories->get($catid);
-        
+
         if (!$parentCategory) {
             return [];
         }
-        
+
         $allItems = [];
-        
+
         // Add items from the parent category first
         $parentItems = $this->getWeblinksByCategory($catid, $params, $app);
         if (!empty($parentItems)) {
             $allItems = array_merge($allItems, $parentItems);
         }
-        
+
         // Process subcategories recursively
         $this->processSubcategories($parentCategory, $params, $app, $allItems);
-        
+
         return $allItems;
     }
-    
+
     /**
      * Process subcategories recursively
      *
@@ -85,20 +85,20 @@ class WeblinksHelper
         if (!$category || !$category->hasChildren()) {
             return;
         }
-        
+
         $subcategories = $category->getChildren();
-        
+
         foreach ($subcategories as $subcategory) {
             $subcatItems = $this->getWeblinksByCategory($subcategory->id, $params, $app);
-            
+
             if (!empty($subcatItems)) {
                 $items = array_merge($items, $subcatItems);
             }
-            
+
             $this->processSubcategories($subcategory, $params, $app, $items);
         }
     }
-    
+
     /**
      * Retrieve list of weblinks from a specific category
      *
@@ -196,7 +196,7 @@ class WeblinksHelper
      * @return  mixed   Null if no weblinks based on input parameters else an array containing all the weblinks.
      *
      * @since   1.5
-     
+
      * @deprecated 5.0 Use the none static function getWeblinks
      **/
     public static function getList($params, $app)
