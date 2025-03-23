@@ -39,6 +39,17 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
+				<field
+   					 name="recursive"
+	  				 type="radio"
+   					 label="Include Nested Categories"
+   					 description="Retrieve weblinks from nested subcategories"
+   					 class="btn-group btn-group-yesno"
+   					 default="1"
+   					 >
+   					 <option value="0">JNO</option>
+   					 <option value="1">JYES</option>
+					</field>
 
 				<field
 					name="groupby_showtitle"
