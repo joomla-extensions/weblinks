@@ -70,10 +70,10 @@ if ($this->maxLevelcat != 0 && \count($this->items[$this->parent->id]) > 0) :
                     elseif (!empty($params->get('image_alt_empty'))) :
                         $alt = 'alt=""';
                     endif;
-                ?>
+                    ?>
                     <img src="<?php echo htmlspecialchars($img->url, ENT_COMPAT, 'UTF-8'); ?>"<?php echo $alt; ?>>
                     <?php
-            endif; ?>
+                endif; ?>
 
 
                 <?php if ($this->maxLevelcat > 1 && \count($item->getChildren()) > 0) :
@@ -81,12 +81,12 @@ if ($this->maxLevelcat != 0 && \count($this->items[$this->parent->id]) > 0) :
                     <div class="com-content-categories__children" id="category-<?php echo $item->id; ?>" hidden>
                         <?php
                         $this->items[$item->id] = $item->getChildren();
-                    $this->parent               = $item;
-                    $this->maxLevelcat--;
-                    echo $this->loadTemplate('items');
-                    $this->parent = $item->getParent();
-                    $this->maxLevelcat++;
-                    ?>
+                        $this->parent               = $item;
+                        $this->maxLevelcat--;
+                        echo $this->loadTemplate('items');
+                        $this->parent = $item->getParent();
+                        $this->maxLevelcat++;
+                        ?>
                     </div>
                     <?php
                 endif; ?>
