@@ -96,4 +96,13 @@ class RoboFile extends Tasks
     {
         $this->task(\Joomla\Jorobo\Tasks\Map::class,$target)->run();
     }
+    public function runChecker($tool = null)
+    {
+        $tools = ['phpcs', 'phpcbf']; // Adding phpcbf for auto-fixing
+        foreach ($tools as $t) {
+        $this->taskExec("./vendor/bin/$t --standard=ruleset.xml src/")
+            ->run();
+    }
+    }
+
 }
