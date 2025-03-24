@@ -113,7 +113,7 @@ class RoboFile extends Tasks
             'phpmd',
             'phpcs',
             'phpcpd',
-            'phpcbf', //  Added phpcbf support
+            'phpcbf', //Added phpcbf support
         ];
 
         $allowedToolsString = implode(', ', $allowedTools);
