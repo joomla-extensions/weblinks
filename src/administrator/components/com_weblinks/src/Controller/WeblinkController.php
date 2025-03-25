@@ -14,10 +14,10 @@ namespace Joomla\Component\Weblinks\Administrator\Controller;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Router\Route;
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\Versioning\VersionableControllerTrait;
 use Joomla\Utilities\ArrayHelper;
 
@@ -141,10 +141,10 @@ class WeblinkController extends FormController
     public function resetHit()
     {
         $this->model = $this->getModel();
-        $id = $this->input->getInt('id');
+        $id          = $this->input->getInt('id');
 
         $data = $this->getModel()->getItem($id)->getProperties();
-        
+
         if (!$this->allowEdit($data, 'core.edit')) {
             throw new \Exception(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
@@ -154,7 +154,7 @@ class WeblinkController extends FormController
         } else {
             $this->setError($this->model->getError());
         }
-        
+
         $this->setRedirect('index.php?option=com_weblinks&view=weblink&layout=edit&id=' . $id);
     }
 }

@@ -410,25 +410,25 @@ class WeblinkModel extends AdminModel
         return $this->getCurrentUser()->authorise('core.create', 'com_weblinks');
     }
 
-     /**
-      * Resets the hit counter for a weblink
-      *
-      * @param   int  $pk  The primary key of the weblink
-      *
-      * @return  boolean  True on success
-      *
-      * @since   4.0.0
-      */
-      public function resetHit($pk = null)
-      {
-          if (empty($pk)) {
-              $pk = $this->getState('weblink.id');
-          }
-  
-          $table = $this->getTable();
-          $table->load($pk);
-          $table->hits = 0;
-  
-          return $table->store();
-      }
+    /**
+     * Resets the hit counter for a weblink
+     *
+     * @param   int  $pk  The primary key of the weblink
+     *
+     * @return  boolean  True on success
+     *
+     * @since   4.0.0
+     */
+    public function resetHit($pk = null)
+    {
+        if (empty($pk)) {
+            $pk = $this->getState('weblink.id');
+        }
+
+        $table = $this->getTable();
+        $table->load($pk);
+        $table->hits = 0;
+
+        return $table->store();
+    }
 }
