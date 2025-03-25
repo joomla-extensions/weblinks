@@ -17,6 +17,7 @@ namespace Joomla\Component\Weblinks\Administrator\Controller;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Versioning\VersionableControllerTrait;
 use Joomla\Utilities\ArrayHelper;
 
@@ -126,5 +127,34 @@ class WeblinkController extends FormController
         if ($task == 'save') {
             $this->setRedirect(Route::_('index.php?option=com_weblinks&view=weblinks', false));
         }
+    }
+
+    /**
+      * Resets the hit counter for a weblink
+      *
+      * @return  void
+      *
+      * @throws  \Exception  If the user lacks core.edit permission on the weblink
+      *
+      * @since   4.0.0
+      */
+    public function resetHit()
+    {
+        $this->model = $this->getModel();
+        $id = $this->input->getInt('id');
+
+        $data = $this->getModel()->getItem($id)->getProperties();
+        
+        if (!$this->allowEdit($data, 'core.edit')) {
+            throw new \Exception(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
+        if ($this->model->resetHit($id)) {
+            $this->setMessage(Text::_('COM_WEBLINKS_HIT_RESET_SUCCESS'));
+        } else {
+            $this->setError($this->model->getError());
+        }
+        
+        $this->setRedirect('index.php?option=com_weblinks&view=weblink&layout=edit&id=' . $id);
     }
 }

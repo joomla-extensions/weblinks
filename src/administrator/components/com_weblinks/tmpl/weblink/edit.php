@@ -88,6 +88,10 @@ $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=c
                         <legend><?php echo Text::_('JGLOBAL_FIELDSET_METADATA_OPTIONS'); ?></legend>
                         <?php echo LayoutHelper::render('joomla.edit.metadata', $this); ?>
                  </fieldset>
+                    <button type="button" class="btn btn-secondary" onclick="Joomla.submitbutton('weblink.resetHit')">
+                        <span class="icon-refresh" aria-hidden="true"></span>
+                        <?php echo Text::_('COM_WEBLINKS_RESET_HIT'); ?>
+                    </button>
                 </div>
          </div>
         <?php echo HTMLHelper::_('uitab.endTab'); ?>
