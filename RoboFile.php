@@ -23,10 +23,9 @@ if (!defined('JPATH_BASE')) {
 }
 
 /**
- * Modern php task runner for Joomla! Browser Automated Tests execution
+ * Modern PHP task runner for Joomla! Browser Automated Tests execution.
  *
  * @package  RoboFile
- *
  * @since    1.0
  */
 class RoboFile extends Tasks
@@ -44,7 +43,7 @@ class RoboFile extends Tasks
     }
 
     /**
-     * Build the joomla extension package
+     * Build the Joomla extension package.
      *
      * @param   array  $params  Additional params
      *
@@ -56,7 +55,7 @@ class RoboFile extends Tasks
             $this->_copy('jorobo.dist.ini', 'jorobo.ini');
         }
 
-        $this->task(\Joomla\Jorobo\Tasks\Build::class,$params)->run();
+        $this->task(\Joomla\Jorobo\Tasks\Build::class, $params)->run();
     }
 
     /**
@@ -86,23 +85,28 @@ class RoboFile extends Tasks
     /**
      * Map into Joomla installation.
      *
-     * @param   String  $target  The target joomla instance
+     * @param   string  $target  The target Joomla instance
      *
      * @return  void
-     * @since __DEPLOY_VERSION__
-     *
      */
     public function map($target)
     {
-        $this->task(\Joomla\Jorobo\Tasks\Map::class,$target)->run();
+        $this->task(\Joomla\Jorobo\Tasks\Map::class, $target)->run();
     }
+
+    /**
+     * Run PHP CodeSniffer and PHP Code Beautifier and Fixer.
+     *
+     * @param   string|null  $tool  The tool to run (optional).
+     *
+     * @return  void
+     */
     public function runChecker($tool = null)
     {
         $tools = ['phpcs', 'phpcbf']; // Adding phpcbf for auto-fixing
         foreach ($tools as $t) {
-        $this->taskExec("./vendor/bin/$t --standard=ruleset.xml src/")
-            ->run();
+            $this->taskExec("./vendor/bin/$t --standard=ruleset.xml src/")
+                ->run();
+        }
     }
-    }
-
 }
