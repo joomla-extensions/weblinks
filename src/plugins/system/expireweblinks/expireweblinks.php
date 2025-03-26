@@ -5,7 +5,7 @@
  * @subpackage  System.ExpireWeblinks
  */
 
-\defined('_JEXEC') or die;
+namespace Joomla\Plugin\System\ExpireWeblinks;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\CMSPlugin;
@@ -15,6 +15,15 @@ use Joomla\CMS\Plugin\CMSPlugin;
  */
 class PlgSystemExpireWeblinks extends CMSPlugin
 {
+    public function __construct(&$subject, $config)
+    {
+        parent::__construct($subject, $config);
+
+        // Prevent direct access
+        if (!\defined('_JEXEC')) {
+            die;
+        }
+    }
     /**
      * Runs on every Joomla request to check and unpublish expired weblinks.
      */
