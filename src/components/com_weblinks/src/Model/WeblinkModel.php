@@ -101,6 +101,8 @@ class WeblinkModel extends ItemModel
                     ->from('#__weblinks AS a')
                     ->where($db->quoteName('a.id') . ' = :id')
                     ->bind(':id', $pk, ParameterType::INTEGER);
+                
+                $query->where($db->quoteName('a.state') . ' = 1');
 
                 // Join on category table.
                 $query->select('c.title AS category_title, c.alias AS category_alias, c.access AS category_access')
