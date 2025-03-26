@@ -18,8 +18,8 @@ use Robo\Tasks;
 
 require_once 'vendor/autoload.php';
 
-if (!defined('JPATH_BASE')) {
-    define('JPATH_BASE', __DIR__);
+if (!\defined('JPATH_BASE')) {
+    \define('JPATH_BASE', __DIR__);
 }
 
 /**
@@ -56,7 +56,7 @@ class RoboFile extends Tasks
             $this->_copy('jorobo.dist.ini', 'jorobo.ini');
         }
 
-        $this->task(\Joomla\Jorobo\Tasks\Build::class,$params)->run();
+        $this->task(\Joomla\Jorobo\Tasks\Build::class, $params)->run();
     }
 
     /**
@@ -94,6 +94,6 @@ class RoboFile extends Tasks
      */
     public function map($target)
     {
-        $this->task(\Joomla\Jorobo\Tasks\Map::class,$target)->run();
+        $this->task(\Joomla\Jorobo\Tasks\Map::class, $target)->run();
     }
 }
