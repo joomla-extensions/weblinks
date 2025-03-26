@@ -16,7 +16,7 @@
 use Joomla\Jorobo\Tasks\Tasks as loadReleaseTasks;
 use Robo\Tasks;
 
-require_once 'vendor/autoload.php';
+require_once '/Applications/XAMPP/xamppfiles/htdocs/joomla/libraries/vendor/autoload.php';
 
 if (!defined('JPATH_BASE')) {
     define('JPATH_BASE', __DIR__);
@@ -56,7 +56,7 @@ class RoboFile extends Tasks
             $this->_copy('jorobo.dist.ini', 'jorobo.ini');
         }
 
-        $this->task(\Joomla\Jorobo\Tasks\Build::class,$params)->run();
+        $this->task(\Joomla\Jorobo\Tasks\Build::class, $params)->run();
     }
 
     /**
@@ -94,6 +94,51 @@ class RoboFile extends Tasks
      */
     public function map($target)
     {
-        $this->task(\Joomla\Jorobo\Tasks\Map::class,$target)->run();
+        $this->task(\Joomla\Jorobo\Tasks\Map::class, $target)->run();
+    }
+      /**
+     * Run static code analysis tools.
+     *
+     * Usage:
+     *   vendor/bin/robo run:checker phpcs
+     *   vendor/bin/robo run:checker phpcbf
+     *
+     * @param string|null $tool The tool to run (phpcs, phpcbf, phpmd, phpcpd)
+     *
+     * @return \Robo\Result
+     */
+    public function runChecker($tool = null)
+    {
+        $allowedTools = [
+            'phpmd',
+            'phpcs',
+            'phpcpd',
+            'phpcbf', // Added phpcbf support
+        ];
+
+        $allowedToolsString = implode(', ', $allowedTools);
+
+        if (!in_array($tool, $allowedTools, true)) {
+            $this->say("The tool you required is not known. Valid tools are $allowedToolsString");
+            return \Robo\Result::success($this);
+        }
+
+        if ($tool === 'phpcs') {
+            return $this->taskExec(PHP_BINARY . ' -d error_reporting="E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED" -d display_errors=0 /Applications/XAMPP/xamppfiles/htdocs/joomla/libraries/vendor/bin/phpcs --standard=Joomla .')->run();
+        }
+
+        if ($tool === 'phpcbf') {
+            return $this->taskExec(PHP_BINARY . ' -d error_reporting="E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED" -d display_errors=0 /Applications/XAMPP/xamppfiles/htdocs/joomla/libraries/vendor/bin/phpcbf --standard=Joomla --extensions=php .')->run();
+        }
+
+        if ($tool === 'phpmd') {
+            return $this->taskExec("vendor/bin/phpmd src text cleancode,codesize,controversial,design,naming,unusedcode")->run();
+        }
+
+        if ($tool === 'phpcpd') {
+            return $this->taskExec("vendor/bin/phpcpd src")->run();
+        }
+
+        return \Robo\Result::success($this);
     }
 }
