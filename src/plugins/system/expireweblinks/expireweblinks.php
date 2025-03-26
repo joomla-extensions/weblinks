@@ -1,13 +1,14 @@
 <?php
+
 /**
  * @package     Joomla.Plugin
  * @subpackage  System.ExpireWeblinks
  */
 
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
-use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Plugin\CMSPlugin;
 
 /**
  * Plugin to automatically expire weblinks.
@@ -27,7 +28,7 @@ class PlgSystemExpireWeblinks extends CMSPlugin
      */
     protected function expireWeblinks()
     {
-        $db = Factory::getDbo();
+        $db    = Factory::getDbo();
         $query = $db->getQuery(true);
 
         // Get current UTC time

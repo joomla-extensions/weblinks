@@ -135,66 +135,66 @@ class CategoryModel extends ListModel
      * @since   1.6
      */
     protected function getListQuery()
-{
-    $viewLevels = $this->getCurrentUser()->getAuthorisedViewLevels();
-    $db = $this->getDatabase();
-    $query = $db->getQuery(true);
-    $nowUTC = Factory::getDate()->toSql(); // Get current UTC time
+    {
+        $viewLevels = $this->getCurrentUser()->getAuthorisedViewLevels();
+        $db         = $this->getDatabase();
+        $query      = $db->getQuery(true);
+        $nowUTC     = Factory::getDate()->toSql(); // Get current UTC time
 
-    $query->select($this->getState('list.select', 'a.*'))
-          ->from($db->quoteName('#__weblinks') . ' AS a')
-          ->whereIn($db->quoteName('a.access'), $viewLevels)
-          ->where($db->quoteName('a.state') . ' = 1') // Only published weblinks
-          ->where('(' . $db->quoteName('a.publish_up') . ' IS NULL OR ' . $db->quoteName('a.publish_up') . ' <= ' . $db->quote($nowUTC) . ')')
-          ->where('(' . $db->quoteName('a.publish_down') . ' IS NULL OR ' . $db->quoteName('a.publish_down') . ' > ' . $db->quote($nowUTC) . ')');
+        $query->select($this->getState('list.select', 'a.*'))
+              ->from($db->quoteName('#__weblinks') . ' AS a')
+              ->whereIn($db->quoteName('a.access'), $viewLevels)
+              ->where($db->quoteName('a.state') . ' = 1') // Only published weblinks
+              ->where('(' . $db->quoteName('a.publish_up') . ' IS NULL OR ' . $db->quoteName('a.publish_up') . ' <= ' . $db->quote($nowUTC) . ')')
+              ->where('(' . $db->quoteName('a.publish_down') . ' IS NULL OR ' . $db->quoteName('a.publish_down') . ' > ' . $db->quote($nowUTC) . ')');
 
-    if ($categoryId = $this->getState('category.id')) {
-        if ($this->getState('category.group', 0)) {
-            $query->select('c.title AS category_title')
-                  ->where('c.parent_id = :parent_id')
-                  ->bind(':parent_id', $categoryId, ParameterType::INTEGER)
-                  ->join('LEFT', '#__categories AS c ON c.id = a.catid')
-                  ->whereIn($db->quoteName('c.access'), $viewLevels);
-        } else {
-            $query->where('a.catid = :catid')
-                  ->bind(':catid', $categoryId, ParameterType::INTEGER)
-                  ->join('LEFT', '#__categories AS c ON c.id = a.catid')
-                  ->whereIn($db->quoteName('c.access'), $viewLevels);
+        if ($categoryId = $this->getState('category.id')) {
+            if ($this->getState('category.group', 0)) {
+                $query->select('c.title AS category_title')
+                      ->where('c.parent_id = :parent_id')
+                      ->bind(':parent_id', $categoryId, ParameterType::INTEGER)
+                      ->join('LEFT', '#__categories AS c ON c.id = a.catid')
+                      ->whereIn($db->quoteName('c.access'), $viewLevels);
+            } else {
+                $query->where('a.catid = :catid')
+                      ->bind(':catid', $categoryId, ParameterType::INTEGER)
+                      ->join('LEFT', '#__categories AS c ON c.id = a.catid')
+                      ->whereIn($db->quoteName('c.access'), $viewLevels);
+            }
+
+            // Filter by published category
+            $cpublished = $this->getState('filter.c.published');
+            if (is_numeric($cpublished)) {
+                $query->where('c.published = :published')
+                      ->bind(':published', $cpublished, ParameterType::INTEGER);
+            }
         }
 
-        // Filter by published category
-        $cpublished = $this->getState('filter.c.published');
-        if (is_numeric($cpublished)) {
-            $query->where('c.published = :published')
-                  ->bind(':published', $cpublished, ParameterType::INTEGER);
+        $query->select("CASE WHEN a.created_by_alias > ' ' THEN a.created_by_alias ELSE ua.name END AS author")
+              ->select("ua.email AS author_email")
+              ->join('LEFT', '#__users AS ua ON ua.id = a.created_by')
+              ->join('LEFT', '#__users AS uam ON uam.id = a.modified_by');
+
+        $query->where('a.state = 1');
+
+        // Do not show trashed links on the front-end
+        $query->where('a.state != -2');
+
+        $search = $this->getState('list.filter');
+        if (!empty($search)) {
+            $search = '%' . trim($search) . '%';
+            $query->where('(a.title LIKE :search)')
+                  ->bind(':search', $search);
         }
+
+        $query->order(
+            $db->escape($this->getState('list.ordering', 'a.ordering')) . ' ' .
+            $db->escape($this->getState('list.direction', 'ASC'))
+        );
+
+        $db->setQuery($query);
+        return $query;
     }
-
-    $query->select("CASE WHEN a.created_by_alias > ' ' THEN a.created_by_alias ELSE ua.name END AS author")
-          ->select("ua.email AS author_email")
-          ->join('LEFT', '#__users AS ua ON ua.id = a.created_by')
-          ->join('LEFT', '#__users AS uam ON uam.id = a.modified_by');
-
-    $query->where('a.state = 1');
-
-    // Do not show trashed links on the front-end
-    $query->where('a.state != -2');
-
-    $search = $this->getState('list.filter');
-    if (!empty($search)) {
-        $search = '%' . trim($search) . '%';
-        $query->where('(a.title LIKE :search)')
-              ->bind(':search', $search);
-    }
-
-    $query->order(
-        $db->escape($this->getState('list.ordering', 'a.ordering')) . ' ' .
-        $db->escape($this->getState('list.direction', 'ASC'))
-    );
-
-    $db->setQuery($query);
-    return $query;
-}
 
     /**
      * Method to auto-populate the model state.
