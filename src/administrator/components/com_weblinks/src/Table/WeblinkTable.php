@@ -76,64 +76,48 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
      * @since   1.6
      */
     public function store($updateNulls = true)
-    {
-        $date           = Factory::getDate()->toSql();
-        $user           = Factory::getApplication()->getIdentity();
-        $this->modified = $date;
+{
+    $app = Factory::getApplication();
+    $db = $this->getDbo();
+    $timezoneUTC = new DateTimeZone('UTC'); // Ensure we store in UTC
 
-        if ($this->id) {
-            // Existing item
-            $this->modified_by = $user->id;
-            $this->modified    = $date;
-        } else {
-            // New weblink. A weblink created and created_by field can be set by the user,
-            // so we don't touch either of these if they are set.
-            if (!(int) $this->created) {
-                $this->created = $date;
-            }
+    $date = new DateTime('now', $timezoneUTC);
+    $this->modified = $date->format('Y-m-d H:i:s');
+    $this->modified_by = $app->getIdentity()->id;
 
-            if (empty($this->created_by)) {
-                $this->created_by = $user->id;
-            }
-
-            if (!(int) $this->modified) {
-                $this->modified = $date;
-            }
-
-            if (empty($this->modified_by)) {
-                $this->modified_by = $user->id;
-            }
-
-            if (empty($this->hits)) {
-                $this->hits = 0;
-            }
+    if ($this->id) {
+        $this->modified_by = $app->getIdentity()->id;
+    } else {
+        if (empty($this->created) || $this->created === '0000-00-00 00:00:00') {
+            $this->created = $date->format('Y-m-d H:i:s');
         }
 
-        // Set publish_up to null if not set
-        if (!$this->publish_up) {
-            $this->publish_up = null;
+        if (empty($this->created_by)) {
+            $this->created_by = $app->getIdentity()->id;
         }
 
-        // Set publish_down to null if not set
-        if (!$this->publish_down) {
-            $this->publish_down = null;
+        if (empty($this->hits)) {
+            $this->hits = 0;
         }
-
-        // Verify that the alias is unique
-        $table = new WeblinkTable($this->getDbo());
-
-        if (
-            $table->load(['language' => $this->language, 'alias' => $this->alias, 'catid' => (int) $this->catid])
-            && ($table->id != $this->id || $this->id == 0)
-        ) {
-            $this->setError(Text::_('COM_WEBLINKS_ERROR_UNIQUE_ALIAS'));
-            return false;
-        }
-
-        // Convert IDN urls to punycode
-        $this->url = PunycodeHelper::urlToPunycode($this->url);
-        return parent::store($updateNulls);
     }
+
+    $this->publish_up = (!empty($this->publish_up) && $this->publish_up !== '0000-00-00 00:00:00') ? $this->publish_up : null;
+    $this->publish_down = (!empty($this->publish_down) && $this->publish_down !== '0000-00-00 00:00:00') ? $this->publish_down : null;
+
+    $table = new WeblinkTable($db);
+    if (
+        $table->load(['language' => $this->language, 'alias' => $this->alias, 'catid' => (int) $this->catid])
+        && ($table->id != $this->id || $this->id == 0)
+    ) {
+        $this->setError(Text::_('COM_WEBLINKS_ERROR_UNIQUE_ALIAS'));
+        return false;
+    }
+
+    $this->url = PunycodeHelper::urlToPunycode($this->url);
+
+    return parent::store($updateNulls);
+}
+
 
     /**
      * Overloaded check method to ensure data integrity.
