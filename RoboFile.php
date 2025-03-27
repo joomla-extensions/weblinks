@@ -110,6 +110,6 @@ class RoboFile extends Tasks
             ->run();
     }
 }
-}
 
 }
+
