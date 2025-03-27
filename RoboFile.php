@@ -102,14 +102,14 @@ class RoboFile extends Tasks
      * @return  void
      */
     public function runChecker($tool = null)
-{
-    $tools = ['phpcs', 'phpcbf']; // Adding phpcbf for auto-fixing
-    foreach ($tools as $t) {
-        $cmd = (DIRECTORY_SEPARATOR === '\\') ? "vendor\\bin\\$t.bat" : "./vendor/bin/$t";
-        $this->taskExec("$cmd --standard=ruleset.xml src/")
-            ->run();
+    {
+        $tools = ['phpcs', 'phpcbf']; // Adding phpcbf for auto-fixing
+        foreach ($tools as $t) {
+            $cmd = (DIRECTORY_SEPARATOR === '\\') ? "vendor\\bin\\$t.bat" : "./vendor/bin/$t";
+            $this->taskExec("$cmd --standard=ruleset.xml src/")
+                ->run();
+        }
     }
-}
 
 }
 
