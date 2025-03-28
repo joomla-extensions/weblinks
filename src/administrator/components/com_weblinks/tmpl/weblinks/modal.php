@@ -35,7 +35,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 $onclick   = $this->escape($function);
 $multilang = Multilanguage::isEnabled();
 if (!empty($editor)) {
-// This view is used also in com_menus. Load the xtd script only if the editor is set!
+    // This view is used also in com_menus. Load the xtd script only if the editor is set!
     $this->document->addScriptOptions('xtd-weblinks', array('editor' => $editor));
     $onclick = "jSelectWeblink";
 }
@@ -123,7 +123,7 @@ $iconStates = array(
                                 . ' data-cat-id="' . $this->escape($item->catid) . '"'
                                 . ' data-uri="' . $this->escape(RouteHelper::getWeblinkRoute($item->id, $item->catid, $item->language)) . '"'
                                 . ' data-language="' . $this->escape($lang) . '"';
-                            ?>
+                    ?>
                             <a class="select-link" href="javascript:void(0)" <?php echo $attribs; ?>>
                                 <?php echo $this->escape($item->title); ?>
                          </a>
@@ -155,7 +155,7 @@ $iconStates = array(
             <?php
         endif; ?>
 
-        <?php // load the pagination. ?>
+        <?php // load the pagination.?>
         <?php echo $this->pagination->getListFooter(); ?>
 
       <input type="hidden" name="task" value="" />
