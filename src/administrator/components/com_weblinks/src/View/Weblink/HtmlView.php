@@ -1,11 +1,11 @@
 <?php
 
 /**
- * @package     Joomla.Administrator
- * @subpackage  Weblinks
+ * @package    Joomla.Administrator
+ * @subpackage Weblinks
  *
- * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 namespace Joomla\Component\Weblinks\Administrator\View\Weblink;
@@ -27,41 +27,43 @@ use Joomla\Component\Weblinks\Administrator\Model\WeblinkModel;
 /**
  * View to edit a weblink.
  *
- * @since  1.5
+ * @since 1.5
  */
 class HtmlView extends BaseHtmlView
 {
     /**
      * The Form object
      *
-     * @var  \Joomla\CMS\Form\Form
+     * @var \Joomla\CMS\Form\Form
      */
     protected $form;
 
     /**
      * The active item
      *
-     * @var  object
+     * @var object
      */
     protected $item;
 
     /**
      * The model state
      *
-     * @var  \Joomla\CMS\Object\CMSObject
+     * @var \Joomla\CMS\Object\CMSObject
      */
     protected $state;
 
     /**
      * Display the view.
      *
-     * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+     * @param string $tpl The name of the template file to parse; automatically searches through the template paths.
      *
-     * @return  mixed  A string if successful, otherwise an Error object.
+     * @return mixed  A string if successful, otherwise an Error object.
      */
     public function display($tpl = null)
     {
-        /** @var WeblinkModel $model */
+        /**
+ * @var WeblinkModel $model
+*/
         $model       = $this->getModel();
         $this->state = $model->getState();
         $this->item  = $model->getItem();
@@ -93,9 +95,9 @@ class HtmlView extends BaseHtmlView
     /**
      * Add the page title and toolbar.
      *
-     * @return  void
+     * @return void
      *
-     * @since   1.6
+     * @since 1.6
      */
     protected function addToolbar()
     {
@@ -126,6 +128,8 @@ class HtmlView extends BaseHtmlView
             }
 
             ToolbarHelper::cancel('weblink.cancel');
+
+            ToolbarHelper::help('Components_Weblinks_Links_Edit');
         } else {
             // Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
             $itemEditable = $canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_by == $user->id);
@@ -163,8 +167,18 @@ class HtmlView extends BaseHtmlView
             if (Associations::isEnabled() && ComponentHelper::isEnabled('com_associations')) {
                 ToolbarHelper::custom('weblink.editAssociations', 'contract', '', 'JTOOLBAR_ASSOCIATIONS', false, false);
             }
-        }
 
-        ToolbarHelper::help('Components_Weblinks_Links_Edit');
+            ToolbarHelper::help('Components_Weblinks_Links_Edit');
+
+            if (ComponentHelper::getParams('com_weblinks')->get('count_clicks', 1)) {
+                ToolbarHelper::custom(
+                    'weblink.resetHit',
+                    'refresh',
+                    '',
+                    'COM_WEBLINKS_RESET_HIT',
+                    false
+                );
+            }
+        }
     }
 }

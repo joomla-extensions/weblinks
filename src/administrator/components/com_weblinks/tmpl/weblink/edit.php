@@ -1,11 +1,11 @@
 <?php
 
 /**
- * @package     Joomla.Administrator
- * @subpackage  Weblinks
+ * @package    Joomla.Administrator
+ * @subpackage Weblinks
  *
- * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -88,10 +88,6 @@ $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=c
                         <legend><?php echo Text::_('JGLOBAL_FIELDSET_METADATA_OPTIONS'); ?></legend>
                         <?php echo LayoutHelper::render('joomla.edit.metadata', $this); ?>
                  </fieldset>
-                    <button type="button" class="btn btn-secondary" onclick="Joomla.submitbutton('weblink.resetHit')">
-                        <span class="icon-refresh" aria-hidden="true"></span>
-                        <?php echo Text::_('COM_WEBLINKS_RESET_HIT'); ?>
-                    </button>
                 </div>
          </div>
         <?php echo HTMLHelper::_('uitab.endTab'); ?>
