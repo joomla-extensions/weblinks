@@ -143,7 +143,7 @@ class HtmlView extends BaseHtmlView
         $toolbarFactory = Factory::getContainer()->get(\Joomla\CMS\Toolbar\ToolbarFactoryInterface::class);
         $toolbar        = $toolbarFactory->createToolbar();
 
-        ToolbarHelper::title(Text::_('COM_WEBLINKS_MANAGER_WEBLINKS'), 'link weblinks');
+        ToolbarHelper::title(Text::sprintf('COM_WEBLINKS_MANAGER_WEBLINKS'), 'link weblinks');
 
         if ($canDo->get('core.create') || \count($user->getAuthorisedCategories('com_weblinks', 'core.create')) > 0) {
             ToolbarHelper::addNew('weblink.add');

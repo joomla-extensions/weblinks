@@ -22,7 +22,7 @@ use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
 
 $app = Factory::getApplication();
 if ($app->isClient('site')) {
-    Session::checkToken('get') or die(Text::_('JINVALID_TOKEN'));
+    Session::checkToken('get') or die(Text::sprintf('JINVALID_TOKEN'));
 }
 
 HTMLHelper::_('behavior.multiselect');
@@ -57,15 +57,15 @@ $iconStates = [
         <?php if (empty($this->items)) :
             ?>
           <div class="alert alert-no-items">
-                <?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
+                <?php echo Text::sprintf('JGLOBAL_NO_MATCHING_RESULTS'); ?>
            </div>
         <?php else :
             ?>
          <table class="table table-sm">
              <caption class="visually-hidden">
-                <?php echo Text::_('COM_WEBLINKS_WEBLINKS_TABLE_CAPTION'); ?>,
-                    <span id="orderedBy"><?php echo Text::_('JGLOBAL_SORTED_BY'); ?> </span>,
-                    <span id="filteredBy"><?php echo Text::_('JGLOBAL_FILTERED_BY'); ?></span>
+                <?php echo Text::sprintf('COM_WEBLINKS_WEBLINKS_TABLE_CAPTION'); ?>,
+                    <span id="orderedBy"><?php echo Text::sprintf('JGLOBAL_SORTED_BY'); ?> </span>,
+                    <span id="filteredBy"><?php echo Text::sprintf('JGLOBAL_FILTERED_BY'); ?></span>
               </caption>
              <thead>
                     <tr>
@@ -126,7 +126,7 @@ $iconStates = [
                                 <?php echo $this->escape($item->title); ?>
                          </a>
                            <div class="small">
-                                <?php echo Text::_('JCATEGORY') . ': ' . $this->escape($item->category_title); ?>
+                                <?php echo Text::sprintf('JCATEGORY') . ': ' . $this->escape($item->category_title); ?>
                           </div>
                      </th>
                       <td class="small d-none d-md-table-cell">
@@ -140,7 +140,7 @@ $iconStates = [
                             <?php
                         endif; ?>
                       <td class="small d-none d-md-table-cell">
-                            <?php echo HTMLHelper::_('date', $item->created, Text::_('DATE_FORMAT_LC4')); ?>
+                            <?php echo HTMLHelper::_('date', $item->created, Text::sprintf('DATE_FORMAT_LC4')); ?>
                      </td>
                       <td class="small d-none d-md-table-cell">
                             <?php echo (int) $item->id; ?>

@@ -145,12 +145,12 @@ class WeblinkModel extends ItemModel
                 $data = $db->loadObject();
 
                 if (empty($data)) {
-                    throw new \Exception(Text::_('COM_WEBLINKS_ERROR_WEBLINK_NOT_FOUND'), 404);
+                    throw new \Exception(Text::sprintf('COM_WEBLINKS_ERROR_WEBLINK_NOT_FOUND'), 404);
                 }
 
                 // Check for published state if filter set.
                 if ((is_numeric($published) || is_numeric($archived)) && (($data->state != $published) && ($data->state != $archived))) {
-                    throw new \Exception(Text::_('COM_WEBLINKS_ERROR_WEBLINK_NOT_FOUND'), 404);
+                    throw new \Exception(Text::sprintf('COM_WEBLINKS_ERROR_WEBLINK_NOT_FOUND'), 404);
                 }
 
                 // Convert parameter fields to objects.

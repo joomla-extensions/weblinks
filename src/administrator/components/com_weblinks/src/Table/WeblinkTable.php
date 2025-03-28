@@ -109,7 +109,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
             $table->load(['language' => $this->language, 'alias' => $this->alias, 'catid' => (int) $this->catid])
             && ($table->id != $this->id || $this->id == 0)
         ) {
-            throw new \RuntimeException(Text::_('COM_WEBLINKS_ERROR_UNIQUE_ALIAS'));
+            throw new \RuntimeException(Text::sprintf('COM_WEBLINKS_ERROR_UNIQUE_ALIAS'));
             return false;
         }
 
@@ -129,14 +129,14 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
     public function check()
     {
         if (InputFilter::checkAttribute(['href', $this->url])) {
-            throw new \RuntimeException(Text::_('COM_WEBLINKS_ERR_TABLES_PROVIDE_URL'));
+            throw new \RuntimeException(Text::sprintf('COM_WEBLINKS_ERR_TABLES_PROVIDE_URL'));
 
             return false;
         }
 
         // Check for valid name
         if (trim($this->title) === '') {
-            throw new \RuntimeException(Text::_('COM_WEBLINKS_ERR_TABLES_TITLE'));
+            throw new \RuntimeException(Text::sprintf('COM_WEBLINKS_ERR_TABLES_TITLE'));
 
             return false;
         }
@@ -155,7 +155,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
         $db->setQuery($query);
         $xid = (int) $db->loadResult();
         if ($xid && $xid != (int) $this->id) {
-            throw new \RuntimeException(Text::_('COM_WEBLINKS_ERR_TABLES_NAME'));
+            throw new \RuntimeException(Text::sprintf('COM_WEBLINKS_ERR_TABLES_NAME'));
             return false;
         }
 
@@ -170,7 +170,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
 
         // Check the publish down date is not earlier than publish up.
         if ((int) $this->publish_down > 0 && $this->publish_down < $this->publish_up) {
-            throw new \RuntimeException(Text::_('JGLOBAL_START_PUBLISH_AFTER_FINISH'));
+            throw new \RuntimeException(Text::sprintf('JGLOBAL_START_PUBLISH_AFTER_FINISH'));
 
             return false;
         }

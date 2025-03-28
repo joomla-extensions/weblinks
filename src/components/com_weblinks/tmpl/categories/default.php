@@ -19,8 +19,8 @@ use Joomla\CMS\Layout\LayoutHelper;
 $app      = Factory::getApplication();
 $document = $app->getDocument();
 
-$document->addScriptOptions('JGLOBAL_EXPAND_CATEGORIES', Text::_('JGLOBAL_EXPAND_CATEGORIES'));
-$document->addScriptOptions('JGLOBAL_COLLAPSE_CATEGORIES', Text::_('JGLOBAL_COLLAPSE_CATEGORIES'));
+$document->addScriptOptions('JGLOBAL_EXPAND_CATEGORIES', Text::sprintf('JGLOBAL_EXPAND_CATEGORIES'));
+$document->addScriptOptions('JGLOBAL_COLLAPSE_CATEGORIES', Text::sprintf('JGLOBAL_COLLAPSE_CATEGORIES'));
 
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */

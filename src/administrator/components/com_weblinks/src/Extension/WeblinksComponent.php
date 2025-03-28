@@ -113,7 +113,7 @@ class WeblinksComponent extends MVCComponent implements
     {
         Factory::getApplication()->getLanguage()->load('com_weblinks', JPATH_ADMINISTRATOR);
         $contexts = [
-            'com_weblinks.weblink' => Text::_('COM_WEBLINKS'),
+            'com_weblinks.weblink' => Text::sprintf('COM_WEBLINKS'),
         ];
         return $contexts;
     }

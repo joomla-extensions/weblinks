@@ -45,16 +45,16 @@ if ($saveOrder && !empty($this->get('Items'))) {
                 <?php if (empty($this->get('Items'))) :
                     ?>
                   <div class="alert alert-info">
-                        <span class="icon-info-circle" aria-hidden="true"></span><span class="visually-hidden"><?php echo Text::_('INFO'); ?></span>
-                        <?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
+                        <span class="icon-info-circle" aria-hidden="true"></span><span class="visually-hidden"><?php echo Text::sprintf('INFO'); ?></span>
+                        <?php echo Text::sprintf('JGLOBAL_NO_MATCHING_RESULTS'); ?>
                   </div>
                 <?php else :
                     ?>
                  <table class="table" id="weblinkList">
                      <caption class="visually-hidden">
-                            <?php echo Text::_('COM_WEBLINKS_WEBLINKS_TABLE_CAPTION'); ?>,
-                            <span id="orderedBy"><?php echo Text::_('JGLOBAL_SORTED_BY'); ?> </span>,
-                            <span id="filteredBy"><?php echo Text::_('JGLOBAL_FILTERED_BY'); ?></span>
+                            <?php echo Text::sprintf('COM_WEBLINKS_WEBLINKS_TABLE_CAPTION'); ?>,
+                            <span id="orderedBy"><?php echo Text::sprintf('JGLOBAL_SORTED_BY'); ?> </span>,
+                            <span id="filteredBy"><?php echo Text::sprintf('JGLOBAL_FILTERED_BY'); ?></span>
                       </caption>
                      <thead>
                         <tr>
@@ -117,7 +117,7 @@ if ($saveOrder && !empty($this->get('Items'))) {
                                     if (!$canChange) {
                                         $iconClass = ' inactive';
                                     } elseif (!$saveOrder) {
-                                        $iconClass = ' inactive" title="' . Text::_('JORDERINGDISABLED');
+                                        $iconClass = ' inactive" title="' . Text::sprintf('JORDERINGDISABLED');
                                     }
                                     ?>
                                     <span class="sortable-handler<?php echo $iconClass; ?>">
@@ -142,7 +142,7 @@ if ($saveOrder && !empty($this->get('Items'))) {
                                                                 endif; ?>
                                                                                         <?php if ($canEdit || $canEditOwn) :
                                                                                             ?>
-                                            <a href="<?php echo Route::_('index.php?option=com_weblinks&task=weblink.edit&id=' . (int) $item->id); ?>" title="<?php echo Text::_('JACTION_EDIT'); ?> <?php echo $this->escape($item->title); ?>">
+                                            <a href="<?php echo Route::_('index.php?option=com_weblinks&task=weblink.edit&id=' . (int) $item->id); ?>" title="<?php echo Text::sprintf('JACTION_EDIT'); ?> <?php echo $this->escape($item->title); ?>">
                                                                                             <?php echo $this->escape($item->title); ?></a>
                                                                                         <?php else :
                                                                                             ?>
@@ -153,7 +153,7 @@ if ($saveOrder && !empty($this->get('Items'))) {
                                                                                             <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
                                        </span>
                                         <div class="small">
-                                                                                            <?php echo Text::_('JCATEGORY') . ': ' . $this->escape($item->category_title); ?>
+                                                                                            <?php echo Text::sprintf('JCATEGORY') . ': ' . $this->escape($item->category_title); ?>
                                       </div>
                                  </div>
                              </th>
@@ -202,7 +202,7 @@ if ($saveOrder && !empty($this->get('Items'))) {
 ) :
     ?>
                         <?php echo HTMLHelper::_('bootstrap.renderModal', 'collapseModal', [
-                                                                                                'title'  => Text::_('COM_WEBLINKS_BATCH_OPTIONS'),
+                                                                                                'title'  => Text::sprintf('COM_WEBLINKS_BATCH_OPTIONS'),
                                                                                                 'footer' => $this->loadTemplate('batch_footer'),
                                                                                             ], $this->loadTemplate('batch_body')); ?>
                     <?php

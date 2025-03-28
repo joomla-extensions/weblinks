@@ -111,7 +111,7 @@ class HtmlView extends BaseHtmlView
         // Since we don't track these assets at the item level, use the category id.
         $canDo = ContentHelper::getActions('com_weblinks', 'category', $this->item->catid);
 
-        ToolbarHelper::title($isNew ? Text::_('COM_WEBLINKS_MANAGER_WEBLINK_NEW') : Text::_('COM_WEBLINKS_MANAGER_WEBLINK_EDIT'), 'link weblinks');
+        ToolbarHelper::title($isNew ? Text::sprintf('COM_WEBLINKS_MANAGER_WEBLINK_NEW') : Text::sprintf('COM_WEBLINKS_MANAGER_WEBLINK_EDIT'), 'link weblinks');
 
         // Build the actions for new and existing records.
         if ($isNew) {

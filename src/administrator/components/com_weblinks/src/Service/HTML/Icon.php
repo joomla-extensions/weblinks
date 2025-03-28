@@ -128,9 +128,9 @@ class Icon
         $weblinkUrl = RouteHelper::getWeblinkRoute($weblink->slug, $weblink->catid, $weblink->language);
         $url        = $weblinkUrl . '&task=weblink.edit&w_id=' . $weblink->id . '&return=' . base64_encode($uri);
         if ((int) $weblink->state === 0) {
-            $tooltip = Text::_('COM_WEBLINKS_EDIT_UNPUBLISHED_WEBLINK');
+            $tooltip = Text::sprintf('COM_WEBLINKS_EDIT_UNPUBLISHED_WEBLINK');
         } else {
-            $tooltip = Text::_('COM_WEBLINKS_EDIT_PUBLISHED_WEBLINK');
+            $tooltip = Text::sprintf('COM_WEBLINKS_EDIT_PUBLISHED_WEBLINK');
         }
 
         $nowDate = strtotime(Factory::getDate());
@@ -145,7 +145,7 @@ class Icon
 
         $aria_described = 'editweblink-' . (int) $weblink->id;
         $text           = '<span class="icon-' . $icon . '" aria-hidden="true"></span>';
-        $text .= Text::_('JGLOBAL_EDIT');
+        $text .= Text::sprintf('JGLOBAL_EDIT');
         $text .= '<div role="tooltip" id="' . $aria_described . '">' . $tooltip . '</div>';
         $attribs['aria-describedby'] = $aria_described;
         $output                      = HTMLHelper::_('link', Route::_($url), $text, $attribs);
