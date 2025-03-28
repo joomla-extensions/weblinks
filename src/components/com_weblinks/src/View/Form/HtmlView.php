@@ -70,9 +70,15 @@ class HtmlView extends BaseHtmlView
      *
      * @return  mixed  A string if successful, otherwise an Error object.
      */
+    /**
+ * @var    \Joomla\CMS\User\User
+ * @since  4.0.0
+ */
+    protected $user;
+
     public function display($tpl = null)
     {
-        $user = $this->getCurrentUser();
+        $this->user = Factory::getApplication()->getIdentity();
 
         // Get model data.
         /* @var FormModel $model */
@@ -84,9 +90,15 @@ class HtmlView extends BaseHtmlView
         $this->return_page = $model->getReturnPage();
 
         // Check for errors.
-        if (\count($errors = $model->getErrors())) {
-            throw new GenericDataException(implode("\n", $errors), 500);
+        try {
+            $this->state       = $model->getState();
+            $this->item        = $model->getItem();
+            $this->form        = $model->getForm();
+            $this->return_page = $model->getReturnPage();
+        } catch (\Exception $e) {
+            throw new GenericDataException($e->getMessage(), 500);
         }
+
 
         if (empty($this->item->id)) {
             $authorised = $user->authorise('core.create', 'com_weblinks') || \count($user->getAuthorisedCategories('com_weblinks', 'core.create'));

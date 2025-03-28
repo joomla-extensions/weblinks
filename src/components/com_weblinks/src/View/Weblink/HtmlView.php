@@ -69,11 +69,12 @@ class HtmlView extends BaseHtmlView
         $this->state  = $model->getState();
         $this->params = $this->state->get('params');
 
-        $errors = $model->getErrors();
-
-        if (\count($errors) > 0) {
-            $this->handleModelErrors($errors);
+        try {
+            $this->item = $model->getItem();
+        } catch (\Exception $e) {
+            throw new GenericDataException($e->getMessage(), 500);
         }
+
 
         PluginHelper::importPlugin('content');
 
@@ -83,14 +84,25 @@ class HtmlView extends BaseHtmlView
         $temp         = $item->params;
         $item->params = clone $app->getParams();
         $item->params->merge($temp);
-        $offset = $this->state->get('list.offset');
-        $app->triggerEvent('onContentPrepare', ['com_weblinks.weblink', &$item, &$item->params, $offset]);
+        $offset     = $this->state->get('list.offset');
+        $dispatcher = Factory::getApplication()->getDispatcher();
+        $event      = new \Joomla\Event\Event('onContentPrepare', ['com_weblinks.weblink', &$item, &$item->params, $offset]);
+        $dispatcher->dispatch($event);
+
+
+
         $item->event                       = new \stdClass();
-        $results                           = $app->triggerEvent('onContentAfterTitle', ['com_weblinks.weblink', &$item, &$item->params, $offset]);
+        $results                           = $dispatcher = Factory::getApplication()->getDispatcher();
+        $event                             = new \Joomla\Event\Event('onContentAfterTitle', ['com_weblinks.weblink', &$item, &$item->params, $offset]);
+        $dispatcher->dispatch($event);
         $item->event->afterDisplayTitle    = trim(implode("\n", $results));
-        $results                           = $app->triggerEvent('onContentBeforeDisplay', ['com_weblinks.weblink', &$item, &$item->params, $offset]);
+        $results                           = $dispatcher = Factory::getApplication()->getDispatcher();
+        $event                             = new \Joomla\Event\Event('onContentBeforeDisplay', ['com_weblinks.weblink', &$item, &$item->params, $offset]);
+        $dispatcher->dispatch($event);
         $item->event->beforeDisplayContent = trim(implode("\n", $results));
-        $results                           = $app->triggerEvent('onContentAfterDisplay', ['com_weblinks.weblink', &$item, &$item->params, $offset]);
+        $results                           = $dispatcher = Factory::getApplication()->getDispatcher();
+        $event                             = new \Joomla\Event\Event('onContentAfterDisplay', ['com_weblinks.weblink', &$item, &$item->params, $offset]);
+        $dispatcher->dispatch($event);
         $item->event->afterDisplayContent  = trim(implode("\n", $results));
         parent::display($tpl);
     }

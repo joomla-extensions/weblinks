@@ -36,6 +36,21 @@ class HtmlView extends CategoryView
          *
          * @return  mixed  A string if successful, otherwise a Error object.
          */
+    /**
+     * @var CMSApplication The application instance
+     */
+    protected $app;
+
+    /**
+     * @var Joomla\CMS\Menu\SiteMenu The menu object
+     */
+    protected $menu;
+
+    /**
+     * @var Joomla\CMS\Pathway\SitePathway The pathway object
+     */
+    protected $pathway;
+
     public function display($tpl = null)
     {
         parent::commonCategoryDisplay();
@@ -53,7 +68,8 @@ class HtmlView extends CategoryView
             }
         }
 
-        return parent::display($tpl);
+        parent::display($tpl);
+
     }
 
     /**
