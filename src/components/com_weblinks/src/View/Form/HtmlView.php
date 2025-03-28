@@ -101,13 +101,13 @@ class HtmlView extends BaseHtmlView
 
 
         if (empty($this->item->id)) {
-            $authorised = $user->authorise('core.create', 'com_weblinks') || \count($user->getAuthorisedCategories('com_weblinks', 'core.create'));
+            $authorised = $this->$user->authorise('core.create', 'com_weblinks') || \count($user->getAuthorisedCategories('com_weblinks', 'core.create'));
         } else {
-            $authorised = $user->authorise('core.edit', 'com_weblinks.category.' . $this->item->catid);
+            $authorised = $this->$user->authorise('core.edit', 'com_weblinks.category.' . $this->item->catid);
         }
 
         if ($authorised !== true) {
-            throw new \Exception(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+            throw new \Exception(Text::sprintf('JERROR_ALERTNOAUTHOR'), 403);
         }
 
         if (!empty($this->item)) {
@@ -147,9 +147,9 @@ class HtmlView extends BaseHtmlView
         $menu = Factory::getApplication()->getMenu()->getActive();
 
         if (empty($this->item->id)) {
-            $head = Text::_('COM_WEBLINKS_FORM_SUBMIT_WEBLINK');
+            $head = Text::sprintf('COM_WEBLINKS_FORM_SUBMIT_WEBLINK');
         } else {
-            $head = Text::_('COM_WEBLINKS_FORM_EDIT_WEBLINK');
+            $head = Text::sprintf('COM_WEBLINKS_FORM_EDIT_WEBLINK');
         }
 
         if ($menu) {

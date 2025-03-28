@@ -7,8 +7,10 @@
 
 namespace Joomla\Plugin\System\ExpireWeblinks;
 
+use Joomla\CMS\Cache\CacheControllerFactoryInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * Plugin to automatically expire weblinks.
@@ -37,7 +39,10 @@ class PlgSystemExpireWeblinks extends CMSPlugin
      */
     protected function expireWeblinks()
     {
-        $db    = Factory::getDbo();
+
+
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
+
         $query = $db->getQuery(true);
 
         // Get current UTC time
@@ -52,7 +57,12 @@ class PlgSystemExpireWeblinks extends CMSPlugin
         $db->setQuery($query);
         $db->execute();
 
-        Factory::getCache()->clean('_system');
-        Factory::getCache()->clean('com_weblinks');
+
+
+        $cacheFactory = Factory::getContainer()->get(CacheControllerFactoryInterface::class);
+        $cache        = $cacheFactory->createCacheController('callback'); // You can change the handler if needed
+        $cache->clean('_system');
+        $cache->clean('com_weblinks');
+
     }
 }
