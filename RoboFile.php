@@ -16,7 +16,7 @@
 use Joomla\Jorobo\Tasks\Tasks as loadReleaseTasks;
 use Robo\Tasks;
 
-require_once '/Applications/XAMPP/xamppfiles/htdocs/joomla/libraries/vendor/autoload.php';
+require_once __DIR__ . '/../libraries/vendor/autoload.php';
 
 if (!defined('JPATH_BASE')) {
     define('JPATH_BASE', __DIR__);
@@ -124,11 +124,11 @@ class RoboFile extends Tasks
         }
 
         if ($tool === 'phpcs') {
-            return $this->taskExec(PHP_BINARY . ' -d error_reporting="E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED" -d display_errors=0 /Applications/XAMPP/xamppfiles/htdocs/joomla/libraries/vendor/bin/phpcs --standard=Joomla .')->run();
+            return $this->taskExec(PHP_BINARY . ' -d error_reporting="E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED" -d display_errors=0 ' . __DIR__ . '/../libraries/vendor/bin/phpcs --standard=Joomla .')->run();
         }
 
         if ($tool === 'phpcbf') {
-            return $this->taskExec(PHP_BINARY . ' -d error_reporting="E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED" -d display_errors=0 /Applications/XAMPP/xamppfiles/htdocs/joomla/libraries/vendor/bin/phpcbf --standard=Joomla --extensions=php .')->run();
+            return $this->taskExec(PHP_BINARY . ' -d error_reporting="E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED" -d display_errors=0 ' . __DIR__ . '/../libraries/vendor/bin/phpcbf --standard=Joomla --extensions=php .')->run();
         }
 
         if ($tool === 'phpmd') {
