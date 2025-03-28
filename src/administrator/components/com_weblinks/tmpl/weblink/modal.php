@@ -41,7 +41,7 @@ $wa->addInlineScript('
  <button id="closeBtn" type="button" class="hidden" onclick="Joomla.submitbutton('weblink.cancel');"></button>
  
  <div class="container-popup">
-	 <?php $this->setLayout('edit'); ?>
-	 <?php echo $this->loadTemplate(); ?>
+     <?php $this->setLayout('edit'); ?>
+     <?php echo $this->loadTemplate(); ?>
  </div>
  

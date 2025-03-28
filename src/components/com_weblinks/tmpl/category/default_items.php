@@ -162,7 +162,7 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
 
                                 break;
                         }
-                    ?>
+                        ?>
                             <?php if ($this->params->get('show_link_hits', 1)) :
                                 ?>
                                 <div class="list-hits badge bg-info float-end">

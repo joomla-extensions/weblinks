@@ -177,7 +177,6 @@ class WeblinkModel extends ItemModel
             } catch (\Exception $e) {
                 throw new \RuntimeException($e->getMessage(), $e->getCode(), $e);
             }
-
         }
 
         return $this->_item[$pk];

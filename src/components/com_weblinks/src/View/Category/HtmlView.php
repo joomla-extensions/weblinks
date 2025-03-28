@@ -69,7 +69,6 @@ class HtmlView extends CategoryView
         }
 
         parent::display($tpl);
-
     }
 
     /**
