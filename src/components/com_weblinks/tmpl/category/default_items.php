@@ -66,8 +66,8 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
                 <span class="icon-info-circle" aria-hidden="true"></span><span class="visually-hidden"><?php echo Text::sprintf('INFO'); ?></span>
                 <?php echo Text::sprintf('COM_WEBLINKS_NO_WEBLINKS'); ?>
          </div>
-            <?php else :
-                ?>
+        <?php else :
+            ?>
          <ul class="category list-unstyled">
                 <?php foreach ($this->items as $i => $item) :
                     ?>
@@ -77,11 +77,11 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
                     if ($item->state == 0) :
                         ?>
                       <li class="system-unpublished list-group mt-3">
-                        <?php else :
-                            ?>
+                    <?php else :
+                        ?>
                         <li class="list-group mt-3">
-                        <?php
-                        endif; ?>
+                            <?php
+                    endif; ?>
 
                     <?php if ($canEdit || ($canEditOwn && $item->created_by == $user->id)) :
                         ?>
@@ -95,18 +95,18 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
                         <?php if ($this->params->get('icons', 1) == 0) :
                             ?>
                             <?php echo Text::sprintf('COM_WEBLINKS_LINK'); ?>
-                            <?php elseif ($this->params->get('icons', 1) == 1) :
-                                ?>
-                            <?php // ToDo css icons as variables?>
-                            <?php if (!$this->params->get('link_icons')) :
-                                ?>
+                        <?php elseif ($this->params->get('icons', 1) == 1) :
+                            ?>
+                                <?php // ToDo css icons as variables?>
+                                <?php if (!$this->params->get('link_icons')) :
+                                    ?>
                                 <span class="icon-globe" aria-hidden="true"></span>
                                 <?php else :
                                     ?>
-                                <?php echo '<img src="' . $this->params->get('link_icons') . '" alt="' . Text::sprintf('COM_WEBLINKS_LINK') . '" />'; ?>
-                                <?php
+                                    <?php echo '<img src="' . $this->params->get('link_icons') . '" alt="' . Text::sprintf('COM_WEBLINKS_LINK') . '" />'; ?>
+                                    <?php
                                 endif; ?>
-                            <?php
+                                <?php
                         endif; ?>
 
                         <?php // Compute the correct link?>
@@ -158,7 +158,7 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
 
                                 break;
                         }
-                    ?>
+                        ?>
                             <?php if ($this->params->get('show_link_hits', 1)) :
                                 ?>
                                 <div class="list-hits badge bg-info float-end">
@@ -240,8 +240,8 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
                 endforeach; ?>
          </ul>
 
-            <?php if ($this->params->get('show_pagination')) :
-                ?>
+                <?php if ($this->params->get('show_pagination')) :
+                    ?>
                <div class="com-weblinks-category__counter w-100">
                     <?php if ($this->params->def('show_pagination_results', 1)) :
                         ?>
@@ -253,10 +253,10 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
 
                     <?php echo $this->pagination->getPagesLinks(); ?>
                 </div>
-                <?php
-            endif; ?>
+                    <?php
+                endif; ?>
 
-            <?php
+                <?php
         endif; ?>
 
         <?php if ($canCreate) :

@@ -240,7 +240,6 @@ final class Weblinks extends CMSPlugin
                     }
                 }
             }
-
         }
 
         return $return;

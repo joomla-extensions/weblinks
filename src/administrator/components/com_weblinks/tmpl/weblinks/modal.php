@@ -59,8 +59,8 @@ $iconStates = [
           <div class="alert alert-no-items">
                 <?php echo Text::translate('JGLOBAL_NO_MATCHING_RESULTS'); ?>
            </div>
-            <?php else :
-                ?>
+        <?php else :
+            ?>
          <table class="table table-sm">
              <caption class="visually-hidden">
                 <?php echo Text::translate('COM_WEBLINKS_WEBLINKS_TABLE_CAPTION'); ?>,
@@ -103,11 +103,11 @@ $iconStates = [
                         <?php if ($tag == 5) :
                             ?>
                             <?php $lang = substr($item->language, 0, 2); ?>
-                            <?php elseif ($tag == 6) :
-                                ?>
-                            <?php $lang = substr($item->language, 0, 3); ?>
-                            <?php
-                            endif; ?>
+                        <?php elseif ($tag == 6) :
+                            ?>
+                                <?php $lang = substr($item->language, 0, 3); ?>
+                                <?php
+                        endif; ?>
                         <?php
                     endif; ?>
                     <tr class="row<?php echo $i % 2; ?>">
@@ -121,7 +121,7 @@ $iconStates = [
                                     . ' data-cat-id="' . $this->escape($item->catid) . '"'
                                     . ' data-uri="' . $this->escape(RouteHelper::getWeblinkRoute($item->id, $item->catid, $item->language)) . '"'
                                     . ' data-language="' . $this->escape($lang) . '"';
-                    ?>
+                            ?>
                             <a class="select-link" href="javascript:void(0)" <?php echo $attribs; ?>>
                                 <?php echo $this->escape($item->title); ?>
                          </a>
@@ -150,7 +150,7 @@ $iconStates = [
                 endforeach; ?>
              </tbody>
            </table>
-            <?php
+                <?php
         endif; ?>
 
         <?php // load the pagination.?>

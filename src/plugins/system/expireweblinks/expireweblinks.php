@@ -63,6 +63,5 @@ class PlgSystemExpireWeblinks extends CMSPlugin
         $cache        = $cacheFactory->createCacheController('callback'); // You can change the handler if needed
         $cache->clean('_system');
         $cache->clean('com_weblinks');
-
     }
 }
