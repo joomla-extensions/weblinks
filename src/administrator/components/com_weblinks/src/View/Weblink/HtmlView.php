@@ -68,9 +68,12 @@ class HtmlView extends BaseHtmlView
         $this->form  = $model->getForm();
 
         // Check for errors.
-        if (\count($errors = $model->getErrors())) {
-            throw new GenericDataException(implode("\n", $errors), 500);
+        try {
+            $this->item = $model->getItem();
+        } catch (\Exception $e) {
+            throw new GenericDataException($e->getMessage(), 500);
         }
+
 
         // If we are forcing a language in modal (used for associations).
         if ($this->getLayout() === 'modal' && $forcedLanguage = Factory::getApplication()->getInput()->get('forcedLanguage', '', 'cmd')) {
@@ -156,7 +159,7 @@ class HtmlView extends BaseHtmlView
 
             ToolbarHelper::cancel('weblink.cancel', 'JTOOLBAR_CLOSE');
 
-            if (ComponentHelper::isEnabled('com_contenthistory') && $this->state->get('params')->get('save_history', 0) && $itemEditable) {
+            if (ComponentHelper::isEnabled('com_contenthistory') && $this->state->params->save_history && $itemEditable) {
                 ToolbarHelper::versions('com_weblinks.weblink', $this->item->id);
             }
 

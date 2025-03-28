@@ -93,9 +93,12 @@ class HtmlView extends BaseHtmlView
         $this->activeFilters = $model->getActiveFilters();
 
         // Check for errors.
-        if (\count($errors = $model->getErrors())) {
-            throw new GenericDataException(implode("\n", $errors), 500);
+        try {
+            $this->items = $model->getItems();
+        } catch (\Exception $e) {
+            throw new GenericDataException($e->getMessage(), 500);
         }
+
 
         if (!\count($this->items) && $this->isEmptyState = $this->get('IsEmptyState')) {
             $this->setLayout('emptystate');
@@ -132,11 +135,13 @@ class HtmlView extends BaseHtmlView
      */
     protected function addToolbar()
     {
-        $canDo = ContentHelper::getActions('com_weblinks', 'category', $this->state->get('filter.category_id'));
-        $user  = $this->getCurrentUser();
+        $categoryId = $this->state->filter['category_id'] ?? null;
+        $canDo      = ContentHelper::getActions('com_weblinks', 'category', $categoryId);
+        $user       = $this->getCurrentUser();
 
         // Get the toolbar object instance
-        $toolbar = Toolbar::getInstance('toolbar');
+        $toolbarFactory = Factory::getContainer()->get(\Joomla\CMS\Toolbar\ToolbarFactoryInterface::class);
+        $toolbar        = $toolbarFactory->createToolbar();
 
         ToolbarHelper::title(Text::_('COM_WEBLINKS_MANAGER_WEBLINKS'), 'link weblinks');
 
@@ -164,7 +169,9 @@ class HtmlView extends BaseHtmlView
                 $childBar->checkin('weblinks.checkin')->listCheck(true);
             }
 
-            if ($this->state->get('filter.published') != -2) {
+            $published = $this->state->filter['published'] ?? null;
+
+            if ($published != -2) {
                 $childBar->trash('weblinks.trash')->listCheck(true);
             }
 
@@ -181,7 +188,7 @@ class HtmlView extends BaseHtmlView
             }
         }
 
-        if (!$this->isEmptyState && $this->state->get('filter.published') == -2 && $canDo->get('core.delete')) {
+        if (!$this->isEmptyState && $published == -2 && $canDo->get('core.delete')) {
             $toolbar->delete('weblinks.delete')
                 ->text('JTOOLBAR_EMPTY_TRASH')
                 ->message('JGLOBAL_CONFIRM_DELETE')

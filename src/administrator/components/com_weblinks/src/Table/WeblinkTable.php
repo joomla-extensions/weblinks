@@ -79,9 +79,9 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
     {
         $app         = Factory::getApplication();
         $db          = $this->getDbo();
-        $timezoneUTC = new DateTimeZone('UTC'); // Ensure we store in UTC
+        $timezoneUTC = new \DateTimeZone('UTC'); // Ensure we store in UTC
 
-        $date              = new DateTime('now', $timezoneUTC);
+        $date              = new \DateTime('now', $timezoneUTC);
         $this->modified    = $date->format('Y-m-d H:i:s');
         $this->modified_by = $app->getIdentity()->id;
 
@@ -109,7 +109,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
             $table->load(['language' => $this->language, 'alias' => $this->alias, 'catid' => (int) $this->catid])
             && ($table->id != $this->id || $this->id == 0)
         ) {
-            $this->setError(Text::_('COM_WEBLINKS_ERROR_UNIQUE_ALIAS'));
+            throw new \RuntimeException(Text::_('COM_WEBLINKS_ERROR_UNIQUE_ALIAS'));
             return false;
         }
 
@@ -129,13 +129,15 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
     public function check()
     {
         if (InputFilter::checkAttribute(['href', $this->url])) {
-            $this->setError(Text::_('COM_WEBLINKS_ERR_TABLES_PROVIDE_URL'));
+            throw new \RuntimeException(Text::_('COM_WEBLINKS_ERR_TABLES_PROVIDE_URL'));
+
             return false;
         }
 
         // Check for valid name
         if (trim($this->title) === '') {
-            $this->setError(Text::_('COM_WEBLINKS_ERR_TABLES_TITLE'));
+            throw new \RuntimeException(Text::_('COM_WEBLINKS_ERR_TABLES_TITLE'));
+
             return false;
         }
 
@@ -153,7 +155,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
         $db->setQuery($query);
         $xid = (int) $db->loadResult();
         if ($xid && $xid != (int) $this->id) {
-            $this->setError(Text::_('COM_WEBLINKS_ERR_TABLES_NAME'));
+            throw new \RuntimeException(Text::_('COM_WEBLINKS_ERR_TABLES_NAME'));
             return false;
         }
 
@@ -168,7 +170,8 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
 
         // Check the publish down date is not earlier than publish up.
         if ((int) $this->publish_down > 0 && $this->publish_down < $this->publish_up) {
-            $this->setError(Text::_('JGLOBAL_START_PUBLISH_AFTER_FINISH'));
+            throw new \RuntimeException(Text::_('JGLOBAL_START_PUBLISH_AFTER_FINISH'));
+
             return false;
         }
 

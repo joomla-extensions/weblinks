@@ -101,9 +101,9 @@ class HtmlView extends BaseHtmlView
 
 
         if (empty($this->item->id)) {
-            $authorised = $this->$user->authorise('core.create', 'com_weblinks') || \count($user->getAuthorisedCategories('com_weblinks', 'core.create'));
+            $authorised = $this->user->authorise('core.create', 'com_weblinks') || \count($this->user->getAuthorisedCategories('com_weblinks', 'core.create'));
         } else {
-            $authorised = $this->$user->authorise('core.edit', 'com_weblinks.category.' . $this->item->catid);
+            $authorised = $this->user->authorise('core.edit', 'com_weblinks.category.' . $this->item->catid);
         }
 
         if ($authorised !== true) {

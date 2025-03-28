@@ -24,11 +24,11 @@ use Joomla\CMS\Router\Route;
 HTMLHelper::_('behavior.multiselect');
 $user      = Factory::getApplication()->getIdentity();
 $userId    = $user->get('id');
-$listOrder = $this->escape($this->state->get('list.ordering'));
-$listDirn  = $this->escape($this->state->get('list.direction'));
+$listOrder = $this->escape($this->getState()->get('list.ordering'));
+$listDirn  = $this->escape($this->getState()->get('list.direction'));
 $saveOrder = $listOrder == 'a.ordering';
 $assoc     = Associations::isEnabled();
-if ($saveOrder && !empty($this->items)) {
+if ($saveOrder && !empty($this->get('Items'))) {
     $saveOrderingUrl = 'index.php?option=com_weblinks&task=weblinks.saveOrderAjax&tmpl=component';
     HTMLHelper::_('draggablelist.draggable');
 }
@@ -41,14 +41,13 @@ if ($saveOrder && !empty($this->items)) {
                 // Search tools bar
                 echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]);
                 ?>
-                <?php if (empty($this->items)) :
+                <?php if (empty($this->get('Items'))) :
                     ?>
                   <div class="alert alert-info">
                         <span class="icon-info-circle" aria-hidden="true"></span><span class="visually-hidden"><?php echo Text::_('INFO'); ?></span>
                         <?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
                   </div>
-                    <?php
-                else :
+                <?php else :
                     ?>
                  <table class="table" id="weblinkList">
                      <caption class="visually-hidden">
@@ -98,7 +97,8 @@ if ($saveOrder && !empty($this->items)) {
                         <tbody <?php if ($saveOrder) :
                             ?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($listDirn); ?>" data-nested="true"<?php
                                endif; ?>>
-                        <?php foreach ($this->items as $i => $item) :
+                        <?php $items = $this->get('Items');
+                        foreach ($items as $i => $item) :
                             ?>
                             <?php $item->cat_link = Route::_('index.php?option=com_categories&extension=com_weblinks&task=edit&type=other&cid[]=' . $item->catid); ?>
                             <?php $canCreate      = $user->authorise('core.create', 'com_weblinks.category.' . $item->catid); ?>
@@ -130,83 +130,82 @@ if ($saveOrder && !empty($this->items)) {
                                     endif; ?>
                               </td>
                               <td class="text-center">
-                                    <?php echo HTMLHelper::_('jgrid.published', $item->state, $i, 'weblinks.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
+                                                            <?php echo HTMLHelper::_('jgrid.published', $item->state, $i, 'weblinks.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
                               </td>
                               <th scope="row" class="has-context">
                                    <div>
-                                        <?php if ($item->checked_out) :
-                                            ?>
-                                            <?php echo HTMLHelper::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'weblinks.', $canCheckin); ?>
-                                            <?php
-                                        endif; ?>
-                                        <?php if ($canEdit || $canEditOwn) :
-                                            ?>
+                                                                <?php if ($item->checked_out) :
+                                                                    ?>
+                                                                    <?php echo HTMLHelper::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'weblinks.', $canCheckin); ?>
+                                                                    <?php
+                                                                endif; ?>
+                                                                <?php if ($canEdit || $canEditOwn) :
+                                                                    ?>
                                             <a href="<?php echo Route::_('index.php?option=com_weblinks&task=weblink.edit&id=' . (int) $item->id); ?>" title="<?php echo Text::_('JACTION_EDIT'); ?> <?php echo $this->escape($item->title); ?>">
-                                                <?php echo $this->escape($item->title); ?></a>
-                                            <?php
-                                        else :
-                                            ?>
-                                            <?php echo $this->escape($item->title); ?>
-                                            <?php
-                                        endif; ?>
+                                                                    <?php echo $this->escape($item->title); ?></a>
+                                                                <?php else :
+                                                                    ?>
+                                                                    <?php echo $this->escape($item->title); ?>
+                                                                    <?php
+                                                                endif; ?>
                                         <span class="small">
-                                            <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
+                                                                    <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
                                        </span>
                                         <div class="small">
-                                            <?php echo Text::_('JCATEGORY') . ': ' . $this->escape($item->category_title); ?>
+                                                                    <?php echo Text::_('JCATEGORY') . ': ' . $this->escape($item->category_title); ?>
                                       </div>
                                  </div>
                              </th>
                               <td class="small d-none d-md-table-cell">
-                                    <?php echo $this->escape($item->access_level); ?>
+                                                            <?php echo $this->escape($item->access_level); ?>
                                 </td>
                               <td class="d-none d-md-table-cell">
-                                    <?php echo $item->hits; ?>
+                                                            <?php echo $item->hits; ?>
                              </td>
-                                <?php if ($assoc) :
-                                    ?>
+                                                        <?php if ($assoc) :
+                                                            ?>
                                    <td class="hidden-phone hidden-tablet">
-                                        <?php if ($item->association) :
-                                            ?>
-                                            <?php echo HTMLHelper::_('weblinksadministrator.association', $item->id); ?>
-                                            <?php
-                                        endif; ?>
+                                                            <?php if ($item->association) :
+                                                                ?>
+                                                                <?php echo HTMLHelper::_('weblinksadministrator.association', $item->id); ?>
+                                                                <?php
+                                                            endif; ?>
                                     </td>
-                                    <?php
-                                endif; ?>
-                                <?php if (Multilanguage::isEnabled()) :
-                                    ?>
+                                                            <?php
+                                                        endif; ?>
+                                                        <?php if (Multilanguage::isEnabled()) :
+                                                            ?>
                                    <td class="small d-none d-md-table-cell">
-                                        <?php echo LayoutHelper::render('joomla.content.language', $item); ?>
+                                                            <?php echo LayoutHelper::render('joomla.content.language', $item); ?>
                                     </td>
-                                    <?php
-                                endif; ?>
+                                                            <?php
+                                                        endif; ?>
                               <td class="d-none d-md-table-cell">
-                                    <?php echo (int) $item->id; ?>
+                                                            <?php echo (int) $item->id; ?>
                              </td>
                           </tr>
-                            <?php
+                                                    <?php
                         endforeach; ?>
                      </tbody>
                    </table>
 
-                    <?php // Load the pagination.?>
-                    <?php echo $this->pagination->getListFooter(); ?>
+                        <?php // Load the pagination.?>
+                        <?php echo $this->pagination->getListFooter(); ?>
 
-                    <?php // Load the batch processing form.?>
-                    <?php if (
+                        <?php // Load the batch processing form.?>
+                        <?php if (
                         $user->authorise('core.create', 'com_weblinks')
                             && $user->authorise('core.edit', 'com_weblinks')
                             && $user->authorise('core.edit.state', 'com_weblinks')
 ) :
     ?>
                         <?php echo HTMLHelper::_('bootstrap.renderModal', 'collapseModal', [
-                                                    'title' => Text::_('COM_WEBLINKS_BATCH_OPTIONS'),
-                                                    'footer' => $this->loadTemplate('batch_footer')
-                                                ], $this->loadTemplate('batch_body')); ?>
+                                                                        'title'  => Text::_('COM_WEBLINKS_BATCH_OPTIONS'),
+                                                                        'footer' => $this->loadTemplate('batch_footer'),
+                                                                    ], $this->loadTemplate('batch_body')); ?>
                     <?php
-                    endif; ?>
-                    <?php
+                        endif; ?>
+                        <?php
                 endif; ?>
 
              <input type="hidden" name="task" value="">

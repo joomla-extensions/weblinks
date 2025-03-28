@@ -272,7 +272,7 @@ class CategoryModel extends ListModel
             $options               = [];
             $options['countItems'] = $params->get('show_cat_num_links_cat', 1)
                 || $params->get('show_empty_categories', 0);
-
+            $section     = $this->getState('section');
             $categories  = Factory::getApplication()->bootComponent('com_weblinks')->getCategory($options, $section);
             $this->_item = $categories->get($this->getState('category.id', 'root'));
 

@@ -16,11 +16,16 @@ use Joomla\CMS\Language\Text;
 // Add strings for translations in Javascript.
 use Joomla\CMS\Layout\LayoutHelper;
 
-Factory::getDocument()->addScriptOptions('JGLOBAL_EXPAND_CATEGORIES', Text::_('JGLOBAL_EXPAND_CATEGORIES'));
-Factory::getDocument()->addScriptOptions('JGLOBAL_COLLAPSE_CATEGORIES', Text::_('JGLOBAL_COLLAPSE_CATEGORIES'));
+$app      = Factory::getApplication();
+$document = $app->getDocument();
+
+$document->addScriptOptions('JGLOBAL_EXPAND_CATEGORIES', Text::_('JGLOBAL_EXPAND_CATEGORIES'));
+$document->addScriptOptions('JGLOBAL_COLLAPSE_CATEGORIES', Text::_('JGLOBAL_COLLAPSE_CATEGORIES'));
+
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
-$wa = $this->document->getWebAssetManager();
+$wa = Factory::getApplication()->getDocument()
+->getWebAssetManager();
 $wa->getRegistry()->addExtensionRegistryFile('com_categories');
 $wa->usePreset('com_categories.shared-categories-accordion');
 
