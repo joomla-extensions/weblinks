@@ -128,7 +128,6 @@ class HtmlView extends BaseHtmlView
         $this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx', ''));
 
         $this->params = $params;
-        $this->user   = $user;
 
         $this->prepareDocument();
 

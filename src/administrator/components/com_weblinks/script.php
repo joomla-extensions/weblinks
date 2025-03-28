@@ -117,7 +117,7 @@ class Com_WeblinksInstallerScript implements DatabaseAwareInterface
             if (!$category->check()) {
                 try {
                     if (!$category->store(true)) {
-                        throw new RuntimeException(Text::sprintf('COM_WEBLINKS_ERROR_INSTALL_CATEGORY', $category->getError()));
+                        throw new RuntimeException(Text::sprintf('COM_WEBLINKS_ERROR_INSTALL_CATEGORY'));
                     }
                 } catch (Exception $e) {
                     Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
@@ -132,7 +132,7 @@ class Com_WeblinksInstallerScript implements DatabaseAwareInterface
             if (!$category->store(true)) {
                 try {
                     if (!$category->store(true)) {
-                        throw new RuntimeException(Text::sprintf('COM_WEBLINKS_ERROR_INSTALL_CATEGORY', $category->getError()));
+                        throw new RuntimeException(Text::sprintf('COM_WEBLINKS_ERROR_INSTALL_CATEGORY'));
                     }
                 } catch (Exception $e) {
                     Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');

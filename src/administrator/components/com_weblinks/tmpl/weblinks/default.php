@@ -24,8 +24,8 @@ use Joomla\CMS\Router\Route;
 HTMLHelper::_('behavior.multiselect');
 $user      = Factory::getApplication()->getIdentity();
 $userId    = $user->get('id');
-$listOrder = $this->escape($this->getState()->get('list.ordering'));
-$listDirn  = $this->escape($this->getState()->get('list.direction'));
+$listOrder = $this->escape($this->getModel()->get('list.ordering'));
+$listDirn  = $this->escape($this->getModel()->get('list.direction'));
 $saveOrder = $listOrder == 'a.ordering';
 $assoc     = Associations::isEnabled();
 if ($saveOrder && !empty($this->get('Items'))) {
@@ -190,7 +190,8 @@ if ($saveOrder && !empty($this->get('Items'))) {
                    </table>
 
                         <?php // Load the pagination.?>
-                        <?php echo $this->pagination->getListFooter(); ?>
+                        <?php echo $this->getModel()->getPagination()->getListFooter();
+                        ?>
 
                         <?php // Load the batch processing form.?>
                         <?php if (
