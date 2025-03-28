@@ -11,10 +11,10 @@
 namespace Joomla\Plugin\Search\Weblinks\Extension;
 
 use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\Component\Search\Administrator\Helper\SearchHelper;
 use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\DatabaseInterface;
@@ -127,7 +127,7 @@ final class Weblinks extends CMSPlugin
             return [];
         }
 
-        $searchWeblinks = Text::_('PLG_SEARCH_WEBLINKS');
+        $searchWeblinks = Text::sprintf('PLG_SEARCH_WEBLINKS');
 
         switch ($phrase) {
             case 'exact':
@@ -228,9 +228,16 @@ final class Weblinks extends CMSPlugin
                 $rows[$key]->href = RouteHelper::getWeblinkRoute($row->slug, $row->catslug);
             }
 
+
+
+            $filter = InputFilter::getInstance();
+
             foreach ($rows as $weblink) {
-                if (SearchHelper::checkNoHTML($weblink, $searchText, ['url', 'text', 'title'])) {
-                    $return[] = $weblink;
+                foreach (['url', 'text', 'title'] as $field) {
+                    if (!empty($weblink->$field) && stripos($filter->clean($weblink->$field, 'STRING'), $searchText) !== false) {
+                        $return[] = $weblink;
+                        break; // Stop checking other fields once a match is found
+                    }
                 }
             }
         }

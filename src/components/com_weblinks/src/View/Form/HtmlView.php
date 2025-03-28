@@ -70,9 +70,15 @@ class HtmlView extends BaseHtmlView
      *
      * @return  mixed  A string if successful, otherwise an Error object.
      */
+    /**
+ * @var    \Joomla\CMS\User\User
+ * @since  4.0.0
+ */
+    protected $user;
+
     public function display($tpl = null)
     {
-        $user = $this->getCurrentUser();
+        $this->user = Factory::getApplication()->getIdentity();
 
         // Get model data.
         /* @var FormModel $model */
@@ -84,18 +90,24 @@ class HtmlView extends BaseHtmlView
         $this->return_page = $model->getReturnPage();
 
         // Check for errors.
-        if (\count($errors = $model->getErrors())) {
-            throw new GenericDataException(implode("\n", $errors), 500);
+        try {
+            $this->state       = $model->getState();
+            $this->item        = $model->getItem();
+            $this->form        = $model->getForm();
+            $this->return_page = $model->getReturnPage();
+        } catch (\Exception $e) {
+            throw new GenericDataException($e->getMessage(), 500);
         }
 
+
         if (empty($this->item->id)) {
-            $authorised = $user->authorise('core.create', 'com_weblinks') || \count($user->getAuthorisedCategories('com_weblinks', 'core.create'));
+            $authorised = $this->user->authorise('core.create', 'com_weblinks') || \count($this->user->getAuthorisedCategories('com_weblinks', 'core.create'));
         } else {
-            $authorised = $user->authorise('core.edit', 'com_weblinks.category.' . $this->item->catid);
+            $authorised = $this->user->authorise('core.edit', 'com_weblinks.category.' . $this->item->catid);
         }
 
         if ($authorised !== true) {
-            throw new \Exception(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+            throw new \Exception(Text::sprintf('JERROR_ALERTNOAUTHOR'), 403);
         }
 
         if (!empty($this->item)) {
@@ -116,7 +128,6 @@ class HtmlView extends BaseHtmlView
         $this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx', ''));
 
         $this->params = $params;
-        $this->user   = $user;
 
         $this->prepareDocument();
 
@@ -135,9 +146,9 @@ class HtmlView extends BaseHtmlView
         $menu = Factory::getApplication()->getMenu()->getActive();
 
         if (empty($this->item->id)) {
-            $head = Text::_('COM_WEBLINKS_FORM_SUBMIT_WEBLINK');
+            $head = Text::sprintf('COM_WEBLINKS_FORM_SUBMIT_WEBLINK');
         } else {
-            $head = Text::_('COM_WEBLINKS_FORM_EDIT_WEBLINK');
+            $head = Text::sprintf('COM_WEBLINKS_FORM_EDIT_WEBLINK');
         }
 
         if ($menu) {

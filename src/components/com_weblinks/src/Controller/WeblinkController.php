@@ -267,13 +267,13 @@ class WeblinkController extends FormController
         $link = $modelLink->getItem($id);
         // Make sure the item was found.
         if (empty($link)) {
-            throw new \Exception(Text::_('COM_WEBLINKS_ERROR_WEBLINK_NOT_FOUND'), 404);
+            throw new \Exception(Text::sprintf('COM_WEBLINKS_ERROR_WEBLINK_NOT_FOUND'), 404);
         }
 
         // Check whether item access level allows access.
         $groups = $this->app->getIdentity()->getAuthorisedViewLevels();
         if (!\in_array($link->access, $groups)) {
-            throw new \Exception(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+            throw new \Exception(Text::sprintf('JERROR_ALERTNOAUTHOR'), 403);
         }
 
         // Check whether category access level allows access.
@@ -283,12 +283,12 @@ class WeblinkController extends FormController
         $category = $modelCat->getCategory($link->catid);
         // Make sure the category was found.
         if (empty($category)) {
-            throw new \Exception(Text::_('COM_WEBLINKS_ERROR_WEBLINK_NOT_FOUND'), 404);
+            throw new \Exception(Text::sprintf('COM_WEBLINKS_ERROR_WEBLINK_NOT_FOUND'), 404);
         }
 
         // Check whether item access level allows access.
         if (!\in_array($category->access, $groups)) {
-            throw new \Exception(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+            throw new \Exception(Text::sprintf('JERROR_ALERTNOAUTHOR'), 403);
         }
 
         // Redirect to the URL
@@ -297,6 +297,6 @@ class WeblinkController extends FormController
             $this->app->redirect($link->url, 301);
         }
 
-        throw new \Exception(Text::_('COM_WEBLINKS_ERROR_WEBLINK_URL_INVALID'), 404);
+        throw new \Exception(Text::sprintf('COM_WEBLINKS_ERROR_WEBLINK_URL_INVALID'), 404);
     }
 }

@@ -11,14 +11,21 @@
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+// Add strings for translations in Javascript.
 use Joomla\CMS\Layout\LayoutHelper;
 
-// Add strings for translations in Javascript.
-Text::script('JGLOBAL_EXPAND_CATEGORIES');
-Text::script('JGLOBAL_COLLAPSE_CATEGORIES');
+$app      = Factory::getApplication();
+$document = $app->getDocument();
+
+$document->addScriptOptions('JGLOBAL_EXPAND_CATEGORIES', Text::sprintf('JGLOBAL_EXPAND_CATEGORIES'));
+$document->addScriptOptions('JGLOBAL_COLLAPSE_CATEGORIES', Text::sprintf('JGLOBAL_COLLAPSE_CATEGORIES'));
+
+
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
-$wa = $this->document->getWebAssetManager();
+$wa = Factory::getApplication()->getDocument()
+->getWebAssetManager();
 $wa->getRegistry()->addExtensionRegistryFile('com_categories');
 $wa->usePreset('com_categories.shared-categories-accordion');
 

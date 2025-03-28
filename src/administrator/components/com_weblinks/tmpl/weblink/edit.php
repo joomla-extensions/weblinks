@@ -19,12 +19,12 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 
 HTMLHelper::_('behavior.formvalidator');
-$app = Factory::getApplication();
+$app   = Factory::getApplication();
 $input = $app->getInput();
 $assoc = Associations::isEnabled();
 // Fieldsets to not automatically render by /layouts/joomla/edit/params.php
-$this->ignore_fieldsets = array('details', 'images', 'item_associations', 'jmetadata');
-$this->useCoreUI = true;
+$this->ignore_fieldsets = ['details', 'images', 'item_associations', 'jmetadata'];
+$this->useCoreUI        = true;
 // In case of modal
 $isModal = $input->get('layout') == 'modal' ? true : false;
 $layout  = $isModal ? 'modal' : 'edit';
@@ -36,9 +36,9 @@ $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=c
     <?php echo LayoutHelper::render('joomla.edit.title_alias', $this); ?>
 
     <div class="main-card">
-        <?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => 'details')); ?>
+        <?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', ['active' => 'details']); ?>
 
-        <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'details', empty($this->item->id) ? Text::_('COM_WEBLINKS_NEW_WEBLINK', true) : Text::_('COM_WEBLINKS_EDIT_WEBLINK', true)); ?>
+        <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'details', empty($this->item->id) ? Text::sprintf('COM_WEBLINKS_NEW_WEBLINK', true) : Text::sprintf('COM_WEBLINKS_EDIT_WEBLINK', true)); ?>
         <div class="row">
           <div class="col-md-9">
              <div class="form-vertical">
@@ -56,11 +56,11 @@ $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=c
      </div>
         <?php echo HTMLHelper::_('uitab.endTab'); ?>
 
-        <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'images', Text::_('JGLOBAL_FIELDSET_IMAGE_OPTIONS', true)); ?>
+        <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'images', Text::sprintf('JGLOBAL_FIELDSET_IMAGE_OPTIONS', true)); ?>
       <div class="row">
           <div class="col-12">
                <fieldset id="fieldset-image; ?>" class="options-form">
-                    <legend><?php echo Text::_('JGLOBAL_FIELDSET_IMAGE_OPTIONS'); ?></legend>
+                    <legend><?php echo Text::sprintf('JGLOBAL_FIELDSET_IMAGE_OPTIONS'); ?></legend>
                   <div>
                         <?php echo $this->form->renderField('imaJGLOBAL_FIELDSET_IMAGE_OPTIONSges'); ?>
                         <?php foreach ($this->form->getGroup('images') as $field) :
@@ -75,17 +75,17 @@ $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=c
 
         <?php echo HTMLHelper::_('uitab.endTab'); ?>
 
-        <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'publishing', Text::_('JGLOBAL_FIELDSET_PUBLISHING', true)); ?>
+        <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'publishing', Text::sprintf('JGLOBAL_FIELDSET_PUBLISHING', true)); ?>
             <div class="row">
               <div class="col-12 col-lg-6">
                   <fieldset id="fieldset-publishingdata" class="options-form">
-                        <legend><?php echo Text::_('JGLOBAL_FIELDSET_PUBLISHING'); ?></legend>
+                        <legend><?php echo Text::sprintf('JGLOBAL_FIELDSET_PUBLISHING'); ?></legend>
                         <?php echo LayoutHelper::render('joomla.edit.publishingdata', $this); ?>
                    </fieldset>
                 </div>
              <div class="col-12 col-lg-6">
                   <fieldset id="fieldset-metadata" class="options-form">
-                        <legend><?php echo Text::_('JGLOBAL_FIELDSET_METADATA_OPTIONS'); ?></legend>
+                        <legend><?php echo Text::sprintf('JGLOBAL_FIELDSET_METADATA_OPTIONS'); ?></legend>
                         <?php echo LayoutHelper::render('joomla.edit.metadata', $this); ?>
                  </fieldset>
                 </div>
@@ -96,17 +96,16 @@ $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=c
 
         <?php if (!$isModal && $assoc) :
             ?>
-            <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'associations', Text::_('JGLOBAL_FIELDSET_ASSOCIATIONS')); ?>
+            <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'associations', Text::sprintf('JGLOBAL_FIELDSET_ASSOCIATIONS')); ?>
              <fieldset id="fieldset-associations" class="options-form">
-                    <legend><?php echo Text::_('JGLOBAL_FIELDSET_ASSOCIATIONS'); ?></legend>
+                    <legend><?php echo Text::sprintf('JGLOBAL_FIELDSET_ASSOCIATIONS'); ?></legend>
                     <?php echo LayoutHelper::render('joomla.edit.associations', $this); ?>
              </fieldset>
             <?php echo HTMLHelper::_('uitab.endTab'); ?>
-            <?php
-        elseif ($isModal && $assoc) :
+        <?php elseif ($isModal && $assoc) :
             ?>
             <div class="hidden"><?php echo $this->loadTemplate('associations'); ?></div>
-            <?php
+                <?php
         endif; ?>
 
         <?php echo HTMLHelper::_('uitab.endTabSet'); ?>

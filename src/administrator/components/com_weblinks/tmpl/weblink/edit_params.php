@@ -19,7 +19,7 @@ $fieldSets = $this->form->getFieldsets('params'); ?>
     <div class="tab-pane" id="params-<?php echo $name; ?>">
     <?php if (isset($fieldSet->description) && trim($fieldSet->description)) :
         ?>
-        <?php echo '<p class="alert alert-info">' . $this->escape(Text::_($fieldSet->description)) . '</p>'; ?>
+        <?php echo '<p class="alert alert-info">' . $this->escape(Text::sprintf($fieldSet->description)) . '</p>'; ?>
         <?php
     endif; ?>
     <?php foreach ($this->form->getFieldset($name) as $field) :
