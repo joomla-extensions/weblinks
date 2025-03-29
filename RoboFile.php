@@ -1,144 +1,164 @@
 <?php
 
 /**
- * This is project's console commands configuration for Robo task runner.
+ * Modern PHP task runner for Joomla! Browser Automated Tests execution.
  *
- * Download robo.phar from http://robo.li/robo.phar and type in the root of the repo: $ php robo.phar
- * Or do: $ composer update, and afterwards you will be able to execute robo like $ php vendor/bin/robo
+ * Facilitates building, testing, and maintaining Joomla extensions with automated tools.
  *
  * @package     Joomla.Site
  * @subpackage  RoboFile
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-use Joomla\Jorobo\Tasks\Tasks as loadReleaseTasks;
+use Joomla\Jorobo\Tasks\Tasks as LoadReleaseTasks;
 use Robo\Tasks;
 
-require_once __DIR__ . '/../libraries/vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
-if (!defined('JPATH_BASE')) {
-    define('JPATH_BASE', __DIR__);
+if (!defined('JPATH_BASE'))
+{
+	define('JPATH_BASE', __DIR__);
 }
 
 /**
- * Modern php task runner for Joomla! Browser Automated Tests execution
+ * RoboFile class for managing Joomla tasks.
  *
- * @package  RoboFile
+ * This class defines tasks for building, mapping, and running code analysis tools.
  *
  * @since    1.0
  */
 class RoboFile extends Tasks
 {
-    // Load tasks from composer, see composer.json
-    use loadReleaseTasks;
+	// Load release tasks from composer
+	use LoadReleaseTasks;
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        // Set default timezone (so no warnings are generated if it is not set)
-        date_default_timezone_set('UTC');
-    }
+	/**
+	 * Constructor - Sets the default timezone to UTC.
+	 */
+	public function __construct()
+	{
 
-    /**
-     * Build the joomla extension package
-     *
-     * @param   array  $params  Additional params
-     *
-     * @return  void
-     */
-    public function build($params = ['dev' => false])
-    {
-        if (!file_exists('jorobo.ini')) {
-            $this->_copy('jorobo.dist.ini', 'jorobo.ini');
-        }
+		date_default_timezone_set('UTC');
+	}
 
-        $this->task(\Joomla\Jorobo\Tasks\Build::class, $params)->run();
-    }
+	/**
+	 * Build the Joomla extension package.
+	 *
+	 * @param   array  $params  Additional parameters, defaults to ['dev' => false].
+	 *
+	 * @return  void
+	 */
+	public function build($params = ['dev' => false])
+	{
+		// Copy default configuration if jorobo.ini is not available
+		if (!file_exists('jorobo.ini'))
+		{
+			$this->_copy('jorobo.dist.ini', 'jorobo.ini');
+		}
 
-    /**
-     * Update copyright headers for this project. (Set the text up in the jorobo.ini)
-     *
-     * @return  void
-     */
-    public function headers()
-    {
-        if (!file_exists('jorobo.ini')) {
-            $this->_copy('jorobo.dist.ini', 'jorobo.ini');
-        }
+		// Run the build task with specified params
+		$this->task(\Joomla\Jorobo\Tasks\Build::class, $params)->run();
+	}
 
-        $this->task(\Joomla\Jorobo\Tasks\CopyrightHeader::class)->run();
-    }
+	/**
+	 * Update the copyright headers for this project.
+	 *
+	 * @return  void
+	 */
+	public function headers()
+	{
+		// Ensure configuration is available
+		if (!file_exists('jorobo.ini'))
+		{
+			$this->_copy('jorobo.dist.ini', 'jorobo.ini');
+		}
 
-    /**
-     * Update Version __DEPLOY_VERSION__ in Component. (Set the version up in the jorobo.ini)
-     *
-     * @return  void
-     */
-    public function bump()
-    {
-        $this->task(\Joomla\Jorobo\Tasks\BumpVersion::class)->run();
-    }
+		// Apply copyright headers
+		$this->task(\Joomla\Jorobo\Tasks\CopyrightHeader::class)->run();
+	}
 
-    /**
-     * Map into Joomla installation.
-     *
-     * @param   String  $target  The target joomla instance
-     *
-     * @return  void
-     * @since __DEPLOY_VERSION__
-     *
-     */
-    public function map($target)
-    {
-        $this->task(\Joomla\Jorobo\Tasks\Map::class, $target)->run();
-    }
-      /**
-     * Run static code analysis tools.
-     *
-     * Usage:
-     *   vendor/bin/robo run:checker phpcs
-     *   vendor/bin/robo run:checker phpcbf
-     *
-     * @param string|null $tool The tool to run (phpcs, phpcbf, phpmd, phpcpd)
-     *
-     * @return \Robo\Result
-     */
-    public function runChecker($tool = null)
-    {
-        $allowedTools = [
-            'phpmd',
-            'phpcs',
-            'phpcpd',
-            'phpcbf', // Added phpcbf support
-        ];
+	/**
+	 * Bump the version defined in the component files.
+	 *
+	 * @return  void
+	 */
+	public function bump()
+	{
+		$this->task(\Joomla\Jorobo\Tasks\BumpVersion::class)->run();
+	}
 
-        $allowedToolsString = implode(', ', $allowedTools);
+	/**
+	 * Map Joomla extension into the target Joomla instance.
+	 *
+	 * @param   string  $target  The target Joomla instance directory.
+	 *
+	 * @return  void
 
-        if (!in_array($tool, $allowedTools, true)) {
-            $this->say("The tool you required is not known. Valid tools are $allowedToolsString");
-            return \Robo\Result::success($this);
-        }
+	 */
+	public function map($target)
+	{
+		$this->task(\Joomla\Jorobo\Tasks\Map::class, $target)->run();
+	}
 
-        if ($tool === 'phpcs') {
-            return $this->taskExec(PHP_BINARY . ' -d error_reporting="E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED" -d display_errors=0 ' . __DIR__ . '/../libraries/vendor/bin/phpcs --standard=Joomla .')->run();
-        }
+	/**
+	 * Run code quality tools to check and fix code automatically.
+	 *
+	 * Usage:
+	 *   php vendor/bin/robo run:checker phpcs     // Check for errors
+	 *   php vendor/bin/robo run:checker phpcbf    // Auto-fix errors
+	 *
+	 * @param   string|null  $tool  The tool to execute (phpcs, phpcbf, phpmd, phpcpd).
+	 *
+	 * @return  \Robo\Result
+	 */
+	public function runChecker($tool = null)
+	{
+		// List of supported tools
+		$availableTools = [
+			'phpcs'  => '/vendor/bin/phpcs --standard=Joomla .',
+			'phpcbf' => '/vendor/bin/phpcbf --standard=Joomla --extensions=php .',
+			'phpmd'  => 'vendor/bin/phpmd src text cleancode,codesize,controversial,design,naming,unusedcode',
+			'phpcpd' => 'vendor/bin/phpcpd src',
+		];
 
-        if ($tool === 'phpcbf') {
-            return $this->taskExec(PHP_BINARY . ' -d error_reporting="E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED" -d display_errors=0 ' . __DIR__ . '/../libraries/vendor/bin/phpcbf --standard=Joomla --extensions=php .')->run();
-        }
+		if (!$tool || !isset($availableTools[$tool]))
+		{
+			$this->say("Invalid tool specified. Available options: " . implode(', ', array_keys($availableTools)));
 
-        if ($tool === 'phpmd') {
-            return $this->taskExec("vendor/bin/phpmd src text cleancode,codesize,controversial,design,naming,unusedcode")->run();
-        }
+			return \Robo\Result::success($this);
+		}
 
-        if ($tool === 'phpcpd') {
-            return $this->taskExec("vendor/bin/phpcpd src")->run();
-        }
+		// Execute the chosen tool command
+		$command = (DIRECTORY_SEPARATOR === '\\')
+			? "vendor\\bin\\" . $tool . ".bat"
+			: PHP_BINARY . ' -d error_reporting="E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED" -d display_errors=0 ' . __DIR__ . $availableTools[$tool];
 
-        return \Robo\Result::success($this);
-    }
+		$this->say("Running $tool...");
+
+		return $this->taskExec($command)->run();
+	}
+
+	/**
+	 * Verify and auto-fix coding standards.
+	 *
+	 * Combines both phpcs and phpcbf to check and fix errors.
+	 *
+	 * @return  void
+	 */
+	public function checkAndFix()
+	{
+		// Run PHPCS to identify violations
+		$this->say("Checking code for issues...");
+		$this->runChecker('phpcs');
+
+		// Run PHPCBF to auto-fix errors where possible
+		$this->say("Attempting to fix detected issues...");
+		$this->runChecker('phpcbf');
+
+		// Run PHPCS again to confirm no issues remain
+		$this->say("Re-checking to confirm no remaining issues...");
+		$this->runChecker('phpcs');
+	}
 }
