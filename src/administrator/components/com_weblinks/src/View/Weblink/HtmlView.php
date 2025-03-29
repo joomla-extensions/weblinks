@@ -170,7 +170,10 @@ class HtmlView extends BaseHtmlView
 
             ToolbarHelper::help('Components_Weblinks_Links_Edit');
 
-            if (ComponentHelper::getParams('com_weblinks')->get('count_clicks', 1)) {
+            $globalCountClicks = ComponentHelper::getParams('com_weblinks')->get('count_clicks');
+            $itemCountClicks   = $this->item->params["count_clicks"];
+
+            if (($globalCountClicks && $itemCountClicks != 0) || (!$globalCountClicks && $itemCountClicks)) {
                 ToolbarHelper::custom(
                     'weblink.resetHit',
                     'refresh',
