@@ -256,11 +256,11 @@ $wa->getAsset('style', 'fontawesome')->setAttribute('rel', 'lazy-stylesheet');
 
 
     echo "<pre>";
-    echo "Joomla Configured Timezone: " . Factory::getApplication()->get('offset') . "<br>";
-    echo "Joomla Date Now: " . Factory::getDate()->toSql() . "<br>";
-    echo "System Time Now: " . date('Y-m-d H:i:s') . "<br>";
-    echo "</pre>";
-    ?>
+echo "Joomla Configured Timezone: " . Factory::getApplication()->get('offset') . "<br>";
+echo "Joomla Date Now: " . Factory::getDate()->toSql() . "<br>";
+echo "System Time Now: " . date('Y-m-d H:i:s') . "<br>";
+echo "</pre>";
+?>
 
 </body>
 
