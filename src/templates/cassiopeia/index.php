@@ -256,7 +256,7 @@ $wa->getAsset('style', 'fontawesome')->setAttribute('rel', 'lazy-stylesheet');
 
 
 
-    ?>
+?>
 
 </body>
 
