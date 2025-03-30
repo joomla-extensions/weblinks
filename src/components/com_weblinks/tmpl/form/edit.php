@@ -20,7 +20,7 @@ use Joomla\CMS\Router\Route;
 HTMLHelper::_('behavior.keepalive');
 HTMLHelper::_('behavior.formvalidator');
 $captchaEnabled = false;
-$captchaSet = $this->params->get('captcha', Factory::getApplication()->get('captcha', '0'));
+$captchaSet     = $this->params->get('captcha', Factory::getApplication()->get('captcha', '0'));
 foreach (PluginHelper::getPlugin('captcha') as $plugin) {
     if ($captchaSet === $plugin->name) {
         $captchaEnabled = true;

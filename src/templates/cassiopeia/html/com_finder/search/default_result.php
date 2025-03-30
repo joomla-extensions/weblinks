@@ -11,7 +11,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Multilanguage;
@@ -84,28 +84,28 @@ if ($this->params->get('show_url', 1)) {
     <?php endif; ?>
     <p class="result__title">
     <?php if ($this->result->route) : ?>
-    <?php 
-    
+    <?php
+
 
     $url = Route::_($this->result->route);
 
-    if ($this->result->extension === 'com_weblinks' && !empty($this->result->id)) {
-        $itemid = isset($this->result->itemid) ? (int) $this->result->itemid : 0;
-        $url = Route::_('index.php?option=com_weblinks&task=weblink.go&id=' . (int) $this->result->id . '&Itemid=' . $itemid, false);
-    }
-    
-    echo HTMLHelper::link(
-        $url,
-        '<span class="result__title-text">' . $icon . $this->result->title . '</span>' . $show_url,
-        [
-            'class' => 'result__title-link',
-            'target' => '_blank',
-            'rel' => 'noopener noreferrer'
-        ]
-    );
-    
-    
-    ?>
+        if ($this->result->extension === 'com_weblinks' && !empty($this->result->id)) {
+            $itemid = isset($this->result->itemid) ? (int) $this->result->itemid : 0;
+            $url    = Route::_('index.php?option=com_weblinks&task=weblink.go&id=' . (int) $this->result->id . '&Itemid=' . $itemid, false);
+        }
+
+        echo HTMLHelper::link(
+            $url,
+            '<span class="result__title-text">' . $icon . $this->result->title . '</span>' . $show_url,
+            [
+                'class'  => 'result__title-link',
+                'target' => '_blank',
+                'rel'    => 'noopener noreferrer',
+            ]
+        );
+
+
+        ?>
 <?php else : ?>
     <?php echo $this->result->title; ?>
 <?php endif; ?>
@@ -122,21 +122,21 @@ if ($this->params->get('show_url', 1)) {
         </p>
     <?php endif; ?>
     <?php $taxonomies = $this->result->getTaxonomy(); ?>
-    <?php if (count($taxonomies) && $this->params->get('show_taxonomy', 1)) : ?>
+    <?php if (\count($taxonomies) && $this->params->get('show_taxonomy', 1)) : ?>
         <ul class="result__taxonomy">
             <?php foreach ($taxonomies as $type => $taxonomy) : ?>
                 <?php if ($type == 'Language' && (!Multilanguage::isEnabled() || (isset($taxonomy[0]) && $taxonomy[0]->title == '*'))) : ?>
                     <?php continue; ?>
                 <?php endif; ?>
                 <?php $branch = Taxonomy::getBranch($type); ?>
-                <?php if ($branch->state == 1 && in_array($branch->access, $user->getAuthorisedViewLevels())) : ?>
+                <?php if ($branch->state == 1 && \in_array($branch->access, $user->getAuthorisedViewLevels())) : ?>
                     <?php $taxonomy_text = []; ?>
                     <?php foreach ($taxonomy as $node) : ?>
-                        <?php if ($node->state == 1 && in_array($node->access, $user->getAuthorisedViewLevels())) : ?>
+                        <?php if ($node->state == 1 && \in_array($node->access, $user->getAuthorisedViewLevels())) : ?>
                             <?php $taxonomy_text[] = $node->title; ?>
                         <?php endif; ?>
                     <?php endforeach; ?>
-                    <?php if (count($taxonomy_text)) : ?>
+                    <?php if (\count($taxonomy_text)) : ?>
                         <li class="result__taxonomy-item result__taxonomy--<?php echo $type; ?>">
                             <span><?php echo Text::_(LanguageHelper::branchSingular($type)); ?>:</span>
                             <?php echo Text::_(LanguageHelper::branchSingular(implode(',', $taxonomy_text))); ?>

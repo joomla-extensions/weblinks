@@ -21,7 +21,7 @@ $displayData = [
     'icon'       => 'icon-globe weblink',
 ];
 $user = Factory::getApplication()->getIdentity();
-if ($user->authorise('core.create', 'com_weblinks') || count($user->getAuthorisedCategories('com_weblinks', 'core.create')) > 0) {
+if ($user->authorise('core.create', 'com_weblinks') || \count($user->getAuthorisedCategories('com_weblinks', 'core.create')) > 0) {
     $displayData['createURL'] = 'index.php?option=com_weblinks&task=weblink.add';
 }
 
