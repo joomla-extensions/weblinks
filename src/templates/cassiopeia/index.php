@@ -252,11 +252,7 @@ $wa->getAsset('style', 'fontawesome')->setAttribute('rel', 'lazy-stylesheet');
     <?php endif; ?>
 
     <jdoc:include type="modules" name="debug" style="none" />
-  <?php
-
-
-
-    ?>
+  
 
 </body>
 
