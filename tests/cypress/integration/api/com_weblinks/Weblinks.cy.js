@@ -2,6 +2,8 @@ describe('Test that weblinks API endpoint', () => {
   afterEach(() => cy.task('queryDB', 'DELETE FROM #__weblinks WHERE title LIKE "%automated test weblink%"'));
 
   it('can deliver a list of weblinks', () => {
+    // Update to the correct secret for the API tests because of the bearer token
+    cy.config_setParameter('secret', 'tEstValue');
     cy.db_enableExtension('1', 'plg_webservices_weblinks');
     cy.db_createWeblink({ title: 'automated test weblink' })
       .then(() => cy.api_get('/weblinks'))
