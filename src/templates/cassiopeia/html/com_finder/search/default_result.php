@@ -1,4 +1,7 @@
+
+
 <?php
+
 
 /**
  * @package     Joomla.Site
@@ -80,28 +83,33 @@ if ($this->params->get('show_url', 1)) {
         </figure>
     <?php endif; ?>
     <p class="result__title">
-        <?php if ($this->result->route) : ?>
-            <?php 
-// Check if the result is a Weblink and modify the URL
-$url = Route::_($this->result->route);
-if ($this->result->extension === 'com_weblinks') {
-    $url = Route::_('index.php?option=com_weblinks&task=weblink.go&id=' . (int) $this->result->id . '&Itemid=' . (int) $this->result->itemid);
-}
+    <?php if ($this->result->route) : ?>
+    <?php 
+    
 
-echo HTMLHelper::link(
-    $url,
-    '<span class="result__title-text">' . $icon . $this->result->title . '</span>' . $show_url,
-    [
-        'class' => 'result__title-link',
-        'target' => '_blank', // Open in new tab
-        'rel' => 'noopener noreferrer' // Security best practice
-    ]
-); 
-?>
+    $url = Route::_($this->result->route);
 
-        <?php else : ?>
-            <?php echo $this->result->title; ?>
-        <?php endif; ?>
+    if ($this->result->extension === 'com_weblinks' && !empty($this->result->id)) {
+        $itemid = isset($this->result->itemid) ? (int) $this->result->itemid : 0;
+        $url = Route::_('index.php?option=com_weblinks&task=weblink.go&id=' . (int) $this->result->id . '&Itemid=' . $itemid, false);
+    }
+    
+    echo HTMLHelper::link(
+        $url,
+        '<span class="result__title-text">' . $icon . $this->result->title . '</span>' . $show_url,
+        [
+            'class' => 'result__title-link',
+            'target' => '_blank',
+            'rel' => 'noopener noreferrer'
+        ]
+    );
+    
+    
+    ?>
+<?php else : ?>
+    <?php echo $this->result->title; ?>
+<?php endif; ?>
+
     </p>
     <?php if ($show_description && $description !== '') : ?>
         <p class="result__description">
