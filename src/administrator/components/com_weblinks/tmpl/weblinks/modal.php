@@ -123,7 +123,7 @@ $iconStates = [
                                 . ' data-cat-id="' . $this->escape($item->catid) . '"'
                                 . ' data-uri="' . $this->escape(RouteHelper::getWeblinkRoute($item->id, $item->catid, $item->language)) . '"'
                                 . ' data-language="' . $this->escape($lang) . '"';
-                            ?>
+                    ?>
                             <a class="select-link" href="javascript:void(0)" <?php echo $attribs; ?>>
                                 <?php echo $this->escape($item->title); ?>
                          </a>

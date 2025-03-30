@@ -23,6 +23,7 @@ use Joomla\String\StringHelper;
 /** @var \Joomla\Component\Finder\Site\View\Search\HtmlView $this */
 $user             = $this->getCurrentUser();
 $show_description = $this->params->get('show_description', 1);
+
 if ($show_description) {
     // Calculate number of characters to display around the result
     $term_length = StringHelper::strlen($this->query->input);
@@ -30,17 +31,24 @@ if ($show_description) {
     $pad_length  = $term_length < $desc_length ? (int) floor(($desc_length - $term_length) / 2) : 0;
     // Make sure we highlight term both in introtext and fulltext
     $full_description = $this->result->description;
+
     if (!empty($this->result->summary) && !empty($this->result->body)) {
         $full_description = Helper::parse($this->result->summary . $this->result->body);
     }
 
     // Find the position of the search term
-    $pos = $term_length ? StringHelper::strpos(StringHelper::strtolower($full_description), StringHelper::strtolower($this->query->input)) : false;
+    $pos = $term_length ? StringHelper::strpos(
+        StringHelper::strtolower($full_description),
+        StringHelper::strtolower($this->query->input)
+    ) : false;
+
     // Find a potential start point
     $start = ($pos && $pos > $pad_length) ? $pos - $pad_length : 0;
+
     // Find a space between $start and $pos, start right after it.
     $space       = StringHelper::strpos($full_description, ' ', $start > 0 ? $start - 1 : 0);
     $start       = ($space && $space < $pos) ? $space + 1 : $start;
+
     $description = HTMLHelper::_('string.truncate', StringHelper::substr($full_description, $start), $desc_length, true);
 }
 

@@ -26,6 +26,6 @@ $wa->usePreset('com_categories.shared-categories-accordion');
 <div class="com-weblinks-categories categories-list">
     <?php
     echo LayoutHelper::render('joomla.content.categories_default', $this);
-    echo $this->loadTemplate('items');
-    ?>
+echo $this->loadTemplate('items');
+?>
 </div>
