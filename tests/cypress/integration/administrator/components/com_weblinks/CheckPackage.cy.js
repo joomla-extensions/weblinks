@@ -58,6 +58,7 @@ describe('Test that the weblinks extension package', () => {
       .within(() => {
         cy.get('td').eq(2).should('contain', 'Administrator'); // Location column
         cy.get('td').eq(3).should('contain', 'Component'); // Type column
+        cy.get('td').eq(4).should('contain', '5.0.0-dev'); // Version column
         cy.get('td').eq(7).should('contain', 'N/A'); // Folder column
       });
   });
