@@ -8,7 +8,6 @@
   "versioning": "semver",
   "dependencyDashboard": true,
   "lockFileMaintenance": { "enabled": true },
-  "composerIgnorePlatformReqs": ["ext-*", "lib-*"],
   "rangeStrategy": "update-lockfile",
   "baseBranches": ["4.0-dev"],
   "constraints": {

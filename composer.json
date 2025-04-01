@@ -1,11 +1,11 @@
 {
   "name"       : "joomla-extensions/weblinks",
   "description": "The Open Source PHP Framework for creating complex Joomla extensions",
-  "license"    : "GPL-2.0+",
+  "license"    : "GPL-2.0-or-later",
   "config": {
       "platform": {
-          "php": "8.2"
-      }
+      "php": "8.3.19"
+    }
   },
   "autoload": {
     "psr-4": {
@@ -20,8 +20,11 @@
     "joomla-projects/jorobo": "^0.11.0",
     "phpunit/phpunit": "^9.6.0",
     "friendsofphp/php-cs-fixer": "^3.4.0",
-    "squizlabs/php_codesniffer": "^3.7.1",
     "phpstan/phpstan": "^2.0",
-    "phpstan/phpstan-deprecation-rules": "^2.0"
-  }
+    "phpstan/phpstan-deprecation-rules": "^2.0",
+    "joomla/coding-standards": "^3.0",
+    "squizlabs/php_codesniffer": "^3.5"
+  },
+    "minimum-stability": "dev",
+    "prefer-stable": true 
 }
