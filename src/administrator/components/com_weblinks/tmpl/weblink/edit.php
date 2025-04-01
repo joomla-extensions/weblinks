@@ -19,12 +19,12 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 
 HTMLHelper::_('behavior.formvalidator');
-$app = Factory::getApplication();
+$app   = Factory::getApplication();
 $input = $app->getInput();
 $assoc = Associations::isEnabled();
 // Fieldsets to not automatically render by /layouts/joomla/edit/params.php
-$this->ignore_fieldsets = array('details', 'images', 'item_associations', 'jmetadata');
-$this->useCoreUI = true;
+$this->ignore_fieldsets = ['details', 'images', 'item_associations', 'jmetadata'];
+$this->useCoreUI        = true;
 // In case of modal
 $isModal = $input->get('layout') == 'modal' ? true : false;
 $layout  = $isModal ? 'modal' : 'edit';
@@ -36,7 +36,7 @@ $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=c
     <?php echo LayoutHelper::render('joomla.edit.title_alias', $this); ?>
 
     <div class="main-card">
-        <?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => 'details')); ?>
+        <?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', ['active' => 'details']); ?>
 
         <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'details', empty($this->item->id) ? Text::_('COM_WEBLINKS_NEW_WEBLINK', true) : Text::_('COM_WEBLINKS_EDIT_WEBLINK', true)); ?>
         <div class="row">
