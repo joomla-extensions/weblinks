@@ -76,7 +76,7 @@ class WeblinkField extends FormField
                     [],
                     ['type' => 'module']
                 );
-                Text::script('JGLOBAL_ASSOCIATIONS_PROPAGATE_FAILED');
+                Text::sprintf('JGLOBAL_ASSOCIATIONS_PROPAGATE_FAILED');
                 $scriptSelect[$this->id] = true;
             }
         }
@@ -84,7 +84,7 @@ class WeblinkField extends FormField
         // Setup variables for display.
         $linkWeblinks = 'index.php?option=com_weblinks&amp;view=weblinks&amp;layout=modal&amp;tmpl=component&amp;' . Session::getFormToken() . '=1';
         $linkWeblink  = 'index.php?option=com_weblinks&amp;view=weblink&amp;layout=modal&amp;tmpl=component&amp;' . Session::getFormToken() . '=1';
-        $modalTitle   = Text::_('COM_WEBLINKS_CHANGE_WEBLINK');
+        $modalTitle   = Text::sprintf('COM_WEBLINKS_CHANGE_WEBLINK');
         if (isset($this->element['language'])) {
             $linkWeblinks .= '&amp;forcedLanguage=' . $this->element['language'];
             $linkWeblink .= '&amp;forcedLanguage=' . $this->element['language'];
@@ -109,7 +109,7 @@ class WeblinkField extends FormField
             }
         }
 
-        $title = empty($title) ? Text::_('COM_WEBLINKS_SELECT_A_WEBLINK') : htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
+        $title = empty($title) ? Text::sprintf('COM_WEBLINKS_SELECT_A_WEBLINK') : htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
         // The current weblink display field.
         $html = '';
         if ($allowSelect || $allowNew || $allowEdit || $allowClear) {
@@ -125,7 +125,7 @@ class WeblinkField extends FormField
                 . ' data-bs-toggle="modal"'
                 . ' type="button"'
                 . ' data-bs-target="#ModalSelect' . $modalId . '">'
-                . '<span class="icon-file" aria-hidden="true"></span> ' . Text::_('JSELECT')
+                . '<span class="icon-file" aria-hidden="true"></span> ' . Text::sprintf('JSELECT')
                 . '</button>';
         }
 
@@ -137,7 +137,7 @@ class WeblinkField extends FormField
                 . ' data-bs-toggle="modal"'
                 . ' type="button"'
                 . ' data-bs-target="#ModalNew' . $modalId . '">'
-                . '<span class="icon-plus" aria-hidden="true"></span> ' . Text::_('JACTION_CREATE')
+                . '<span class="icon-plus" aria-hidden="true"></span> ' . Text::sprintf('JACTION_CREATE')
                 . '</button>';
         }
 
@@ -149,7 +149,7 @@ class WeblinkField extends FormField
                 . ' data-bs-toggle="modal"'
                 . ' type="button"'
                 . ' data-bs-target="#ModalEdit' . $modalId . '">'
-                . '<span class="icon-pen-square" aria-hidden="true"></span> ' . Text::_('JACTION_EDIT')
+                . '<span class="icon-pen-square" aria-hidden="true"></span> ' . Text::sprintf('JACTION_EDIT')
                 . '</button>';
         }
 
@@ -160,7 +160,7 @@ class WeblinkField extends FormField
                 . ' id="' . $this->id . '_clear"'
                 . ' type="button"'
                 . ' onclick="window.processModalParent(\'' . $this->id . '\'); return false;">'
-                . '<span class="icon-times" aria-hidden="true"></span> ' . Text::_('JCLEAR')
+                . '<span class="icon-times" aria-hidden="true"></span> ' . Text::sprintf('JCLEAR')
                 . '</button>';
         }
 
@@ -178,7 +178,7 @@ class WeblinkField extends FormField
                     'bodyHeight' => 70,
                     'modalWidth' => 80,
                     'footer'     => '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">'
-                        . Text::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</button>',
+                        . Text::sprintf('JLIB_HTML_BEHAVIOR_CLOSE') . '</button>',
                 ]);
         }
 
@@ -188,7 +188,7 @@ class WeblinkField extends FormField
         // New weblink modal
         if ($allowNew) {
             $html .= HTMLHelper::_('bootstrap.renderModal', 'ModalNew' . $modalId, [
-                    'title'       => Text::_('COM_WEBLINKS_NEW_WEBLINK'),
+                    'title'       => Text::sprintf('COM_WEBLINKS_NEW_WEBLINK'),
                     'backdrop'    => 'static',
                     'keyboard'    => false,
                     'closeButton' => false,
@@ -199,20 +199,20 @@ class WeblinkField extends FormField
                     'modalWidth'  => '80',
                     'footer'      => '<a role="button" class="btn" aria-hidden="true"'
                         . ' onclick="' . $closeButtonClick . '">'
-                        . Text::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</a>'
+                        . Text::sprintf('JLIB_HTML_BEHAVIOR_CLOSE') . '</a>'
                         . '<a role="button" class="btn btn-primary" aria-hidden="true"'
                         . ' onclick="' . $saveButtonClick . '">'
-                        . Text::_('JSAVE') . '</a>'
+                        . Text::sprintf('JSAVE') . '</a>'
                         . '<a role="button" class="btn btn-success" aria-hidden="true"'
                         . ' onclick="' . $applyButtonClick . '">'
-                        . Text::_('JAPPLY') . '</a>',
+                        . Text::sprintf('JAPPLY') . '</a>',
                 ]);
         }
 
         // Edit weblink modal
         if ($allowEdit) {
             $html .= HTMLHelper::_('bootstrap.renderModal', 'ModalEdit' . $modalId, [
-                    'title'       => Text::_('COM_WEBLINKS_EDIT_WEBLINK'),
+                    'title'       => Text::sprintf('COM_WEBLINKS_EDIT_WEBLINK'),
                     'backdrop'    => 'static',
                     'keyboard'    => false,
                     'closeButton' => false,
@@ -223,20 +223,20 @@ class WeblinkField extends FormField
                     'modalWidth'  => '80',
                     'footer'      => '<a role="button" class="btn" aria-hidden="true"'
                         . ' onclick="' . $closeButtonClick . '">'
-                        . Text::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</a>'
+                        . Text::sprintf('JLIB_HTML_BEHAVIOR_CLOSE') . '</a>'
                         . '<a role="button" class="btn btn-primary" aria-hidden="true"'
                         . ' onclick="' . $saveButtonClick . '">'
-                        . Text::_('JSAVE') . '</a>'
+                        . Text::sprintf('JSAVE') . '</a>'
                         . '<a role="button" class="btn btn-success" aria-hidden="true"'
                         . ' onclick="' . $applyButtonClick . '">'
-                        . Text::_('JAPPLY') . '</a>',
+                        . Text::sprintf('JAPPLY') . '</a>',
                 ]);
         }
 
         // Note: class='required' for client side validation.
         $class = $this->required ? ' class="required modal-value"' : '';
         $html .= '<input type="hidden" id="' . $this->id . '_id" ' . $class . ' data-required="' . (int) $this->required . '" name="' . $this->name
-            . '" data-text="' . htmlspecialchars(Text::_('COM_WEBLINKS_SELECT_A_WEBLINK', true), ENT_COMPAT, 'UTF-8') . '" value="' . $value . '" />';
+            . '" data-text="' . htmlspecialchars(Text::sprintf('COM_WEBLINKS_SELECT_A_WEBLINK', true), ENT_COMPAT, 'UTF-8') . '" value="' . $value . '" />';
         return $html;
     }
 

@@ -114,7 +114,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
         $result   = $event->getArgument('result', []);
         $result[] = [
             [
-                'title' => Text::_('PLG_SYSTEM_WEBLINKS_STATISTICS'),
+                'title' => Text::sprintf('PLG_SYSTEM_WEBLINKS_STATISTICS'),
                 'icon'  => 'out-2',
                 'data'  => $webLinks,
             ],

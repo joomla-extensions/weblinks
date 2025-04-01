@@ -101,6 +101,7 @@ class WeblinkModel extends ItemModel
                     ->from('#__weblinks AS a')
                     ->where($db->quoteName('a.id') . ' = :id')
                     ->bind(':id', $pk, ParameterType::INTEGER);
+                $query->where($db->quoteName('a.state') . ' = 1');
 
                 // Join on category table.
                 $query->select('c.title AS category_title, c.alias AS category_alias, c.access AS category_access')
@@ -113,7 +114,7 @@ class WeblinkModel extends ItemModel
 
                 // Filter by language
                 if ($this->getState('filter.language')) {
-                    $query->whereIn($db->quoteName('a.language'), [Factory::getLanguage()->getTag(), '*'], ParameterType::STRING);
+                    $query->whereIn($db->quoteName('a.language'), [Factory::getApplication()->getLanguage()->getTag(), '*'], ParameterType::STRING);
                 }
 
                 // Join over the categories to get parent category titles
@@ -144,12 +145,12 @@ class WeblinkModel extends ItemModel
                 $data = $db->loadObject();
 
                 if (empty($data)) {
-                    throw new \Exception(Text::_('COM_WEBLINKS_ERROR_WEBLINK_NOT_FOUND'), 404);
+                    throw new \Exception(Text::sprintf('COM_WEBLINKS_ERROR_WEBLINK_NOT_FOUND'), 404);
                 }
 
                 // Check for published state if filter set.
                 if ((is_numeric($published) || is_numeric($archived)) && (($data->state != $published) && ($data->state != $archived))) {
-                    throw new \Exception(Text::_('COM_WEBLINKS_ERROR_WEBLINK_NOT_FOUND'), 404);
+                    throw new \Exception(Text::sprintf('COM_WEBLINKS_ERROR_WEBLINK_NOT_FOUND'), 404);
                 }
 
                 // Convert parameter fields to objects.
@@ -174,8 +175,7 @@ class WeblinkModel extends ItemModel
 
                 $this->_item[$pk] = $data;
             } catch (\Exception $e) {
-                $this->setError($e);
-                $this->_item[$pk] = false;
+                throw new \RuntimeException($e->getMessage(), $e->getCode(), $e);
             }
         }
 

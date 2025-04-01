@@ -16,11 +16,11 @@ namespace Joomla\Plugin\EditorsXtd\Weblink\Extension;
 
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Session\Session;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Event\DispatcherInterface;
+use Joomla\Registry\Registry;
 
 /**
  * Editor Web Link button
@@ -60,7 +60,7 @@ final class Weblink extends CMSPlugin
      *
      * @since  __DEPLOY_VERSION__
      */
-    public function onDisplay($name)
+    public function onDisplay($name): \stdClass
     {
         $user = $this->getApplication()->getIdentity();
 
@@ -73,10 +73,10 @@ final class Weblink extends CMSPlugin
             $link = 'index.php?option=com_weblinks&amp;view=weblinks&amp;layout=modal&amp;tmpl=component&amp;'
                 . Session::getFormToken() . '=1&amp;editor=' . $name;
 
-            $button          = new CMSObject();
+            $button          = new Registry();
             $button->modal   = true;
             $button->link    = $link;
-            $button->text    = Text::_('PLG_EDITORS-XTD_WEBLINK_BUTTON_WEBLINK');
+            $button->text    = Text::sprintf('PLG_EDITORS-XTD_WEBLINK_BUTTON_WEBLINK');
             $button->name    = $this->_type . '_' . $this->_name;
             $button->icon    = 'globe';
             // phpcs:disable Generic.Files.LineLength
@@ -91,7 +91,8 @@ final class Weblink extends CMSPlugin
                 'modalWidth' => '80',
             ];
 
-            return $button;
+            return (object) $button->toArray();
         }
+        return new \stdClass();
     }
 }

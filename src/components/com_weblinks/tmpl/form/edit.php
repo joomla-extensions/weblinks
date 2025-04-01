@@ -87,11 +87,11 @@ $params = $this->state->get('params');
         <div class="mb-2">
          <button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('weblink.save')">
                <span class="icon-check" aria-hidden="true"></span>
-                <?php echo Text::_('JSAVE'); ?>
+                <?php echo Text::sprintf('JSAVE'); ?>
             </button>
           <button type="button" class="btn btn-danger" onclick="Joomla.submitbutton('weblink.cancel')">
               <span class="icon-times" aria-hidden="true"></span>
-                <?php echo Text::_('JCANCEL'); ?>
+                <?php echo Text::sprintf('JCANCEL'); ?>
           </button>
             <?php if ($this->params->get('save_history', 0) && $this->item->id) :
                 ?>

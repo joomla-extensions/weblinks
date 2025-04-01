@@ -68,9 +68,12 @@ class HtmlView extends BaseHtmlView
         $this->form  = $model->getForm();
 
         // Check for errors.
-        if (\count($errors = $model->getErrors())) {
-            throw new GenericDataException(implode("\n", $errors), 500);
+        try {
+            $this->item = $model->getItem();
+        } catch (\Exception $e) {
+            throw new GenericDataException($e->getMessage(), 500);
         }
+
 
         // If we are forcing a language in modal (used for associations).
         if ($this->getLayout() === 'modal' && $forcedLanguage = Factory::getApplication()->getInput()->get('forcedLanguage', '', 'cmd')) {
@@ -108,7 +111,7 @@ class HtmlView extends BaseHtmlView
         // Since we don't track these assets at the item level, use the category id.
         $canDo = ContentHelper::getActions('com_weblinks', 'category', $this->item->catid);
 
-        ToolbarHelper::title($isNew ? Text::_('COM_WEBLINKS_MANAGER_WEBLINK_NEW') : Text::_('COM_WEBLINKS_MANAGER_WEBLINK_EDIT'), 'link weblinks');
+        ToolbarHelper::title($isNew ? Text::sprintf('COM_WEBLINKS_MANAGER_WEBLINK_NEW') : Text::sprintf('COM_WEBLINKS_MANAGER_WEBLINK_EDIT'), 'link weblinks');
 
         // Build the actions for new and existing records.
         if ($isNew) {
@@ -156,7 +159,7 @@ class HtmlView extends BaseHtmlView
 
             ToolbarHelper::cancel('weblink.cancel', 'JTOOLBAR_CLOSE');
 
-            if (ComponentHelper::isEnabled('com_contenthistory') && $this->state->get('params')->get('save_history', 0) && $itemEditable) {
+            if (ComponentHelper::isEnabled('com_contenthistory') && $this->state->params->save_history && $itemEditable) {
                 ToolbarHelper::versions('com_weblinks.weblink', $this->item->id);
             }
 
