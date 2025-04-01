@@ -13,23 +13,23 @@ use Joomla\Tests\Unit\UnitTestCase;
 
 class WeblinksHelperRouteTest extends UnitTestCase
 {
-	/**
-	 * @var \UnitTester
-	 */
-	protected $tester;
+    /**
+     * @var \UnitTester
+     */
+    protected $tester;
 
-	protected function _before()
-	{
-		require_once 'src/components/com_weblinks/helpers/route.php';
-	}
+    protected function _before()
+    {
+        require_once 'src/components/com_weblinks/helpers/route.php';
+    }
 
-	protected function _after()
-	{
-	}
+    protected function _after()
+    {
+    }
 
-	// tests
-	public function testGetFormRouteNewWeblink()
-	{
-		$this->assertStringContainsString('weblink.add&w_id=0', RouteHelper::getFormRoute(null));
-	}
+    // tests
+    public function testGetFormRouteNewWeblink()
+    {
+        $this->assertStringContainsString('weblink.add&w_id=0', RouteHelper::getFormRoute(null));
+    }
 }
