@@ -22,7 +22,7 @@ use Joomla\Component\Fields\Administrator\Helper\FieldsHelper;
  *
  * @since  __DEPLOY_VERSION__
  */
-class JsonApiView extends BaseApiView
+class JsonapiView extends BaseApiView
 {
     /**
      * The fields to render item in the documents
