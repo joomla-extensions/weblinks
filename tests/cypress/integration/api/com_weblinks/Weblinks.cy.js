@@ -1,5 +1,5 @@
 describe('Test that weblinks API endpoint', () => {
-  afterEach(() => cy.task('queryDB', 'DELETE FROM #__weblinks WHERE title LIKE "%automated test weblink%"'));
+  afterEach(() => cy.task('queryDB', "DELETE FROM #__weblinks WHERE title LIKE '%automated test weblink%'"));
 
   it('can deliver a list of weblinks', () => {
     cy.db_enableExtension('1', 'plg_webservices_weblinks');
