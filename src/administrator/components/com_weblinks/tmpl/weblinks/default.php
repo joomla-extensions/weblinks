@@ -190,20 +190,20 @@ if ($saveOrder && !empty($this->items)) {
                      </tbody>
                    </table>
 
-                    <?php // Load the pagination. ?>
+                    <?php // Load the pagination.?>
                     <?php echo $this->pagination->getListFooter(); ?>
 
-                    <?php // Load the batch processing form. ?>
+                    <?php // Load the batch processing form.?>
                     <?php if (
-                    $user->authorise('core.create', 'com_weblinks')
-                        && $user->authorise('core.edit', 'com_weblinks')
-                        && $user->authorise('core.edit.state', 'com_weblinks')
+                        $user->authorise('core.create', 'com_weblinks')
+                            && $user->authorise('core.edit', 'com_weblinks')
+                            && $user->authorise('core.edit.state', 'com_weblinks')
 ) :
     ?>
                         <?php echo HTMLHelper::_('bootstrap.renderModal', 'collapseModal', [
-                                'title' => Text::_('COM_WEBLINKS_BATCH_OPTIONS'),
-                                'footer' => $this->loadTemplate('batch_footer')
-                            ], $this->loadTemplate('batch_body')); ?>
+                                                    'title'  => Text::_('COM_WEBLINKS_BATCH_OPTIONS'),
+                                                    'footer' => $this->loadTemplate('batch_footer'),
+                                                ], $this->loadTemplate('batch_body')); ?>
                     <?php
                     endif; ?>
                     <?php

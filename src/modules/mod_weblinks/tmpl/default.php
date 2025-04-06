@@ -22,7 +22,7 @@ use Joomla\CMS\Language\Text;
     <?php $cols = $params->get('groupby_columns', 3); ?>
     <?php foreach ($list as $l) :
         ?>
-        <?php $cats[] = array('catid' => $l->catid, 'title' => $l->category_title); ?>
+        <?php $cats[] = ['catid' => $l->catid, 'title' => $l->category_title]; ?>
         <?php
     endforeach; ?>
     <?php $cats = array_values(array_map('unserialize', array_unique(array_map('serialize', $cats)))); ?>
@@ -60,8 +60,8 @@ use Joomla\CMS\Language\Text;
              <div class="col flex-sm-grow-1">
                     <?php
                     $link   = $item->link;
-                    $width  = (int) $item->params->get('width', 600);
-                    $height = (int) $item->params->get('height', 500);
+                    $width          = (int) $item->params->get('width', 600);
+                    $height         = (int) $item->params->get('height', 500);
                     switch ($item->params->get('target')) {
                         case 1:
                             // Open in a new window
@@ -113,7 +113,7 @@ use Joomla\CMS\Language\Text;
         <?php if ($cols > 1) :
             ?>
          </div>
-            <?php if (($k + 1) % $cols == 0 || $k == count($cats) - 1) :
+            <?php if (($k + 1) % $cols == 0 || $k == \count($cats) - 1) :
                 ?>
              </div>
                 <?php
