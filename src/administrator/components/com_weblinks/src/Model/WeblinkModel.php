@@ -1,11 +1,11 @@
 <?php
 
 /**
- * @package    Joomla.Administrator
- * @subpackage Weblinks
+ * @package     Joomla.Administrator
+ * @subpackage  Weblinks
  *
- * @copyright Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 namespace Joomla\Component\Weblinks\Administrator\Model;
@@ -29,7 +29,7 @@ use Joomla\String\StringHelper;
 /**
  * Weblinks model.
  *
- * @since 1.5
+ * @since  1.5
  */
 class WeblinkModel extends AdminModel
 {
@@ -38,35 +38,35 @@ class WeblinkModel extends AdminModel
     /**
      * The type alias for this content type.
      *
-     * @var   string
-     * @since 3.2
+     * @var    string
+     * @since  3.2
      */
     public $typeAlias = 'com_weblinks.weblink';
 
     /**
      * The context used for the associations table
      *
-     * @var   string
-     * @since __DEPLOY_VERSION__
+     * @var    string
+     * @since  __DEPLOY_VERSION__
      */
     protected $associationsContext = 'com_weblinks.item';
 
     /**
      * The prefix to use with controller messages.
      *
-     * @var   string
-     * @since 1.6
+     * @var    string
+     * @since  1.6
      */
     protected $text_prefix = 'COM_WEBLINKS';
 
     /**
      * Method to test whether a record can be deleted.
      *
-     * @param object $record A record object.
+     * @param   object  $record  A record object.
      *
-     * @return boolean  True if allowed to delete the record. Defaults to the permission for the component.
+     * @return  boolean  True if allowed to delete the record. Defaults to the permission for the component.
      *
-     * @since 1.6
+     * @since   1.6
      */
     protected function canDelete($record)
     {
@@ -80,11 +80,11 @@ class WeblinkModel extends AdminModel
     /**
      * Method to test whether a record can be deleted.
      *
-     * @param object $record A record object.
+     * @param   object  $record  A record object.
      *
-     * @return boolean  True if allowed to change the state of the record. Defaults to the permission for the component.
+     * @return  boolean  True if allowed to change the state of the record. Defaults to the permission for the component.
      *
-     * @since 1.6
+     * @since   1.6
      */
     protected function canEditState($record)
     {
@@ -98,12 +98,12 @@ class WeblinkModel extends AdminModel
     /**
      * Abstract method for getting the form from the model.
      *
-     * @param array   $data     Data for the form.
-     * @param boolean $loadData True if the form is to load its own data (default case), false if not.
+     * @param   array    $data      Data for the form.
+     * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
      *
-     * @return mixed  A JForm object on success, false on failure
+     * @return  mixed  A JForm object on success, false on failure
      *
-     * @since 1.6
+     * @since   1.6
      */
     public function getForm($data = [], $loadData = true)
     {
@@ -146,9 +146,9 @@ class WeblinkModel extends AdminModel
     /**
      * Method to get the data that should be injected in the form.
      *
-     * @return array  The default data is an empty array.
+     * @return  array  The default data is an empty array.
      *
-     * @since 1.6
+     * @since   1.6
      */
     protected function loadFormData()
     {
@@ -174,11 +174,11 @@ class WeblinkModel extends AdminModel
     /**
      * Method to get a single record.
      *
-     * @param integer $pk The id of the primary key.
+     * @param   integer  $pk  The id of the primary key.
      *
-     * @return mixed  Object on success, false on failure.
+     * @return  mixed  Object on success, false on failure.
      *
-     * @since 1.6
+     * @since   1.6
      */
     public function getItem($pk = null)
     {
@@ -219,11 +219,11 @@ class WeblinkModel extends AdminModel
     /**
      * Prepare and sanitise the table data prior to saving.
      *
-     * @param \Joomla\CMS\Table\Table $table A reference to a JTable object.
+     * @param   \Joomla\CMS\Table\Table  $table  A reference to a JTable object.
      *
-     * @return void
+     * @return  void
      *
-     * @since 1.6
+     * @since   1.6
      */
     protected function prepareTable($table)
     {
@@ -265,11 +265,11 @@ class WeblinkModel extends AdminModel
     /**
      * A protected method to get a set of ordering conditions.
      *
-     * @param \Joomla\CMS\Table\Table $table A JTable object.
+     * @param   \Joomla\CMS\Table\Table  $table  A JTable object.
      *
-     * @return array  An array of conditions to add to ordering queries.
+     * @return  array  An array of conditions to add to ordering queries.
      *
-     * @since 1.6
+     * @since   1.6
      */
     protected function getReorderConditions($table)
     {
@@ -282,11 +282,11 @@ class WeblinkModel extends AdminModel
     /**
      * Method to save the form data.
      *
-     * @param array $data The form data.
+     * @param   array  $data  The form data.
      *
-     * @return boolean  True on success.
+     * @return  boolean  True on success.
      *
-     * @since 3.1
+     * @since    3.1
      */
     public function save($data)
     {
@@ -325,13 +325,13 @@ class WeblinkModel extends AdminModel
     /**
      * Method to change the title & alias.
      *
-     * @param integer $category_id The id of the parent.
-     * @param string  $alias       The alias.
-     * @param string  $name        The title.
+     * @param   integer  $category_id  The id of the parent.
+     * @param   string   $alias        The alias.
+     * @param   string   $name         The title.
      *
-     * @return array  Contains the modified title and alias.
+     * @return  array  Contains the modified title and alias.
      *
-     * @since 3.1
+     * @since   3.1
      */
     protected function generateNewTitle($category_id, $alias, $name)
     {
@@ -352,13 +352,13 @@ class WeblinkModel extends AdminModel
     /**
      * Allows preprocessing of the JForm object.
      *
-     * @param \JForm $form  The form object
-     * @param array  $data  The data to be merged into the form object
-     * @param string $group The plugin group to be executed
+     * @param   \JForm  $form   The form object
+     * @param   array   $data   The data to be merged into the form object
+     * @param   string  $group  The plugin group to be executed
      *
-     * @return void
+     * @return  void
      *
-     * @since 3.6.0
+     * @since    3.6.0
      */
     protected function preprocessForm(Form $form, $data, $group = 'content')
     {
@@ -401,38 +401,12 @@ class WeblinkModel extends AdminModel
     /**
      * Is the user allowed to create an on the fly category?
      *
-     * @return bool
+     * @return  bool
      *
-     * @since 3.6.0
+     * @since   3.6.0
      */
     private function canCreateCategory()
     {
         return $this->getCurrentUser()->authorise('core.create', 'com_weblinks');
-    }
-
-    /**
-     * Resets the hit counter for a weblink
-     *
-     * @param int $pk The primary key of the weblink
-     *
-     * @return boolean  True on success
-     *
-     * @since 4.0.0
-     */
-    public function resetHit($pk = null)
-    {
-        if (empty($pk)) {
-            $pk = $this->getState('weblink.id');
-        }
-
-        $table = $this->getTable();
-
-        if (!$table->load($pk)) {
-            throw new \Exception(Text::_('COM_WEBLINKS_ERROR_WEBLINK_NOT_FOUND'), 404);
-        }
-
-        $table->hits = 0;
-
-        return $table->store();
     }
 }

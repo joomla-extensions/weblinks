@@ -1,11 +1,11 @@
 <?php
 
 /**
- * @package    Joomla.Administrator
- * @subpackage Weblinks
+ * @package     Joomla.Administrator
+ * @subpackage  Weblinks
  *
- * @copyright Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
- * @license   GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 namespace Joomla\Component\Weblinks\Administrator\Controller;
@@ -14,7 +14,6 @@ namespace Joomla\Component\Weblinks\Administrator\Controller;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Router\Route;
@@ -24,7 +23,7 @@ use Joomla\Utilities\ArrayHelper;
 /**
  * Weblink controller class.
  *
- * @since 1.6
+ * @since  1.6
  */
 class WeblinkController extends FormController
 {
@@ -33,11 +32,11 @@ class WeblinkController extends FormController
     /**
      * Method override to check if you can add a new record.
      *
-     * @param array $data An array of input data.
+     * @param   array  $data  An array of input data.
      *
-     * @return boolean
+     * @return  boolean
      *
-     * @since 1.6
+     * @since   1.6
      */
     protected function allowAdd($data = [])
     {
@@ -55,12 +54,12 @@ class WeblinkController extends FormController
     /**
      * Method to check if you can add a new record.
      *
-     * @param array  $data An array of input data.
-     * @param string $key  The name of the key for the primary key.
+     * @param   array   $data  An array of input data.
+     * @param   string  $key   The name of the key for the primary key.
      *
-     * @return boolean
+     * @return  boolean
      *
-     * @since 1.6
+     * @since   1.6
      */
     protected function allowEdit($data = [], $key = 'id')
     {
@@ -91,11 +90,11 @@ class WeblinkController extends FormController
     /**
      * Method to run batch operations.
      *
-     * @param object $model The model.
+     * @param   object  $model  The model.
      *
-     * @return boolean   True if successful, false otherwise and internal error is set.
+     * @return  boolean   True if successful, false otherwise and internal error is set.
      *
-     * @since 1.7
+     * @since   1.7
      */
     public function batch($model = null)
     {
@@ -113,12 +112,12 @@ class WeblinkController extends FormController
     /**
      * Function that allows child controller access to model data after the data has been saved.
      *
-     * @param \Joomla\CMS\MVC\Model\BaseDatabaseModel $model     The data model object.
-     * @param array                                   $validData The validated data.
+     * @param   \Joomla\CMS\MVC\Model\BaseDatabaseModel  $model      The data model object.
+     * @param   array                                    $validData  The validated data.
      *
-     * @return void
+     * @return  void
      *
-     * @since 1.6
+     * @since   1.6
      */
     protected function postSaveHook(BaseDatabaseModel $model, $validData = [])
     {
@@ -127,38 +126,5 @@ class WeblinkController extends FormController
         if ($task == 'save') {
             $this->setRedirect(Route::_('index.php?option=com_weblinks&view=weblinks', false));
         }
-    }
-
-    /**
-     * Resets the hit counter for a weblink
-     *
-     * @return void
-     *
-     * @throws \Exception  If the user lacks core.edit permission on the weblink
-     *
-     * @since 4.0.0
-     */
-    public function resetHit()
-    {
-        $model = $this->getModel();
-        $id    = $this->input->getInt('id');
-
-        $item = $model->getItem($id);
-        if (!$item) {
-            throw new \Exception(Text::_('COM_WEBLINKS_ERROR_WEBLINK_NOT_FOUND'), 404);
-        }
-
-        $data = get_object_vars($item);
-        if (!$this->allowEdit($data, 'id')) {
-            throw new \Exception(Text::_('JERROR_ALERTNOAUTHOR'), 403);
-        }
-
-        if ($model->resetHit($id)) {
-            $this->setMessage(Text::_('COM_WEBLINKS_HIT_RESET_SUCCESS'));
-        } else {
-            $this->setError($model->getError());
-        }
-
-        $this->setRedirect('index.php?option=com_weblinks&view=weblink&layout=edit&id=' . $id);
     }
 }
