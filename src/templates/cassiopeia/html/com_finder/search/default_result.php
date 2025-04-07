@@ -24,7 +24,7 @@ $show_description = $this->params->get('show_description', 1);
 if ($show_description) {
     $term_length      = StringHelper::strlen($this->query->input);
     $desc_length      = $this->params->get('description_length', 255);
-    $pad_length       = $term_length < $desc_length ? (int) floor(($desc_length - $term_length) / 2) : 0;
+    $pad_length       = $term_length < $desc_length ? (int) \floor(($desc_length - $term_length) / 2) : 0;
     $full_description = $this->result->description;
 
     if (!empty($this->result->summary) && !empty($this->result->body)) {
@@ -76,7 +76,7 @@ if ($showImage && !empty($this->result->imageUrl) && $imageClass !== '') {
     <?php endif; ?>
 
     <?php $taxonomies = $this->result->getTaxonomy(); ?>
-    <?php if (count($taxonomies) && $this->params->get('show_taxonomy', 1)) : ?>
+    <?php if (\count($taxonomies) && $this->params->get('show_taxonomy', 1)) : ?>
         <ul class="result__taxonomy">
             <?php foreach ($taxonomies as $type => $taxonomy) : ?>
                 <?php if ($type === 'Language' && (!Multilanguage::isEnabled() || (isset($taxonomy[0]) && $taxonomy[0]->title === '*'))) : ?>
@@ -84,18 +84,18 @@ if ($showImage && !empty($this->result->imageUrl) && $imageClass !== '') {
                 <?php endif; ?>
 
                 <?php $branch = Taxonomy::getBranch($type); ?>
-                <?php if ($branch->state === 1 && in_array($branch->access, $user->getAuthorisedViewLevels(), true)) : ?>
+                <?php if ($branch->state === 1 && \in_array($branch->access, $user->getAuthorisedViewLevels(), true)) : ?>
                     <?php $taxonomy_text = []; ?>
                     <?php foreach ($taxonomy as $node) : ?>
-                        <?php if ($node->state === 1 && in_array($node->access, $user->getAuthorisedViewLevels(), true)) : ?>
+                        <?php if ($node->state === 1 && \in_array($node->access, $user->getAuthorisedViewLevels(), true)) : ?>
                             <?php $taxonomy_text[] = $node->title; ?>
                         <?php endif; ?>
                     <?php endforeach; ?>
 
-                    <?php if (count($taxonomy_text)) : ?>
+                    <?php if (\count($taxonomy_text)) : ?>
                         <li class="result__taxonomy-item result__taxonomy--<?php echo $type; ?>">
                             <span><?php echo Text::_(LanguageHelper::branchSingular($type)); ?>:</span>
-                            <?php echo Text::_(LanguageHelper::branchSingular(implode(',', $taxonomy_text))); ?>
+                            <?php echo Text::_(LanguageHelper::branchSingular(\implode(',', $taxonomy_text))); ?>
                         </li>
                     <?php endif; ?>
                 <?php endif; ?>
