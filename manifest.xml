@@ -69,4 +69,18 @@
 		<sha512>5cc5735af28766b7016fa0d876ed79c1c1e05f8e7f1c4fbb5468356c4ddef2f0df9d0f66172ab1f20b47d88fcd646572145b271caef67d6dba3037f65f2c0c6f</sha512>
 		<targetplatform name="joomla" version="((4\.[01234])|(5\.[012]))" />
 	</update>
+	<update>
+		<name>Weblinks Extension Package</name>
+		<description>Joomla! CMS Weblinks Package</description>
+		<element>pkg_weblinks</element>
+		<type>package</type>
+		<version>4.4.0</version>
+		<client>site</client>
+		<infourl title="Weblinks Extension Package">https://github.com/joomla-extensions/weblinks/releases/tag/4.4.0</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://downloads.joomla.org/extensions/weblinks/4-4-0/pkg-weblinks-4.4.0.zip</downloadurl>
+		</downloads>
+		<sha512>eaf34d318b0683f6e644c3c7dc01c3568c3eb3080452658d01ecad901b6bc5246022cfbcb53b724ffb9cf52fe47fd1ac74e857e5fa4aed0d5d8931c82aecc18a</sha512>
+		<targetplatform name="joomla" version="(4\.[4])|(5\.[0123])" />
+	</update>
 </updates>
