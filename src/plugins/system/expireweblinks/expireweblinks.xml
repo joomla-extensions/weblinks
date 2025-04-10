@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="system" method="upgrade" version="4.0">
+    <name>System - Expire Weblinks</name>
+    <author>#Amitesh007z</author>
+    <version>1.0.0</version>
+    <description>Automatically unpublishes expired weblinks</description>
+    <files>
+        <filename plugin="expireweblinks">expireweblinks.php</filename>
+    </files>
+</extension>

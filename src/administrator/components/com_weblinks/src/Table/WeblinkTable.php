@@ -77,31 +77,23 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
      */
     public function store($updateNulls = true)
     {
-        $date           = Factory::getDate()->toSql();
-        $user           = Factory::getApplication()->getIdentity();
-        $this->modified = $date;
+        $app         = Factory::getApplication();
+        $db          = $this->getDbo();
+        $timezoneUTC = new \DateTimeZone('UTC'); // Ensure we store in UTC
+
+        $date              = new \DateTime('now', $timezoneUTC);
+        $this->modified    = $date->format('Y-m-d H:i:s');
+        $this->modified_by = $app->getIdentity()->id;
 
         if ($this->id) {
-            // Existing item
-            $this->modified_by = $user->id;
-            $this->modified    = $date;
+            $this->modified_by = $app->getIdentity()->id;
         } else {
-            // New weblink. A weblink created and created_by field can be set by the user,
-            // so we don't touch either of these if they are set.
-            if (!(int) $this->created) {
-                $this->created = $date;
+            if (empty($this->created) || $this->created === '0000-00-00 00:00:00') {
+                $this->created = $date->format('Y-m-d H:i:s');
             }
 
             if (empty($this->created_by)) {
-                $this->created_by = $user->id;
-            }
-
-            if (!(int) $this->modified) {
-                $this->modified = $date;
-            }
-
-            if (empty($this->modified_by)) {
-                $this->modified_by = $user->id;
+                $this->created_by = $app->getIdentity()->id;
             }
 
             if (empty($this->hits)) {
@@ -109,31 +101,23 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
             }
         }
 
-        // Set publish_up to null if not set
-        if (!$this->publish_up) {
-            $this->publish_up = null;
-        }
+        $this->publish_up   = (!empty($this->publish_up) && $this->publish_up !== '0000-00-00 00:00:00') ? $this->publish_up : null;
+        $this->publish_down = (!empty($this->publish_down) && $this->publish_down !== '0000-00-00 00:00:00') ? $this->publish_down : null;
 
-        // Set publish_down to null if not set
-        if (!$this->publish_down) {
-            $this->publish_down = null;
-        }
-
-        // Verify that the alias is unique
-        $table = new WeblinkTable($this->getDbo());
-
+        $table = new WeblinkTable($db);
         if (
             $table->load(['language' => $this->language, 'alias' => $this->alias, 'catid' => (int) $this->catid])
             && ($table->id != $this->id || $this->id == 0)
         ) {
-            $this->setError(Text::_('COM_WEBLINKS_ERROR_UNIQUE_ALIAS'));
+            throw new \RuntimeException(Text::sprintf('COM_WEBLINKS_ERROR_UNIQUE_ALIAS'));
             return false;
         }
 
-        // Convert IDN urls to punycode
         $this->url = PunycodeHelper::urlToPunycode($this->url);
+
         return parent::store($updateNulls);
     }
+
 
     /**
      * Overloaded check method to ensure data integrity.
@@ -145,13 +129,15 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
     public function check()
     {
         if (InputFilter::checkAttribute(['href', $this->url])) {
-            $this->setError(Text::_('COM_WEBLINKS_ERR_TABLES_PROVIDE_URL'));
+            throw new \RuntimeException(Text::sprintf('COM_WEBLINKS_ERR_TABLES_PROVIDE_URL'));
+
             return false;
         }
 
         // Check for valid name
         if (trim($this->title) === '') {
-            $this->setError(Text::_('COM_WEBLINKS_ERR_TABLES_TITLE'));
+            throw new \RuntimeException(Text::sprintf('COM_WEBLINKS_ERR_TABLES_TITLE'));
+
             return false;
         }
 
@@ -169,7 +155,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
         $db->setQuery($query);
         $xid = (int) $db->loadResult();
         if ($xid && $xid != (int) $this->id) {
-            $this->setError(Text::_('COM_WEBLINKS_ERR_TABLES_NAME'));
+            throw new \RuntimeException(Text::sprintf('COM_WEBLINKS_ERR_TABLES_NAME'));
             return false;
         }
 
@@ -184,7 +170,8 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
 
         // Check the publish down date is not earlier than publish up.
         if ((int) $this->publish_down > 0 && $this->publish_down < $this->publish_up) {
-            $this->setError(Text::_('JGLOBAL_START_PUBLISH_AFTER_FINISH'));
+            throw new \RuntimeException(Text::sprintf('JGLOBAL_START_PUBLISH_AFTER_FINISH'));
+
             return false;
         }
 
