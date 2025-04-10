@@ -137,97 +137,62 @@ class CategoryModel extends ListModel
     protected function getListQuery()
     {
         $viewLevels = $this->getCurrentUser()->getAuthorisedViewLevels();
+        $db         = $this->getDatabase();
+        $query      = $db->getQuery(true);
+        $nowUTC     = Factory::getDate()->toSql(); // Get current UTC time
 
-        // Create a new query object.
-        $db    = $this->getDatabase();
-        $query = $db->getQuery(true);
-
-        // Select required fields from the categories.
         $query->select($this->getState('list.select', 'a.*'))
-            ->from($db->quoteName('#__weblinks') . ' AS a')
-            ->whereIn($db->quoteName('a.access'), $viewLevels);
+              ->from($db->quoteName('#__weblinks') . ' AS a')
+              ->whereIn($db->quoteName('a.access'), $viewLevels)
+              ->where($db->quoteName('a.state') . ' = 1') // Only published weblinks
+              ->where('(' . $db->quoteName('a.publish_up') . ' IS NULL OR ' . $db->quoteName('a.publish_up') . ' <= ' . $db->quote($nowUTC) . ')')
+              ->where('(' . $db->quoteName('a.publish_down') . ' IS NULL OR ' . $db->quoteName('a.publish_down') . ' > ' . $db->quote($nowUTC) . ')');
 
-        // Filter by category.
         if ($categoryId = $this->getState('category.id')) {
-            // Group by subcategory
             if ($this->getState('category.group', 0)) {
                 $query->select('c.title AS category_title')
-                    ->where('c.parent_id = :parent_id')
-                    ->bind(':parent_id', $categoryId, ParameterType::INTEGER)
-                    ->join('LEFT', '#__categories AS c ON c.id = a.catid')
-                    ->whereIn($db->quoteName('c.access'), $viewLevels);
+                      ->where('c.parent_id = :parent_id')
+                      ->bind(':parent_id', $categoryId, ParameterType::INTEGER)
+                      ->join('LEFT', '#__categories AS c ON c.id = a.catid')
+                      ->whereIn($db->quoteName('c.access'), $viewLevels);
             } else {
                 $query->where('a.catid = :catid')
-                    ->bind(':catid', $categoryId, ParameterType::INTEGER)
-                    ->join('LEFT', '#__categories AS c ON c.id = a.catid')
-                    ->whereIn($db->quoteName('c.access'), $viewLevels);
+                      ->bind(':catid', $categoryId, ParameterType::INTEGER)
+                      ->join('LEFT', '#__categories AS c ON c.id = a.catid')
+                      ->whereIn($db->quoteName('c.access'), $viewLevels);
             }
 
             // Filter by published category
             $cpublished = $this->getState('filter.c.published');
-
             if (is_numeric($cpublished)) {
                 $query->where('c.published = :published')
-                    ->bind(':published', $cpublished, ParameterType::INTEGER);
+                      ->bind(':published', $cpublished, ParameterType::INTEGER);
             }
         }
 
-        // Join over the users for the author and modified_by names.
         $query->select("CASE WHEN a.created_by_alias > ' ' THEN a.created_by_alias ELSE ua.name END AS author")
-            ->select("ua.email AS author_email")
-            ->join('LEFT', '#__users AS ua ON ua.id = a.created_by')
-            ->join('LEFT', '#__users AS uam ON uam.id = a.modified_by');
+              ->select("ua.email AS author_email")
+              ->join('LEFT', '#__users AS ua ON ua.id = a.created_by')
+              ->join('LEFT', '#__users AS uam ON uam.id = a.modified_by');
 
-        // Filter by state
-        $state = $this->getState('filter.state');
-
-        if (is_numeric($state)) {
-            $query->where('a.state = :state')
-                ->bind(':state', $state, ParameterType::INTEGER);
-        }
+        $query->where('a.state = 1');
 
         // Do not show trashed links on the front-end
         $query->where('a.state != -2');
 
-        // Filter by start and end dates.
-        if ($this->getState('filter.publish_date')) {
-            $nowDate = Factory::getDate()->toSql();
-            $query->where('(' . $db->quoteName('a.publish_up')
-                . ' IS NULL OR ' . $db->quoteName('a.publish_up') . ' <= :publish_up)')
-                ->where('(' . $db->quoteName('a.publish_down')
-                    . ' IS NULL OR ' . $db->quoteName('a.publish_down') . ' >= :publish_down)')
-                ->bind(':publish_up', $nowDate)
-                ->bind(':publish_down', $nowDate);
-        }
-
-        // Filter by language
-        if ($this->getState('filter.language')) {
-            $query->whereIn($db->quoteName('a.language'), [Factory::getLanguage()->getTag(), '*'], ParameterType::STRING);
-        }
-
-        // Filter by search in title
         $search = $this->getState('list.filter');
-
         if (!empty($search)) {
             $search = '%' . trim($search) . '%';
             $query->where('(a.title LIKE :search)')
-                ->bind(':search', $search);
+                  ->bind(':search', $search);
         }
 
-        // If grouping by subcategory, add the subcategory list ordering clause.
-        if ($this->getState('category.group', 0)) {
-            $query->order(
-                $db->escape($this->getState('category.ordering', 'c.lft')) . ' ' .
-                $db->escape($this->getState('category.direction', 'ASC'))
-            );
-        }
-
-        // Add the list ordering clause.
         $query->order(
             $db->escape($this->getState('list.ordering', 'a.ordering')) . ' ' .
             $db->escape($this->getState('list.direction', 'ASC'))
         );
 
+        $db->setQuery($query);
         return $query;
     }
 
@@ -307,8 +272,8 @@ class CategoryModel extends ListModel
             $options               = [];
             $options['countItems'] = $params->get('show_cat_num_links_cat', 1)
                 || $params->get('show_empty_categories', 0);
-
-            $categories  = Categories::getInstance('Weblinks', $options);
+            $section     = $this->getState('section');
+            $categories  = Factory::getApplication()->bootComponent('com_weblinks')->getCategory($options, $section);
             $this->_item = $categories->get($this->getState('category.id', 'root'));
 
             if (\is_object($this->_item)) {
