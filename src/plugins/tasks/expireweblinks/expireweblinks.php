@@ -7,7 +7,6 @@
 
 namespace Joomla\Plugin\Task\ExpireWeblinks;
 
-\defined('_JEXEC') || die;
 
 use Joomla\CMS\Cache\CacheControllerFactoryInterface;
 use Joomla\CMS\Date\DateFactory;
