@@ -7,7 +7,6 @@
 
 namespace Joomla\Plugin\Task\ExpireWeblinks;
 
-
 use Joomla\CMS\Cache\CacheControllerFactoryInterface;
 use Joomla\CMS\Date\DateFactory;
 use Joomla\Database\DatabaseInterface;
