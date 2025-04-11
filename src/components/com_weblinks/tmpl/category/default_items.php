@@ -16,7 +16,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Uri\Uri;
-
 HTMLHelper::_('behavior.core');
 // Get the user object.
 $user = Factory::getApplication()->getIdentity();
@@ -24,8 +23,8 @@ $user = Factory::getApplication()->getIdentity();
 $canEdit    = $user->authorise('core.edit', 'com_weblinks.category.' . $this->category->id);
 $canEditOwn = $user->authorise('core.edit.own', 'com_weblinks.category.' . $this->category->id);
 $canCreate  = $user->authorise('core.create', 'com_weblinks.category.' . $this->category->id);
-$listOrder  = $this->escape($this->state->get('list.ordering'));
-$listDirn   = $this->escape($this->state->get('list.direction'));
+$listOrder = $this->escape($this->state->get('list.ordering'));
+$listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
 
 <div class="com-weblinks-category__items">
@@ -34,7 +33,7 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
             ?>
             <div class="com-weblinks-category__filter btn-group">
               <label class="filter-search-lbl visually-hidden" for="filter-search">
-                    <?php echo Text::sprintf('COM_WEBLINKS_FILTER_SEARCH_DESC'); ?>
+                    <?php echo Text::_('COM_WEBLINKS_FILTER_SEARCH_DESC'); ?>
                 </label>
                <input
                  type="text"
@@ -42,11 +41,11 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
                    id="filter-search"
                     value="<?php echo $this->escape($this->state->get('list.filter')); ?>"
                   onchange="document.adminForm.submit();"
-                    placeholder="<?php echo Text::sprintf('COM_WEBLINKS_FILTER_SEARCH_DESC'); ?>"
+                    placeholder="<?php echo Text::_('COM_WEBLINKS_FILTER_SEARCH_DESC'); ?>"
                 >
-                <button type="submit" name="filter_submit" class="btn btn-primary"><?php echo Text::sprintf('JGLOBAL_FILTER_BUTTON'); ?></button>
+                <button type="submit" name="filter_submit" class="btn btn-primary"><?php echo Text::_('JGLOBAL_FILTER_BUTTON'); ?></button>
               <button type="button" name="filter-clear-button" class="btn btn-secondary"
-                        onclick="this.form.elements['filter-search'].value = ''; this.form.submit();"><?php echo Text::sprintf('JSEARCH_FILTER_CLEAR'); ?></button>
+                        onclick="this.form.elements['filter-search'].value = ''; this.form.submit();"><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?></button>
            </div>
             <?php
         endif; ?>
@@ -54,7 +53,7 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
             ?>
          <div class="com-weblinks-category__pagination btn-group float-end">
                 <label for="limit" class="visually-hidden">
-                    <?php echo Text::sprintf('JGLOBAL_DISPLAY_NUM'); ?>
+                    <?php echo Text::_('JGLOBAL_DISPLAY_NUM'); ?>
               </label>
                 <?php echo $this->pagination->getLimitBox(); ?>
            </div>
@@ -63,10 +62,11 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
         <?php if (empty($this->items)) :
             ?>
          <div class="alert alert-info">
-                <span class="icon-info-circle" aria-hidden="true"></span><span class="visually-hidden"><?php echo Text::sprintf('INFO'); ?></span>
-                <?php echo Text::sprintf('COM_WEBLINKS_NO_WEBLINKS'); ?>
+                <span class="icon-info-circle" aria-hidden="true"></span><span class="visually-hidden"><?php echo Text::_('INFO'); ?></span>
+                <?php echo Text::_('COM_WEBLINKS_NO_WEBLINKS'); ?>
          </div>
-        <?php else :
+            <?php
+        else :
             ?>
          <ul class="category list-unstyled">
                 <?php foreach ($this->items as $i => $item) :
@@ -77,13 +77,14 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
                     if ($item->state == 0) :
                         ?>
                       <li class="system-unpublished list-group mt-3">
-                    <?php else :
+                        <?php
+                    else :
                         ?>
                         <li class="list-group mt-3">
-                            <?php
+                        <?php
                     endif; ?>
 
-                    <?php if ($canEdit || ($canEditOwn && $item->created_by == $user->id)) :
+                    <?php if ($canEdit || ($canEditOwn && $item->created_by == $userId)) :
                         ?>
                         <div class="icons list-group-item">
                             <?php echo HTMLHelper::_('weblinkicon.edit', $item, $item->params); ?>
@@ -94,30 +95,32 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
                     <div class="list-title list-group-item ">
                         <?php if ($this->params->get('icons', 1) == 0) :
                             ?>
-                            <?php echo Text::sprintf('COM_WEBLINKS_LINK'); ?>
-                        <?php elseif ($this->params->get('icons', 1) == 1) :
+                            <?php echo Text::_('COM_WEBLINKS_LINK'); ?>
+                            <?php
+                        elseif ($this->params->get('icons', 1) == 1) :
                             ?>
-                                <?php // ToDo css icons as variables?>
-                                <?php if (!$this->params->get('link_icons')) :
-                                    ?>
+                            <?php // ToDo css icons as variables ?>
+                            <?php if (!$this->params->get('link_icons')) :
+                                ?>
                                 <span class="icon-globe" aria-hidden="true"></span>
-                                <?php else :
-                                    ?>
-                                    <?php echo '<img src="' . $this->params->get('link_icons') . '" alt="' . Text::sprintf('COM_WEBLINKS_LINK') . '" />'; ?>
-                                    <?php
-                                endif; ?>
                                 <?php
+                            else :
+                                ?>
+                                <?php echo '<img src="' . $this->params->get('link_icons') . '" alt="' . Text::_('COM_WEBLINKS_LINK') . '" />'; ?>
+                                <?php
+                            endif; ?>
+                            <?php
                         endif; ?>
 
-                        <?php // Compute the correct link?>
+                        <?php // Compute the correct link ?>
                         <?php $menuclass = 'category' . $this->pageclass_sfx; ?>
-                        <?php $link      = $item->link; ?>
-                        <?php $width     = $item->params->get('width', 600); ?>
-                        <?php $height    = $item->params->get('height', 500); ?>
+                        <?php $link   = $item->link; ?>
+                        <?php $width  = $item->params->get('width', 600); ?>
+                        <?php $height = $item->params->get('height', 500); ?>
 
                         <?php if ($item->state == 0) :
                             ?>
-                            <span class="badge bg-warning"><?php echo Text::sprintf('JUNPUBLISHED'); ?></span>
+                            <span class="badge bg-warning"><?php echo Text::_('JUNPUBLISHED'); ?></span>
                             <?php
                         endif; ?>
 
@@ -240,8 +243,8 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
                 endforeach; ?>
          </ul>
 
-                <?php if ($this->params->get('show_pagination')) :
-                    ?>
+            <?php if ($this->params->get('show_pagination')) :
+                ?>
                <div class="com-weblinks-category__counter w-100">
                     <?php if ($this->params->def('show_pagination_results', 1)) :
                         ?>
@@ -253,10 +256,10 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
 
                     <?php echo $this->pagination->getPagesLinks(); ?>
                 </div>
-                    <?php
-                endif; ?>
-
                 <?php
+            endif; ?>
+
+            <?php
         endif; ?>
 
         <?php if ($canCreate) :
