@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="plugin" group="system" method="upgrade" version="4.0">
-    <name>System - Expire Weblinks</name>
-    <author>#Amitesh007z</author>
+<extension type="plugin" group="task" method="upgrade" version="5.0">
+    <name>Task - Expire Weblinks</name>
+    <author>#!Coder</author>
     <version>1.0.0</version>
-    <description>Automatically unpublishes expired weblinks</description>
+    <description>Automatically unpublishes expired weblinks.</description>
     <files>
         <filename plugin="expireweblinks">expireweblinks.php</filename>
     </files>

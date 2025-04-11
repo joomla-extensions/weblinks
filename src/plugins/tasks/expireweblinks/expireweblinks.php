@@ -2,65 +2,74 @@
 
 /**
  * @package     Joomla.Plugin
- * @subpackage  System.ExpireWeblinks
+ * @subpackage  Task.ExpireWeblinks
  */
 
-namespace Joomla\Plugin\System\ExpireWeblinks;
+namespace Joomla\Plugin\Task\ExpireWeblinks;
+
+\defined('_JEXEC') || die;
 
 use Joomla\CMS\Cache\CacheControllerFactoryInterface;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Date\DateFactory;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Extension\PluginInterface;
+use Joomla\Scheduler\Task\AbstractTaskPlugin;
+use Joomla\Scheduler\Task\TaskContext;
 
 /**
- * Plugin to automatically expire weblinks.
+ * Task Plugin to expire weblinks.
  */
-class PlgSystemExpireWeblinks extends CMSPlugin
+final class PlgTaskExpireWeblinks extends AbstractTaskPlugin implements PluginInterface
 {
-    public function __construct(&$subject, $config)
-    {
+    protected const TASK_NAME = 'expire.weblinks';
+
+    protected DatabaseInterface $db;
+    protected CacheControllerFactoryInterface $cacheFactory;
+    protected DateFactory $dateFactory;
+
+    public function __construct(
+        $subject,
+        array $config,
+        DatabaseInterface $db,
+        CacheControllerFactoryInterface $cacheFactory,
+        DateFactory $dateFactory
+    ) {
         parent::__construct($subject, $config);
 
-        // Prevent direct access
-        if (!\defined('_JEXEC')) {
-            die;
-        }
-    }
-    /**
-     * Runs on every Joomla request to check and unpublish expired weblinks.
-     */
-    public function onAfterInitialise()
-    {
-        $this->expireWeblinks();
+        $this->db           = $db;
+        $this->cacheFactory = $cacheFactory;
+        $this->dateFactory  = $dateFactory;
     }
 
     /**
-     * Function to unpublish expired weblinks.
+     * Returns the task metadata.
      */
-    protected function expireWeblinks()
+    public function getTaskOptions(): array
     {
+        return [
+            'label'       => 'Expire expired weblinks',
+            'description' => 'Automatically unpublishes weblinks whose publish down date has passed.',
+        ];
+    }
 
+    /**
+     * Executes the task.
+     */
+    public function onExecute(TaskContext $context): void
+    {
+        $now = $this->dateFactory->getDate()->toSql();
 
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $query = $this->db->getQuery(true)
+            ->update($this->db->quoteName('#__weblinks'))
+            ->set($this->db->quoteName('state') . ' = 0')
+            ->where($this->db->quoteName('publish_down') . ' IS NOT NULL')
+            ->where($this->db->quoteName('publish_down') . ' <= ' . $this->db->quote($now))
+            ->where($this->db->quoteName('state') . ' = 1');
 
-        $query = $db->getQuery(true);
+        $this->db->setQuery($query)->execute();
 
-        // Get current UTC time
-        $nowUTC = Factory::getDate()->toSql();
-
-        $query->update($db->quoteName('#__weblinks'))
-              ->set($db->quoteName('state') . ' = 0') // Unpublish
-              ->where($db->quoteName('publish_down') . ' IS NOT NULL')
-              ->where($db->quoteName('publish_down') . ' <= ' . $db->quote($nowUTC))
-              ->where($db->quoteName('state') . ' = 1');
-
-        $db->setQuery($query);
-        $db->execute();
-
-
-
-        $cacheFactory = Factory::getContainer()->get(CacheControllerFactoryInterface::class);
-        $cache        = $cacheFactory->createCacheController('callback'); // You can change the handler if needed
+        // Clean weblinks cache
+        $cache = $this->cacheFactory->createCacheController('callback');
         $cache->clean('_system');
         $cache->clean('com_weblinks');
     }
