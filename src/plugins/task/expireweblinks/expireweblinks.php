@@ -2,63 +2,110 @@
 
 /**
  * @package     Joomla.Plugin
- * @subpackage  System.ExpireWeblinks
+ * @subpackage  Task.ExpireWeblinks
  */
 
-namespace Joomla\Plugin\System\ExpireWeblinks;
+namespace Joomla\Plugin\Task\ExpireWeblinks;
 
 use Joomla\CMS\Cache\CacheControllerFactoryInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Event\SubscriberInterface;
 
-/**
- * Plugin to automatically expire weblinks.
- */
-class PlgSystemExpireWeblinks extends CMSPlugin
+class PlgTaskExpireWeblinks extends CMSPlugin implements SubscriberInterface
 {
+    /**
+     * @var DatabaseInterface
+     */
+    protected $db;
+
+    /**
+     * @var CacheControllerFactoryInterface
+     */
+    protected $cacheFactory;
+
+
+    protected const TASK_NAME = 'expire.weblinks';
+
+    /**
+     * Constructor.
+     *
+     * @param   object  &$subject  The object to observe
+     * @param   array   $config    An optional associative array of configuration settings.
+     */
     public function __construct(&$subject, $config)
     {
         parent::__construct($subject, $config);
 
-        // Prevent direct access
-        if (!\defined('_JEXEC')) {
-            die;
+
+        $this->db           = Factory::getContainer()->get(DatabaseInterface::class);
+        $this->cacheFactory = Factory::getContainer()->get(CacheControllerFactoryInterface::class);
+    }
+
+    /**
+     * Returns an array of events this subscriber will listen to.
+     *
+     * @return  array
+     */
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            'onTaskExecute'    => 'onTaskExecute',
+            'onGetTaskOptions' => 'getTaskOptions',
+        ];
+    }
+
+    /**
+     * Returns the task metadata.
+     *
+     * @return  array
+     */
+    public function getTaskOptions()
+    {
+        return [
+            self::TASK_NAME => [
+                'label'       => 'Expire expired weblinks',
+                'description' => 'Automatically unpublishes weblinks whose publish down date has passed.',
+                'params'      => [],
+            ],
+        ];
+    }
+
+    /**
+     * Executes the task.
+     *
+     * @param   object   $context  The context
+     * @param   array    $params   The parameters
+     *
+     * @return  boolean  True on success
+     */
+    public function onTaskExecute($context, $params)
+    {
+        // Only run for our specific task
+        if ($context->getTaskId() !== self::TASK_NAME) {
+            return false;
         }
-    }
-
-    /**
-     * Runs on every Joomla request to check and unpublish expired weblinks.
-     */
-    public function onAfterInitialise()
-    {
-        $this->expireWeblinks();
-    }
-
-    /**
-     * Function to unpublish expired weblinks.
-     */
-    protected function expireWeblinks()
-    {
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
-
-        $query = $db->getQuery(true);
 
         // Get current UTC time
         $nowUTC = Factory::getDate()->toSql();
 
-        $query->update($db->quoteName('#__weblinks'))
-              ->set($db->quoteName('state') . ' = 0') // Unpublish
-              ->where($db->quoteName('publish_down') . ' IS NOT NULL')
-              ->where($db->quoteName('publish_down') . ' <= ' . $db->quote($nowUTC))
-              ->where($db->quoteName('state') . ' = 1');
+        $query = $this->db->getQuery(true)
+            ->update($this->db->quoteName('#__weblinks'))
+            ->set($this->db->quoteName('state') . ' = 0')
+            ->where($this->db->quoteName('publish_down') . ' IS NOT NULL')
+            ->where($this->db->quoteName('publish_down') . ' <= ' . $this->db->quote($nowUTC))
+            ->where($this->db->quoteName('state') . ' = 1');
 
-        $db->setQuery($query);
-        $db->execute();
+        $this->db->setQuery($query);
+        $result = $this->db->execute();
 
-        $cacheFactory = Factory::getContainer()->get(CacheControllerFactoryInterface::class);
-        $cache        = $cacheFactory->createCacheController('callback'); // You can change the handler if needed
+
+        $cache = $this->cacheFactory->createCacheController('callback');
         $cache->clean('_system');
         $cache->clean('com_weblinks');
+
+
+        return true;
     }
 }
