@@ -26,6 +26,7 @@ class PlgSystemExpireWeblinks extends CMSPlugin
             die;
         }
     }
+
     /**
      * Runs on every Joomla request to check and unpublish expired weblinks.
      */
@@ -39,8 +40,6 @@ class PlgSystemExpireWeblinks extends CMSPlugin
      */
     protected function expireWeblinks()
     {
-
-
         $db = Factory::getContainer()->get(DatabaseInterface::class);
 
         $query = $db->getQuery(true);
@@ -57,12 +56,9 @@ class PlgSystemExpireWeblinks extends CMSPlugin
         $db->setQuery($query);
         $db->execute();
 
-
-
         $cacheFactory = Factory::getContainer()->get(CacheControllerFactoryInterface::class);
         $cache        = $cacheFactory->createCacheController('callback'); // You can change the handler if needed
         $cache->clean('_system');
         $cache->clean('com_weblinks');
     }
-    
 }
