@@ -58,11 +58,9 @@
 
 		<field
 			name="hits"
-			type="text"
+			type="hits"
 			label="JGLOBAL_HITS"
-			class="readonly"
-			readonly="true"
-			filter="unset"
+			addfieldprefix="Joomla\Component\Weblinks\Administrator\Field"
 			default="0"
 		/>
 
