@@ -64,4 +64,5 @@ class PlgSystemExpireWeblinks extends CMSPlugin
         $cache->clean('_system');
         $cache->clean('com_weblinks');
     }
+    
 }
