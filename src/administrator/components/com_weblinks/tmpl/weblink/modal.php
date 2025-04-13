@@ -15,9 +15,9 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
 /**
-* 
+*
  *
- * @var \Joomla\Component\Weblinks\Administrator\View\Weblink\HtmlView $this 
+ * @var \Joomla\Component\Weblinks\Administrator\View\Weblink\HtmlView $this
 */
 
 HTMLHelper::_('bootstrap.tooltip', '.hasTooltip', ['placement' => 'bottom']);

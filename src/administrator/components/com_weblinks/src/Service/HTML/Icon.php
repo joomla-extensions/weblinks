@@ -109,7 +109,8 @@ class Icon
         }
 
         // Show checked_out icon if the contact is checked out by a different user
-        if (property_exists($weblink, 'checked_out')
+        if (
+            property_exists($weblink, 'checked_out')
             && property_exists($weblink, 'checked_out_time')
             && $weblink->checked_out
             && $weblink->checked_out !== $user->get('id')
@@ -135,7 +136,8 @@ class Icon
         $nowDate = strtotime(Factory::getDate());
         $icon    = $weblink->state ? 'edit' : 'eye-slash';
 
-        if (($weblink->publish_up !== null && strtotime($weblink->publish_up) > $nowDate)
+        if (
+            ($weblink->publish_up !== null && strtotime($weblink->publish_up) > $nowDate)
             || ($weblink->publish_down !== null && strtotime($weblink->publish_down) < $nowDate)
         ) {
             $icon = 'eye-slash';

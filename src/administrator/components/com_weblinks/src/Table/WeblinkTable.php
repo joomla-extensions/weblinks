@@ -122,11 +122,11 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
         // Verify that the alias is unique
         $table = new WeblinkTable($this->getDbo());
 
-        if ($table->load(['language' => $this->language, 'alias' => $this->alias, 'catid' => (int) $this->catid])
+        if (
+            $table->load(['language' => $this->language, 'alias' => $this->alias, 'catid' => (int) $this->catid])
             && ($table->id != $this->id || $this->id == 0)
         ) {
             throw new \RuntimeException(Text::_('COM_WEBLINKS_ERROR_UNIQUE_ALIAS'));
-
         }
 
         // Convert IDN urls to punycode
@@ -144,16 +144,12 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
     public function check()
     {
         if (InputFilter::checkAttribute(['href', $this->url])) {
-
             throw new \RuntimeException(Text::_('COM_WEBLINKS_ERR_TABLES_PROVIDE_URL'));
-
         }
 
         // Check for valid name
         if (trim($this->title) === '') {
-
             throw new \RuntimeException(Text::_('COM_WEBLINKS_ERR_TABLES_TITLE'));
-
         }
 
         // Check for existing name
@@ -170,9 +166,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
         $db->setQuery($query);
         $xid = (int) $db->loadResult();
         if ($xid && $xid != (int) $this->id) {
-
             throw new \RuntimeException(Text::_('COM_WEBLINKS_ERR_TABLES_NAME'));
-
         }
 
         if (empty($this->alias)) {
@@ -186,10 +180,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
 
         // Check the publish down date is not earlier than publish up.
         if ((int) $this->publish_down > 0 && $this->publish_down < $this->publish_up) {
-
             throw new \RuntimeException(Text::_('JGLOBAL_START_PUBLISH_AFTER_FINISH'));
-
-
         }
 
         /*

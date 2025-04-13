@@ -40,15 +40,15 @@ if ($saveOrder && !empty($this->items)) {
                 <?php
                 // Search tools bar
                 echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]);
-?>
+                ?>
                 <?php if (empty($this->items)) :
                     ?>
                   <div class="alert alert-info">
                         <span class="icon-info-circle" aria-hidden="true"></span><span class="visually-hidden"><?php echo Text::_('INFO'); ?></span>
                         <?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
                   </div>
-                    <?php else :
-                        ?>
+                <?php else :
+                    ?>
                  <table class="table" id="weblinkList">
                      <caption class="visually-hidden">
                             <?php echo Text::_('COM_WEBLINKS_WEBLINKS_TABLE_CAPTION'); ?>,
@@ -96,9 +96,8 @@ if ($saveOrder && !empty($this->items)) {
                       </thead>
                         <tbody <?php if ($saveOrder) :
                             ?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($listDirn); ?>" data-nested="true"<?php
-                        endif; ?>>
+                               endif; ?>>
                         <?php foreach ($this->get('Items') as $i => $item) :
-
                             ?>
                             <?php $item->cat_link = Route::_('index.php?option=com_categories&extension=com_weblinks&task=edit&type=other&cid[]=' . $item->catid); ?>
                             <?php $canCreate      = $user->authorise('core.create', 'com_weblinks.category.' . $item->catid); ?>
@@ -113,12 +112,12 @@ if ($saveOrder && !empty($this->items)) {
                               <td class="text-center d-none d-md-table-cell">
                                     <?php
                                     $iconClass = '';
-                            if (!$canChange) {
-                                $iconClass = ' inactive';
-                            } elseif (!$saveOrder) {
-                                $iconClass = ' inactive" title="' . Text::_('JORDERINGDISABLED');
-                            }
-                            ?>
+                                    if (!$canChange) {
+                                        $iconClass = ' inactive';
+                                    } elseif (!$saveOrder) {
+                                        $iconClass = ' inactive" title="' . Text::_('JORDERINGDISABLED');
+                                    }
+                                    ?>
                                     <span class="sortable-handler<?php echo $iconClass; ?>">
                                        <span class="icon-ellipsis-v" aria-hidden="true"></span>
                                    </span>
@@ -143,11 +142,11 @@ if ($saveOrder && !empty($this->items)) {
                                             ?>
                                             <a href="<?php echo Route::_('index.php?option=com_weblinks&task=weblink.edit&id=' . (int) $item->id); ?>" title="<?php echo Text::_('JACTION_EDIT'); ?> <?php echo $this->escape($item->title); ?>">
                                                 <?php echo $this->escape($item->title); ?></a>
-                                            <?php else :
-                                                ?>
-                                            <?php echo $this->escape($item->title); ?>
-                                            <?php
-                                            endif; ?>
+                                        <?php else :
+                                            ?>
+                                                <?php echo $this->escape($item->title); ?>
+                                                <?php
+                                        endif; ?>
                                         <span class="small">
                                             <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
                                        </span>
@@ -189,24 +188,24 @@ if ($saveOrder && !empty($this->items)) {
                      </tbody>
                    </table>
 
-                    <?php // Load the pagination.?>
-                    <?php echo $this->get('Pagination')->getListFooter(); ?>
+                        <?php // Load the pagination.?>
+                        <?php echo $this->get('Pagination')->getListFooter(); ?>
 
 
-                    <?php // Load the batch processing form.?>
-                    <?php if (
+                        <?php // Load the batch processing form.?>
+                        <?php if (
                         $user->authorise('core.create', 'com_weblinks')
                             && $user->authorise('core.edit', 'com_weblinks')
                             && $user->authorise('core.edit.state', 'com_weblinks')
-                    ) :
-                        ?>
+) :
+    ?>
                         <?php echo HTMLHelper::_('bootstrap.renderModal', 'collapseModal', [
                                                     'title'  => Text::_('COM_WEBLINKS_BATCH_OPTIONS'),
                                                     'footer' => $this->loadTemplate('batch_footer'),
                                                 ], $this->loadTemplate('batch_body')); ?>
                     <?php
-                    endif; ?>
-                    <?php
+                        endif; ?>
+                        <?php
                 endif; ?>
 
              <input type="hidden" name="task" value="">

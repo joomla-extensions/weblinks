@@ -119,7 +119,6 @@ class Com_WeblinksInstallerScript implements DatabaseAwareInterface
                     throw new \Exception('Invalid category data');
                 }
             } catch (\Exception $e) {
-
                 Factory::getApplication()->enqueueMessage(Text::sprintf('COM_WEBLINKS_ERROR_INSTALL_CATEGORY', $e->getMessage()), 'error');
                 return;
             }
