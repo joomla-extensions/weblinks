@@ -20,7 +20,6 @@ use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
-use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
@@ -137,12 +136,19 @@ class HtmlView extends BaseHtmlView
      * @since 1.6
      */
     protected function addToolbar()
-    {
-        $canDo = ContentHelper::getActions('com_weblinks', 'category', $this->state->get('filter.category_id'));
-        $user  = Factory::getUser();
+{
+    $canDo = ContentHelper::getActions('com_weblinks', 'category', $this->state->get('filter.category_id'));
+    $user  = Factory::getUser();
+
+    // Joomla 5.x compatible
+    $toolbar = $this->getDocument()->getToolbar();
+
+    if ($canDo->get('core.create')) {
+        $toolbar->addNew('weblink.add');
+    }
 
 
-        $toolbar = Toolbar::getInstance('toolbar');
+
 
         ToolbarHelper::title(Text::_('COM_WEBLINKS_MANAGER_WEBLINKS'), 'link weblinks');
 
