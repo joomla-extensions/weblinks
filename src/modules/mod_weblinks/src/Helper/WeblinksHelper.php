@@ -9,6 +9,7 @@
  */
 
 namespace Joomla\Module\Weblinks\Site\Helper;
+
 // phpcs:ignore Generic.Files.OneObjectStructurePerFile.MultipleFound
 \defined('_JEXEC') or die;
 
