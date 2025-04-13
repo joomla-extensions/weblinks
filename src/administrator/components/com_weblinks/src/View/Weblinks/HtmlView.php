@@ -22,7 +22,6 @@ use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\Component\Weblinks\Administrator\Model\WeblinksModel;
 
 /**
  * View class for a list of weblinks.
@@ -88,11 +87,10 @@ class HtmlView extends BaseHtmlView
     public function display($tpl = null)
     {
         /**
-* 
-         *
- * @var WeblinksModel $model 
-*/
+         * @var WeblinkModel $model
+         */
         $model = $this->getModel();
+
 
         try {
             $this->state         = $model->getState();
