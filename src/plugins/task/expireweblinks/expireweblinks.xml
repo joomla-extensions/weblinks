@@ -1,10 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="plugin" group="task" method="upgrade" version="5.0">
-    <name>Task - Expire Weblinks</name>
-    <author>#!Coder</author>
+<extension type="plugin" group="task" method="upgrade">
+    <name>PLG_TASK_EXPIREWEBLINKS</name>
+    <author>Amitesh</author>
+    <creationDate>2025-04-12</creationDate>
+    <copyright>(C) 2025 Joomla. All rights reserved.</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <version>1.0.0</version>
-    <description>Automatically unpublishes expired weblinks.</description>
+    <description>PLG_TASK_EXPIREWEBLINKS_DESC</description>
+    <namespace path="src">Joomla\Plugin\Task\ExpireWeblinks</namespace>
+    
     <files>
         <filename plugin="expireweblinks">expireweblinks.php</filename>
+        <folder>src</folder>
+        <folder>language</folder>
+        <folder>services</folder>
+    
     </files>
+    
+    <languages>
+        <language tag="en-GB">language/en-GB/plg_task_expireweblinks.ini</language>
+        <language tag="en-GB">language/en-GB/plg_task_expireweblinks.sys.ini</language>
+    </languages>
+    
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field name="interval" type="text" label="PLG_TASK_EXPIREWEBLINKS_INTERVAL_LABEL" description="PLG_TASK_EXPIREWEBLINKS_INTERVAL_DESC" default="86400" />
+            </fieldset>
+        </fields>
+    </config>
 </extension>

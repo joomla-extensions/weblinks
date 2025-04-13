@@ -8,87 +8,129 @@
 namespace Joomla\Plugin\Task\ExpireWeblinks;
 
 use Joomla\CMS\Cache\CacheControllerFactoryInterface;
+use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Event\SubscriberInterface;
 
+/**
+ * Task Plugin to expire weblinks.
+ */
 class PlgTaskExpireWeblinks extends CMSPlugin implements SubscriberInterface
 {
+    protected const TASK_ROUTINE_ID = 'TASK_ROUTINE_EXPIRE_WEBLINKS';
+
     /**
      * @var DatabaseInterface
      */
-    protected $db;
+    protected $db = null;
 
     /**
      * @var CacheControllerFactoryInterface
      */
-    protected $cacheFactory;
-
-
-    protected const TASK_NAME = 'expire.weblinks';
+    protected $cacheFactory = null;
 
     /**
-     * Constructor.
      *
-     * @param   object  &$subject  The object to observe
-     * @param   array   $config    An optional associative array of configuration settings.
+     *
+     * @var    boolean
+     * @since  4.0.0
      */
-    public function __construct(&$subject, $config)
+    protected $autoloadLanguage = true;
+
+    /**
+     * Sets the database connection via dependency injection.
+     *
+     * @param   DatabaseInterface  $db  The database object
+     *
+     * @return  void
+     */
+    public function setDatabase(DatabaseInterface $db): void
     {
-        parent::__construct($subject, $config);
-
-
-        $this->db           = Factory::getContainer()->get(DatabaseInterface::class);
-        $this->cacheFactory = Factory::getContainer()->get(CacheControllerFactoryInterface::class);
+        $this->db = $db;
     }
 
     /**
-     * Returns an array of events this subscriber will listen to.
+     * Sets the cache factory via dependency injection.
+     *
+     * @param   CacheControllerFactoryInterface  $cacheFactory  The cache factory object
+     *
+     * @return  void
+     */
+    public function setCacheFactory(CacheControllerFactoryInterface $cacheFactory): void
+    {
+        $this->cacheFactory = $cacheFactory;
+    }
+
+    /**
+     *
      *
      * @return  array
      */
     public static function getSubscribedEvents(): array
     {
         return [
-            'onTaskExecute'    => 'onTaskExecute',
-            'onGetTaskOptions' => 'getTaskOptions',
+            'onTaskOptionsList' => 'advertiseRoutines',
+            'onExecuteTask'     => 'standardRoutineHandler',
         ];
     }
 
     /**
-     * Returns the task metadata.
      *
-     * @return  array
+     *
+     * @param   \Joomla\Event\Event  $event  The event to handle
+     *
+     * @return  void
      */
-    public function getTaskOptions()
+    public function advertiseRoutines(\Joomla\Event\Event $event)
     {
-        return [
-            self::TASK_NAME => [
-                'label'       => 'Expire expired weblinks',
+        $routines = [
+            [
+                'id'          => self::TASK_ROUTINE_ID,
+                'title'       => 'Expire weblinks',
                 'description' => 'Automatically unpublishes weblinks whose publish down date has passed.',
-                'params'      => [],
+                'form'        => [],
             ],
         ];
+
+        $event->addArgument('routines', array_merge($event->getArgument('routines') ?? [], $routines));
     }
 
     /**
-     * Executes the task.
+     * Standard routine handler for task execution
      *
-     * @param   object   $context  The context
-     * @param   array    $params   The parameters
+     * @param   \Joomla\Event\Event  $event  The event to handle
      *
-     * @return  boolean  True on success
+     * @return  void
      */
-    public function onTaskExecute($context, $params)
+    public function standardRoutineHandler(\Joomla\Event\Event $event)
     {
-        // Only run for our specific task
-        if ($context->getTaskId() !== self::TASK_NAME) {
-            return false;
+        $id = $event->getArgument('routineId');
+
+
+        if ($id !== self::TASK_ROUTINE_ID) {
+            return;
         }
 
-        // Get current UTC time
-        $nowUTC = Factory::getDate()->toSql();
+        try {
+            $result = $this->expireWeblinks();
+            $event->addArgument('result', $result);
+        } catch (\Exception $e) {
+            $event->addArgument('exception', $e);
+        }
+    }
+
+    /**
+     *
+     *
+     * @return  boolean
+     */
+    protected function expireWeblinks()
+    {
+
+        $now    = new Date();
+        $nowUTC = $now->toSql();
 
         $query = $this->db->getQuery(true)
             ->update($this->db->quoteName('#__weblinks'))
@@ -100,11 +142,10 @@ class PlgTaskExpireWeblinks extends CMSPlugin implements SubscriberInterface
         $this->db->setQuery($query);
         $result = $this->db->execute();
 
-
+        // Clean weblinks cache
         $cache = $this->cacheFactory->createCacheController('callback');
         $cache->clean('_system');
         $cache->clean('com_weblinks');
-
 
         return true;
     }
