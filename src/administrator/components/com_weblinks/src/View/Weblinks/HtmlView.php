@@ -1,11 +1,11 @@
 <?php
 
 /**
- * @package     Joomla.Administrator
- * @subpackage  Weblinks
+ * @package    Joomla.Administrator
+ * @subpackage Weblinks
  *
- * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 namespace Joomla\Component\Weblinks\Administrator\View\Weblinks;
@@ -27,7 +27,7 @@ use Joomla\Component\Weblinks\Administrator\Model\WeblinksModel;
 /**
  * View class for a list of weblinks.
  *
- * @since  1.5
+ * @since 1.5
  */
 class HtmlView extends BaseHtmlView
 {
@@ -38,42 +38,42 @@ class HtmlView extends BaseHtmlView
     /**
      * An array of items
      *
-     * @var  array
+     * @var array
      */
     protected $items;
 
     /**
      * The pagination object
      *
-     * @var  \Joomla\CMS\Pagination\Pagination
+     * @var \Joomla\CMS\Pagination\Pagination
      */
     protected $pagination;
 
     /**
      * The model state
      *
-     * @var  \Joomla\CMS\Object\CMSObject
+     * @var \Joomla\CMS\Object\CMSObject
      */
     protected $state;
 
     /**
      * Form object for search filters
      *
-     * @var  \Joomla\CMS\Form\Form
+     * @var \Joomla\CMS\Form\Form
      */
     public $filterForm;
 
     /**
      * The active search filters
      *
-     * @var  array
+     * @var array
      */
     public $activeFilters;
 
     /**
      * Is this view an Empty State
      *
-     * @var  boolean
+     * @var   boolean
      * @since 4.0.0
      */
     private $isEmptyState = false;
@@ -81,13 +81,17 @@ class HtmlView extends BaseHtmlView
     /**
      * Display the view.
      *
-     * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+     * @param string $tpl The name of the template file to parse; automatically searches through the template paths.
      *
-     * @return  mixed  A string if successful, otherwise an Error object.
+     * @return mixed  A string if successful, otherwise an Error object.
      */
     public function display($tpl = null)
     {
-        /** @var WeblinksModel $model */
+        /**
+* 
+         *
+ * @var WeblinksModel $model 
+*/
         $model = $this->getModel();
 
         try {
@@ -130,9 +134,9 @@ class HtmlView extends BaseHtmlView
     /**
      * Add the page title and toolbar.
      *
-     * @return  void
+     * @return void
      *
-     * @since   1.6
+     * @since 1.6
      */
     protected function addToolbar()
     {
@@ -176,8 +180,7 @@ class HtmlView extends BaseHtmlView
 
 
 
-            if (
-                $user->authorise('core.create', 'com_weblinks')
+            if ($user->authorise('core.create', 'com_weblinks')
                 && $user->authorise('core.edit', 'com_weblinks')
                 && $user->authorise('core.edit.state', 'com_weblinks')
             ) {

@@ -1,11 +1,11 @@
 <?php
 
 /**
- * @package     Joomla.Administrator
- * @subpackage  com_weblinks
+ * @package    Joomla.Administrator
+ * @subpackage com_weblinks
  *
- * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -14,19 +14,25 @@
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
-/** @var \Joomla\Component\Weblinks\Administrator\View\Weblink\HtmlView $this */
+/**
+* 
+ *
+ * @var \Joomla\Component\Weblinks\Administrator\View\Weblink\HtmlView $this 
+*/
 
 HTMLHelper::_('bootstrap.tooltip', '.hasTooltip', ['placement' => 'bottom']);
 $function = Factory::getApplication()->getInput()->getCmd('function', 'jEditWeblink_' . (int) $this->getItem()->id);
 $wa       = $this->getApplication()->getDocument()->getWebAssetManager();
 
-$wa->addInlineScript('
+$wa->addInlineScript(
+    '
     function jEditWeblinkModal() {
         if (window.parent && document.formvalidator.isValid(document.getElementById("weblink-form"))) {
             return window.parent.' . $this->escape($function) . '(document.getElementById("jform_title").value);
         }
     }
-');
+'
+);
 
 ?>
 <button id="applyBtn" type="button" class="hidden" onclick="Joomla.submitbutton('weblink.apply'); jEditWeblinkModal();"></button>

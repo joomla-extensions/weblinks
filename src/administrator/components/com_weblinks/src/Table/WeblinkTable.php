@@ -1,11 +1,11 @@
 <?php
 
 /**
- * @package     Joomla.Administrator
- * @subpackage  Weblinks
+ * @package    Joomla.Administrator
+ * @subpackage Weblinks
  *
- * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 namespace Joomla\Component\Weblinks\Administrator\Table;
@@ -28,7 +28,7 @@ use Joomla\String\StringHelper;
 /**
  * Weblink Table class
  *
- * @since  1.5
+ * @since 1.5
  */
 class WeblinkTable extends Table implements VersionableTableInterface, TaggableTableInterface
 {
@@ -37,16 +37,16 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
     /**
      * Indicates that columns fully support the NULL value in the database
      *
-     * @var    boolean
-     * @since  __DEPLOY_VERSION__
+     * @var   boolean
+     * @since __DEPLOY_VERSION__
      */
 
     protected $_supportNullValue = true;
     /**
      * Ensure the params and metadata in json encoded in the bind method
      *
-     * @var    array
-     * @since  3.4
+     * @var   array
+     * @since 3.4
      */
 
     protected $_jsonEncode = ['params', 'metadata', 'images'];
@@ -54,9 +54,9 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
     /**
      * Constructor
      *
-     * @param   \JDatabaseDriver  &$db  A database connector object
+     * @param \JDatabaseDriver &$db A database connector object
      *
-     * @since   1.5
+     * @since 1.5
      */
     public function __construct($db)
     {
@@ -69,11 +69,11 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
     /**
      * Overload the store method for the Weblinks table.
      *
-     * @param   boolean  $updateNulls  Toggle whether null values should be updated.
+     * @param boolean $updateNulls Toggle whether null values should be updated.
      *
-     * @return  boolean  True on success, false on failure.
+     * @return boolean  True on success, false on failure.
      *
-     * @since   1.6
+     * @since 1.6
      */
     public function store($updateNulls = true)
     {
@@ -122,8 +122,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
         // Verify that the alias is unique
         $table = new WeblinkTable($this->getDbo());
 
-        if (
-            $table->load(['language' => $this->language, 'alias' => $this->alias, 'catid' => (int) $this->catid])
+        if ($table->load(['language' => $this->language, 'alias' => $this->alias, 'catid' => (int) $this->catid])
             && ($table->id != $this->id || $this->id == 0)
         ) {
             throw new \RuntimeException(Text::_('COM_WEBLINKS_ERROR_UNIQUE_ALIAS'));
@@ -138,9 +137,9 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
     /**
      * Overloaded check method to ensure data integrity.
      *
-     * @return  boolean  True on success.
+     * @return boolean  True on success.
      *
-     * @since   1.5
+     * @since 1.5
      */
     public function check()
     {
@@ -194,8 +193,8 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
         }
 
         /*
-      * Clean up keywords -- eliminate extra spaces between phrases
-      * and cr (\r) and lf (\n) characters from string
+        * Clean up keywords -- eliminate extra spaces between phrases
+        * and cr (\r) and lf (\n) characters from string
          */
         if (!empty($this->metakey)) {
             // Array of characters to remove
@@ -250,9 +249,9 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
     /**
      * Get the type alias for the history table
      *
-     * @return  string  The alias as described above
+     * @return string  The alias as described above
      *
-     * @since   4.0.0
+     * @since 4.0.0
      */
     public function getTypeAlias()
     {

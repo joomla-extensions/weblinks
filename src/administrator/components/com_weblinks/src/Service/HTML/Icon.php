@@ -1,11 +1,11 @@
 <?php
 
 /**
- * @package     Joomla.Administrator
- * @subpackage  com_weblinks
+ * @package    Joomla.Administrator
+ * @subpackage com_weblinks
  *
- * @copyright   (C) 2020 Open Source Matters, Inc. <https://www.joomla.org>
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright (C) 2020 Open Source Matters, Inc. <https://www.joomla.org>
+ * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 namespace Joomla\Component\Weblinks\Administrator\Service\HTML;
@@ -26,25 +26,25 @@ use Joomla\Registry\Registry;
 /**
  * Weblinks Component HTML Helper
  *
- * @since  4.0.0
+ * @since 4.0.0
  */
 class Icon
 {
     /**
      * The application
      *
-     * @var    CMSApplication
+     * @var CMSApplication
      *
-     * @since  4.0.0
+     * @since 4.0.0
      */
     private $application;
 
     /**
      * Service constructor
      *
-     * @param   CMSApplication  $application  The application
+     * @param CMSApplication $application The application
      *
-     * @since   4.0.0
+     * @since 4.0.0
      */
     public function __construct(CMSApplication $application)
     {
@@ -54,13 +54,13 @@ class Icon
     /**
      * Method to generate a link to the create item page for the given category
      *
-     * @param   object    $category  The category information
-     * @param   Registry  $params    The item parameters
-     * @param   array     $attribs   Optional attributes for the link
+     * @param object   $category The category information
+     * @param Registry $params   The item parameters
+     * @param array    $attribs  Optional attributes for the link
      *
-     * @return  string  The HTML markup for the create item link
+     * @return string  The HTML markup for the create item link
      *
-     * @since  4.0.0
+     * @since 4.0.0
      */
     public function create($category, $params, $attribs = [])
     {
@@ -85,14 +85,14 @@ class Icon
      * This icon will not display in a popup window, nor if the weblink is trashed.
      * Edit access checks must be performed in the calling code.
      *
-     * @param   object    $weblink  The weblink information
-     * @param   Registry  $params   The item parameters
-     * @param   array     $attribs  Optional attributes for the link
-     * @param   boolean   $legacy   True to use legacy images, false to use icomoon based graphic
+     * @param object   $weblink The weblink information
+     * @param Registry $params  The item parameters
+     * @param array    $attribs Optional attributes for the link
+     * @param boolean  $legacy  True to use legacy images, false to use icomoon based graphic
      *
-     * @return  string   The HTML for the weblink edit icon.
+     * @return string   The HTML for the weblink edit icon.
      *
-     * @since   4.0.0
+     * @since 4.0.0
      */
     public function edit($weblink, $params, $attribs = [], $legacy = false)
     {
@@ -109,8 +109,7 @@ class Icon
         }
 
         // Show checked_out icon if the contact is checked out by a different user
-        if (
-            property_exists($weblink, 'checked_out')
+        if (property_exists($weblink, 'checked_out')
             && property_exists($weblink, 'checked_out_time')
             && $weblink->checked_out
             && $weblink->checked_out !== $user->get('id')
@@ -136,8 +135,7 @@ class Icon
         $nowDate = strtotime(Factory::getDate());
         $icon    = $weblink->state ? 'edit' : 'eye-slash';
 
-        if (
-            ($weblink->publish_up !== null && strtotime($weblink->publish_up) > $nowDate)
+        if (($weblink->publish_up !== null && strtotime($weblink->publish_up) > $nowDate)
             || ($weblink->publish_down !== null && strtotime($weblink->publish_down) < $nowDate)
         ) {
             $icon = 'eye-slash';
