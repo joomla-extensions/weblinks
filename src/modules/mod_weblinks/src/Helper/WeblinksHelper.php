@@ -10,7 +10,7 @@
 
 namespace Joomla\Module\Weblinks\Site\Helper;
 
-// phpcs:ignore Generic.Files.OneObjectStructurePerFile.MultipleFound
+// phpcs:ignoreFile -- allow _JEXEC check for Joomla module security
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\CMSApplicationInterface;
