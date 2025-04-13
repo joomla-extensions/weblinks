@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    Joomla.Site
  * @subpackage mod_weblinks
@@ -8,6 +9,7 @@ use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
+// phpcs:ignoreFile -- allow _JEXEC check for Joomla module security
 \defined('_JEXEC') or die;
 
 
@@ -89,30 +91,30 @@ if (!\function_exists('renderCategoryNode')) {
                 echo '<li><div class="d-flex flex-wrap"><div class="col flex-sm-grow-1">';
 
                 switch ($item->params->get('target')) {
-                case 1:
-                    echo '<a href="' . $link . '" target="_blank" rel="' . $params->get('follow', 'nofollow') . '">' .
+                    case 1:
+                        echo '<a href="' . $link . '" target="_blank" rel="' . $params->get('follow', 'nofollow') . '">' .
                         htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
-                    break;
-                case 2:
-                    $attribs = 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=' . $width . ',height=' . $height;
-                    echo "<a href=\"$link\" onclick=\"window.open(this.href, 'targetWindow', '$attribs'); return false;\">" .
+                        break;
+                    case 2:
+                        $attribs = 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=' . $width . ',height=' . $height;
+                        echo "<a href=\"$link\" onclick=\"window.open(this.href, 'targetWindow', '$attribs'); return false;\">" .
                         htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
-                    break;
-                case 3:
-                    $modalId     = 'weblink-item-modal-' . $item->id;
-                    $modalParams = [
+                        break;
+                    case 3:
+                        $modalId     = 'weblink-item-modal-' . $item->id;
+                        $modalParams = [
                         'title'      => htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8'),
                         'url'        => $link,
                         'height'     => '100%',
                         'width'      => '100%',
                         'bodyHeight' => 70,
                         'modalWidth' => 80,
-                    ];
-                    echo HTMLHelper::_('bootstrap.renderModal', $modalId, $modalParams);
-                    echo '<button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#' . $modalId . '">' . $item->title . '</button>';
-                    break;
-                default:
-                    echo '<a href="' . $link . '" rel="' . $params->get('follow', 'nofollow') . '">' .
+                        ];
+                        echo HTMLHelper::_('bootstrap.renderModal', $modalId, $modalParams);
+                        echo '<button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#' . $modalId . '">' . $item->title . '</button>';
+                        break;
+                    default:
+                        echo '<a href="' . $link . '" rel="' . $params->get('follow', 'nofollow') . '">' .
                         htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
                 }
 
@@ -146,30 +148,30 @@ if (!\function_exists('renderCategoryNode')) {
             echo '<li><div class="d-flex flex-wrap"><div class="col flex-sm-grow-1">';
 
             switch ($item->params->get('target')) {
-            case 1:
-                echo '<a href="' . $link . '" target="_blank" rel="' . $params->get('follow', 'nofollow') . '">' .
+                case 1:
+                    echo '<a href="' . $link . '" target="_blank" rel="' . $params->get('follow', 'nofollow') . '">' .
                     htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
-                break;
-            case 2:
-                $attribs = 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=' . $width . ',height=' . $height;
-                echo "<a href=\"$link\" onclick=\"window.open(this.href, 'targetWindow', '$attribs'); return false;\">" .
+                    break;
+                case 2:
+                    $attribs = 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=' . $width . ',height=' . $height;
+                    echo "<a href=\"$link\" onclick=\"window.open(this.href, 'targetWindow', '$attribs'); return false;\">" .
                     htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
-                break;
-            case 3:
-                $modalId     = 'weblink-item-modal-' . $item->id;
-                $modalParams = [
+                    break;
+                case 3:
+                    $modalId     = 'weblink-item-modal-' . $item->id;
+                    $modalParams = [
                     'title'      => htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8'),
                     'url'        => $link,
                     'height'     => '100%',
                     'width'      => '100%',
                     'bodyHeight' => 70,
                     'modalWidth' => 80,
-                ];
-                echo HTMLHelper::_('bootstrap.renderModal', $modalId, $modalParams);
-                echo '<button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#' . $modalId . '">' . $item->title . '</button>';
-                break;
-            default:
-                echo '<a href="' . $link . '" rel="' . $params->get('follow', 'nofollow') . '">' .
+                    ];
+                    echo HTMLHelper::_('bootstrap.renderModal', $modalId, $modalParams);
+                    echo '<button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#' . $modalId . '">' . $item->title . '</button>';
+                    break;
+                default:
+                    echo '<a href="' . $link . '" rel="' . $params->get('follow', 'nofollow') . '">' .
                     htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
             }
 
@@ -204,7 +206,6 @@ if ($params->get('groupby', 0)) {
     $categoryTree = getCategoryTree($rootCatId, $db);
     renderCategoryNode($categoryTree, $list['categoryWeblinks'], $params, $moduleclass_sfx, $list['parentWeblinks']);
 } else {
-
     ?>
     <ul class="weblinks<?php echo $moduleclass_sfx; ?>">
         <?php foreach (array_merge($list['parentWeblinks'], $list['categoryWeblinks']) as $item) :
@@ -216,30 +217,30 @@ if ($params->get('groupby', 0)) {
                 <div class="d-flex flex-wrap">
                     <div class="col flex-sm-grow-1">
                         <?php switch ($item->params->get('target')) :
-                        case 1:
-                            echo '<a href="' . $link . '" target="_blank" rel="' . $params->get('follow', 'nofollow') . '">' .
+                            case 1:
+                                echo '<a href="' . $link . '" target="_blank" rel="' . $params->get('follow', 'nofollow') . '">' .
                                 htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
-                            break;
-                        case 2:
-                            $attribs = 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=' . $width . ',height=' . $height;
-                            echo "<a href=\"$link\" onclick=\"window.open(this.href, 'targetWindow', '$attribs'); return false;\">" .
+                                break;
+                            case 2:
+                                $attribs = 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=' . $width . ',height=' . $height;
+                                echo "<a href=\"$link\" onclick=\"window.open(this.href, 'targetWindow', '$attribs'); return false;\">" .
                                 htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
-                            break;
-                        case 3:
-                            $modalId     = 'weblink-item-modal-' . $item->id;
-                            $modalParams = [
+                                break;
+                            case 3:
+                                $modalId     = 'weblink-item-modal-' . $item->id;
+                                $modalParams = [
                                 'title'      => htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8'),
                                 'url'        => $link,
                                 'height'     => '100%',
                                 'width'      => '100%',
                                 'bodyHeight' => 70,
                                 'modalWidth' => 80,
-                            ];
-                            echo HTMLHelper::_('bootstrap.renderModal', $modalId, $modalParams);
-                            echo '<button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#' . $modalId . '">' . $item->title . '</button>';
-                            break;
-                        default:
-                            echo '<a href="' . $link . '" rel="' . $params->get('follow', 'nofollow') . '">' .
+                                ];
+                                echo HTMLHelper::_('bootstrap.renderModal', $modalId, $modalParams);
+                                echo '<button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#' . $modalId . '">' . $item->title . '</button>';
+                                break;
+                            default:
+                                echo '<a href="' . $link . '" rel="' . $params->get('follow', 'nofollow') . '">' .
                                 htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
                         endswitch; ?>
                     </div>
