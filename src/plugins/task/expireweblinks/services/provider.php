@@ -7,7 +7,7 @@ use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Plugin\Task\ExpireWeblinks\PlgTaskExpireWeblinks;
 
-return new class implements ServiceProviderInterface {
+return new class () implements ServiceProviderInterface {
     public function register(Container $container)
     {
         $container->set(
