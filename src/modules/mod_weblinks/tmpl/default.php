@@ -4,12 +4,11 @@
  * @subpackage mod_weblinks
  */
 
-use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory as JoomlaFactory;
 
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
 
 HTMLHelper::_('bootstrap.framework');
@@ -17,12 +16,12 @@ HTMLHelper::_('bootstrap.modal');
 $db = JoomlaFactory::getDbo();
 
 
-if (!function_exists('getCategoryTree')) {
+if (!\function_exists('getCategoryTree')) {
     function getCategoryTree($parentId, $db)
     {
         $tree = [];
 
-        
+
         $query = $db->getQuery(true)
             ->select('id, title, parent_id')
             ->from('#__categories')
@@ -32,18 +31,19 @@ if (!function_exists('getCategoryTree')) {
         $db->setQuery($query);
         $parent = $db->loadObject();
 
-        if (!$parent) { return [];
+        if (!$parent) {
+            return [];
         }
 
-        
+
         $node = [
-            'catid' => $parent->id,
-            'title' => $parent->title,
+            'catid'     => $parent->id,
+            'title'     => $parent->title,
             'parent_id' => $parent->parent_id,
-            'children' => []
+            'children'  => [],
         ];
 
-      
+
         $query = $db->getQuery(true)
             ->select('id')
             ->from('#__categories')
@@ -61,14 +61,15 @@ if (!function_exists('getCategoryTree')) {
     }
 }
 
-if (!function_exists('renderCategoryNode')) {
+if (!\function_exists('renderCategoryNode')) {
     function renderCategoryNode($node, $list, $params, $moduleclass_sfx, $parentWeblinks = [])
     {
-        if (!$node || !isset($node['catid'])) { return;
+        if (!$node || !isset($node['catid'])) {
+            return;
         }
 
-        $catid = $node['catid'];
-        $items = array_filter($list, fn($item) => (int) $item->catid === (int) $catid);
+        $catid    = $node['catid'];
+        $items    = array_filter($list, fn ($item) => (int) $item->catid === (int) $catid);
         $hasItems = !empty($items);
 
         echo '<div class="category-block">';
@@ -77,12 +78,12 @@ if (!function_exists('renderCategoryNode')) {
             echo '<h4 class="weblink-category-title">' . htmlspecialchars($node['title'], ENT_COMPAT, 'UTF-8') . '</h4>';
         }
 
-        
+
         if ($node['catid'] == (int) $params->get('catid') && !empty($parentWeblinks)) {
             echo '<ul class="weblinks' . $moduleclass_sfx . '">';
             foreach ($parentWeblinks as $item) {
-                $link = $item->link;
-                $width = (int) $item->params->get('width', 600);
+                $link   = $item->link;
+                $width  = (int) $item->params->get('width', 600);
                 $height = (int) $item->params->get('height', 500);
 
                 echo '<li><div class="d-flex flex-wrap"><div class="col flex-sm-grow-1">';
@@ -98,12 +99,12 @@ if (!function_exists('renderCategoryNode')) {
                         htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
                     break;
                 case 3:
-                    $modalId = 'weblink-item-modal-' . $item->id;
+                    $modalId     = 'weblink-item-modal-' . $item->id;
                     $modalParams = [
-                        'title' => htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8'),
-                        'url' => $link,
-                        'height' => '100%',
-                        'width' => '100%',
+                        'title'      => htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8'),
+                        'url'        => $link,
+                        'height'     => '100%',
+                        'width'      => '100%',
                         'bodyHeight' => 70,
                         'modalWidth' => 80,
                     ];
@@ -131,15 +132,15 @@ if (!function_exists('renderCategoryNode')) {
             echo '</ul>';
         }
 
-        
+
         echo '<ul class="weblinks' . $moduleclass_sfx . '">';
         if (!$hasItems && ($node['catid'] != (int) $params->get('catid') || empty($parentWeblinks))) {
             echo '<li><em>' . Text::_('MOD_WEBLINKS_NO_ITEMS') . '</em></li>';
         }
 
         foreach ($items as $item) {
-            $link = $item->link;
-            $width = (int) $item->params->get('width', 600);
+            $link   = $item->link;
+            $width  = (int) $item->params->get('width', 600);
             $height = (int) $item->params->get('height', 500);
 
             echo '<li><div class="d-flex flex-wrap"><div class="col flex-sm-grow-1">';
@@ -155,12 +156,12 @@ if (!function_exists('renderCategoryNode')) {
                     htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
                 break;
             case 3:
-                $modalId = 'weblink-item-modal-' . $item->id;
+                $modalId     = 'weblink-item-modal-' . $item->id;
                 $modalParams = [
-                    'title' => htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8'),
-                    'url' => $link,
-                    'height' => '100%',
-                    'width' => '100%',
+                    'title'      => htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8'),
+                    'url'        => $link,
+                    'height'     => '100%',
+                    'width'      => '100%',
                     'bodyHeight' => 70,
                     'modalWidth' => 80,
                 ];
@@ -188,7 +189,7 @@ if (!function_exists('renderCategoryNode')) {
 
         echo '</ul>';
 
-        
+
         foreach ($node['children'] as $childNode) {
             renderCategoryNode($childNode, $list, $params, $moduleclass_sfx, $parentWeblinks);
         }
@@ -199,16 +200,16 @@ if (!function_exists('renderCategoryNode')) {
 
 
 if ($params->get('groupby', 0)) {
-    $rootCatId = (int) $params->get('catid');
+    $rootCatId    = (int) $params->get('catid');
     $categoryTree = getCategoryTree($rootCatId, $db);
     renderCategoryNode($categoryTree, $list['categoryWeblinks'], $params, $moduleclass_sfx, $list['parentWeblinks']);
 } else {
-    
+
     ?>
     <ul class="weblinks<?php echo $moduleclass_sfx; ?>">
         <?php foreach (array_merge($list['parentWeblinks'], $list['categoryWeblinks']) as $item) :
-            $link = $item->link;
-            $width = (int) $item->params->get('width', 600);
+            $link   = $item->link;
+            $width  = (int) $item->params->get('width', 600);
             $height = (int) $item->params->get('height', 500);
             ?>
             <li>
@@ -225,12 +226,12 @@ if ($params->get('groupby', 0)) {
                                 htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8') . '</a>';
                             break;
                         case 3:
-                            $modalId = 'weblink-item-modal-' . $item->id;
+                            $modalId     = 'weblink-item-modal-' . $item->id;
                             $modalParams = [
-                                'title' => htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8'),
-                                'url' => $link,
-                                'height' => '100%',
-                                'width' => '100%',
+                                'title'      => htmlspecialchars($item->title, ENT_COMPAT, 'UTF-8'),
+                                'url'        => $link,
+                                'height'     => '100%',
+                                'width'      => '100%',
                                 'bodyHeight' => 70,
                                 'modalWidth' => 80,
                             ];
