@@ -19,7 +19,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Component\Weblinks\Administrator\Model\WeblinkModel;
@@ -62,15 +61,18 @@ class HtmlView extends BaseHtmlView
     public function display($tpl = null)
     {
         /** @var WeblinkModel $model */
-        $model       = $this->getModel();
-        $this->state = $model->getState();
-        $this->item  = $model->getItem();
-        $this->form  = $model->getForm();
+        $model = $this->getModel();
 
-        // Check for errors.
-        if (\count($errors = $model->getErrors())) {
-            throw new GenericDataException(implode("\n", $errors), 500);
+        try {
+            $this->state = $model->getState();
+            $this->item  = $model->getItem();
+            $this->form  = $model->getForm();
+        } catch (\Exception $e) {
+            throw new \Joomla\CMS\Exception\GenericDataException($e->getMessage(), 500);
         }
+
+
+
 
         // If we are forcing a language in modal (used for associations).
         if ($this->getLayout() === 'modal' && $forcedLanguage = Factory::getApplication()->getInput()->get('forcedLanguage', '', 'cmd')) {
@@ -156,7 +158,7 @@ class HtmlView extends BaseHtmlView
 
             ToolbarHelper::cancel('weblink.cancel', 'JTOOLBAR_CLOSE');
 
-            if (ComponentHelper::isEnabled('com_contenthistory') && $this->state->get('params')->get('save_history', 0) && $itemEditable) {
+            if (ComponentHelper::isEnabled('com_contenthistory') && $this->state->get('params.save_history', 0) && $itemEditable) {
                 ToolbarHelper::versions('com_weblinks.weblink', $this->item->id);
             }
 

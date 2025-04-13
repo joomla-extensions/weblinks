@@ -31,6 +31,10 @@ use Joomla\Component\Weblinks\Administrator\Model\WeblinksModel;
  */
 class HtmlView extends BaseHtmlView
 {
+    public function getState()
+    {
+        return $this->state;
+    }
     /**
      * An array of items
      *
@@ -86,16 +90,16 @@ class HtmlView extends BaseHtmlView
         /** @var WeblinksModel $model */
         $model = $this->getModel();
 
-        $this->state         = $model->getState();
-        $this->items         = $model->getItems();
-        $this->pagination    = $model->getPagination();
-        $this->filterForm    = $model->getFilterForm();
-        $this->activeFilters = $model->getActiveFilters();
-
-        // Check for errors.
-        if (\count($errors = $model->getErrors())) {
-            throw new GenericDataException(implode("\n", $errors), 500);
+        try {
+            $this->state         = $model->getState();
+            $this->items         = $model->getItems();
+            $this->pagination    = $model->getPagination();
+            $this->filterForm    = $model->getFilterForm();
+            $this->activeFilters = $model->getActiveFilters();
+        } catch (\Exception $e) {
+            throw new GenericDataException($e->getMessage(), 500);
         }
+
 
         if (!\count($this->items) && $this->isEmptyState = $this->get('IsEmptyState')) {
             $this->setLayout('emptystate');
@@ -133,9 +137,9 @@ class HtmlView extends BaseHtmlView
     protected function addToolbar()
     {
         $canDo = ContentHelper::getActions('com_weblinks', 'category', $this->state->get('filter.category_id'));
-        $user  = $this->getCurrentUser();
+        $user  = Factory::getUser();
 
-        // Get the toolbar object instance
+
         $toolbar = Toolbar::getInstance('toolbar');
 
         ToolbarHelper::title(Text::_('COM_WEBLINKS_MANAGER_WEBLINKS'), 'link weblinks');
@@ -164,11 +168,14 @@ class HtmlView extends BaseHtmlView
                 $childBar->checkin('weblinks.checkin')->listCheck(true);
             }
 
-            if ($this->state->get('filter.published') != -2) {
+            $published = $this->state->get('filter.published', 0);
+
+            if ($published != -2) {
                 $childBar->trash('weblinks.trash')->listCheck(true);
             }
 
-            // Add a batch button
+
+
             if (
                 $user->authorise('core.create', 'com_weblinks')
                 && $user->authorise('core.edit', 'com_weblinks')
@@ -181,7 +188,9 @@ class HtmlView extends BaseHtmlView
             }
         }
 
-        if (!$this->isEmptyState && $this->state->get('filter.published') == -2 && $canDo->get('core.delete')) {
+        $published = $this->state->get('filter.published', 0);  // Default to 0 if not set
+
+        if (!$this->isEmptyState && $published == -2 && $canDo->get('core.delete')) {
             $toolbar->delete('weblinks.delete')
                 ->text('JTOOLBAR_EMPTY_TRASH')
                 ->message('JGLOBAL_CONFIRM_DELETE')
