@@ -79,6 +79,7 @@ steps:
       - chmod +rwx /root
       - php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-17082005 --db-type=mysqli --db-host=mysql --db-name=test_joomla --db-pass=joomla_ut --db-user=joomla_ut --db-encryption=0 --db-prefix=mysql_
       - php cli/joomla.php config:set debug=true error_reporting=maximum
+      - php cli/joomla.php -V
       - php cli/joomla.php extension:install --path=/tests/www/mysql/pkg-weblinks-current.zip
       - chmod -R 777 /tests/www/mysql/
       - chown -R www-data /tests/www/mysql/
