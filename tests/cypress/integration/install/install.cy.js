@@ -8,5 +8,7 @@ describe('Install Joomla and Weblinks package', () => {
     cy.disableStatistics()
     cy.setErrorReportingToDevelopment()
     cy.doAdministratorLogout()
+    // Update to the correct secret for the API tests because of the bearer token
+    cy.config_setParameter('secret', 'tEstValue');
   })
 })

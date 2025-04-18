@@ -83,8 +83,6 @@ class HtmlView extends BaseHtmlView
             throw new GenericDataException($e->getMessage(), 500, $e);
         }
 
-        PluginHelper::importPlugin('content');
-
         // Create a shortcut for $item.
         $item         = $this->item;
         $item->slug   = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
