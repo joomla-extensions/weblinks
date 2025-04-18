@@ -133,11 +133,11 @@ class PlgTaskExpireWeblinks extends CMSPlugin implements SubscriberInterface
         $nowUTC = $now->toSql();
 
         $query = $this->db->getQuery(true)
-    ->update($this->db->quoteName('#__weblinks'))
-    ->set($this->db->quoteName('state') . ' = :newState')
-    ->where($this->db->quoteName('publish_down') . ' IS NOT NULL')
-    ->where($this->db->quoteName('publish_down') . ' <= :nowUTC')
-    ->where($this->db->quoteName('state') . ' = :currentState');
+        ->update($this->db->quoteName('#__weblinks'))
+        ->set($this->db->quoteName('state') . ' = :newState')
+        ->where($this->db->quoteName('publish_down') . ' IS NOT NULL')
+        ->where($this->db->quoteName('publish_down') . ' <= :nowUTC')
+        ->where($this->db->quoteName('state') . ' = :currentState');
 
         $this->db->setQuery($query);
         $this->db->bind(':newState', 0, \Joomla\Database\ParameterType::INTEGER);
