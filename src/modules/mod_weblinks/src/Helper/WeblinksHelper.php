@@ -75,7 +75,6 @@ class WeblinksHelper
             }
         }
 
-        file_put_contents('debug.log', "Fetched Weblinks: " . print_r($allWeblinks, true) . "\n", FILE_APPEND);
 
         return [
             'parentWeblinks'   => $parentWeblinks,
