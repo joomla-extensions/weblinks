@@ -16,7 +16,6 @@ use Joomla\CMS\Event\Content\BeforeDisplayEvent;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
-use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Component\Weblinks\Site\Model\WeblinkModel;
 
 // phpcs:disable PSR1.Files.SideEffects
