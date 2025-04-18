@@ -115,7 +115,7 @@ describe('Test in backend that the weblinks component', () => {
 
     // Verify initial active tab (New Web Link)
     cy.get('#myTab div[role="tablist"] > button[role="tab"]:visible:nth-child(1)')
-      .should('have.attr', 'aria-expanded', 'true')
+      .should('have.attr', 'aria-selected', 'true')
       .and('contain.text', 'New Web Link');
 
     // Verify tab panels exist
@@ -137,7 +137,7 @@ describe('Test in backend that the weblinks component', () => {
       if (index > 0) { // Skip first tab (already active)
         cy.contains('#myTab div[role="tablist"] > button[role="tab"]:visible', tabText)
           .click()
-          .should('have.attr', 'aria-expanded', 'true');
+          .should('have.attr', 'aria-selected', 'true');
 
         cy.get(`#${tabPanels[index]}`)
           .should('be.visible');
