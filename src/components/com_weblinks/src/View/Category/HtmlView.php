@@ -72,8 +72,8 @@ class HtmlView extends CategoryView
         }
 
         // Get ID of the category from active menu item
-        $app = Factory::getApplication();
-        $menu = $app->getMenu()->getActive();
+        $app     = Factory::getApplication();
+        $menu    = $app->getMenu()->getActive();
         $pathway = $app->getPathway();
 
         if (

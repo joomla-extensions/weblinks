@@ -16,8 +16,8 @@ namespace Joomla\Plugin\Finder\Weblinks\Extension;
 
 use Joomla\CMS\Categories\Categories;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Table\Table;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
 use Joomla\Component\Finder\Administrator\Indexer\Adapter;
 use Joomla\Component\Finder\Administrator\Indexer\Helper;
 use Joomla\Component\Finder\Administrator\Indexer\Indexer;

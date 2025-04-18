@@ -116,7 +116,7 @@ class Icon
             && $weblink->checked_out
             && $weblink->checked_out !== $user->get('id')
         ) {
-            $userFactory = Factory::getContainer()->get(UserFactoryInterface::class);
+            $userFactory  = Factory::getContainer()->get(UserFactoryInterface::class);
             $checkoutUser = $userFactory->loadUserById($weblink->checked_out);
             $date         = HTMLHelper::_('date', $weblink->checked_out_time);
             $tooltip      = Text::sprintf('COM_WEBLINKS_CHECKED_OUT_BY', $checkoutUser->name)

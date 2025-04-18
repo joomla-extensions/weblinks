@@ -14,7 +14,6 @@ use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\Component\Search\Administrator\Helper\SearchHelper;
 use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\DatabaseInterface;

@@ -59,9 +59,9 @@ final class Weblink extends CMSPlugin
       *
       * @since  __DEPLOY_VERSION__
       */
-     public function onDisplay($name): ?object
-     {
-         $user = $this->getApplication()->getIdentity();
+    public function onDisplay($name): ?object
+    {
+        $user = $this->getApplication()->getIdentity();
 
         if (
             $user->authorise('core.create', 'com_weblinks')

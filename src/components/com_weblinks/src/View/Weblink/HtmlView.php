@@ -10,14 +10,14 @@
 
 namespace Joomla\Component\Weblinks\Site\View\Weblink;
 
+use Joomla\CMS\Event\Content\AfterDisplayEvent;
+use Joomla\CMS\Event\Content\AfterTitleEvent;
+use Joomla\CMS\Event\Content\BeforeDisplayEvent;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Component\Weblinks\Site\Model\WeblinkModel;
-use Joomla\CMS\Event\Content\AfterTitleEvent;
-use Joomla\CMS\Event\Content\BeforeDisplayEvent;
-use Joomla\CMS\Event\Content\AfterDisplayEvent;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -93,23 +93,22 @@ class HtmlView extends BaseHtmlView
         $item->params->merge($temp);
         $offset = $this->state->get('list.offset');
 
-        $dispatcher = $app->getDispatcher();
-        $item->event = new \stdClass();
-        
-        $item->event->afterDisplayTitle = '';
+        $dispatcher                        = $app->getDispatcher();
+        $item->event                       = new \stdClass();
+        $item->event->afterDisplayTitle    = '';
         $item->event->beforeDisplayContent = '';
-        $item->event->afterDisplayContent = '';
+        $item->event->afterDisplayContent  = '';
 
         $eventAfterTitleArgs = ['context' => 'com_weblinks.weblink', 'subject' => $item, 'params' => $item->params, 'offset' => $offset];
-        $eventAfterTitle = AfterTitleEvent::create('onContentAfterTitle', $eventAfterTitleArgs);
+        $eventAfterTitle     = AfterTitleEvent::create('onContentAfterTitle', $eventAfterTitleArgs);
         $dispatcher->dispatch('onContentAfterTitle', $eventAfterTitle);
 
         $eventBeforeDisplayArgs = ['context' => 'com_weblinks.weblink', 'subject' => $item, 'params' => $item->params, 'offset' => $offset];
-        $eventBeforeDisplay = BeforeDisplayEvent::create('onContentBeforeDisplay', $eventBeforeDisplayArgs);
+        $eventBeforeDisplay     = BeforeDisplayEvent::create('onContentBeforeDisplay', $eventBeforeDisplayArgs);
         $dispatcher->dispatch('onContentBeforeDisplay', $eventBeforeDisplay);
 
         $eventAfterDisplayArgs = ['context' => 'com_weblinks.weblink', 'subject' => $item, 'params' => $item->params, 'offset' => $offset];
-        $eventAfterDisplay = AfterDisplayEvent::create('onContentAfterDisplay', $eventAfterDisplayArgs);
+        $eventAfterDisplay     = AfterDisplayEvent::create('onContentAfterDisplay', $eventAfterDisplayArgs);
         $dispatcher->dispatch('onContentAfterDisplay', $eventAfterDisplay);
 
         parent::display($tpl);
