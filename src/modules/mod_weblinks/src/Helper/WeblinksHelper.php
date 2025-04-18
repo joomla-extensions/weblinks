@@ -4,20 +4,18 @@ namespace Joomla\Module\Weblinks\Site\Helper;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory as JoomlaFactory;
-use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Router\Route;
-use Joomla\Registry\Registry;
 
 class WeblinksHelper
 {
     public function getWeblinks($params, $app)
     {
-        $db = JoomlaFactory::getDbo();
-        $catid = (int) $params->get('catid', 0);
+        $db             = JoomlaFactory::getDbo();
+        $catid          = (int) $params->get('catid', 0);
         $parentWeblinks = [];
-        $allWeblinks = [];
+        $allWeblinks    = [];
 
         if ($catid > 0) {
             $cParams = ComponentHelper::getParams('com_weblinks');
@@ -59,10 +57,10 @@ class WeblinksHelper
                     $items = $db->loadObjectList();
 
                     foreach ($items as $item) {
-                        $item->params = clone $cParams;
-                        $item->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
+                        $item->params  = clone $cParams;
+                        $item->slug    = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
                         $item->catslug = $item->catid . ':' . (isset($item->category_alias) ? $item->category_alias : $item->category_title);
-                        $item->link = $item->params->get('count_clicks', 1) == 1
+                        $item->link    = $item->params->get('count_clicks', 1) == 1
                             ? Route::_('index.php?option=com_weblinks&task=weblink.go&catid=' . $item->catslug . '&id=' . $item->slug)
                             : $item->url;
 
@@ -78,7 +76,7 @@ class WeblinksHelper
         file_put_contents('debug.log', "Fetched Weblinks: " . print_r($allWeblinks, true) . "\n", FILE_APPEND);
 
         return [
-            'parentWeblinks' => $parentWeblinks,
+            'parentWeblinks'   => $parentWeblinks,
             'categoryWeblinks' => $allWeblinks,
         ];
     }
