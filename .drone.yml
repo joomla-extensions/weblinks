@@ -1,4 +1,3 @@
----
 kind: pipeline
 name: default
 
@@ -69,7 +68,12 @@ steps:
     volumes:
       - name: cypress-cache
         path: /root/.cache/Cypress
+    environment:
+      XDG_RUNTIME_DIR: /tmp/runtime-cypress
+      DISPLAY: :99  # Optional for headless X server
     commands:
+      - mkdir -p /tmp/runtime-cypress
+      - chmod 700 /tmp/runtime-cypress
       - mkdir /tests/www/mysql/
       - cp joomla.zip /tests/www/mysql/joomla.zip
       - cp dist/pkg-weblinks-current.zip /tests/www/mysql/pkg-weblinks-current.zip
@@ -83,7 +87,9 @@ steps:
       - chmod -R 777 /tests/www/mysql/
       - chown -R www-data /tests/www/mysql/
       - cd /drone/src
-      - npx cypress run --browser=firefox --e2e --env cmsPath=/tests/www/mysql,db_type=mysqli,db_host=mysql,db_name=test_joomla,db_user=joomla_ut,db_password=joomla_ut,db_prefix=mysql_ --config baseUrl=http://localhost/mysql,screenshotsFolder=/drone/src/tests/cypress/output/screenshot
+      - npx cypress run --browser=firefox --e2e --env cmsPath=/tests/www/mysql,db_type=mysqli,db_host=mysql,db_name=test_joomla,db_user=joomla_ut,db_password=joomla_ut,db_prefix=mysql_ --config baseUrl=http://localhost/mysql,screenshotsFolder=/drone/src/tests/cypress/output/screenshot,video=false,defaultCommandTimeout=10000
+    depends_on:
+      - mysql
 
   - name: phpmin-system-postgres
     depends_on: [ prepare_tests ]
@@ -91,7 +97,12 @@ steps:
     volumes:
       - name: cypress-cache
         path: /root/.cache/Cypress
+    environment:
+      XDG_RUNTIME_DIR: /tmp/runtime-cypress
+      DISPLAY: :99  # Optional for headless X server
     commands:
+      - mkdir -p /tmp/runtime-cypress
+      - chmod 700 /tmp/runtime-cypress
       - mkdir /tests/www/pgsql/
       - cp joomla.zip /tests/www/pgsql/joomla.zip
       - cp dist/pkg-weblinks-current.zip /tests/www/pgsql/pkg-weblinks-current.zip
@@ -105,7 +116,9 @@ steps:
       - chmod -R 777 /tests/www/pgsql/
       - chown -R www-data /tests/www/pgsql/
       - cd /drone/src
-      - npx cypress run --browser=firefox --e2e --env cmsPath=/tests/www/pgsql,db_type=pgsql,db_host=postgres,db_name=test_joomla,db_user=root,db_password=joomla_ut,db_prefix=pgsql_ --config baseUrl=http://localhost/pgsql,screenshotsFolder=/drone/src/tests/cypress/output/screenshot
+      - npx cypress run --browser=firefox --e2e --env cmsPath=/tests/www/pgsql,db_type=pgsql,db_host=postgres,db_name=test_joomla,db_user=root,db_password=joomla_ut,db_prefix=pgsql_ --config baseUrl=http://localhost/pgsql,screenshotsFolder=/drone/src/tests/cypress/output/screenshot,video=false,defaultCommandTimeout=10000
+    depends_on:
+      - postgres
 
   - name: artifacts-system-tests
     image: joomlaprojects/docker-images:packager
@@ -178,5 +191,3 @@ services:
 ---
 kind: signature
 hmac: 9c3516344573b2f9b8a82077258c15ae52fcc45d55eb8ef059258c778a06f35b
-
-...
