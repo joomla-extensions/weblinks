@@ -2,7 +2,9 @@
 
 namespace Joomla\Module\Weblinks\Site\Helper;
 
+// @phpcs:disable Generic.Files.OneObjectStructurePerFile
 \defined('_JEXEC') or die;
+// @phpcs:enable
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory as JoomlaFactory;

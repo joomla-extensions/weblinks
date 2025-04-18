@@ -4,7 +4,9 @@ use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
+// @phpcs:disable Generic.Files.OneObjectStructurePerFile
 \defined('_JEXEC') or die;
+// @phpcs:enable
 
 HTMLHelper::_('bootstrap.framework');
 HTMLHelper::_('bootstrap.modal');
@@ -56,7 +58,7 @@ if (!function_exists('getCategoryTree')) {
 }
 
 if (!function_exists('renderCategoryNode')) {
-    function renderCategoryNode($node, $list, $params, $moduleclass_sfx, $parentWeblinks = [], $db, $isRoot = false)
+    function renderCategoryNode($node, $list, $params, $moduleclass_sfx, $db, $parentWeblinks = [], $isRoot = false)
     {
         if (!$node || !isset($node['catid'])) {
             return;
