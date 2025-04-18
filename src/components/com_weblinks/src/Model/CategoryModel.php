@@ -137,96 +137,81 @@ class CategoryModel extends ListModel
     protected function getListQuery()
     {
         $viewLevels = $this->getCurrentUser()->getAuthorisedViewLevels();
+        $db         = $this->getDatabase();
+        $query      = $db->getQuery(true);
+        $nowUTC     = Factory::getDate()->toSql(); // Get current UTC time
 
-        // Create a new query object.
-        $db    = $this->getDatabase();
-        $query = $db->getQuery(true);
+        // Select fields
+        $query->select($this->getState('list.select', 'a.*'));
 
-        // Select required fields from the categories.
-        $query->select($this->getState('list.select', 'a.*'))
-            ->from($db->quoteName('#__weblinks') . ' AS a')
-            ->whereIn($db->quoteName('a.access'), $viewLevels);
+        // From tables
+        $query->from($db->quoteName('#__weblinks') . ' AS a');
 
-        // Filter by category.
+        // Join with users table for author info
+        $query->select("CASE WHEN a.created_by_alias > ' ' THEN a.created_by_alias ELSE ua.name END AS author")
+              ->select("ua.email AS author_email")
+              ->join('LEFT', $db->quoteName('#__users') . ' AS ua ON ua.id = a.created_by')
+              ->join('LEFT', $db->quoteName('#__users') . ' AS uam ON uam.id = a.modified_by');
+
+        // Access conditions
+        $query->whereIn($db->quoteName('a.access'), $viewLevels);
+
+        // Publication conditions
+        $query->where($db->quoteName('a.state') . ' = 1') // Only published weblinks
+              ->where('(' . $db->quoteName('a.publish_up') . ' IS NULL OR ' . $db->quoteName('a.publish_up') . ' <= :nowUp)')
+              ->where('(' . $db->quoteName('a.publish_down') . ' IS NULL OR ' . $db->quoteName('a.publish_down') . ' > :nowDown)')
+              ->bind(':nowUp', $nowUTC)
+              ->bind(':nowDown', $nowUTC);
+
+        // Do not show trashed links
+        $query->where($db->quoteName('a.state') . ' != -2');
+
+        // Handle category filtering
         if ($categoryId = $this->getState('category.id')) {
-            // Group by subcategory
             if ($this->getState('category.group', 0)) {
                 $query->select('c.title AS category_title')
-                    ->where('c.parent_id = :parent_id')
-                    ->bind(':parent_id', $categoryId, ParameterType::INTEGER)
-                    ->join('LEFT', '#__categories AS c ON c.id = a.catid')
-                    ->whereIn($db->quoteName('c.access'), $viewLevels);
+                      ->join('LEFT', $db->quoteName('#__categories') . ' AS c ON c.id = a.catid')
+                      ->where('c.parent_id = :parent_id')
+                      ->bind(':parent_id', $categoryId, ParameterType::INTEGER)
+                      ->whereIn($db->quoteName('c.access'), $viewLevels);
             } else {
-                $query->where('a.catid = :catid')
-                    ->bind(':catid', $categoryId, ParameterType::INTEGER)
-                    ->join('LEFT', '#__categories AS c ON c.id = a.catid')
-                    ->whereIn($db->quoteName('c.access'), $viewLevels);
+                $query->join('LEFT', $db->quoteName('#__categories') . ' AS c ON c.id = a.catid')
+                      ->where('a.catid = :catid')
+                      ->bind(':catid', $categoryId, ParameterType::INTEGER)
+                      ->whereIn($db->quoteName('c.access'), $viewLevels);
             }
 
             // Filter by published category
             $cpublished = $this->getState('filter.c.published');
-
             if (is_numeric($cpublished)) {
                 $query->where('c.published = :published')
-                    ->bind(':published', $cpublished, ParameterType::INTEGER);
+                      ->bind(':published', $cpublished, ParameterType::INTEGER);
             }
         }
 
-        // Join over the users for the author and modified_by names.
-        $query->select("CASE WHEN a.created_by_alias > ' ' THEN a.created_by_alias ELSE ua.name END AS author")
-            ->select("ua.email AS author_email")
-            ->join('LEFT', '#__users AS ua ON ua.id = a.created_by')
-            ->join('LEFT', '#__users AS uam ON uam.id = a.modified_by');
-
-        // Filter by state
-        $state = $this->getState('filter.state');
-
-        if (is_numeric($state)) {
-            $query->where('a.state = :state')
-                ->bind(':state', $state, ParameterType::INTEGER);
-        }
-
-        // Do not show trashed links on the front-end
-        $query->where('a.state != -2');
-
-        // Filter by start and end dates.
-        if ($this->getState('filter.publish_date')) {
-            $nowDate = Factory::getDate()->toSql();
-            $query->where('(' . $db->quoteName('a.publish_up')
-                . ' IS NULL OR ' . $db->quoteName('a.publish_up') . ' <= :publish_up)')
-                ->where('(' . $db->quoteName('a.publish_down')
-                    . ' IS NULL OR ' . $db->quoteName('a.publish_down') . ' >= :publish_down)')
-                ->bind(':publish_up', $nowDate)
-                ->bind(':publish_down', $nowDate);
-        }
-
-        // Filter by language
-        if ($this->getState('filter.language')) {
-            $query->whereIn($db->quoteName('a.language'), [Factory::getLanguage()->getTag(), '*'], ParameterType::STRING);
-        }
-
-        // Filter by search in title
+        // Search filter
         $search = $this->getState('list.filter');
-
         if (!empty($search)) {
-            $search = '%' . trim($search) . '%';
+            $searchTerm = '%' . trim($search) . '%';
             $query->where('(a.title LIKE :search)')
-                ->bind(':search', $search);
+                  ->bind(':search', $searchTerm);
         }
 
-        // If grouping by subcategory, add the subcategory list ordering clause.
-        if ($this->getState('category.group', 0)) {
-            $query->order(
-                $db->escape($this->getState('category.ordering', 'c.lft')) . ' ' .
-                $db->escape($this->getState('category.direction', 'ASC'))
-            );
+        // Order by
+        $orderCol = $this->getState('list.ordering', 'a.ordering');
+        $orderDir = $this->getState('list.direction', 'ASC');
+
+        // Validate ordering field
+        if (!\in_array($orderCol, $this->filter_fields)) {
+            $orderCol = 'a.ordering';
         }
 
-        // Add the list ordering clause.
-        $query->order(
-            $db->escape($this->getState('list.ordering', 'a.ordering')) . ' ' .
-            $db->escape($this->getState('list.direction', 'ASC'))
-        );
+        // Validate order direction
+        if (!\in_array(strtoupper($orderDir), ['ASC', 'DESC', ''])) {
+            $orderDir = 'ASC';
+        }
+
+        $query->order($db->quoteName($orderCol) . ' ' . $orderDir);
 
         return $query;
     }
@@ -307,8 +292,8 @@ class CategoryModel extends ListModel
             $options               = [];
             $options['countItems'] = $params->get('show_cat_num_links_cat', 1)
                 || $params->get('show_empty_categories', 0);
-
-            $categories  = Categories::getInstance('Weblinks', $options);
+            $section     = $this->getState('section');
+            $categories  = Factory::getApplication()->bootComponent('com_weblinks')->getCategory($options, $section);
             $this->_item = $categories->get($this->getState('category.id', 'root'));
 
             if (\is_object($this->_item)) {
@@ -400,9 +385,13 @@ class CategoryModel extends ListModel
         $hitcount = Factory::getApplication()->getInput()->getInt('hitcount', 1);
 
         if ($hitcount) {
-            $pk    = (!empty($pk)) ? $pk : (int) $this->getState('category.id');
+            $pk = (!empty($pk)) ? $pk : (int) $this->getState('category.id');
+
+            // Load the category table
             $table = new Category($this->getDatabase());
             $table->load($pk);
+
+            // Hit the category
             $table->hit($pk);
         }
 
