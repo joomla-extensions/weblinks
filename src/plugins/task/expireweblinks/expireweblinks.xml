@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="plugin" group="task" method="upgrade">
     <name>PLG_TASK_EXPIREWEBLINKS</name>
-    <author>Amitesh</author>
+    <author>Joomla! Project</author>
     <creationDate>2025-04-12</creationDate>
     <copyright>(C) 2025 Joomla. All rights reserved.</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>

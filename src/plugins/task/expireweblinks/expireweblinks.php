@@ -133,14 +133,19 @@ class PlgTaskExpireWeblinks extends CMSPlugin implements SubscriberInterface
         $nowUTC = $now->toSql();
 
         $query = $this->db->getQuery(true)
-            ->update($this->db->quoteName('#__weblinks'))
-            ->set($this->db->quoteName('state') . ' = 0')
-            ->where($this->db->quoteName('publish_down') . ' IS NOT NULL')
-            ->where($this->db->quoteName('publish_down') . ' <= ' . $this->db->quote($nowUTC))
-            ->where($this->db->quoteName('state') . ' = 1');
+    ->update($this->db->quoteName('#__weblinks'))
+    ->set($this->db->quoteName('state') . ' = :newState')
+    ->where($this->db->quoteName('publish_down') . ' IS NOT NULL')
+    ->where($this->db->quoteName('publish_down') . ' <= :nowUTC')
+    ->where($this->db->quoteName('state') . ' = :currentState');
 
         $this->db->setQuery($query);
+        $this->db->bind(':newState', 0, \Joomla\Database\ParameterType::INTEGER);
+        $this->db->bind(':nowUTC', $nowUTC, \Joomla\Database\ParameterType::STRING); // or DATETIME
+        $this->db->bind(':currentState', 1, \Joomla\Database\ParameterType::INTEGER);
+
         $result = $this->db->execute();
+
 
         // Clean weblinks cache
         $cache = $this->cacheFactory->createCacheController('callback');
