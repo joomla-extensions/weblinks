@@ -1,17 +1,39 @@
 <?php
 
+/**
+ * @package     Joomla.Administrator
+ * @subpackage  Weblinks
+ *
+ * @copyright   Copyright (C) 2005 - 2025 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
 namespace Joomla\Module\Weblinks\Site\Helper;
 
-// @phpcs:disable Generic.Files.OneObjectStructurePerFile
+// phpcs:ignoreFile -- allow _JEXEC check for Joomla module security
 \defined('_JEXEC') or die;
-// @phpcs:enable
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\Router\Route;
 
+/**
+ * Helper for mod_weblinks
+ *
+ * @since  1.5
+ */
 class WeblinksHelper
 {
+    /**
+     * Retrieve list of weblinks
+     *
+     * @param   \Joomla\Registry\Registry  $params  The module parameters
+     * @param   \Joomla\CMS\Application\CMSApplicationInterface  $app     The application
+     *
+     * @return  array   Array containing all weblinks, including a separate entry for parent category weblinks
+     *
+     * @since   1.5
+     */
     public function getWeblinks($params, $app)
     {
         $db             = JoomlaFactory::getDbo();
@@ -75,6 +97,7 @@ class WeblinksHelper
             }
         }
 
+        file_put_contents('debug.log', "Fetched Weblinks: " . print_r($allWeblinks, true) . "\n", FILE_APPEND);
 
         return [
             'parentWeblinks'   => $parentWeblinks,
@@ -82,6 +105,18 @@ class WeblinksHelper
         ];
     }
 
+    /**
+     * Retrieve list of weblinks
+     *
+     * @param   \Joomla\Registry\Registry  $params  The module parameters
+     * @param   \Joomla\CMS\Application\CMSApplicationInterface  $app     The application
+     *
+     * @return  mixed   Null if no weblinks based on input parameters else an array containing all the weblinks.
+     *
+     * @since   1.5
+     *
+     * @deprecated 5.0 Use the non-static function getWeblinks
+     */
     public static function getList($params, $app)
     {
         return (new self())->getWeblinks($params, $app);

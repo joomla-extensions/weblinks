@@ -1,21 +1,30 @@
 <?php
 
+/**
+ * @package    Joomla.Site
+ * @subpackage mod_weblinks
+ */
+
+ // phpcs:ignoreFile -- allow _JEXEC check for Joomla module security
+\defined('_JEXEC') or die;
+
+
 use Joomla\CMS\Factory as JoomlaFactory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-
-// @phpcs:disable Generic.Files.OneObjectStructurePerFile
-\defined('_JEXEC') or die;
-// @phpcs:enable
+use Joomla\Module\Weblinks\Site\Helper\WeblinksHelper;
 
 HTMLHelper::_('bootstrap.framework');
 HTMLHelper::_('bootstrap.modal');
-$db = JoomlaFactory::getDbo();
 
-if (!function_exists('getCategoryTree')) {
+// Initialize database and fetch weblinks
+$db   = JoomlaFactory::getDbo();
+$list = WeblinksHelper::getList($params, $app);
+
+if (!\function_exists('getCategoryTree')) {
     function getCategoryTree($parentId, $db)
     {
-        $tree = [];
+        $tree  = [];
         $query = $db->getQuery(true)
             ->select('id, title, parent_id')
             ->from('#__categories')
@@ -57,8 +66,8 @@ if (!function_exists('getCategoryTree')) {
     }
 }
 
-if (!function_exists('renderCategoryNode')) {
-    function renderCategoryNode($node, $list, $params, $moduleclass_sfx, $db, $parentWeblinks = [], $isRoot = false)
+if (!\function_exists('renderCategoryNode')) {
+    function renderCategoryNode($node, $list, $params, $moduleclass_sfx, $db, $isRoot = false, $parentWeblinks = [])
     {
         if (!$node || !isset($node['catid'])) {
             return;
@@ -68,13 +77,13 @@ if (!function_exists('renderCategoryNode')) {
         $items = getWeblinksForNode($node, $list['categoryWeblinks']);
 
         if ($isRoot) {
-            $uniqueParentItems = array_udiff($parentWeblinks, $items, fn($a, $b) => $a->id - $b->id);
-            $items = array_merge($items, $uniqueParentItems);
+            $uniqueParentItems = array_udiff($parentWeblinks, $items, fn ($a, $b) => $a->id - $b->id);
+            $items             = array_merge($items, $uniqueParentItems);
         }
 
         $hasItems = !empty($items);
 
-        echo '<div class="category-block" style="margin-left: ' . (20 * ($node['parent_id'] > 1 ? count(explode(',', $node['parent_id'])) : 0)) . 'px;">';
+        echo '<div class="category-block" style="margin-left: ' . (20 * ($node['parent_id'] > 1 ? \count(explode(',', $node['parent_id'])) : 0)) . 'px;">';
 
         if ($params->get('groupby_showtitle', 1)) {
             echo '<h4 class="weblink-category-title">' . htmlspecialchars($node['title'], ENT_COMPAT, 'UTF-8') . '</h4>';
@@ -133,10 +142,10 @@ if (!function_exists('renderCategoryNode')) {
                 echo '</div></li>';
             }
         }
-        echo '</ul>';
+        echo '</ul';
 
         foreach ($node['children'] as $childNode) {
-            renderCategoryNode($childNode, $list, $params, $moduleclass_sfx, [], $db, false);
+            renderCategoryNode($childNode, $list, $params, $moduleclass_sfx, $db, false, $parentWeblinks);
         }
 
         echo '</div>';
@@ -155,7 +164,7 @@ function getWeblinksForNode($node, $weblinks)
 if ($params->get('groupby', 0)) {
     $rootCatId    = (int) $params->get('catid');
     $categoryTree = getCategoryTree($rootCatId, $db);
-    renderCategoryNode($categoryTree, $list, $params, $moduleclass_sfx, $list['parentWeblinks'], $db, true);
+    renderCategoryNode($categoryTree, $list, $params, $moduleclass_sfx, $db, true, $list['parentWeblinks']);
 } else {
     ?>
     <ul class="weblinks<?php echo $moduleclass_sfx; ?>">
@@ -211,4 +220,3 @@ if ($params->get('groupby', 0)) {
     </ul>
     <?php
 }
-?>
