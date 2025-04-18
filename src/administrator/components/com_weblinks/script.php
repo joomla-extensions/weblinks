@@ -113,16 +113,20 @@ class Com_WeblinksInstallerScript implements DatabaseAwareInterface
             // Set the location in the tree
             $category->setLocation(1, 'last-child');
 
-            // Check to make sure our data is valid
-            if (!$category->check()) {
-                Factory::getApplication()->enqueueMessage(Text::sprintf('COM_WEBLINKS_ERROR_INSTALL_CATEGORY', $category->getError()));
+            try {
+                // Check to make sure our data is valid (throws exception on failure)
+                $category->check();
+            } catch (\Exception $e) {
+                Factory::getApplication()->enqueueMessage(Text::sprintf('COM_WEBLINKS_ERROR_INSTALL_CATEGORY', $e->getMessage()), 'error');
 
                 return;
             }
 
-            // Now store the category
-            if (!$category->store(true)) {
-                Factory::getApplication()->enqueueMessage(Text::sprintf('COM_WEBLINKS_ERROR_INSTALL_CATEGORY', $category->getError()));
+            try {
+                // Now store the category (throws exception on failure)
+                $category->store(true);
+            } catch (\Exception $e) {
+                Factory::getApplication()->enqueueMessage(Text::sprintf('COM_WEBLINKS_ERROR_INSTALL_CATEGORY', $e->getMessage()), 'error');
 
                 return;
             }

@@ -23,6 +23,7 @@ use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Component\Weblinks\Administrator\Model\WeblinkModel;
+use Joomla\Registry\Registry;
 
 /**
  * View to edit a weblink.
@@ -48,7 +49,7 @@ class HtmlView extends BaseHtmlView
     /**
      * The model state
      *
-     * @var  \Joomla\CMS\Object\CMSObject
+     * @var  Registry
      */
     protected $state;
 
@@ -67,11 +68,6 @@ class HtmlView extends BaseHtmlView
         $this->item  = $model->getItem();
         $this->form  = $model->getForm();
 
-        // Check for errors.
-        if (\count($errors = $model->getErrors())) {
-            throw new GenericDataException(implode("\n", $errors), 500);
-        }
-
         // If we are forcing a language in modal (used for associations).
         if ($this->getLayout() === 'modal' && $forcedLanguage = Factory::getApplication()->getInput()->get('forcedLanguage', '', 'cmd')) {
             // Set the language field to the forcedLanguage and disable changing it.
@@ -88,6 +84,18 @@ class HtmlView extends BaseHtmlView
         $this->addToolbar();
 
         parent::display($tpl);
+    }
+
+    /**
+     * Get the item ID.
+     *
+     * @return  int
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function getItemId(): int
+    {
+        return (int) $this->item->id;
     }
 
     /**

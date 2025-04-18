@@ -15,6 +15,9 @@ use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Component\Weblinks\Site\Model\WeblinkModel;
+use Joomla\CMS\Event\Content\AfterTitleEvent;
+use Joomla\CMS\Event\Content\BeforeDisplayEvent;
+use Joomla\CMS\Event\Content\AfterDisplayEvent;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -64,15 +67,20 @@ class HtmlView extends BaseHtmlView
         $app = Factory::getApplication();
 
         /* @var WeblinkModel $model */
-        $model        = $this->getModel();
-        $this->item   = $model->getItem();
-        $this->state  = $model->getState();
-        $this->params = $this->state->get('params');
+        $model = $this->getModel();
 
-        $errors = $model->getErrors();
+        try {
+            $this->item   = $model->getItem();
+            $this->state  = $model->getState();
+            $this->params = $this->state->get('params');
+        } catch (\Exception $e) {
+            // Handle 404 error if weblink item not found
+            if ($e->getCode() === 404) {
+                throw $e;
+            }
 
-        if (\count($errors) > 0) {
-            $this->handleModelErrors($errors);
+            // Otherwise, it is database runtime error, and we will throw error 500
+            throw new GenericDataException($e->getMessage(), 500, $e);
         }
 
         PluginHelper::importPlugin('content');
@@ -84,35 +92,26 @@ class HtmlView extends BaseHtmlView
         $item->params = clone $app->getParams();
         $item->params->merge($temp);
         $offset = $this->state->get('list.offset');
-        $app->triggerEvent('onContentPrepare', ['com_weblinks.weblink', &$item, &$item->params, $offset]);
-        $item->event                       = new \stdClass();
-        $results                           = $app->triggerEvent('onContentAfterTitle', ['com_weblinks.weblink', &$item, &$item->params, $offset]);
-        $item->event->afterDisplayTitle    = trim(implode("\n", $results));
-        $results                           = $app->triggerEvent('onContentBeforeDisplay', ['com_weblinks.weblink', &$item, &$item->params, $offset]);
-        $item->event->beforeDisplayContent = trim(implode("\n", $results));
-        $results                           = $app->triggerEvent('onContentAfterDisplay', ['com_weblinks.weblink', &$item, &$item->params, $offset]);
-        $item->event->afterDisplayContent  = trim(implode("\n", $results));
+
+        $dispatcher = $app->getDispatcher();
+        $item->event = new \stdClass();
+        
+        $item->event->afterDisplayTitle = '';
+        $item->event->beforeDisplayContent = '';
+        $item->event->afterDisplayContent = '';
+
+        $eventAfterTitleArgs = ['context' => 'com_weblinks.weblink', 'subject' => $item, 'params' => $item->params, 'offset' => $offset];
+        $eventAfterTitle = AfterTitleEvent::create('onContentAfterTitle', $eventAfterTitleArgs);
+        $dispatcher->dispatch('onContentAfterTitle', $eventAfterTitle);
+
+        $eventBeforeDisplayArgs = ['context' => 'com_weblinks.weblink', 'subject' => $item, 'params' => $item->params, 'offset' => $offset];
+        $eventBeforeDisplay = BeforeDisplayEvent::create('onContentBeforeDisplay', $eventBeforeDisplayArgs);
+        $dispatcher->dispatch('onContentBeforeDisplay', $eventBeforeDisplay);
+
+        $eventAfterDisplayArgs = ['context' => 'com_weblinks.weblink', 'subject' => $item, 'params' => $item->params, 'offset' => $offset];
+        $eventAfterDisplay = AfterDisplayEvent::create('onContentAfterDisplay', $eventAfterDisplayArgs);
+        $dispatcher->dispatch('onContentAfterDisplay', $eventAfterDisplay);
+
         parent::display($tpl);
-    }
-
-    /**
-     * Handle errors returned by model
-     *
-     * @param   array  $errors
-     *
-     * @return void
-     * @throws \Exception
-     */
-    private function handleModelErrors(array $errors): void
-    {
-        foreach ($errors as $error) {
-            // Throws 404 error if weblink item not found
-            if ($error instanceof \Exception && $error->getCode() === 404) {
-                throw $error;
-            }
-        }
-
-        // Otherwise, it is database runtime error, and we will throw error 500
-        throw new GenericDataException(implode("\n", $errors), 500);
     }
 }

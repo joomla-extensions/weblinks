@@ -18,6 +18,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\User\User;
 use Joomla\Component\Weblinks\Site\Model\FormModel;
 
 /**
@@ -64,6 +65,12 @@ class HtmlView extends BaseHtmlView
     protected $params;
 
     /**
+     * @var    User
+     * @since  __DEPLOY_VERSION__
+     */
+    protected $user;
+
+    /**
      * Display the view.
      *
      * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
@@ -82,11 +89,6 @@ class HtmlView extends BaseHtmlView
         $this->item        = $model->getItem();
         $this->form        = $model->getForm();
         $this->return_page = $model->getReturnPage();
-
-        // Check for errors.
-        if (\count($errors = $model->getErrors())) {
-            throw new GenericDataException(implode("\n", $errors), 500);
-        }
 
         if (empty($this->item->id)) {
             $authorised = $user->authorise('core.create', 'com_weblinks') || \count($user->getAuthorisedCategories('com_weblinks', 'core.create'));

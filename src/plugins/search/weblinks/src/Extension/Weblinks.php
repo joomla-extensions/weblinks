@@ -228,11 +228,7 @@ final class Weblinks extends CMSPlugin
                 $rows[$key]->href = RouteHelper::getWeblinkRoute($row->slug, $row->catslug);
             }
 
-            foreach ($rows as $weblink) {
-                if (SearchHelper::checkNoHTML($weblink, $searchText, ['url', 'text', 'title'])) {
-                    $return[] = $weblink;
-                }
-            }
+            $return = $rows;
         }
 
         return $return;

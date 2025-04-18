@@ -10,6 +10,7 @@
 
 namespace Joomla\Component\Weblinks\Site\View\Category;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\CategoryView;
 use Joomla\CMS\Router\Route;
 use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
@@ -53,7 +54,7 @@ class HtmlView extends CategoryView
             }
         }
 
-        return parent::display($tpl);
+        parent::display($tpl);
     }
 
     /**
@@ -71,10 +72,12 @@ class HtmlView extends CategoryView
         }
 
         // Get ID of the category from active menu item
-        $menu = $this->menu;
+        $app = Factory::getApplication();
+        $menu = $app->getMenu()->getActive();
+        $pathway = $app->getPathway();
 
         if (
-            $menu && $menu->component == 'com_weblinks' && isset($menu->query['view'])
+            $menu && $menu->component === 'com_weblinks' && isset($menu->query['view'])
             && \in_array($menu->query['view'], ['categories', 'category'])
         ) {
             $id = $menu->query['id'];
@@ -91,7 +94,7 @@ class HtmlView extends CategoryView
 
         $path = array_reverse($path);
         foreach ($path as $item) {
-            $this->pathway->addItem($item['title'], $item['link']);
+            $pathway->addItem($item['title'], $item['link']);
         }
     }
 }
