@@ -39,7 +39,7 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-
+				
 				<field
 					name="groupby_showtitle"
 					type="radio"
