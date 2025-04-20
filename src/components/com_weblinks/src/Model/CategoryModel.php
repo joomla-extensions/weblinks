@@ -202,7 +202,7 @@ class CategoryModel extends ListModel
 
         // Filter by language
         if ($this->getState('filter.language')) {
-            $query->whereIn($db->quoteName('a.language'), [Factory::getLanguage()->getTag(), '*'], ParameterType::STRING);
+            $query->whereIn($db->quoteName('a.language'), [Factory::getApplication()->getLanguage()->getTag(), '*'], ParameterType::STRING);
         }
 
         // Filter by search in title
@@ -308,7 +308,8 @@ class CategoryModel extends ListModel
             $options['countItems'] = $params->get('show_cat_num_links_cat', 1)
                 || $params->get('show_empty_categories', 0);
 
-            $categories  = Categories::getInstance('Weblinks', $options);
+            $component   = Factory::getApplication()->bootComponent('com_weblinks');
+            $categories  = $component->getCategory($options);
             $this->_item = $categories->get($this->getState('category.id', 'root'));
 
             if (\is_object($this->_item)) {

@@ -10,11 +10,12 @@
 
 namespace Joomla\Component\Weblinks\Site\View\Weblink;
 
-use Joomla\CMS\Event\Content;
+use Joomla\CMS\Event\Content\AfterDisplayEvent;
+use Joomla\CMS\Event\Content\AfterTitleEvent;
+use Joomla\CMS\Event\Content\BeforeDisplayEvent;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
-use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Component\Weblinks\Site\Model\WeblinkModel;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -65,15 +66,20 @@ class HtmlView extends BaseHtmlView
         $app = Factory::getApplication();
 
         /* @var WeblinkModel $model */
-        $model        = $this->getModel();
-        $this->item   = $model->getItem();
-        $this->state  = $model->getState();
-        $this->params = $this->state->get('params');
+        $model = $this->getModel();
 
-        $errors = $model->getErrors();
+        try {
+            $this->item   = $model->getItem();
+            $this->state  = $model->getState();
+            $this->params = $this->state->get('params');
+        } catch (\Exception $e) {
+            // Handle 404 error if weblink item not found
+            if ($e->getCode() === 404) {
+                throw $e;
+            }
 
-        if (\count($errors) > 0) {
-            $this->handleModelErrors($errors);
+            // Otherwise, it is database runtime error, and we will throw error 500
+            throw new GenericDataException($e->getMessage(), 500, $e);
         }
 
         // Create a shortcut for $item.
@@ -84,58 +90,24 @@ class HtmlView extends BaseHtmlView
         $item->params->merge($temp);
         $offset = $this->state->get('list.offset');
 
-        $dispatcher = $this->getDispatcher();
+        $dispatcher                        = $app->getDispatcher();
+        $item->event                       = new \stdClass();
+        $item->event->afterDisplayTitle    = '';
+        $item->event->beforeDisplayContent = '';
+        $item->event->afterDisplayContent  = '';
 
-        // Process the content plugins.
-        PluginHelper::importPlugin('content', null, true, $dispatcher);
+        $eventAfterTitleArgs = ['context' => 'com_weblinks.weblink', 'subject' => $item, 'params' => $item->params, 'offset' => $offset];
+        $eventAfterTitle     = AfterTitleEvent::create('onContentAfterTitle', $eventAfterTitleArgs);
+        $dispatcher->dispatch('onContentAfterTitle', $eventAfterTitle);
 
-        $contentEventArguments = [
-            'context' => 'com_weblinks.weblink',
-            'subject' => $item,
-            'params'  => $item->params,
-            'page'    => $offset,
-        ];
+        $eventBeforeDisplayArgs = ['context' => 'com_weblinks.weblink', 'subject' => $item, 'params' => $item->params, 'offset' => $offset];
+        $eventBeforeDisplay     = BeforeDisplayEvent::create('onContentBeforeDisplay', $eventBeforeDisplayArgs);
+        $dispatcher->dispatch('onContentBeforeDisplay', $eventBeforeDisplay);
 
-        $dispatcher->dispatch(
-            'onContentPrepare',
-            new Content\ContentPrepareEvent('onContentPrepare', $contentEventArguments)
-        );
-
-        // Extra content from events
-        $item->event   = new \stdClass();
-        $contentEvents = [
-            'afterDisplayTitle'    => new Content\AfterTitleEvent('onContentAfterTitle', $contentEventArguments),
-            'beforeDisplayContent' => new Content\BeforeDisplayEvent('onContentBeforeDisplay', $contentEventArguments),
-            'afterDisplayContent'  => new Content\AfterDisplayEvent('onContentAfterDisplay', $contentEventArguments),
-        ];
-
-        foreach ($contentEvents as $resultKey => $event) {
-            $results = $dispatcher->dispatch($event->getName(), $event)->getArgument('result', []);
-
-            $item->event->{$resultKey} = $results ? trim(implode("\n", $results)) : '';
-        }
+        $eventAfterDisplayArgs = ['context' => 'com_weblinks.weblink', 'subject' => $item, 'params' => $item->params, 'offset' => $offset];
+        $eventAfterDisplay     = AfterDisplayEvent::create('onContentAfterDisplay', $eventAfterDisplayArgs);
+        $dispatcher->dispatch('onContentAfterDisplay', $eventAfterDisplay);
 
         parent::display($tpl);
-    }
-
-    /**
-     * Handle errors returned by model
-     *
-     * @param   array  $errors
-     *
-     * @return void
-     * @throws \Exception
-     */
-    private function handleModelErrors(array $errors): void
-    {
-        foreach ($errors as $error) {
-            // Throws 404 error if weblink item not found
-            if ($error instanceof \Exception && $error->getCode() === 404) {
-                throw $error;
-            }
-        }
-
-        // Otherwise, it is database runtime error, and we will throw error 500
-        throw new GenericDataException(implode("\n", $errors), 500);
     }
 }
