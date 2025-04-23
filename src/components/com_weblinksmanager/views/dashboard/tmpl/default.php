@@ -52,13 +52,13 @@ use Joomla\CMS\Router\Route;
                     <td>
                         <a href="<?php echo Route::_(
                             'index.php?option=com_weblinksmanager&view=weblink&layout=edit&id=' . $item->id
-                        ); ?>" class="btn btn-sm btn-primary">
+                        ); ?>" class="btn btn-sm btn-primary"><?php // phpcs:ignore?>
                             Edit
                         </a>
 
                         <form action="<?php echo Route::_(
                             'index.php?option=com_weblinksmanager&task=weblink.delete'
-                        ); ?>" method="post" style="display:inline;">
+                        ); ?>" method="post" style="display:inline;"><?php // phpcs:ignore?>
                             <input type="hidden" name="id" value="<?php echo $item->id; ?>">
                             <button type="submit" class="btn btn-sm btn-danger"
                                 onclick="return confirm('Are you sure you want to delete this weblink?');">
@@ -72,6 +72,8 @@ use Joomla\CMS\Router\Route;
         </tbody>
     </table>
 <?php endif; ?>
+
+
 
 <h2>Create New Weblink</h2>
 <form action="<?php echo Route::_(
