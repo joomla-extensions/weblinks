@@ -13,7 +13,7 @@
  * @since 1.0
  */
 
- namespace Joomla\Component\Weblinksmanager\Site\Controller;
+namespace Joomla\Component\Weblinksmanager\Site\Controller;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;

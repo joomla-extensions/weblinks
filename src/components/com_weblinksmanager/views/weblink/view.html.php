@@ -8,7 +8,7 @@
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 
- namespace Joomla\Component\Weblinksmanager\Site\View\Weblink;
+namespace Joomla\Component\Weblinksmanager\Site\View\Weblink;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
