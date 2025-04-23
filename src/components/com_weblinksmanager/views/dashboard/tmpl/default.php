@@ -1,16 +1,20 @@
 <?php
+
 /**
  * @package    Joomla.Site
  * @subpackage com_weblinksmanager
  *
- * @copyright Copyright (C) 
+ * @copyright Copyright (C)
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+// phpcs:disable PSR1.Files.SideEffects
+\defined('_JEXEC') or die;
+// phpcs:enable PSR1.Files.SideEffects
 
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
+
 ?>
 
 <h1>Weblinks Manager Dashboard</h1>
@@ -21,7 +25,7 @@ use Joomla\CMS\HTML\HTMLHelper;
     </div>
 <?php else : ?>
     <div class="alert alert-success">
-        Found <?php echo count($this->items); ?> weblinks
+        Found <?php echo \count($this->items); ?> weblinks
     </div>
 
     <table class="table table-striped">
