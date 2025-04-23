@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    Joomla.Site
  * @subpackage com_weblinksmanager
@@ -7,7 +8,7 @@
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
 /**
  * Builds the route for the com_weblinksmanager component
@@ -18,7 +19,7 @@ defined('_JEXEC') or die;
  */
 function weblinksmanagerBuildRoute(&$query)
 {
-    $segments = array();
+    $segments = [];
 
     if (isset($query['view'])) {
         $segments[] = $query['view'];
@@ -42,7 +43,7 @@ function weblinksmanagerBuildRoute(&$query)
  */
 function weblinksmanagerParseRoute($segments)
 {
-    $vars = array();
+    $vars = [];
 
     if (isset($segments[0])) {
         $vars['view'] = $segments[0];

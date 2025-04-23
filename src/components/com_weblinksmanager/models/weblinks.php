@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    Joomla.Component
  * @subpackage com_weblinksmanager
@@ -7,7 +8,7 @@
  * @license   GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
@@ -24,10 +25,10 @@ class WeblinksmanagerModelWeblinks extends ListModel
      *
      * @param array $config An optional associative array of configuration settings.
      */
-    public function __construct($config = array())
+    public function __construct($config = [])
     {
         if (empty($config['filter_fields'])) {
-            $config['filter_fields'] = array('id', 'title', 'url', 'state');
+            $config['filter_fields'] = ['id', 'title', 'url', 'state'];
         }
 
         parent::__construct($config);
@@ -44,7 +45,7 @@ class WeblinksmanagerModelWeblinks extends ListModel
         $query = $db->getQuery(true);
 
         $query
-            ->select($db->quoteName(array('a.id', 'a.title', 'a.url', 'a.state')))
+            ->select($db->quoteName(['a.id', 'a.title', 'a.url', 'a.state']))
             ->from($db->quoteName('#__weblinks', 'a'));
 
         return $query;
@@ -60,7 +61,7 @@ class WeblinksmanagerModelWeblinks extends ListModel
         $items = parent::getItems();
 
         Factory::getApplication()->enqueueMessage(
-            'dBModeel returned ' . (is_array($items) ? count($items) : '0') . ' items',
+            'dBModeel returned ' . (\is_array($items) ? \count($items) : '0') . ' items',
             'notice'
         );
 
@@ -68,6 +69,6 @@ class WeblinksmanagerModelWeblinks extends ListModel
             $states = array_unique(array_column($items, 'state'));
         }
 
-        return $items ?: array();
+        return $items ?: [];
     }
 }
