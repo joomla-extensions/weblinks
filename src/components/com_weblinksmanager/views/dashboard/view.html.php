@@ -10,8 +10,8 @@
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\MVC\View\HtmlView;
 
 /**
  * View class for the Weblinksmanager Dashboard

@@ -13,7 +13,6 @@
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\HtmlView;
 
-
 /**
  * View class for a single weblink.
  */
@@ -34,7 +33,7 @@ class WeblinksmanagerViewWeblink extends HtmlView
     public function display($tpl = null)
     {
         $app = Factory::getApplication();
-        $id = $app->input->getInt('id');
+        $id  = $app->input->getInt('id');
 
         if (!$id) {
             $app->enqueueMessage('Invalid weblink ID', 'error');
@@ -44,7 +43,7 @@ class WeblinksmanagerViewWeblink extends HtmlView
             return false;
         }
 
-        $db = Factory::getDbo();
+        $db    = Factory::getDbo();
         $query = $db->getQuery(true)
             ->select($db->quoteName(['id', 'title', 'url', 'state']))
             ->from($db->quoteName('#__weblinks'))
