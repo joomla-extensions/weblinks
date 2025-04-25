@@ -36,7 +36,7 @@ final class Swaggerui extends CMSPlugin implements SubscriberInterface
     {
         // Get content item
         $item = $event->getItem();
-        $a = $this->params->get('openapiyaml', 'openapi.yaml');
+        $yaml = $this->params->get('openapiyaml', 'openapi.yaml');
 
         if (strpos($item->text, '{swaggerui}') === false) {
             return;
@@ -46,7 +46,7 @@ final class Swaggerui extends CMSPlugin implements SubscriberInterface
         // Populate the media config
         $config = [
             'baseUrl'     => Uri::base(),
-            'openApiYaml' => $a,
+            'openApiYaml' => $yaml,
         ];
         $this->getApplication()->getDocument()->addScriptOptions('swagger-ui', $config);
         // Register and use the Swagger UI CSS
