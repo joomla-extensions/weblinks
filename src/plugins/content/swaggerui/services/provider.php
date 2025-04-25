@@ -16,7 +16,6 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
-
 use Joomla\Plugin\Content\Swaggerui\Extension\Swaggerui;
 
 return new class () implements ServiceProviderInterface {
