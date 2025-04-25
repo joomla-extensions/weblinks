@@ -12,10 +12,10 @@ namespace Joomla\Plugin\Content\Swaggerui\Extension;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\Event\SubscriberInterface;
 use Joomla\CMS\Event\Content\ContentPrepareEvent;
+use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Event\SubscriberInterface;
 
 final class Swaggerui extends CMSPlugin implements SubscriberInterface
 {
@@ -45,8 +45,8 @@ final class Swaggerui extends CMSPlugin implements SubscriberInterface
         $wa = $this->getApplication()->getDocument()->getWebAssetManager();
         // Populate the media config
         $config = [
-            'baseUrl'          => Uri::base(),
-            'openApiYaml'      => $a,
+            'baseUrl'     => Uri::base(),
+            'openApiYaml' => $a,
         ];
         $this->getApplication()->getDocument()->addScriptOptions('swagger-ui', $config);
         // Register and use the Swagger UI CSS
