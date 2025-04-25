@@ -10,12 +10,20 @@
 
 namespace Joomla\Plugin\Content\Swaggerui\Extension;
 
-\defined('_JEXEC') or die;
-
 use Joomla\CMS\Event\Content\ContentPrepareEvent;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Event\SubscriberInterface;
+
+// phpcs:disable PSR1.Files.SideEffects
+\defined('_JEXEC') or die;
+// phpcs:enable PSR1.Files.SideEffects
+
+/**
+ * Joomla! Swagger UI Plugin.
+ *
+ * @since  5.0.0
+ */
 
 final class Swaggerui extends CMSPlugin implements SubscriberInterface
 {
