@@ -1,0 +1,629 @@
+openapi: 3.0.0
+info:
+  title: Weblinks API
+  version: 1.0.0
+
+paths:
+  /api/index.php/v1/weblinks:
+    get:
+      summary: Get list of weblinks
+      security:
+        - JoomlaToken: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/WeblinksListResponse'
+              example:
+                links:
+                  self: "https://www.alikonweb.it/demo/api/index.php/v1/weblinks"
+                data:
+                  - type: "weblinks"
+                    id: "1"
+                    attributes:
+                      id: "1"
+                      title: "Alikonweb"
+                      alias: "alikonweb"
+                      checked_out: null
+                      checked_out_time: null
+                      catid: "10"
+                      created: "2025-04-23 07:42:29"
+                      created_by: "141"
+                      hits: "0"
+                      state: "1"
+                      access: "1"
+                      ordering: "1"
+                      language: "*"
+                      publish_up: null
+                      publish_down: null
+                      language_title: null
+                      language_image: null
+                      editor: null
+                      access_level: "Public"
+                      category_title: "Uncategorised"
+                  - type: "weblinks"
+                    id: "2"
+                    attributes:
+                      id: "2"
+                      title: "Joomla"
+                      alias: "joomla"
+                      checked_out: null
+                      checked_out_time: null
+                      catid: "10"
+                      created: "2025-04-23 07:43:02"
+                      created_by: "141"
+                      hits: "0"
+                      state: "1"
+                      access: "1"
+                      ordering: "2"
+                      language: "*"
+                      publish_up: null
+                      publish_down: null
+                      language_title: null
+                      language_image: null
+                      editor: null
+                      access_level: "Public"
+                      category_title: "Uncategorised"
+                meta:
+                  total-pages: 1
+
+    post:
+      summary: Create a new weblink
+      security:
+        - JoomlaToken: []
+      requestBody:
+        required: true
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/WeblinkCreateRequest'
+            example:
+              access: "1"
+              alias: ""
+              catid: "10"
+              description: "<p>text</p>"
+              images:
+                float_first: ""
+                float_second: ""
+                image_first: ""
+                image_first_alt: ""
+                image_first_caption: ""
+                image_second: ""
+                image_second_alt: ""
+                image_second_caption: ""
+              language: "*"
+              metadata:
+                rights: ""
+                robots: ""
+              metadesc: ""
+              metakey: ""
+              modified: ""
+              params:
+                count_clicks: ""
+                height: ""
+                target: ""
+                width: ""
+              title: "weblink title"
+              url: "http://somelink.com/"
+              xreference: "xreference"
+      responses:
+        '201':
+          description: Weblink created
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/WeblinkCreateResponse'
+              example:
+                links:
+                  self: "https://www.alikonweb.it/demo/api/index.php/v1/weblinks"
+                data:
+                  type: "weblinks"
+                  id: "3"
+                  attributes:
+                    id: "3"
+                    catid: "10"
+                    title: "weblink title"
+                    alias: "weblink-title"
+                    url: "http://somelink.com/"
+                    description: "<p>text</p>"
+                    hits: "0"
+                    state: "0"
+                    checked_out: null
+                    checked_out_time: null
+                    ordering: "3"
+                    access: "1"
+                    params:
+                      target: ""
+                      width: ""
+                      height: ""
+                      count_clicks: ""
+                    language: "*"
+                    created: "2025-04-23 08:12:17"
+                    created_by: "141"
+                    created_by_alias: ""
+                    modified: "2025-04-23 08:12:17"
+                    modified_by: "141"
+                    metakey: ""
+                    metadesc: ""
+                    metadata:
+                      robots: ""
+                      rights: ""
+                      tags:
+                        typeAlias: null
+                        itemTags: null
+                        tags: ""
+                        newTags: null
+                        oldTags: null
+                    featured: "0"
+                    xreference: "xreference"
+                    publish_up: null
+                    publish_down: null
+                    version: "1"
+                    images:
+                      image_first: ""
+                      float_first: ""
+                      image_first_alt: ""
+                      image_first_caption: ""
+                      image_second: ""
+                      float_second: ""
+                      image_second_alt: ""
+                      image_second_caption: ""
+                    tags:
+                      typeAlias: null
+                      itemTags: null
+                      tags: ""
+                      newTags: null
+                      oldTags: null
+
+  /api/index.php/v1/weblinks/{id}:
+    get:
+      summary: Get a single weblink
+      security:
+        - JoomlaToken: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/WeblinkSingleResponse'
+              example:
+                links:
+                  self: "https://www.alikonweb.it/demo/api/index.php/v1/weblinks/1"
+                data:
+                  type: "weblinks"
+                  id: "1"
+                  attributes:
+                    id: "1"
+                    catid: "10"
+                    title: "Alikonweb"
+                    alias: "alikonweb"
+                    url: "https://www.alikonweb.it"
+                    description: "<p>My personal web site</p>"
+                    hits: "0"
+                    state: "1"
+                    checked_out: null
+                    checked_out_time: null
+                    ordering: "1"
+                    access: "1"
+                    params:
+                      target: ""
+                      width: ""
+                      height: ""
+                      count_clicks: ""
+                    language: "*"
+                    created: "2025-04-23 07:42:29"
+                    created_by: "141"
+                    created_by_alias: ""
+                    modified: "2025-04-23 07:42:29"
+                    modified_by: "141"
+                    metakey: ""
+                    metadesc: ""
+                    metadata:
+                      robots: ""
+                      rights: ""
+                      tags:
+                        typeAlias: null
+                        itemTags: null
+                        tags: ""
+                        newTags: null
+                        oldTags: null
+                    featured: "0"
+                    xreference: ""
+                    publish_up: null
+                    publish_down: null
+                    version: "1"
+                    images:
+                      image_first: ""
+                      float_first: ""
+                      image_first_alt: ""
+                      image_first_caption: ""
+                      image_second: ""
+                      float_second: ""
+                      image_second_alt: ""
+                      image_second_caption: ""
+                    tags:
+                      typeAlias: null
+                      itemTags: null
+                      tags: ""
+                      newTags: null
+                      oldTags: null
+
+    patch:
+      summary: Update a weblink
+      security:
+        - JoomlaToken: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/WeblinkPatchRequest'
+            example:
+              catid: "10"
+              description: "<p>some new text</p>"
+              language: "*"
+              title: "new title"
+              url: "http://newsomelink.com/"
+      responses:
+        '200':
+          description: Weblink updated
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/WeblinkSingleResponse'
+
+    delete:
+      summary: Delete a weblink
+      security:
+        - JoomlaToken: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Weblink deleted successfully
+
+components:
+  securitySchemes:
+    JoomlaToken:
+      type: apiKey
+      in: header
+      name: X-Joomla-Token
+  schemas:
+    Links:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+
+    Meta:
+      type: object
+      properties:
+        total-pages:
+          type: integer
+
+    WeblinksListResponse:
+      type: object
+      properties:
+        links:
+          $ref: '#/components/schemas/Links'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/WeblinkListItem'
+        meta:
+          $ref: '#/components/schemas/Meta'
+
+    WeblinkListItem:
+      type: object
+      properties:
+        type:
+          type: string
+          example: weblinks
+        id:
+          type: string
+        attributes:
+          $ref: '#/components/schemas/WeblinkListAttributes'
+
+    WeblinkListAttributes:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        alias:
+          type: string
+        checked_out:
+          type: string
+          nullable: true
+        checked_out_time:
+          type: string
+          nullable: true
+        catid:
+          type: string
+        created:
+          type: string
+        created_by:
+          type: string
+        hits:
+          type: string
+        state:
+          type: string
+        access:
+          type: string
+        ordering:
+          type: string
+        language:
+          type: string
+        publish_up:
+          type: string
+          nullable: true
+        publish_down:
+          type: string
+          nullable: true
+        language_title:
+          type: string
+          nullable: true
+        language_image:
+          type: string
+          nullable: true
+        editor:
+          type: string
+          nullable: true
+        access_level:
+          type: string
+        category_title:
+          type: string
+
+    WeblinkSingleResponse:
+      type: object
+      properties:
+        links:
+          $ref: '#/components/schemas/Links'
+        data:
+          $ref: '#/components/schemas/WeblinkSingleData'
+
+    WeblinkSingleData:
+      type: object
+      properties:
+        type:
+          type: string
+          example: weblinks
+        id:
+          type: string
+        attributes:
+          $ref: '#/components/schemas/WeblinkSingleAttributes'
+
+    WeblinkSingleAttributes:
+      type: object
+      properties:
+        id:
+          type: string
+        catid:
+          type: string
+        title:
+          type: string
+        alias:
+          type: string
+        url:
+          type: string
+        description:
+          type: string
+        hits:
+          type: string
+        state:
+          type: string
+        checked_out:
+          type: string
+          nullable: true
+        checked_out_time:
+          type: string
+          nullable: true
+        ordering:
+          type: string
+        access:
+          type: string
+        params:
+          type: object
+          properties:
+            target:
+              type: string
+            width:
+              type: string
+            height:
+              type: string
+            count_clicks:
+              type: string
+        language:
+          type: string
+        created:
+          type: string
+        created_by:
+          type: string
+        created_by_alias:
+          type: string
+        modified:
+          type: string
+        modified_by:
+          type: string
+        metakey:
+          type: string
+        metadesc:
+          type: string
+        metadata:
+          type: object
+          properties:
+            robots:
+              type: string
+            rights:
+              type: string
+            tags:
+              type: object
+              properties:
+                typeAlias:
+                  type: string
+                  nullable: true
+                itemTags:
+                  type: string
+                  nullable: true
+                tags:
+                  type: string
+                newTags:
+                  type: string
+                  nullable: true
+                oldTags:
+                  type: string
+                  nullable: true
+        featured:
+          type: string
+        xreference:
+          type: string
+        publish_up:
+          type: string
+          nullable: true
+        publish_down:
+          type: string
+          nullable: true
+        version:
+          type: string
+        images:
+          type: object
+          properties:
+            image_first:
+              type: string
+            float_first:
+              type: string
+            image_first_alt:
+              type: string
+            image_first_caption:
+              type: string
+            image_second:
+              type: string
+            float_second:
+              type: string
+            image_second_alt:
+              type: string
+            image_second_caption:
+              type: string
+        tags:
+          type: object
+          properties:
+            typeAlias:
+              type: string
+              nullable: true
+            itemTags:
+              type: string
+              nullable: true
+            tags:
+              type: string
+            newTags:
+              type: string
+              nullable: true
+            oldTags:
+              type: string
+              nullable: true
+
+    WeblinkCreateRequest:
+      type: object
+      properties:
+        access:
+          type: string
+        alias:
+          type: string
+        catid:
+          type: string
+        description:
+          type: string
+        images:
+          type: object
+          properties:
+            float_first:
+              type: string
+            float_second:
+              type: string
+            image_first:
+              type: string
+            image_first_alt:
+              type: string
+            image_first_caption:
+              type: string
+            image_second:
+              type: string
+            image_second_alt:
+              type: string
+            image_second_caption:
+              type: string
+        language:
+          type: string
+        metadata:
+          type: object
+          properties:
+            rights:
+              type: string
+            robots:
+              type: string
+        metadesc:
+          type: string
+        metakey:
+          type: string
+        modified:
+          type: string
+        params:
+          type: object
+          properties:
+            count_clicks:
+              type: string
+            height:
+              type: string
+            target:
+              type: string
+            width:
+              type: string
+        title:
+          type: string
+        url:
+          type: string
+        xreference:
+          type: string
+
+    WeblinkCreateResponse:
+      type: object
+      properties:
+        links:
+          $ref: '#/components/schemas/Links'
+        data:
+          $ref: '#/components/schemas/WeblinkSingleData'
+
+    WeblinkPatchRequest:
+      type: object
+      properties:
+        catid:
+          type: string
+        description:
+          type: string
+        language:
+          type: string
+        title:
+          type: string
+        url:
+          type: string
