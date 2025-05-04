@@ -10,16 +10,16 @@
 
 namespace Joomla\Component\Weblinks\Site\View\Weblinks;
 
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\CMS\Log\Log;
+
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -92,11 +92,11 @@ class HtmlView extends BaseHtmlView
         $this->activeFilters = $model->getActiveFilters();
 
         // Check for errors
-        if (count($errors = $model->getErrors())) {
-            throw new GenericDataException(implode("\n", $errors), 500);
+        if (\count($errors = $model->getErrors())) {
+            throw new GenericDataException(\implode("\n", $errors), 500);
         }
 
-        if (!count($this->items) && $this->isEmptyState = $this->get('IsEmptyState')) {
+        if (!\count($this->items) && $this->isEmptyState = $this->get('IsEmptyState')) {
             $this->setLayout('emptystate');
         }
 
@@ -113,9 +113,9 @@ class HtmlView extends BaseHtmlView
      */
     protected function addToolbar()
     {
-        $user  = $this->getCurrentUser();
+        $user       = $this->getCurrentUser();
         $categoryId = $this->state->get('filter.category_id', 0);
-        $canDo = ContentHelper::getActions('com_weblinks', 'category', $categoryId);
+        $canDo      = ContentHelper::getActions('com_weblinks', 'category', $categoryId);
 
         // Debug permissions
         Log::add('Permissions for category ' . $categoryId . ': ' . print_r($canDo, true), Log::INFO, 'com_weblinks');
@@ -124,7 +124,7 @@ class HtmlView extends BaseHtmlView
         ToolbarHelper::title(Text::_('COM_WEBLINKS_MANAGER_WEBLINKS'), 'link weblinks');
 
         // Ensure New button is always added if user has create permission at component level
-        if ($user->authorise('core.create', 'com_weblinks') || count($user->getAuthorisedCategories('com_weblinks', 'core.create')) > 0) {
+        if ($user->authorise('core.create', 'com_weblinks') || \count($user->getAuthorisedCategories('com_weblinks', 'core.create')) > 0) {
             ToolbarHelper::addNew('weblink.add');
         }
 
