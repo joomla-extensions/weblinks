@@ -15,6 +15,7 @@ namespace Joomla\Component\Weblinks\Site\Controller;
 // phpcs:enable PSR1.Files.SideEffects
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Utilities\ArrayHelper;
 
@@ -81,7 +82,10 @@ class WeblinkController extends FormController
         $categoryId = ArrayHelper::getValue($data, 'catid', $this->input->getInt('id'), 'int');
         if ($categoryId) {
             // If the category has been passed in the URL check it.
-            return $this->app->getIdentity()->authorise('core.create', $this->option . '.category.' . $categoryId);
+            return $this->app->getIdentity()->authorise(
+                'core.create',
+                $this->option . '.category.' . $categoryId
+            );
         }
 
         // In the absence of better information, revert to the component permissions.
@@ -89,7 +93,7 @@ class WeblinkController extends FormController
     }
 
     /**
-     * Method to check if you can add a new record.
+     * Method to check if you can edit a record.
      *
      * @param   array   $data  An array of input data.
      * @param   string  $key   The name of the key for the primary key.
@@ -100,31 +104,46 @@ class WeblinkController extends FormController
      */
     protected function allowEdit($data = [], $key = 'id')
     {
-        $recordId   = (int) isset($data[$key]) ? $data[$key] : 0;
+        $recordId = (int) isset($data[$key]) ? $data[$key] : 0;
         if (!$recordId) {
             return false;
         }
 
-        $record     = $this->getModel()->getItem($recordId);
-        $categoryId = (int) $record->catid;
-        if ($categoryId) {
-            // The category has been set. Check the category permissions.
-            $user = $this->app->getIdentity();
-            // First, check edit permission
-            if ($user->authorise('core.edit', $this->option . '.category.' . $categoryId)) {
-                return true;
-            }
-
-            // Fallback on edit.own
-            if ($user->authorise('core.edit.own', $this->option . '.category.' . $categoryId) && $record->created_by == $user->id) {
-                return true;
-            }
-
+        $record = $this->getModel()->getItem($recordId);
+        if (!$record) {
             return false;
         }
 
-        // Since there is no asset tracking, revert to the component permissions.
-        return parent::allowEdit($data, $key);
+        $user       = $this->app->getIdentity();
+        $categoryId = (int) $record->catid;
+
+        // Check component-level permissions first
+        $canEdit    = $user->authorise('core.edit', 'com_weblinks');
+        $canEditOwn = $user->authorise('core.edit.own', 'com_weblinks');
+
+        if ($canEdit) {
+            return true;
+        }
+
+        if ($canEditOwn && $record->created_by == $user->id) {
+            return true;
+        }
+
+        // Check category-level permissions
+        if ($categoryId) {
+            $canEditCategory    = $user->authorise('core.edit', 'com_weblinks.category.' . $categoryId);
+            $canEditOwnCategory = $user->authorise('core.edit.own', 'com_weblinks.category.' . $categoryId);
+
+            if ($canEditCategory) {
+                return true;
+            }
+
+            if ($canEditOwnCategory && $record->created_by == $user->id) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -156,6 +175,32 @@ class WeblinkController extends FormController
      */
     public function edit($key = null, $urlVar = 'w_id')
     {
+        $app = $this->app;
+        $id  = $this->input->getInt('id');
+        $cid = $this->input->get('cid', [], 'array');
+
+        // Determine the record ID
+        if ($id) {
+            $recordId = $id;
+        } elseif (!empty($cid)) {
+            $recordId = (int) reset($cid);
+        } else {
+            $this->setRedirect(Route::_('index.php?option=com_weblinks&view=weblinks'));
+            return false;
+        }
+
+        // Ensure the ID is set for parent::edit and allowEdit
+        $this->input->set($urlVar, $recordId);
+
+        // Manually check if the user can edit this item
+        $data = ['id' => $recordId];
+        if (!$this->allowEdit($data, 'id')) {
+            $app->enqueueMessage(Text::_('JERROR_ALERTNOAUTHOR'), 'error');
+            $app->setHeader('status', 403, true);
+            $this->setRedirect(Route::_('index.php?option=com_weblinks&view=weblinks'));
+            return false;
+        }
+
         return parent::edit($key, $urlVar);
     }
 
