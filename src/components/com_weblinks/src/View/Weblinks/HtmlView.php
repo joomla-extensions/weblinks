@@ -20,7 +20,6 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
-
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -93,10 +92,10 @@ class HtmlView extends BaseHtmlView
 
         // Check for errors
         if (\count($errors = $model->getErrors())) {
-            throw new GenericDataException(\implode("\n", $errors), 500);
+            throw new GenericDataException(implode("\n", $errors), 500);
         }
 
-        if (!\count($this->items) && $this->isEmptyState = $this->get('IsEmptyState')) {
+        if (!\count($this->items) && ($this->isEmptyState == $this->get('IsEmptyState'))) {
             $this->setLayout('emptystate');
         }
 
