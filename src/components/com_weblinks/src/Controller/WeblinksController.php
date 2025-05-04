@@ -10,6 +10,7 @@
 
 namespace Joomla\Component\Weblinks\Site\Controller;
 
+// phpcs:enable Generic.Files.OneClassPerFile
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Controller\AdminController;

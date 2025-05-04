@@ -10,6 +10,7 @@
 
 namespace Joomla\Component\Weblinks\Site\View\Weblinks;
 
+// phpcs:enable Generic.Files.OneClassPerFile
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Helper\ContentHelper;
