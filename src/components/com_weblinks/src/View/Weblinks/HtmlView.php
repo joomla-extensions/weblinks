@@ -10,8 +10,9 @@
 
 namespace Joomla\Component\Weblinks\Site\View\Weblinks;
 
-// phpcs:enable Generic.Files.OneClassPerFile
+// phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
+// phpcs:enable PSR1.Files.SideEffects
 
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
