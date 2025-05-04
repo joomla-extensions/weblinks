@@ -8,3 +8,7 @@ use Joomla\CMS\MVC\Controller\BaseController;
 $controller = BaseController::getInstance('Weblinks');
 $controller->execute(Factory::getApplication()->input->get('task', 'display'));
 
+
+
+
+
