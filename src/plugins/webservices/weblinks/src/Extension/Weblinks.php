@@ -58,7 +58,6 @@ class Weblinks extends CMSPlugin
             'categories',
             ['component' => 'com_categories', 'extension' => 'com_weblinks'],
             $isPublic // <-- Only GET is public
-
         );
 
         $this->createFieldsRoutes($router, $isPublic);
