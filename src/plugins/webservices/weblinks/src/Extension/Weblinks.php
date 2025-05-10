@@ -1,3 +1,4 @@
+
 <?php
 
 /**
@@ -43,38 +44,50 @@ class Weblinks extends CMSPlugin
      */
     public function onBeforeApiRoute(&$router)
     {
-        $router->createCRUDRoutes('v1/weblinks', 'weblinks', ['component' => 'com_weblinks']);
+        $isPublic = $this->params->get('public', false);
+
+        $router->createCRUDRoutes(
+            'v1/weblinks',
+            'weblinks',
+            ['component' => 'com_weblinks'],
+            $isPublic // <-- Only GET is public
+        );
 
         $router->createCRUDRoutes(
             'v1/weblinks/categories',
             'categories',
-            ['component' => 'com_categories', 'extension' => 'com_weblinks']
+            ['component' => 'com_categories', 'extension' => 'com_weblinks'],
+            $isPublic // <-- Only GET is public
+
         );
 
-        $this->createFieldsRoutes($router);
+        $this->createFieldsRoutes($router, $isPublic);
     }
 
     /**
      * Create fields routes
      *
      * @param   ApiRouter  &$router  The API Routing object
+     * @param   boolean    $isPublic  Indicates if the routes are public
      *
      * @return  void
      *
      * @since   __DEPLOY_VERSION__
      */
-    private function createFieldsRoutes(&$router)
+    private function createFieldsRoutes(&$router, $isPublic)
     {
         $router->createCRUDRoutes(
             'v1/fields/weblinks',
             'fields',
-            ['component' => 'com_fields', 'context' => 'com_weblinks.weblink']
+            ['component' => 'com_fields', 'context' => 'com_weblinks.weblink'],
+            $isPublic // <-- Only GET is public
         );
 
         $router->createCRUDRoutes(
             'v1/fields/groups/weblinks',
             'groups',
-            ['component' => 'com_fields', 'context' => 'com_weblinks.weblink']
+            ['component' => 'com_fields', 'context' => 'com_weblinks.weblink'],
+            $isPublic // <-- Only GET is public
         );
     }
 }
