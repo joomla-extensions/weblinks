@@ -10,15 +10,13 @@
 
 namespace Joomla\Component\Weblinks\Api\Controller;
 
-use Joomla\CMS\MVC\Controller\ApiController;
-use Joomla\Component\Fields\Administrator\Helper\FieldsHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Cache\CacheControllerFactoryInterface;
-use Joomla\CMS\Plugin\PluginHelper;
-use Joomla\CMS\User\User;
-use Joomla\Registry\Registry;
-use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\MVC\Controller\ApiController;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Component\Fields\Administrator\Helper\FieldsHelper;
+use Joomla\Registry\Registry;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -104,7 +102,7 @@ class WeblinksController extends ApiController
         // Load or initialize rate data
         if (file_exists($file)) {
             $rateData = json_decode(file_get_contents($file), true);
-            if (!is_array($rateData)) {
+            if (!\is_array($rateData)) {
                 $rateData = ['count' => 0, 'start' => time()];
             }
         } else {
@@ -137,7 +135,7 @@ class WeblinksController extends ApiController
         $cache = Factory::getContainer()->get(CacheControllerFactoryInterface::class)
             ->createCacheController('output', [
                 'defaultgroup' => 'api_rate_limit',
-                'lifetime' => $windowSeconds,
+                'lifetime'     => $windowSeconds,
             ]);
 
         $cacheKey = md5('api_rate_' . $userIp);
@@ -176,7 +174,7 @@ class WeblinksController extends ApiController
             'errors' => [
                 [
                     'title' => 'Rate limit exceeded',
-                    'code' => 429
+                    'code'  => 429
                 ]
             ]
         ]);
