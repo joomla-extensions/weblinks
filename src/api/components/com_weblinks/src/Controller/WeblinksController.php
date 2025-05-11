@@ -53,9 +53,8 @@ class WeblinksController extends ApiController
      */
     public function execute($task): mixed
     {
-        $user = Factory::getApplication()->getIdentity();
-        if (!$user || $user->guest) {
-            $this->applyRateLimit();
+        if (true !== $this->app->login(['username' => ''], ['silent' => true, 'action' => 'core.login.api'])) {
+           $this->applyRateLimit();
         }
 
         return parent::execute($task);
