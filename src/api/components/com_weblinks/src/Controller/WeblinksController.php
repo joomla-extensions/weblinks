@@ -54,7 +54,7 @@ class WeblinksController extends ApiController
     public function execute($task): mixed
     {
         if (true !== $this->app->login(['username' => ''], ['silent' => true, 'action' => 'core.login.api'])) {
-           $this->applyRateLimit();
+            $this->applyRateLimit();
         }
 
         return parent::execute($task);
@@ -173,9 +173,9 @@ class WeblinksController extends ApiController
             'errors' => [
                 [
                     'title' => 'Rate limit exceeded',
-                    'code'  => 429
-                ]
-            ]
+                    'code'  => 429,
+                ],
+            ],
         ]);
         exit; // Stop further execution
     }
