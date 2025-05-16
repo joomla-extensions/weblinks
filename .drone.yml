@@ -105,7 +105,7 @@ steps:
       - chmod -R 777 /tests/www/pgsql/
       - chown -R www-data /tests/www/pgsql/
       - cd /drone/src
-      - npx cypress run --browser=firefox --e2e --env cmsPath=/tests/www/pgsql,db_type=pgsql,db_host=postgres,db_name=test_joomla,db_user=root,db_password=joomla_ut,db_prefix=pgsql_ --config baseUrl=http://localhost/pgsql,screenshotsFolder=/drone/src/tests/cypress/output/screenshot
+      - npx cypress run --browser=firefox --e2e --env cmsPath=/tests/www/pgsql,db_type=pgsql,db_host=postgres,db_name=test_joomla,db_user=root,db_password=joomla_ut,db_prefix=pgsql_,logFile=/var/log/apache2/error.log --config baseUrl=http://localhost/pgsql,screenshotsFolder=/drone/src/tests/cypress/output/screenshot
 
   - name: artifacts-system-tests
     image: joomlaprojects/docker-images:packager
