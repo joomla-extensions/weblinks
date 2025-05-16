@@ -83,7 +83,7 @@ steps:
       - chmod -R 777 /tests/www/mysql/
       - chown -R www-data /tests/www/mysql/
       - cd /drone/src
-      - npx cypress run --browser=firefox --e2e --env cmsPath=/tests/www/mysql,db_type=mysqli,db_host=mysql,db_name=test_joomla,db_user=joomla_ut,db_password=joomla_ut,db_prefix=mysql_ --config baseUrl=http://localhost/mysql,screenshotsFolder=/drone/src/tests/cypress/output/screenshot
+      - npx cypress run --browser=firefox --e2e --env cmsPath=/tests/www/mysql,db_type=mysqli,db_host=mysql,db_name=test_joomla,db_user=joomla_ut,db_password=joomla_ut,db_prefix=mysql_,logFile=/var/log/apache2/error.log --config baseUrl=http://localhost/mysql,screenshotsFolder=/drone/src/tests/cypress/output/screenshot
 
   - name: phpmin-system-postgres
     depends_on: [ prepare_tests ]
