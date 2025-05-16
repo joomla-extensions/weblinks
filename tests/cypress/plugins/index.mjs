@@ -18,7 +18,7 @@ export default function setupPlugins(on, config) {
     writeRelativeFile: ({ path, content, mode }) => writeRelativeFile(path, content, config, mode),
     deleteRelativePath: (path) => deleteRelativePath(path, config),
     copyRelativeFile: ({ source, destination }) => copyRelativeFile(source, destination, config),
-		checkForLogs: () => checkForLogs(config),
+    checkForLogs: () => checkForLogs(config),
     clearLogs: () => clearLogs(config),
     getMails: () => getMails(),
     clearEmails: () => clearEmails(),
