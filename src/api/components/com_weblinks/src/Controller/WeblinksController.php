@@ -177,7 +177,9 @@ class WeblinksController extends ApiController
                 ],
             ],
         ]);
-        exit; // Stop further execution
+
+        // Stop further execution
+        exit;
     }
 
     /**
