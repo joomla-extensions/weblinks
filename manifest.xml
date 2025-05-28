@@ -81,6 +81,6 @@
 			<downloadurl type="full" format="zip">https://downloads.joomla.org/extensions/weblinks/4-4-0/pkg-weblinks-4.4.0.zip</downloadurl>
 		</downloads>
 		<sha512>eaf34d318b0683f6e644c3c7dc01c3568c3eb3080452658d01ecad901b6bc5246022cfbcb53b724ffb9cf52fe47fd1ac74e857e5fa4aed0d5d8931c82aecc18a</sha512>
-		<targetplatform name="joomla" version="(4\.[4])|(5\.[0123])" />
+		<targetplatform name="joomla" version="(4\.[4])|(5\.[01234])" />
 	</update>
 </updates>
