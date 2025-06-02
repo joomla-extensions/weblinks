@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<changelogs>
+    <changelog>
+        <element>pkg_weblinks</element>
+        <type>package</type>
+        <version>5.0.0</version>
+    </changelog>
+</changelogs>
