@@ -2,17 +2,16 @@
 <extension version="3.1" type="plugin" group="webservices" method="upgrade">
 	<name>plg_webservices_weblinks</name>
 	<author>Joomla! Project</author>
-	<creationDate>August 2017</creationDate>
-	<copyright>(C) 2005 - 2019 Open Source Matters. All rights reserved.</copyright>
+	<creationDate>##DATE##</creationDate>
+	<copyright>(C) 2005 - ##YEAR## Open Source Matters. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>admin@joomla.org</authorEmail>
 	<authorUrl>www.joomla.org</authorUrl>
-	<version>4.0.0</version>
+	<version>##VERSION##</version>
 	<description>PLG_WEBSERVICES_WEBLINKS_XML_DESCRIPTION</description>
 	<namespace path="src">Joomla\Plugin\WebServices\Weblinks</namespace>
 	<files>
-		<folder plugin="weblinks">services</folder>
-		<folder>src</folder>
+		##FILES##
 	</files>
 	<languages folder="language">
 		##LANGUAGE_FILES##
