@@ -14,6 +14,7 @@ namespace Joomla\Component\Weblinks\Administrator\Controller;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 use Joomla\CMS\MVC\Controller\AdminController;
+use Joomla\CMS\Response\JsonResponse;
 
 /**
  * Weblinks list controller class.
@@ -36,5 +37,29 @@ class WeblinksController extends AdminController
     public function getModel($name = 'Weblink', $prefix = 'Administrator', $config = ['ignore_request' => true])
     {
         return parent::getModel($name, $prefix, $config);
+    }
+    /**
+     * Method to get the JSON-encoded amount of published articles
+     *
+     * @return  void
+     *
+     * @since   5.0.0
+     */
+    public function getQuickiconContent()
+    {
+        $model = $this->getModel('Weblinks');
+
+        $model->setState('filter.published', 1);
+
+        $amount = 0;
+        if ($model) {
+            $amount = (int) $model->getTotal();
+        }
+
+        $responseData = [
+            'amount' => $amount
+        ];
+
+        echo new JsonResponse($responseData);
     }
 }
