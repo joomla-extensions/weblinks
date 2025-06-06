@@ -7,5 +7,9 @@
         <attributes>
             <group>webservices</group>
         </attributes>
+        <addition>
+            <item>API for Webinks with CRUD</item>
+            <item>Rate Limiting for public API requests</item>
+        </addition>
     </changelog>
 </changelogs>
