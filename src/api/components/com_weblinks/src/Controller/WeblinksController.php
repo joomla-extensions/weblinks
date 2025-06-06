@@ -133,7 +133,7 @@ class WeblinksController extends ApiController
         // Use Joomla cache if persistent
         $cache = Factory::getContainer()->get(CacheControllerFactoryInterface::class)
             ->createCacheController('output', [
-                'defaultgroup' => 'api_rate_limit',
+                'defaultgroup' => 'weblinks_api_rate_limit',
                 'lifetime'     => $windowSeconds,
             ]);
 
