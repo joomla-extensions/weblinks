@@ -83,7 +83,7 @@ steps:
       - chmod -R 777 /tests/www/mysql/
       - chown -R www-data /tests/www/mysql/
       - cd /drone/src
-      - npx cypress run --browser=firefox --e2e --env cmsPath=/tests/www/mysql,db_type=mysqli,db_host=mysql,db_name=test_joomla,db_user=joomla_ut,db_password=joomla_ut,db_prefix=mysql_ --config baseUrl=http://localhost/mysql,screenshotsFolder=/drone/src/tests/cypress/output/screenshot
+      - npx cypress run --browser=firefox --e2e --env cmsPath=/tests/www/mysql,db_type=mysqli,db_host=mysql,db_name=test_joomla,db_user=joomla_ut,db_password=joomla_ut,db_prefix=mysql_,logFile=/var/log/apache2/error.log --config baseUrl=http://localhost/mysql,screenshotsFolder=/drone/src/tests/cypress/output/screenshot
 
   - name: phpmin-system-postgres
     depends_on: [ prepare_tests ]
@@ -105,7 +105,7 @@ steps:
       - chmod -R 777 /tests/www/pgsql/
       - chown -R www-data /tests/www/pgsql/
       - cd /drone/src
-      - npx cypress run --browser=firefox --e2e --env cmsPath=/tests/www/pgsql,db_type=pgsql,db_host=postgres,db_name=test_joomla,db_user=root,db_password=joomla_ut,db_prefix=pgsql_ --config baseUrl=http://localhost/pgsql,screenshotsFolder=/drone/src/tests/cypress/output/screenshot
+      - npx cypress run --browser=firefox --e2e --env cmsPath=/tests/www/pgsql,db_type=pgsql,db_host=postgres,db_name=test_joomla,db_user=root,db_password=joomla_ut,db_prefix=pgsql_,logFile=/var/log/apache2/error.log --config baseUrl=http://localhost/pgsql,screenshotsFolder=/drone/src/tests/cypress/output/screenshot
 
   - name: artifacts-system-tests
     image: joomlaprojects/docker-images:packager
@@ -177,6 +177,6 @@ services:
 
 ---
 kind: signature
-hmac: 9c3516344573b2f9b8a82077258c15ae52fcc45d55eb8ef059258c778a06f35b
+hmac: 73da2c292260b29702ad54d7587b9af82fa1c16f4ec7a70a1b9b52d88f99d395
 
 ...
