@@ -7,13 +7,12 @@
 
 namespace Joomla\Plugin\Quickicon\Weblinks\Extension;
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Event\SubscriberInterface;
-use Joomla\CMS\Language\Text;
 use Joomla\Module\Quickicon\Administrator\Event\QuickIconsEvent;
 
-
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
 /**
  * Weblinks Quick Icon plugin.
@@ -66,15 +65,15 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
 
         $iconDefinition = [
             [
-                'image'  => 'icon-link',
-                'link'   => 'index.php?option=com_weblinks',
-                'linkadd'   => 'index.php?option=com_weblinks&task=weblink.add',
-                'text'   => Text::_('PLG_QUICKICON_WEBLINKS_TITLE'),
-                'id'     => 'PLG_QUICKICON_WEBLINKS'
+                'image'   => 'icon-link',
+                'link'    => 'index.php?option=com_weblinks',
+                'linkadd' => 'index.php?option=com_weblinks&task=weblink.add',
+                'text'    => Text::_('PLG_QUICKICON_WEBLINKS_TITLE'),
+                'id'      => 'PLG_QUICKICON_WEBLINKS',
             ],
         ];
 
-        if($this->params->get('show_count', 1)) {
+        if ($this->params->get('show_count', 1)) {
             $iconDefinition[0]['ajaxurl'] = 'index.php?option=com_weblinks&task=weblinks.getQuickiconContent&format=json';
         } else {
             unset($iconDefinition[0]['ajaxurl']);

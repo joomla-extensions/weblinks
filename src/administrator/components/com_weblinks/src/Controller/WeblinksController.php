@@ -57,7 +57,7 @@ class WeblinksController extends AdminController
         }
 
         $responseData = [
-            'amount' => $amount
+            'amount' => $amount,
         ];
 
         echo new JsonResponse($responseData);
