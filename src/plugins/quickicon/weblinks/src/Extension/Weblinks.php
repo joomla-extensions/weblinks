@@ -7,12 +7,14 @@
 
 namespace Joomla\Plugin\Quickicon\Weblinks\Extension;
 
+// phpcs:disable PSR1.Files.SideEffects
+\defined('_JEXEC') or die;
+// phpcs:enable PSR1.Files.SideEffects
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Event\SubscriberInterface;
 use Joomla\Module\Quickicon\Administrator\Event\QuickIconsEvent;
-
-\defined('_JEXEC') or die;
 
 /**
  * Weblinks Quick Icon plugin.
