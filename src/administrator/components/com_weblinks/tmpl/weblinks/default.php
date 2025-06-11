@@ -24,11 +24,11 @@ use Joomla\CMS\Router\Route;
 HTMLHelper::_('behavior.multiselect');
 $user      = Factory::getApplication()->getIdentity();
 $userId    = $user->get('id');
-$listOrder = $this->escape($this->state->get('list.ordering'));
-$listDirn  = $this->escape($this->state->get('list.direction'));
+$listOrder = $this->escape($this->getState()->get('list.ordering'));
+$listDirn  = $this->escape($this->getState()->get('list.direction'));
 $saveOrder = $listOrder == 'a.ordering';
 $assoc     = Associations::isEnabled();
-if ($saveOrder && !empty($this->items)) {
+if ($saveOrder && !empty($this->getItems())) {
     $saveOrderingUrl = 'index.php?option=com_weblinks&task=weblinks.saveOrderAjax&tmpl=component';
     HTMLHelper::_('draggablelist.draggable');
 }
@@ -41,7 +41,7 @@ if ($saveOrder && !empty($this->items)) {
                 // Search tools bar
                 echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]);
                 ?>
-                <?php if (empty($this->items)) :
+                <?php if (empty($this->getItems())) :
                     ?>
                   <div class="alert alert-info">
                         <span class="icon-info-circle" aria-hidden="true"></span><span class="visually-hidden"><?php echo Text::_('INFO'); ?></span>
@@ -98,7 +98,7 @@ if ($saveOrder && !empty($this->items)) {
                         <tbody <?php if ($saveOrder) :
                             ?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($listDirn); ?>" data-nested="true"<?php
                                endif; ?>>
-                        <?php foreach ($this->items as $i => $item) :
+                        <?php foreach ($this->getItems() as $i => $item) :
                             ?>
                             <?php $item->cat_link = Route::_('index.php?option=com_categories&extension=com_weblinks&task=edit&type=other&cid[]=' . $item->catid); ?>
                             <?php $canCreate      = $user->authorise('core.create', 'com_weblinks.category.' . $item->catid); ?>
@@ -191,7 +191,7 @@ if ($saveOrder && !empty($this->items)) {
                    </table>
 
                     <?php // Load the pagination. ?>
-                    <?php echo $this->pagination->getListFooter(); ?>
+                    <?php echo $this->getPagination()->getListFooter(); ?>
 
                     <?php // Load the batch processing form. ?>
                     <?php if (

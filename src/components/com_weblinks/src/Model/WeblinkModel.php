@@ -113,7 +113,7 @@ class WeblinkModel extends ItemModel
 
                 // Filter by language
                 if ($this->getState('filter.language')) {
-                    $query->whereIn($db->quoteName('a.language'), [Factory::getLanguage()->getTag(), '*'], ParameterType::STRING);
+                    $query->whereIn($db->quoteName('a.language'), [Factory::getApplication()->getLanguage()->getTag(), '*'], ParameterType::STRING);
                 }
 
                 // Join over the categories to get parent category titles
@@ -174,6 +174,7 @@ class WeblinkModel extends ItemModel
 
                 $this->_item[$pk] = $data;
             } catch (\Exception $e) {
+                // @phpstan-ignore-next-line ItemModel::setError is designed to handle caught exceptions
                 $this->setError($e);
                 $this->_item[$pk] = false;
             }

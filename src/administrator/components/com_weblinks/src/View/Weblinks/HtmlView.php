@@ -18,10 +18,11 @@ namespace Joomla\Component\Weblinks\Administrator\View\Weblinks;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Component\Weblinks\Administrator\Model\WeblinksModel;
+use Joomla\Registry\Registry;
 
 /**
  * View class for a list of weblinks.
@@ -47,7 +48,7 @@ class HtmlView extends BaseHtmlView
     /**
      * The model state
      *
-     * @var  \Joomla\CMS\Object\CMSObject
+     * @var  Registry
      */
     protected $state;
 
@@ -91,12 +92,7 @@ class HtmlView extends BaseHtmlView
         $this->filterForm    = $model->getFilterForm();
         $this->activeFilters = $model->getActiveFilters();
 
-        // Check for errors.
-        if (\count($errors = $model->getErrors())) {
-            throw new GenericDataException(implode("\n", $errors), 500);
-        }
-
-        if (!\count($this->items) && $this->isEmptyState = $this->get('IsEmptyState')) {
+        if (!\count($this->items) && $this->isEmptyState = $model->getIsEmptyState()) {
             $this->setLayout('emptystate');
         }
 
@@ -120,6 +116,42 @@ class HtmlView extends BaseHtmlView
         }
 
         parent::display($tpl);
+    }
+
+    /**
+     * Get the items.
+     *
+     * @return  array
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function getItems(): array
+    {
+        return $this->items;
+    }
+
+    /**
+     * Get the pagination object.
+     *
+     * @return  Pagination
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function getPagination(): Pagination
+    {
+        return $this->pagination;
+    }
+
+    /**
+     * Get the model state.
+     *
+     * @return  Registry
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function getState(): Registry
+    {
+        return $this->state;
     }
 
     /**
