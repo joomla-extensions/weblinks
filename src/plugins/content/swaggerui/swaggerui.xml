@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="content" method="upgrade" version="5.0">
+    <name>plg_content_swaggerui</name>
+    <author>Joomla! Project</author>
+	<creationDate>##DATE##</creationDate>
+	<copyright>(C) 2005 - ##YEAR## Open Source Matters. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see	LICENSE.txt</license>
+	<authorEmail>admin@joomla.org</authorEmail>
+	<authorUrl>www.joomla.org</authorUrl>
+	<version>##VERSION##</version>
+    <description>Embed Swagger UI in Joomla 5 articles using {swaggerui}</description>
+	<namespace path="src">Joomla\Plugin\Content\Swaggerui</namespace>
+	<files>
+		<folder plugin="swaggerui">services</folder>
+		<folder>src</folder>
+		<folder>language</folder>
+	</files>
+	<media destination="plg_content_swaggerui" folder="media">
+		<folder>js</folder>
+	</media>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field
+					name="openapiyaml"
+					type="filelist"
+					label="PLG_CONTENT_SWAGGERUI_FIELD_YAML_LABEL"
+					description="PLG_CONTENT_SWAGGERUI_FIELD_YAML_DESC"
+					default="weblinksopenapi.yaml"
+					hide_default="true"
+					required="true"
+					directory="media/plg_content_swaggerui/js/"
+					fileFilter="\.yaml$"
+				/>				
+			</fieldset>
+		</fields>
+	</config>
+</extension>
