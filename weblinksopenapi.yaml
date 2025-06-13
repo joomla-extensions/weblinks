@@ -1,0 +1,2692 @@
+openapi: 3.0.0
+info:
+  title: Weblinks API
+  version: 1.0.0
+
+tags:
+- name: Weblinks
+  description: Operations related to weblinks
+- name: Categories
+  description: Operations related to weblink categories
+- name: Fields
+  description: Operations related to custom fields for weblinks
+- name: Field Groups
+  description: Operations related to custom field groups for weblinks
+
+paths:
+  /api/index.php/v1/weblinks:
+    get:
+      summary: Get list of weblinks
+      security:
+      - JoomlaToken: []
+      tags:
+      - Weblinks
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/WeblinksListResponse'
+              example:
+                links:
+                  self: "https://www.example.com/demo/api/index.php/v1/weblinks"
+                data:
+                - type: "weblinks"
+                  id: "1"
+                  attributes:
+                    id: "1"
+                    title: "example"
+                    alias: "example"
+                    checked_out: null
+                    checked_out_time: null
+                    catid: "10"
+                    created: "2025-04-23 07:42:29"
+                    created_by: "141"
+                    hits: "0"
+                    state: "1"
+                    access: "1"
+                    ordering: "1"
+                    language: "*"
+                    publish_up: null
+                    publish_down: null
+                    language_title: null
+                    language_image: null
+                    editor: null
+                    access_level: "Public"
+                    category_title: "Uncategorised"
+                - type: "weblinks"
+                  id: "2"
+                  attributes:
+                    id: "2"
+                    title: "Joomla"
+                    alias: "joomla"
+                    checked_out: null
+                    checked_out_time: null
+                    catid: "10"
+                    created: "2025-04-23 07:43:02"
+                    created_by: "141"
+                    hits: "0"
+                    state: "1"
+                    access: "1"
+                    ordering: "2"
+                    language: "*"
+                    publish_up: null
+                    publish_down: null
+                    language_title: null
+                    language_image: null
+                    editor: null
+                    access_level: "Public"
+                    category_title: "Uncategorised"
+                meta:
+                  total-pages: 1
+        '401':
+          description: Authentication information is missing or invalid.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Forbidden"
+        '404':
+          description: The specified resource was not found.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Resource not found"
+                  code: 404
+        '500':
+          description: An unexpected condition was encountered on the server.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - code: 500
+                  title: "Internal server error"
+    post:
+      summary: Create a new weblink
+      security:
+      - JoomlaToken: []
+      tags:
+      - Weblinks
+      requestBody:
+        required: true
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/WeblinkCreateRequest'
+            example:
+              access: "1"
+              alias: ""
+              catid: "10"
+              description: "<p>text</p>"
+              images:
+                float_first: ""
+                float_second: ""
+                image_first: ""
+                image_first_alt: ""
+                image_first_caption: ""
+                image_second: ""
+                image_second_alt: ""
+                image_second_caption: ""
+              language: "*"
+              metadata:
+                rights: ""
+                robots: ""
+              metadesc: ""
+              metakey: ""
+              modified: ""
+              params:
+                count_clicks: ""
+                height: ""
+                target: ""
+                width: ""
+              title: "weblink title"
+              url: "http://somelink.com/"
+              xreference: "xreference"
+      responses:
+        '201':
+          description: Weblink created
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/WeblinkCreateResponse'
+              example:
+                links:
+                  self: "https://www.example.com/demo/api/index.php/v1/weblinks"
+                data:
+                  type: "weblinks"
+                  id: "3"
+                  attributes:
+                    id: "3"
+                    catid: "10"
+                    title: "weblink title"
+                    alias: "weblink-title"
+                    url: "http://somelink.com/"
+                    description: "<p>text</p>"
+                    hits: "0"
+                    state: "0"
+                    checked_out: null
+                    checked_out_time: null
+                    ordering: "3"
+                    access: "1"
+                    params:
+                      target: ""
+                      width: ""
+                      height: ""
+                      count_clicks: ""
+                    language: "*"
+                    created: "2025-04-23 08:12:17"
+                    created_by: "141"
+                    created_by_alias: ""
+                    modified: "2025-04-23 08:12:17"
+                    modified_by: "141"
+                    metakey: ""
+                    metadesc: ""
+                    metadata:
+                      robots: ""
+                      rights: ""
+                      tags:
+                        typeAlias: null
+                        itemTags: null
+                        tags: ""
+                        newTags: null
+                        oldTags: null
+                    featured: "0"
+                    xreference: "xreference"
+                    publish_up: null
+                    publish_down: null
+                    version: "1"
+                    images:
+                      image_first: ""
+                      float_first: ""
+                      image_first_alt: ""
+                      image_first_caption: ""
+                      image_second: ""
+                      float_second: ""
+                      image_second_alt: ""
+                      image_second_caption: ""
+                    tags:
+                      typeAlias: null
+                      itemTags: null
+                      tags: ""
+                      newTags: null
+                      oldTags: null
+        '400':
+          description: The request is malformed or contains invalid data.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Field required: URL"
+        '401':
+          description: Authentication information is missing or invalid.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Forbidden"
+        '404':
+          description: The specified resource was not found.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Resource not found"
+                  code: 404
+        '422':
+          description: The request was well-formed but was unable to be followed due to semantic errors.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Save failed with the following error: Another Web Link from this category has the same alias (remember it may be a trashed item)."
+                  code: 422
+
+  /api/index.php/v1/weblinks/{id}:
+    get:
+      summary: Get a single weblink
+      security:
+      - JoomlaToken: []
+      tags:
+      - Weblinks
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/WeblinkSingleResponse'
+              example:
+                links:
+                  self: "http://www.weblinks.test/api/index.php/v1/weblinks/108"
+                data:
+                  type: "weblinks"
+                  id: "108"
+                  attributes:
+                    id: 108
+                    catid: 0
+                    title: "My API Test Weblink"
+                    alias: "my-api-test-weblink"
+                    url": "https://api.joomla.org"
+                    description: "This is a test."
+                    hits: 0
+                    state: 0
+                    checked_out: null
+                    checked_out_time: null
+                    ordering: 9
+                    access: 1
+                    params: []
+                    language: ""
+                    created: "2025-06-11 19:55:45"
+                    created_by: 877
+                    created_by_alias: ""
+                    modified: "2025-06-11 19:55:45"
+                    modified_by: 877
+                    metakey: ""
+                    metadesc: ""
+                    metadata:
+                      tags:
+                        typeAlias: null
+                        itemTags: null
+                        tags: ""
+                        newTags: null
+                        oldTags: null
+                    featured: 0
+                    xreference: ""
+                    publish_up: null
+                    publish_down: null
+                    version: 1
+                    images: []
+                    tags:
+                      typeAlias: null
+                      itemTags: null
+                      tags: ""
+                      newTags: null
+                      oldTags: null
+        '401':
+          description: Authentication information is missing or invalid.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Forbidden"
+        '404':
+          description: The specified resource was not found.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Resource not found"
+                  code: 404
+    patch:
+      summary: Update a weblink
+      security:
+      - JoomlaToken: []
+      tags:
+      - Weblinks
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/WeblinkPatchRequest'
+            example:
+              catid: "10"
+              description: "<p>some new text</p>"
+              language: "*"
+              title: "new title"
+              url: "http://newsomelink.com/"
+      responses:
+        '200':
+          description: Weblink updated
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/WeblinkSingleResponse'
+        '401':
+          description: Authentication information is missing or invalid.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Forbidden"
+        '404':
+          description: The specified resource was not found.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Resource not found"
+                  code: 404
+    delete:
+      summary: Delete a weblink
+      security:
+      - JoomlaToken: []
+      tags:
+      - Weblinks
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Weblink deleted successfully
+        '401':
+          description: Authentication information is missing or invalid.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Forbidden"
+        '404':
+          description: The specified resource was not found.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Resource not found"
+                  code: 404
+        '500':
+          description: An unexpected condition was encountered on the server.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - code: 500
+                  title: "Internal server error"
+
+  /api/index.php/v1/weblinks/categories:
+    get:
+      summary: List Weblink Categories
+      description: Retrieves all weblink categories.
+      operationId: listWeblinkCategories
+      tags:
+      - Categories
+      security:
+      - JoomlaToken: []
+      responses:
+        '200':
+          description: A list of weblink categories.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Category'
+              example:
+                links:
+                  self: "http://www.weblinks.test/api/index.php/v1/weblinks/categories"
+                data:
+                - type: "categories"
+                  id: "81"
+                  attributes:
+                    parent_id: 1
+                    level: 1
+                    lft: 23
+                    rgt: 24
+                    title: "API Test Category"
+                    alias: "api-test-category"
+                    id: 87
+                    extension: "com_weblinks"
+                    note: ""
+                    description: null
+                    published: 0
+                    checked_out: null
+                    checked_out_time: null
+                    access: 1
+                    params: []
+                    created_user_id: 877
+                    language: ""
+        '401':
+          description: Authentication information is missing or invalid.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Forbidden"
+        '404':
+          description: The specified resource was not found.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Resource not found"
+                  code: 404
+        '500':
+          description: An unexpected condition was encountered on the server.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - code: 500
+                  title: "Internal server error"
+    post:
+      summary: Create a Weblink Category
+      security:
+      - JoomlaToken: []
+      tags:
+      - Categories
+      requestBody:
+        required: true
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/CategoryInput'
+            example:
+              parent_id: 1
+              level: 1
+              lft: 23
+              rgt: 24
+              title: "API Test Category"
+              alias: "api-test-category"
+              id: 87
+              extension: "com_weblinks"
+              note: ""
+              description: null
+              published: 0
+              checked_out: null
+              checked_out_time: null
+              access: 1
+              params: []
+              created_user_id: 877
+              language: ""
+      responses:
+        '200':
+          description: Category created
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Category'
+              example:
+                links:
+                  self: "http://www.weblinks.test/api/index.php/v1/weblinks/categories"
+                data:
+                - type: "categories"
+                  id: "81"
+                  attributes:
+                    parent_id: 1
+                    level: 1
+                    lft: 23
+                    rgt: 24
+                    title: "API Test Category"
+                    alias: "api-test-category"
+                    id: 87
+                    extension: "com_weblinks"
+                    note: ""
+                    description: null
+                    published: 0
+                    checked_out: null
+                    checked_out_time: null
+                    access: 1
+                    params: []
+                    created_user_id: 877
+                    language: ""
+        '400':
+          description: The request is malformed or contains invalid data.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Field required: Title"
+        '401':
+          description: Authentication information is missing or invalid.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Forbidden"
+        '404':
+          description: The specified resource was not found.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Resource not found"
+                  code: 404
+        '422':
+          description: A category with this alias already exists.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Save failed with the following error: Another category with the same parent category has the same alias."
+                  code: 422
+        '500':
+          description: An unexpected condition was encountered on the server.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - code: 500
+                  title: "Internal server error"
+
+  /api/index.php/v1/weblinks/categories/{id}:
+    get:
+      summary: Get a Weblink Category by ID
+      description: Retrieves a specific weblink category by its ID.
+      operationId: getWeblinkCategoryById
+      tags:
+      - Categories
+      security:
+      - JoomlaToken: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful operation.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Category'
+              example:
+                links:
+                  self: "http://www.weblinks.test/api/index.php/v1/weblinks/categories/88"
+                data:
+                  type: "categories"
+                  id: "88"
+                  attributes:
+                    parent_id: 1
+                    level: 1
+                    lft: 25
+                    rgt: 26
+                    alias: "api-test-category-updated"
+                    id: 88
+                    extension: "com_weblinks"
+                    title: "API Test Category Updated"
+                    note: ""
+                    description: null
+                    published: 0
+                    checked_out: null
+                    checked_out_time: null
+                    access: 1
+                    params: []
+                    created_user_id: 877
+                    language: ""
+        '401':
+          description: Authentication information is missing or invalid.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Forbidden"
+        '404':
+          description: The specified resource was not found.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Resource not found"
+                  code: 404
+        '500':
+          description: An unexpected condition was encountered on the server.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - code: 500
+                  title: "Internal server error"
+    patch:
+      summary: Update a Weblink Category by ID
+      description: Updates an existing weblink category.
+      operationId: updateWeblinkCategoryById
+      tags:
+      - Categories
+      security:
+      - JoomlaToken: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/CategoryInput'
+            example:
+              parent_id: 1
+              level: 1
+              lft: 23
+              rgt: 24
+              title: "API Test Category"
+              alias: "api-test-category"
+              id: 87
+              extension: "com_weblinks"
+              note: ""
+              description: null
+              published: 0
+              checked_out: null
+              checked_out_time: null
+              access: 1
+              params: []
+              created_user_id: 877
+              language: ""
+      responses:
+        '200':
+          description: Category updated
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Category'
+              example:
+                links:
+                  self: "http://www.weblinks.test/api/index.php/v1/weblinks/categories/88"
+                data:
+                  type: "categories"
+                  id: "88"
+                  attributes:
+                    parent_id: 1
+                    level: 1
+                    lft: 25
+                    rgt: 26
+                    alias: "api-test-category-updated"
+                    id: 88
+                    extension: "com_weblinks"
+                    title: "API Test Category Updated"
+                    note: ""
+                    description: null
+                    published: 0
+                    checked_out: null
+                    checked_out_time: null
+                    access: 1
+                    params: []
+                    created_user_id: 877
+                    language: ""
+        '400':
+          description: A category with this alias already exists.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Save failed with the following error: Another category with the same parent category has the same alias."
+                  code: 400
+        '401':
+          description: Authentication information is missing or invalid.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Forbidden"
+        '500':
+          description: An unexpected condition was encountered on the server.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - code: 500
+                  title: "Internal server error"
+    delete:
+      summary: Delete a Weblink Category by ID
+      description: Deletes a specific weblink category by its ID.
+      operationId: deleteWeblinkCategoryById
+      tags:
+      - Categories
+      security:
+      - JoomlaToken: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: Category deleted successfully.
+        '401':
+          description: Authentication information is missing or invalid.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Forbidden"
+        '404':
+          description: The specified resource was not found.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Resource not found"
+                  code: 404
+        '500':
+          description: An unexpected condition was encountered on the server.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - code: 500
+                  title: "Internal server error"
+
+  /api/index.php/v1/fields/weblinks:
+    get:
+      summary: List Weblink Fields
+      description: Retrieves all custom fields for weblinks.
+      operationId: listWeblinkFields
+      tags:
+      - Fields
+      security:
+      - JoomlaToken: []
+      responses:
+        '200':
+          description: A list of weblink fields.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Field'
+              example:
+                links:
+                  self: "http://www.example.com/api/index.php/v1/fields/weblinks"
+                data:
+                - type: "fields"
+                  id: "1"
+                  attributes:
+                    title: "API Test Field"
+                    name: "api_test_field"
+                    checked_out: null
+                    checked_out_time: null
+                    note: ""
+                    state: 1
+                    access: 1
+                    created_time: "2025-06-11 22:10:15"
+                    created_user_id: 877
+                    ordering: 0
+                    language: "*"
+                    fieldparams:
+                      filter: ""
+                      maxlength: ""
+                    params:
+                      hint: ""
+                      class: ""
+                      label_class: ""
+                      show_on: ""
+                      showon: ""
+                      render_class: ""
+                      value_render_class: ""
+                      showlabel: "1"
+                      label_render_class: ""
+                      display: "2"
+                      prefix: ""
+                      suffix: ""
+                      layout: ""
+                      display_readonly: "2"
+                      searchindex: "0"
+                    type: "text"
+                    default_value: ""
+                    context: "com_weblinks.weblink"
+                    group_id: 0
+                    label: "API Test Field"
+                    description: "A test field created via API."
+                    required: 0
+                    language_title: null
+                    language_image: null
+                    editor: null
+                    access_level: "Public"
+                    author_name: "root"
+                    group_title: null
+                    group_access: null
+                    group_state: null
+                    group_note: null
+                meta:
+                  total-pages: 1
+        '401':
+          description: Authentication information is missing or invalid.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Forbidden"
+        '404':
+          description: The specified resource was not found.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Resource not found"
+                  code: 404
+        '500':
+          description: An unexpected condition was encountered on the server.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - code: 500
+                  title: "Internal server error"
+    post:
+      summary: Create a Weblink Field
+      security:
+      - JoomlaToken: []
+      tags:
+      - Fields
+      requestBody:
+        required: true
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/FieldInput'
+            example:
+              title: "API Test Field"
+              name: "api_test_field"
+              checked_out: null
+              checked_out_time: null
+              note: ""
+              state: 1
+              access: 1
+              created_time: "2025-06-11 22:10:15"
+              created_user_id: 877
+              ordering: 0
+              language: "*"
+              fieldparams:
+                filter: ""
+                maxlength: ""
+              params:
+                hint: ""
+                class: ""
+                label_class: ""
+                show_on: ""
+                showon: ""
+                render_class: ""
+                value_render_class: ""
+                showlabel: "1"
+                label_render_class: ""
+                display: "2"
+                prefix: ""
+                suffix: ""
+                layout: ""
+                display_readonly: "2"
+                searchindex: "0"
+              type: "text"
+              default_value: ""
+              context: "com_weblinks.weblink"
+              group_id: 0
+              label: "API Test Field"
+              description: "A test field created via API."
+              required: 0
+              language_title: null
+              language_image: null
+              editor: null
+              access_level: "Public"
+              author_name: "root"
+              group_title: null
+              group_access: null
+              group_state: null
+              group_note: null
+      responses:
+        '200':
+          description: Field created
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Field'
+              example:
+                links:
+                  self: "http://www.example.com/api/index.php/v1/fields/weblinks"
+                data:
+                  type: "fields"
+                  id: "3"
+                  attributes:
+                    title: "API Test Field"
+                    name: "api_test_field"
+                    checked_out: null
+                    checked_out_time: null
+                    note: ""
+                    state: 1
+                    access: 1
+                    created_time: "2025-06-11 22:10:15"
+                    created_user_id: 877
+                    ordering: 0
+                    language: "*"
+                    fieldparams:
+                      filter: ""
+                      maxlength: ""
+                    params:
+                      hint: ""
+                      class: ""
+                      label_class: ""
+                      show_on: ""
+                      showon: ""
+                      render_class: ""
+                      value_render_class: ""
+                      showlabel: "1"
+                      label_render_class: ""
+                      display: "2"
+                      prefix: ""
+                      suffix: ""
+                      layout: ""
+                      display_readonly: "2"
+                      searchindex: "0"
+                    type: "text"
+                    default_value: ""
+                    context: "com_weblinks.weblink"
+                    group_id: 0
+                    label: "API Test Field"
+                    description: "A test field created via API."
+                    required: 0
+                    language_title: null
+                    language_image: null
+                    editor: null
+                    access_level: "Public"
+                    author_name: "root"
+                    group_title: null
+                    group_access: null
+                    group_state: null
+                    group_note: null
+        '400':
+          description: The request is malformed or contains invalid data.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Field required: Title"
+        '401':
+          description: Authentication information is missing or invalid.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Forbidden"
+        '404':
+          description: The specified resource was not found.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Resource not found"
+                  code: 404
+        '422':
+          description: A field with this alias already exists.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Save failed with the following error: Another category with the same parent category has the same alias."
+                  code: 422
+        '500':
+          description: An unexpected condition was encountered on the server.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - code: 500
+                  title: "Internal server error"
+
+  /api/index.php/v1/fields/weblinks/{id}:
+    get:
+      summary: Get a Weblink Field by ID
+      description: Retrieves a specific weblink field by its ID.
+      operationId: getWeblinkFieldById
+      tags:
+      - Fields
+      security:
+      - JoomlaToken: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful operation.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Field'
+              example:
+                links:
+                  self: "http://www.example.com/api/index.php/v1/fields/weblinks/2"
+                data:
+                  type: "fields"
+                  id: "2"
+                  attributes:
+                    title: "API Test Field"
+                    name: "api_test_field"
+                    checked_out: null
+                    checked_out_time: null
+                    note: ""
+                    state: 1
+                    access: 1
+                    created_time: "2025-06-11 22:10:15"
+                    created_user_id: 877
+                    ordering: 0
+                    language: "*"
+                    fieldparams:
+                      filter: ""
+                      maxlength: ""
+                    params:
+                      hint: ""
+                      class: ""
+                      label_class: ""
+                      show_on: ""
+                      showon: ""
+                      render_class: ""
+                      value_render_class: ""
+                      showlabel: "1"
+                      label_render_class: ""
+                      display: "2"
+                      prefix: ""
+                      suffix: ""
+                      layout: ""
+                      display_readonly: "2"
+                      searchindex: "0"
+                    type: "text"
+                    default_value: ""
+                    context: "com_weblinks.weblink"
+                    group_id: 0
+                    label: "API Test Field"
+                    description: "A test field created via API."
+                    required: 0
+                    language_title: null
+                    language_image: null
+                    editor: null
+                    access_level: "Public"
+                    author_name: "root"
+                    group_title: null
+                    group_access: null
+                    group_state: null
+                    group_note: null
+        '401':
+          description: Authentication information is missing or invalid.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Forbidden"
+        '404':
+          description: The specified resource was not found.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Resource not found"
+                  code: 404
+        '500':
+          description: An unexpected condition was encountered on the server.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - code: 500
+                  title: "Internal server error"
+    patch:
+      summary: Update a Weblink Field by ID
+      description: Updates an existing weblink field.
+      operationId: updateWeblinkFieldById
+      tags:
+      - Fields
+      security:
+      - JoomlaToken: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/FieldInput'
+            example:
+              title: "API Test Field"
+              name: "api_test_field"
+              checked_out: null
+              checked_out_time: null
+              note: ""
+              state: 1
+              access: 1
+              created_time: "2025-06-11 22:10:15"
+              created_user_id: 877
+              ordering: 0
+              language: "*"
+              fieldparams:
+                filter: ""
+                maxlength: ""
+              params:
+                hint: ""
+                class: ""
+                label_class: ""
+                show_on: ""
+                showon: ""
+                render_class: ""
+                value_render_class: ""
+                showlabel: "1"
+                label_render_class: ""
+                display: "2"
+                prefix: ""
+                suffix: ""
+                layout: ""
+                display_readonly: "2"
+                searchindex: "0"
+              type: "text"
+              default_value: ""
+              context: "com_weblinks.weblink"
+              group_id: 0
+              label: "API Test Field"
+              description: "A test field created via API."
+              required: 0
+              language_title: null
+              language_image: null
+              editor: null
+              access_level: "Public"
+              author_name: "root"
+              group_title: null
+              group_access: null
+              group_state: null
+              group_note: null
+      responses:
+        '200':
+          description: Field updated
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Field'
+              example:
+                links:
+                  self: "http://www.example.com/api/index.php/v1/fields/weblinks/2"
+                data:
+                  type: "fields"
+                  id: "2"
+                  attributes:
+                    title: "API Test Field"
+                    name: "api_test_field"
+                    checked_out: null
+                    checked_out_time: null
+                    note: ""
+                    state: 1
+                    access: 1
+                    created_time: "2025-06-11 22:10:15"
+                    created_user_id: 877
+                    ordering: 0
+                    language: "*"
+                    fieldparams:
+                      filter: ""
+                      maxlength: ""
+                    params:
+                      hint: ""
+                      class: ""
+                      label_class: ""
+                      show_on: ""
+                      showon: ""
+                      render_class: ""
+                      value_render_class: ""
+                      showlabel: "1"
+                      label_render_class: ""
+                      display: "2"
+                      prefix: ""
+                      suffix: ""
+                      layout: ""
+                      display_readonly: "2"
+                      searchindex: "0"
+                    type: "text"
+                    default_value: ""
+                    context: "com_weblinks.weblink"
+                    group_id: 0
+                    label: "API Test Field"
+                    description: "A test field created via API."
+                    required: 0
+                    language_title: null
+                    language_image: null
+                    editor: null
+                    access_level: "Public"
+                    author_name: "root"
+                    group_title: null
+                    group_access: null
+                    group_state: null
+                    group_note: null
+        '400':
+          description: A field with this alias already exists.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Save failed with the following error: Another category with the same parent category has the same alias."
+                  code: 400
+        '401':
+          description: Authentication information is missing or invalid.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Forbidden"
+        '500':
+          description: An unexpected condition was encountered on the server.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - code: 500
+                  title: "Internal server error"
+    delete:
+      summary: Delete a Weblink Field by ID
+      description: Deletes a specific weblink field by its ID.
+      operationId: deleteWeblinkFieldById
+      tags:
+      - Fields
+      security:
+      - JoomlaToken: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: Field deleted successfully.
+        '401':
+          description: Authentication information is missing or invalid.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Forbidden"
+        '404':
+          description: The specified resource was not found.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Resource not found"
+                  code: 404
+        '500':
+          description: An unexpected condition was encountered on the server.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - code: 500
+                  title: "Internal server error"
+
+  /api/index.php/v1/fields/groups/weblinks:
+    get:
+      summary: List Weblink Field Groups
+      description: Retrieves all custom field groups for weblinks.
+      operationId: listWeblinkField Groups
+      tags:
+      - Field Groups
+      security:
+      - JoomlaToken: []
+      responses:
+        '200':
+          description: A list of weblink field groups.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/FieldGroup'
+              example:
+                links:
+                  self: "http://www.example.com/api/index.php/v1/fields/groups/weblinks"
+                data:
+                - type: "groups"
+                  id: "1"
+                  attributes:
+                    id: 1
+                    context: "com_weblinks.weblink"
+                    title: "Group1"
+                    note: ""
+                    description: ""
+                    state: 1
+                    checked_out: null
+                    checked_out_time: null
+                    ordering: 0
+                    params:
+                      display_readonly: "1"
+                    language: "*"
+                    access: 1
+                    language_title: null
+                    language_image: null
+                    editor: null
+                    access_level: "Public"
+                    author_name: "root"
+        '401':
+          description: Authentication information is missing or invalid.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Forbidden"
+        '404':
+          description: The specified resource was not found.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Resource not found"
+                  code: 404
+        '500':
+          description: An unexpected condition was encountered on the server.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - code: 500
+                  title: "Internal server error"
+    post:
+      summary: Create a Weblink Field Group
+      security:
+      - JoomlaToken: []
+      tags:
+      - Field Groups
+      requestBody:
+        required: true
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/FieldGroupInput'
+            example:
+              context: "com_weblinks.weblink"
+              title: "Group1"
+              note: ""
+              description: ""
+              state: 1
+              checked_out: null
+              checked_out_time: null
+              ordering: 0
+              params:
+                display_readonly: "1"
+              language: "*"
+              access: 1
+              language_title: null
+              language_image: null
+              editor: null
+              access_level: "Public"
+              author_name: "root"
+      responses:
+        '200':
+          description: Field group created
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/FieldGroup'
+              example:
+                links:
+                  self: "http://www.example.com/api/index.php/v1/fields/groups/weblinks"
+                data:
+                  type: "groups"
+                  id: "1"
+                  attributes:
+                    id: 1
+                    context: "com_weblinks.weblink"
+                    title: "Group1"
+                    note: ""
+                    description: ""
+                    state: 1
+                    checked_out: null
+                    checked_out_time: null
+                    ordering: 0
+                    params:
+                      display_readonly: "1"
+                    language: "*"
+                    access: 1
+                    language_title: null
+                    language_image: null
+                    editor: null
+                    access_level: "Public"
+                    author_name: "root"
+        '400':
+          description: The request is malformed or contains invalid data.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Field required: Title"
+        '401':
+          description: Authentication information is missing or invalid.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Forbidden"
+        '404':
+          description: The specified resource was not found.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Resource not found"
+                  code: 404
+        '422':
+          description: a field group with this alias already exists.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Save failed with the following error: Another category with the same parent category has the same alias."
+                  code: 422
+        '500':
+          description: An unexpected condition was encountered on the server.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - code: 500
+                  title: "Internal server error"
+
+  /api/index.php/v1/fields/groups/weblinks/{id}:
+    get:
+      summary: Get a Weblink Field Group by ID
+      description: Retrieves a specific weblink field group by its ID.
+      operationId: getWeblinkFieldGroupById
+      tags:
+      - Field Groups
+      security:
+      - JoomlaToken: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successful operation.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/FieldGroup'
+              example:
+                links:
+                  self: "http://www.example.com/api/index.php/v1/fields/groups/weblinks/4"
+                data:
+                  id: 1
+                  context: "com_weblinks.weblink"
+                  title: "Group1"
+                  note: ""
+                  description: ""
+                  state: 1
+                  checked_out: null
+                  checked_out_time: null
+                  ordering: 0
+                  params:
+                    display_readonly: "1"
+                  language: "*"
+                  access: 1
+                  language_title: null
+                  language_image: null
+                  editor: null
+                  access_level: "Public"
+                  author_name: "root"
+        '401':
+          description: Authentication information is missing or invalid.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Forbidden"
+        '404':
+          description: The specified resource was not found.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Resource not found"
+                  code: 404
+        '500':
+          description: An unexpected condition was encountered on the server.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - code: 500
+                  title: "Internal server error"
+    patch:
+      summary: Update a Weblink Field Group by ID
+      description: Updates an existing weblink field group.
+      operationId: updateWeblinkFieldGroupById
+      tags:
+      - Field Groups
+      security:
+      - JoomlaToken: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/FieldGroupInput'
+            example:
+              context: "com_weblinks.weblink"
+              title: "Group1"
+              note: ""
+              description: ""
+              state: 1
+              checked_out: null
+              checked_out_time: null
+              ordering: 0
+              params:
+                display_readonly: "1"
+              language: "*"
+              access: 1
+              language_title: null
+              language_image: null
+              editor: null
+              access_level: "Public"
+              author_name: "root"
+      responses:
+        '200':
+          description: Field group updated
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/FieldGroup'
+              example:
+                links:
+                  self: "http://www.example.com/api/index.php/v1/fields/groups/weblinks/4"
+                data:
+                  type: "groups"
+                  id: "4"
+                  attributes:
+                    id: 1
+                    context: "com_weblinks.weblink"
+                    title: "Group1"
+                    note: ""
+                    description: ""
+                    state: 1
+                    checked_out: null
+                    checked_out_time: null
+                    ordering: 0
+                    params:
+                      display_readonly: "1"
+                    language: "*"
+                    access: 1
+                    language_title: null
+                    language_image: null
+                    editor: null
+                    access_level: "Public"
+                    author_name: "root"
+        '400':
+          description: A field with this alias already exists.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Save failed with the following error: Another category with the same parent category has the same alias."
+                  code: 400
+        '401':
+          description: Authentication information is missing or invalid.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Forbidden"
+        '500':
+          description: An unexpected condition was encountered on the server.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - code: 500
+                  title: "Internal server error"
+    delete:
+      summary: Delete a Weblink Field Group by ID
+      description: Deletes a specific weblink field group by its ID.
+      operationId: deleteWeblinkFieldGroupById
+      tags:
+      - Field Groups
+      security:
+      - JoomlaToken: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: Field group deleted successfully.
+        '401':
+          description: Authentication information is missing or invalid.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Forbidden"
+        '404':
+          description: The specified resource was not found.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - title: "Resource not found"
+                  code: 404
+        '500':
+          description: An unexpected condition was encountered on the server.
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+              example:
+                errors:
+                - code: 500
+                  title: "Internal server error"
+components:
+  securitySchemes:
+    JoomlaToken:
+      type: apiKey
+      in: header
+      name: X-Joomla-Token
+  schemas:
+    ErrorModel:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+              code:
+                type: string
+    WeblinksListResponse:
+      type: object
+      properties:
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              format: uri
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+              id:
+                type: string
+              attributes:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  title:
+                    type: string
+                  alias:
+                    type: string
+                  checked_out:
+                    type: string
+                    nullable: true
+                  checked_out_time:
+                    type: string
+                    nullable: true
+                  catid:
+                    type: string
+                  created:
+                    type: string
+                    format: date-time
+                  created_by:
+                    type: string
+                  hits:
+                    type: string
+                  state:
+                    type: string
+                  access:
+                    type: string
+                  ordering:
+                    type: string
+                  language:
+                    type: string
+                  publish_up:
+                    type: string
+                    nullable: true
+                  publish_down:
+                    type: string
+                    nullable: true
+                  language_title:
+                    type: string
+                    nullable: true
+                  language_image:
+                    type: string
+                    nullable: true
+                  editor:
+                    type: string
+                    nullable: true
+                  access_level:
+                    type: string
+                  category_title:
+                    type: string
+        meta:
+          type: object
+          properties:
+            'total-pages':
+              type: integer
+    WeblinkCreateRequest:
+      type: object
+      properties:
+        access:
+          type: string
+        alias:
+          type: string
+        catid:
+          type: string
+        description:
+          type: string
+        images:
+          type: object
+          properties:
+            float_first:
+              type: string
+            float_second:
+              type: string
+            image_first:
+              type: string
+            image_first_alt:
+              type: string
+            image_first_caption:
+              type: string
+            image_second:
+              type: string
+            image_second_alt:
+              type: string
+            image_second_caption:
+              type: string
+        language:
+          type: string
+        metadata:
+          type: object
+          properties:
+            rights:
+              type: string
+            robots:
+              type: string
+        metadesc:
+          type: string
+        metakey:
+          type: string
+        modified:
+          type: string
+        params:
+          type: object
+          properties:
+            count_clicks:
+              type: string
+            height:
+              type: string
+            target:
+              type: string
+            width:
+              type: string
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+        xreference:
+          type: string
+    WeblinkCreateResponse:
+      type: object
+      properties:
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              format: uri
+        data:
+          type: object
+          properties:
+            type:
+              type: string
+            id:
+              type: string
+            attributes:
+              type: object
+              properties:
+                id:
+                  type: string
+                catid:
+                  type: string
+                title:
+                  type: string
+                alias:
+                  type: string
+                url:
+                  type: string
+                  format: uri
+                description:
+                  type: string
+                hits:
+                  type: string
+                state:
+                  type: string
+                checked_out:
+                  type: string
+                  nullable: true
+                checked_out_time:
+                  type: string
+                  nullable: true
+                ordering:
+                  type: string
+                access:
+                  type: string
+                params:
+                  type: object
+                  properties:
+                    target:
+                      type: string
+                    width:
+                      type: string
+                    height:
+                      type: string
+                    count_clicks:
+                      type: string
+                language:
+                  type: string
+                created:
+                  type: string
+                  format: date-time
+                created_by:
+                  type: string
+                created_by_alias:
+                  type: string
+                modified:
+                  type: string
+                  format: date-time
+                modified_by:
+                  type: string
+                metakey:
+                  type: string
+                metadesc:
+                  type: string
+                metadata:
+                  type: object
+                  properties:
+                    robots:
+                      type: string
+                    rights:
+                      type: string
+                    tags:
+                      type: object
+                      properties:
+                        typeAlias:
+                          type: string
+                          nullable: true
+                        itemTags:
+                          type: string
+                          nullable: true
+                        tags:
+                          type: string
+                        newTags:
+                          type: string
+                          nullable: true
+                        oldTags:
+                          type: string
+                          nullable: true
+                featured:
+                  type: string
+                xreference:
+                  type: string
+                publish_up:
+                  type: string
+                  nullable: true
+                publish_down:
+                  type: string
+                  nullable: true
+                version:
+                  type: string
+                images:
+                  type: object
+                  properties:
+                    image_first:
+                      type: string
+                    float_first:
+                      type: string
+                    image_first_alt:
+                      type: string
+                    image_first_caption:
+                      type: string
+                    image_second:
+                      type: string
+                    float_second:
+                      type: string
+                    image_second_alt:
+                      type: string
+                    image_second_caption:
+                      type: string
+                tags:
+                  type: object
+                  properties:
+                    typeAlias:
+                      type: string
+                      nullable: true
+                    itemTags:
+                      type: string
+                      nullable: true
+                    tags:
+                      type: string
+                    newTags:
+                      type: string
+                      nullable: true
+                    oldTags:
+                      type: string
+                      nullable: true
+    WeblinkSingleResponse:
+      type: object
+      properties:
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              format: uri
+        data:
+          type: object
+          properties:
+            type:
+              type: string
+            id:
+              type: string
+            attributes:
+              type: object
+              properties:
+                id:
+                  type: integer
+                catid:
+                  type: integer
+                title:
+                  type: string
+                alias:
+                  type: string
+                url:
+                  type: string
+                  format: uri
+                description:
+                  type: string
+                hits:
+                  type: integer
+                state:
+                  type: integer
+                checked_out:
+                  type: string
+                  nullable: true
+                checked_out_time:
+                  type: string
+                  nullable: true
+                ordering:
+                  type: integer
+                access:
+                  type: integer
+                params:
+                  type: array
+                  items: {}
+                language:
+                  type: string
+                created:
+                  type: string
+                  format: date-time
+                created_by:
+                  type: integer
+                created_by_alias:
+                  type: string
+                modified:
+                  type: string
+                  format: date-time
+                modified_by:
+                  type: integer
+                metakey:
+                  type: string
+                metadesc:
+                  type: string
+                metadata:
+                  type: object
+                  properties:
+                    tags:
+                      type: object
+                      properties:
+                        typeAlias:
+                          type: string
+                          nullable: true
+                        itemTags:
+                          type: string
+                          nullable: true
+                        tags:
+                          type: string
+                        newTags:
+                          type: string
+                          nullable: true
+                        oldTags:
+                          type: string
+                          nullable: true
+                featured:
+                  type: integer
+                xreference:
+                  type: string
+                publish_up:
+                  type: string
+                  nullable: true
+                publish_down:
+                  type: string
+                  nullable: true
+                version:
+                  type: integer
+                images:
+                  type: array
+                  items: {}
+                tags:
+                  type: object
+                  properties:
+                    typeAlias:
+                      type: string
+                      nullable: true
+                    itemTags:
+                      type: string
+                      nullable: true
+                    tags:
+                      type: string
+                    newTags:
+                      type: string
+                      nullable: true
+                    oldTags:
+                      type: string
+                      nullable: true
+    WeblinkPatchRequest:
+      type: object
+      properties:
+        catid:
+          type: string
+        description:
+          type: string
+        language:
+          type: string
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+    Category:
+      type: object
+      properties:
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              format: uri
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+              id:
+                type: string
+              attributes:
+                type: object
+                properties:
+                  parent_id:
+                    type: integer
+                  level:
+                    type: integer
+                  lft:
+                    type: integer
+                  rgt:
+                    type: integer
+                  title:
+                    type: string
+                  alias:
+                    type: string
+                  id:
+                    type: integer
+                  extension:
+                    type: string
+                  note:
+                    type: string
+                  description:
+                    type: string
+                    nullable: true
+                  published:
+                    type: integer
+                  checked_out:
+                    type: string
+                    nullable: true
+                  checked_out_time:
+                    type: string
+                    nullable: true
+                  access:
+                    type: integer
+                  params:
+                    type: array
+                    items: {}
+                  created_user_id:
+                    type: integer
+                  language:
+                    type: string
+    CategoryInput:
+      type: object
+      properties:
+        parent_id:
+          type: integer
+        level:
+          type: integer
+        lft:
+          type: integer
+        rgt:
+          type: integer
+        title:
+          type: string
+        alias:
+          type: string
+        id:
+          type: integer
+        extension:
+          type: string
+        note:
+          type: string
+        description:
+          type: string
+          nullable: true
+        published:
+          type: integer
+        checked_out:
+          type: string
+          nullable: true
+        checked_out_time:
+          type: string
+          nullable: true
+        access:
+          type: integer
+        params:
+          type: array
+          items: {}
+        created_user_id:
+          type: integer
+        language:
+          type: string
+    Field:
+      type: object
+      properties:
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              format: uri
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+              id:
+                type: string
+              attributes:
+                type: object
+                properties:
+                  title:
+                    type: string
+                  name:
+                    type: string
+                  checked_out:
+                    type: string
+                    nullable: true
+                  checked_out_time:
+                    type: string
+                    nullable: true
+                  note:
+                    type: string
+                  state:
+                    type: integer
+                  access:
+                    type: integer
+                  created_time:
+                    type: string
+                    format: date-time
+                  created_user_id:
+                    type: integer
+                  ordering:
+                    type: integer
+                  language:
+                    type: string
+                  fieldparams:
+                    type: object
+                    properties:
+                      filter:
+                        type: string
+                      maxlength:
+                        type: string
+                  params:
+                    type: object
+                    properties:
+                      hint:
+                        type: string
+                      class:
+                        type: string
+                      label_class:
+                        type: string
+                      show_on:
+                        type: string
+                      showon:
+                        type: string
+                      render_class:
+                        type: string
+                      value_render_class:
+                        type: string
+                      showlabel:
+                        type: string
+                      label_render_class:
+                        type: string
+                      display:
+                        type: string
+                      prefix:
+                        type: string
+                      suffix:
+                        type: string
+                      layout:
+                        type: string
+                      display_readonly:
+                        type: string
+                      searchindex:
+                        type: string
+                  type:
+                    type: string
+                  default_value:
+                    type: string
+                  context:
+                    type: string
+                  group_id:
+                    type: integer
+                  label:
+                    type: string
+                  description:
+                    type: string
+                  required:
+                    type: integer
+                  language_title:
+                    type: string
+                    nullable: true
+                  language_image:
+                    type: string
+                    nullable: true
+                  editor:
+                    type: string
+                    nullable: true
+                  access_level:
+                    type: string
+                  author_name:
+                    type: string
+                  group_title:
+                    type: string
+                    nullable: true
+                  group_access:
+                    type: string
+                    nullable: true
+                  group_state:
+                    type: string
+                    nullable: true
+                  group_note:
+                    type: string
+                    nullable: true
+        meta:
+          type: object
+          properties:
+            'total-pages':
+              type: integer
+    FieldInput:
+      type: object
+      properties:
+        title:
+          type: string
+        name:
+          type: string
+        checked_out:
+          type: string
+          nullable: true
+        checked_out_time:
+          type: string
+          nullable: true
+        note:
+          type: string
+        state:
+          type: integer
+        access:
+          type: integer
+        created_time:
+          type: string
+          format: date-time
+        created_user_id:
+          type: integer
+        ordering:
+          type: integer
+        language:
+          type: string
+        fieldparams:
+          type: object
+          properties:
+            filter:
+              type: string
+            maxlength:
+              type: string
+        params:
+          type: object
+          properties:
+            hint:
+              type: string
+            class:
+              type: string
+            label_class:
+              type: string
+            show_on:
+              type: string
+            showon:
+              type: string
+            render_class:
+              type: string
+            value_render_class:
+              type: string
+            showlabel:
+              type: string
+            label_render_class:
+              type: string
+            display:
+              type: string
+            prefix:
+              type: string
+            suffix:
+              type: string
+            layout:
+              type: string
+            display_readonly:
+              type: string
+            searchindex:
+              type: string
+        type:
+          type: string
+        default_value:
+          type: string
+        context:
+          type: string
+        group_id:
+          type: integer
+        label:
+          type: string
+        description:
+          type: string
+        required:
+          type: integer
+        language_title:
+          type: string
+          nullable: true
+        language_image:
+          type: string
+          nullable: true
+        editor:
+          type: string
+          nullable: true
+        access_level:
+          type: string
+        author_name:
+          type: string
+        group_title:
+          type: string
+          nullable: true
+        group_access:
+          type: string
+          nullable: true
+        group_state:
+          type: string
+          nullable: true
+        group_note:
+          type: string
+          nullable: true
+    FieldGroup:
+      type: object
+      properties:
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              format: uri
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+              id:
+                type: string
+              attributes:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  context:
+                    type: string
+                  title:
+                    type: string
+                  note:
+                    type: string
+                  description:
+                    type: string
+                  state:
+                    type: integer
+                  checked_out:
+                    type: string
+                    nullable: true
+                  checked_out_time:
+                    type: string
+                    nullable: true
+                  ordering:
+                    type: integer
+                  params:
+                    type: object
+                    properties:
+                      display_readonly:
+                        type: string
+                  language:
+                    type: string
+                  access:
+                    type: integer
+                  language_title:
+                    type: string
+                    nullable: true
+                  language_image:
+                    type: string
+                    nullable: true
+                  editor:
+                    type: string
+                    nullable: true
+                  access_level:
+                    type: string
+                  author_name:
+                    type: string
+    FieldGroupInput:
+      type: object
+      properties:
+        context:
+          type: string
+        title:
+          type: string
+        note:
+          type: string
+        description:
+          type: string
+        state:
+          type: integer
+        checked_out:
+          type: string
+          nullable: true
+        checked_out_time:
+          type: string
+          nullable: true
+        ordering:
+          type: integer
+        params:
+          type: object
+          properties:
+            display_readonly:
+              type: string
+        language:
+          type: string
+        access:
+          type: integer
+        language_title:
+          type: string
+          nullable: true
+        language_image:
+          type: string
+          nullable: true
+        editor:
+          type: string
+          nullable: true
+        access_level:
+          type: string
+        author_name:
+          type: string
