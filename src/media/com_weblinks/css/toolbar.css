@@ -1,0 +1,4 @@
+#toolbar{
+    display: flexbox;
+    gap: 1rem;
+}
