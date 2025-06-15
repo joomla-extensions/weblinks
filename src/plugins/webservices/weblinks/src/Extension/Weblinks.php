@@ -134,7 +134,18 @@ class Weblinks extends CMSPlugin
     }
 
     /**
-     * Handles rate limiting with non-persistent (file-based) caching.
+     * Applies rate limiting using a non-persistent file-based storage.
+     *
+     * This method stores request counts in JSON files within the site's temporary
+     * directory. Each file corresponds to a user's IP address.
+     *
+     * @param   string  $userIp         The IP address of the user.
+     * @param   int     $maxRequests    The maximum number of allowed requests in the time window.
+     * @param   int     $windowSeconds  The time window in seconds for the rate limit.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
      */
     private function applyNonPersistentRateLimit(string $userIp, int $maxRequests, int $windowSeconds): void
     {
@@ -173,14 +184,26 @@ class Weblinks extends CMSPlugin
     }
 
     /**
-     * Handles rate limiting with persistent caching.
+     * Applies rate limiting using Joomla's persistent cache.
+     *
+     * This method leverages Joomla's Cache to store and retrieve
+     * rate limit data, providing a more performant and persistent solution
+     * when caching is enabled on the site.
+     *
+     * @param   string  $userIp         The IP address of the user.
+     * @param   int     $maxRequests    The maximum number of allowed requests in the time window.
+     * @param   int     $windowSeconds  The time window in seconds for the rate limit.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
      */
     private function applyPersistentRateLimit(string $userIp, int $maxRequests, int $windowSeconds): void
     {
         // Use Joomla cache if persistent
         $cache = Factory::getContainer()->get(CacheControllerFactoryInterface::class)
             ->createCacheController('output', [
-                'defaultgroup' => 'plg_system_weblinksapilimit',
+                'defaultgroup' => 'weblinks_api_rate_limit',
                 'lifetime'     => $windowSeconds,
             ]);
 
@@ -210,7 +233,13 @@ class Weblinks extends CMSPlugin
     }
 
     /**
-     * Handles the scenario when the rate limit is exceeded.
+     * Handles the response when a user exceeds the API rate limit.
+     *
+     * This method sends an HTTP 429 "Too Many Requests" response.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
      */
     private function handleRateLimitExceeded(): void
     {
