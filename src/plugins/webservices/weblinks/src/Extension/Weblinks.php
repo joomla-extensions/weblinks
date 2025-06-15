@@ -91,6 +91,17 @@ class Weblinks extends CMSPlugin
         );
     }
 
+    /**
+     * Event handler that runs after the API router has processed the request.
+     *
+     * Applies rate limiting to public Weblinks API endpoints for guest users,
+     * using either non-persistent (file-based) or persistent (cache-based) strategies,
+     * depending on the current Joomla cache configuration.
+     *
+     * @return void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
     public function onAfterApiRoute()
     {
         $app      = Factory::getApplication();
