@@ -10,6 +10,7 @@
 
 namespace Joomla\Component\Weblinks\Api\Controller;
 
+use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\MVC\Controller\ApiController;
 use Joomla\Component\Fields\Administrator\Helper\FieldsHelper;
 
