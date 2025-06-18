@@ -30,6 +30,7 @@ describe('Test that weblinks categories API endpoint', () => {
       published: 1,
       access: 1,
       language: '*',
+      parent_id: 1,
     })
       .then((response) => cy.wrap(response).its('body').its('data').its('attributes')
         .its('title')
@@ -56,6 +57,7 @@ describe('Test that weblinks categories API endpoint', () => {
       published: -2,
       access: 1,
       language: '*',
+      parent_id: 1,
     })
       .then((response) => response.body.data.id)
       .then((categoryId) => cy.api_delete(`/weblinks/categories/${categoryId}`))

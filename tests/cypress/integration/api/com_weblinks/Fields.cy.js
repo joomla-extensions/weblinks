@@ -29,6 +29,7 @@ describe('Test that weblinks fields API endpoint', () => {
       type: 'text',
       context: 'com_weblinks.weblink',
       description: 'automated test field description',
+      default_value: '',
       params: {
         showlabel: '1'
       },
