@@ -22,7 +22,7 @@ use Joomla\Utilities\ArrayHelper;
 /**
  * Weblinks class.
  *
- * @since  __DEPLOY_VERSION__
+ * @since  1.5
  */
 class WeblinkController extends FormController
 {
@@ -30,7 +30,7 @@ class WeblinkController extends FormController
      * The URL view item variable.
      *
      * @var    string
-     * @since  __DEPLOY_VERSION__
+     * @since  1.6
      */
     protected $view_item = 'form';
 
@@ -38,7 +38,7 @@ class WeblinkController extends FormController
      * The URL view list variable.
      *
      * @var    string
-     * @since  __DEPLOY_VERSION__
+     * @since  1.6
      */
     protected $view_list = 'categories';
 
@@ -46,7 +46,7 @@ class WeblinkController extends FormController
      * The URL edit variable.
      *
      * @var    string
-     * @since  __DEPLOY_VERSION__
+     * @since  3.2
      */
     protected $urlVar = 'a.id';
 
@@ -55,7 +55,7 @@ class WeblinkController extends FormController
      *
      * @return  boolean  True if the article can be added, false if not.
      *
-     * @since  __DEPLOY_VERSION__
+     * @since   1.6
      */
     public function add()
     {
@@ -75,7 +75,7 @@ class WeblinkController extends FormController
      *
      * @return  boolean
      *
-     * @since  __DEPLOY_VERSION__
+     * @since   1.6
      */
     protected function allowAdd($data = [])
     {
@@ -97,7 +97,7 @@ class WeblinkController extends FormController
      *
      * @return  boolean
      *
-     * @since  __DEPLOY_VERSION__
+     * @since   1.6
      */
     protected function allowEdit($data = [], $key = 'id')
     {
@@ -135,7 +135,7 @@ class WeblinkController extends FormController
      *
      * @return  boolean  True if access level checks pass, false otherwise.
      *
-     * @since  __DEPLOY_VERSION__
+     * @since   1.6
      */
     public function cancel($key = 'w_id')
     {
@@ -153,7 +153,7 @@ class WeblinkController extends FormController
      *
      * @return  boolean  True if access level check and checkout passes, false otherwise.
      *
-     * @since  __DEPLOY_VERSION__
+     * @since   1.6
      */
     public function edit($key = null, $urlVar = 'w_id')
     {
@@ -193,7 +193,7 @@ class WeblinkController extends FormController
      *
      * @return  boolean   True if successful, false otherwise and internal error is set.
      *
-     * @since  __DEPLOY_VERSION__
+     * @since   1.7
      */
     public function batch($model = null)
     {
@@ -217,7 +217,7 @@ class WeblinkController extends FormController
      *
      * @return  object  The model.
      *
-     * @since  __DEPLOY_VERSION__
+     * @since   1.5
      */
     public function getModel($name = 'form', $prefix = 'Site', $config = ['ignore_request' => true])
     {
@@ -232,7 +232,7 @@ class WeblinkController extends FormController
      *
      * @return  string  The arguments to append to the redirect URL.
      *
-     * @since  __DEPLOY_VERSION__
+     * @since   1.6
      */
     protected function getRedirectToItemAppend($recordId = null, $urlVar = null)
     {
@@ -255,7 +255,7 @@ class WeblinkController extends FormController
      *
      * @return  string  The return URL.
      *
-     * @since  __DEPLOY_VERSION__
+     * @since   1.6
      */
     protected function getReturnPage()
     {
@@ -275,7 +275,7 @@ class WeblinkController extends FormController
      *
      * @return  boolean  True if successful, false otherwise.
      *
-     * @since  __DEPLOY_VERSION__
+     * @since   1.6
      */
     public function save($key = null, $urlVar = 'w_id')
     {
@@ -303,7 +303,7 @@ class WeblinkController extends FormController
      *
      * @throws \Exception
      *
-     * @since  __DEPLOY_VERSION__
+     * @since   1.6
      */
     public function go()
     {
