@@ -30,7 +30,7 @@ use Joomla\Database\ParameterType;
 /**
  * Routing class from com_weblinks
  *
- * @since  3.3
+ * @since  __DEPLOY_VERSION__
  */
 class Router extends RouterView
 {
@@ -46,7 +46,7 @@ class Router extends RouterView
      *
      * @var CategoryFactoryInterface
      *
-     * @since  4.0.0
+     * @since  __DEPLOY_VERSION__
      */
     private $categoryFactory;
 
@@ -55,7 +55,7 @@ class Router extends RouterView
      *
      * @var  array
      *
-     * @since  4.0.0
+     * @since  __DEPLOY_VERSION__
      */
     private $categoryCache = [];
 
@@ -64,7 +64,7 @@ class Router extends RouterView
      *
      * @var DatabaseInterface
      *
-     * @since  4.0.0
+     * @since  __DEPLOY_VERSION__
      */
     private $db;
 
@@ -178,7 +178,7 @@ class Router extends RouterView
      *
      * @return  array|string  The segments of this item
      *
-     * @since   4.0.0
+     * @since  __DEPLOY_VERSION__
      */
     public function getFormSegment($id, $query)
     {
@@ -263,7 +263,7 @@ class Router extends RouterView
      *
      * @return  CategoryInterface  The object containing categories
      *
-     * @since   4.0.0
+     * @since  __DEPLOY_VERSION__
      */
     private function getCategories(array $options = []): CategoryInterface
     {

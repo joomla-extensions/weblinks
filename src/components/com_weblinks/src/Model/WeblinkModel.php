@@ -29,7 +29,7 @@ use Joomla\String\StringHelper;
 /**
  * Weblinks Component Model for a Weblink record
  *
- * @since  1.5
+ * @since  __DEPLOY_VERSION__
  */
 class WeblinkModel extends AdminModel
 {
@@ -39,7 +39,7 @@ class WeblinkModel extends AdminModel
      * The type alias for this content type.
      *
      * @var    string
-     * @since  3.2
+     * @since  __DEPLOY_VERSION__
      */
     public $typeAlias = 'com_weblinks.weblink';
 
@@ -55,7 +55,7 @@ class WeblinkModel extends AdminModel
      * The prefix to use with controller messages.
      *
      * @var    string
-     * @since  1.6
+     * @since  __DEPLOY_VERSION__
      */
     protected $text_prefix = 'COM_WEBLINKS';
 
@@ -66,7 +66,7 @@ class WeblinkModel extends AdminModel
      *
      * @return  boolean  True if allowed to delete the record. Defaults to the permission for the component.
      *
-     * @since   1.6
+     * @since  __DEPLOY_VERSION__
      */
     protected function canDelete($record)
     {
@@ -84,7 +84,7 @@ class WeblinkModel extends AdminModel
      *
      * @return  boolean  True if allowed to change the state of the record. Defaults to the permission for the component.
      *
-     * @since   1.6
+     * @since  __DEPLOY_VERSION__
      */
     protected function canEditState($record)
     {
@@ -103,7 +103,7 @@ class WeblinkModel extends AdminModel
      *
      * @return  mixed  A JForm object on success, false on failure
      *
-     * @since   1.6
+     * @since  __DEPLOY_VERSION__
      */
     public function getForm($data = [], $loadData = true)
     {
@@ -148,7 +148,7 @@ class WeblinkModel extends AdminModel
      *
      * @return  array  The default data is an empty array.
      *
-     * @since   1.6
+     * @since  __DEPLOY_VERSION__
      */
     protected function loadFormData()
     {
@@ -178,7 +178,7 @@ class WeblinkModel extends AdminModel
      *
      * @return  mixed  Object on success, false on failure.
      *
-     * @since   1.6
+     * @since  __DEPLOY_VERSION__
      */
     public function getItem($pk = null)
     {
@@ -223,7 +223,7 @@ class WeblinkModel extends AdminModel
      *
      * @return  void
      *
-     * @since   1.6
+     * @since  __DEPLOY_VERSION__
      */
     protected function prepareTable($table)
     {
@@ -269,7 +269,7 @@ class WeblinkModel extends AdminModel
      *
      * @return  array  An array of conditions to add to ordering queries.
      *
-     * @since   1.6
+     * @since  __DEPLOY_VERSION__
      */
     protected function getReorderConditions($table)
     {
@@ -286,7 +286,7 @@ class WeblinkModel extends AdminModel
      *
      * @return  boolean  True on success.
      *
-     * @since    3.1
+     * @since  __DEPLOY_VERSION__
      */
     public function save($data)
     {
@@ -331,7 +331,7 @@ class WeblinkModel extends AdminModel
      *
      * @return  array  Contains the modified title and alias.
      *
-     * @since   3.1
+     * @since  __DEPLOY_VERSION__
      */
     protected function generateNewTitle($category_id, $alias, $name)
     {
@@ -358,7 +358,7 @@ class WeblinkModel extends AdminModel
      *
      * @return  void
      *
-     * @since    3.6.0
+     * @since  __DEPLOY_VERSION__
      */
     protected function preprocessForm(Form $form, $data, $group = 'content')
     {
@@ -403,7 +403,7 @@ class WeblinkModel extends AdminModel
      *
      * @return  bool
      *
-     * @since   3.6.0
+     * @since  __DEPLOY_VERSION__
      */
     private function canCreateCategory()
     {

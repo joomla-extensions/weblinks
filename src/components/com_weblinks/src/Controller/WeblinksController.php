@@ -19,7 +19,7 @@ use Joomla\CMS\MVC\Controller\AdminController;
 /**
  * Weblinks list controller class for the site context.
  *
- * @since  1.6
+ * @since  __DEPLOY_VERSION__
  */
 class WeblinksController extends AdminController
 {
@@ -32,7 +32,7 @@ class WeblinksController extends AdminController
      *
      * @return  \Joomla\CMS\MVC\Model\BaseDatabaseModel  The model.
      *
-     * @since   1.6
+     * @since  __DEPLOY_VERSION__
      */
     public function getModel($name = 'Weblink', $prefix = 'Site', $config = ['ignore_request' => true])
     {

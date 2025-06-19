@@ -47,7 +47,7 @@ class HtmlView extends BaseHtmlView
      * The item model state
      *
      * @var    \Joomla\Registry\Registry
-     * @since  1.6
+     * @since  __DEPLOY_VERSION__
      */
     protected $state;
 

@@ -24,7 +24,7 @@ use Joomla\Database\ParameterType;
 /**
  * Methods supporting a list of weblink records.
  *
- * @since  1.6
+ * @since  __DEPLOY_VERSION__
  */
 class WeblinksModel extends ListModel
 {
@@ -35,7 +35,7 @@ class WeblinksModel extends ListModel
      * @param   MVCFactoryInterface  $factory  The factory.
      *
      * @see     JControllerLegacy
-     * @since   1.6
+     * @since  __DEPLOY_VERSION__
      */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
@@ -84,7 +84,7 @@ class WeblinksModel extends ListModel
      * @return  void
      *
      * @note    Calling getState in this method will result in recursion.
-     * @since   1.6
+     * @since  __DEPLOY_VERSION__
      */
     protected function populateState($ordering = 'a.title', $direction = 'asc')
     {
@@ -126,7 +126,7 @@ class WeblinksModel extends ListModel
      *
      * @return  string  A store id.
      *
-     * @since   1.6
+     * @since  __DEPLOY_VERSION__
      */
     protected function getStoreId($id = '')
     {
@@ -147,7 +147,7 @@ class WeblinksModel extends ListModel
      *
      * @return  \JDatabaseQuery
      *
-     * @since   1.6
+     * @since  __DEPLOY_VERSION__
      */
     protected function getListQuery()
     {
