@@ -21,6 +21,53 @@ paths:
       - JoomlaToken: []
       tags:
       - Weblinks
+      parameters:
+      - name: filter[category]
+        in: query
+        description: Filter by category ID
+        schema:
+          type: integer
+      - name: filter[search]
+        in: query
+        description: Filter by search term
+        schema:
+          type: string
+      - name: filter[state]
+        in: query
+        description: Filter by publication state (e.g., 1 for published, 0 for unpublished)
+        schema:
+          type: integer
+      - name: filter[tag]
+        in: query
+        description: Filter by tag ID
+        schema:
+          type: integer
+      - name: filter[language]
+        in: query
+        description: Filter by language code
+        schema:
+          type: string
+      - name: list[ordering]
+        in: query
+        description: The field to sort by (e.g., id, title, state)
+        schema:
+          type: string
+      - name: list[direction]
+        in: query
+        description: The sort direction
+        schema:
+          type: string
+          enum: [ASC, DESC]
+      - name: page[limit]
+        in: query
+        description: The number of items to return
+        schema:
+          type: integer
+      - name: page[offset]
+        in: query
+        description: The page number to return
+        schema:
+          type: integer
       responses:
         '200':
           description: Successful response
@@ -30,7 +77,11 @@ paths:
                 $ref: '#/components/schemas/WeblinksListResponse'
               example:
                 links:
-                  self: "https://www.example.com/demo/api/index.php/v1/weblinks"
+                  self: "https://www.example.com/api/index.php/v1/weblinks"
+                  first: "https://www.example.com/api/index.php/v1/weblinks"
+                  previous: "https://www.example.com/api/index.php/v1/weblinks"
+                  next: "https://www.example.com/api/index.php/v1/weblinks"
+                  last: "https://www.example.com/api/index.php/v1/weblinks"
                 data:
                 - type: "weblinks"
                   id: "1"
@@ -161,7 +212,7 @@ paths:
               url: "http://somelink.com/"
               xreference: "xreference"
       responses:
-        '201':
+        '200':
           description: Weblink created
           content:
             application/vnd.api+json:
@@ -169,7 +220,7 @@ paths:
                 $ref: '#/components/schemas/WeblinkCreateResponse'
               example:
                 links:
-                  self: "https://www.example.com/demo/api/index.php/v1/weblinks"
+                  self: "https://www.example.com/api/index.php/v1/weblinks"
                 data:
                   type: "weblinks"
                   id: "3"
@@ -299,7 +350,7 @@ paths:
                 $ref: '#/components/schemas/WeblinkSingleResponse'
               example:
                 links:
-                  self: "http://www.weblinks.test/api/index.php/v1/weblinks/108"
+                  self: "http://www.example.com/api/index.php/v1/weblinks/108"
                 data:
                   type: "weblinks"
                   id: "108"
@@ -487,6 +538,22 @@ paths:
       - Categories
       security:
       - JoomlaToken: []
+      parameters:
+      - name: filter[search]
+        in: query
+        description: Filter by search term
+        schema:
+          type: string
+      - name: page[limit]
+        in: query
+        description: The number of items to return
+        schema:
+          type: integer
+      - name: page[offset]
+        in: query
+        description: The page number to return
+        schema:
+          type: integer
       responses:
         '200':
           description: A list of weblink categories.
@@ -496,7 +563,11 @@ paths:
                 $ref: '#/components/schemas/Category'
               example:
                 links:
-                  self: "http://www.weblinks.test/api/index.php/v1/weblinks/categories"
+                  self: "https://www.example.com/api/index.php/v1/weblinks/categories"
+                  first: "https://www.example.com/api/index.php/v1/weblinks/categories"
+                  previous: "https://www.example.com/api/index.php/v1/weblinks/categories"
+                  next: "https://www.example.com/api/index.php/v1/weblinks/categories"
+                  last: "https://www.example.com/api/index.php/v1/weblinks/categories"
                 data:
                 - type: "categories"
                   id: "81"
@@ -596,7 +667,7 @@ paths:
                 $ref: '#/components/schemas/Category'
               example:
                 links:
-                  self: "http://www.weblinks.test/api/index.php/v1/weblinks/categories"
+                  self: "http://www.example.com/api/index.php/v1/weblinks/categories"
                 data:
                 - type: "categories"
                   id: "81"
@@ -691,7 +762,7 @@ paths:
                 $ref: '#/components/schemas/Category'
               example:
                 links:
-                  self: "http://www.weblinks.test/api/index.php/v1/weblinks/categories/88"
+                  self: "http://www.example.com/api/index.php/v1/weblinks/categories/88"
                 data:
                   type: "categories"
                   id: "88"
@@ -799,7 +870,7 @@ paths:
                 $ref: '#/components/schemas/Category'
               example:
                 links:
-                  self: "http://www.weblinks.test/api/index.php/v1/weblinks/categories/88"
+                  self: "http://www.example.com/api/index.php/v1/weblinks/categories/88"
                 data:
                   type: "categories"
                   id: "88"
@@ -906,6 +977,17 @@ paths:
       - Fields
       security:
       - JoomlaToken: []
+      parameters:
+      - name: page[limit]
+        in: query
+        description: The number of items to return
+        schema:
+          type: integer
+      - name: page[offset]
+        in: query
+        description: The page number to return
+        schema:
+          type: integer
       responses:
         '200':
           description: A list of weblink fields.
@@ -915,7 +997,11 @@ paths:
                 $ref: '#/components/schemas/Field'
               example:
                 links:
-                  self: "http://www.example.com/api/index.php/v1/fields/weblinks"
+                  self: "https://www.example.com/api/index.php/v1/fields/weblinks"
+                  first: "https://www.example.com/api/index.php/v1/fields/weblinks"
+                  previous: "https://www.example.com/api/index.php/v1/fields/weblinks"
+                  next: "https://www.example.com/api/index.php/v1/fields/weblinks"
+                  last: "https://www.example.com/api/index.php/v1/fields/weblinks"
                 data:
                 - type: "fields"
                   id: "1"
@@ -1501,6 +1587,17 @@ paths:
       - Field Groups
       security:
       - JoomlaToken: []
+      parameters:
+      - name: page[limit]
+        in: query
+        description: The number of items to return
+        schema:
+          type: integer
+      - name: page[offset]
+        in: query
+        description: The page number to return
+        schema:
+          type: integer
       responses:
         '200':
           description: A list of weblink field groups.
@@ -1510,7 +1607,11 @@ paths:
                 $ref: '#/components/schemas/FieldGroup'
               example:
                 links:
-                  self: "http://www.example.com/api/index.php/v1/fields/groups/weblinks"
+                  self: "https://www.example.com/api/index.php/v1/fields/groups/weblinks"
+                  first: "https://www.example.com/api/index.php/v1/fields/groups/weblinks"
+                  previous: "https://www.example.com/api/index.php/v1/fields/groups/weblinks"
+                  next: "https://www.example.com/api/index.php/v1/fields/groups/weblinks"
+                  last: "https://www.example.com/api/index.php/v1/fields/groups/weblinks"
                 data:
                 - type: "groups"
                   id: "1"
@@ -1939,6 +2040,18 @@ components:
             self:
               type: string
               format: uri
+            first:
+              type: string
+              format: uri
+            previous:
+              type: string
+              format: uri
+            next:
+              type: string
+              format: uri
+            last:
+              type: string
+              format: uri
         data:
           type: array
           items:
@@ -2356,6 +2469,18 @@ components:
             self:
               type: string
               format: uri
+            first:
+              type: string
+              format: uri
+            previous:
+              type: string
+              format: uri
+            next:
+              type: string
+              format: uri
+            last:
+              type: string
+              format: uri
         data:
           type: array
           items:
@@ -2454,6 +2579,18 @@ components:
           type: object
           properties:
             self:
+              type: string
+              format: uri
+            first:
+              type: string
+              format: uri
+            previous:
+              type: string
+              format: uri
+            next:
+              type: string
+              format: uri
+            last:
               type: string
               format: uri
         data:
@@ -2691,6 +2828,18 @@ components:
           type: object
           properties:
             self:
+              type: string
+              format: uri
+            first:
+              type: string
+              format: uri
+            previous:
+              type: string
+              format: uri
+            next:
+              type: string
+              format: uri
+            last:
               type: string
               format: uri
         data:
