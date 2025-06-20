@@ -67,3 +67,39 @@ describe('Test that weblinks categories API endpoint', () => {
     cy.db_enableExtension('0', 'plg_webservices_weblinks');
   });
 });
+
+describe('Test that weblinks categories API endpoint filters', () => {
+  afterEach(() => {
+    cy.task('queryDB', "DELETE FROM #__categories WHERE title LIKE '%automated test category%' AND extension = 'com_weblinks'");
+  });
+
+  it('can filter by search term', () => {
+    cy.db_enableExtension('1', 'plg_webservices_weblinks');
+    cy.db_createCategory({ title: 'automated test category', extension: 'com_weblinks' });
+    cy.db_createCategory({ title: 'another category', extension: 'com_weblinks' });
+
+    cy.api_get('/weblinks/categories?filter[search]=automated')
+      .then((response) => {
+        cy.wrap(response).its('body').its('data').should('have.length', 1);
+        cy.wrap(response).its('body').its('data.0').its('attributes')
+          .its('title')
+          .should('include', 'automated test category');
+      });
+    cy.db_enableExtension('0', 'plg_webservices_weblinks');
+  });
+
+  it('can paginate the categories', () => {
+    cy.db_enableExtension('1', 'plg_webservices_weblinks');
+    cy.db_createCategory({ title: 'automated test category 1', extension: 'com_weblinks' });
+    cy.db_createCategory({ title: 'automated test category 2', extension: 'com_weblinks' });
+
+    cy.api_get('/weblinks/categories?page[limit]=1&page[offset]=1')
+      .then((response) => {
+        cy.wrap(response).its('body').its('data').should('have.length', 1);
+        cy.wrap(response).its('body').its('data.0').its('attributes')
+          .its('title')
+          .should('include', 'automated test category 2');
+      });
+    cy.db_enableExtension('0', 'plg_webservices_weblinks');
+  });
+});

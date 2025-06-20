@@ -60,4 +60,19 @@ describe('Test that weblinks fields API endpoint', () => {
       .then((response) => cy.wrap(response).its('status').should('eq', 204));
     cy.db_enableExtension('0', 'plg_webservices_weblinks');
   });
+
+  it('can filter and paginate the fields', () => {
+    cy.db_enableExtension('1', 'plg_webservices_weblinks');
+    cy.db_createField({ title: 'automated test field 1', context: 'com_weblinks.weblink' });
+    cy.db_createField({ title: 'automated test field 2', context: 'com_weblinks.weblink' });
+
+    cy.api_get('/fields/weblinks?page[limit]=1&page[offset]=1')
+      .then((response) => {
+        cy.wrap(response).its('body').its('data').should('have.length', 1);
+        cy.wrap(response).its('body').its('data.0').its('attributes')
+          .its('title')
+          .should('include', 'automated test field 2');
+      });
+    cy.db_enableExtension('0', 'plg_webservices_weblinks');
+  });
 });
