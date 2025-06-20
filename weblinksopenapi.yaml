@@ -2012,6 +2012,7 @@ paths:
                 errors:
                 - code: 500
                   title: "Internal server error"
+
 components:
   securitySchemes:
     JoomlaToken:
