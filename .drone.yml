@@ -75,7 +75,7 @@ steps:
       - cp dist/pkg-weblinks-current.zip /tests/www/mysql/pkg-weblinks-current.zip
       - cd /tests/www/mysql/
       - unzip joomla.zip
-      - echo "/tests/www/mysql/configuration.php" > /tmp/blacklist.iniAdd
+      - echo "/tests/www/mysql/configuration.php" > /tmp/blacklist.ini
       - echo "opcache.blacklist_filename=/tmp/blacklist.ini" >> /etc/php/*/apache2/conf.d/10-opcache.ini
       - apache2ctl -D FOREGROUND &
       - chmod +rwx /root
@@ -100,7 +100,7 @@ steps:
       - cp dist/pkg-weblinks-current.zip /tests/www/pgsql/pkg-weblinks-current.zip
       - cd /tests/www/pgsql/
       - unzip joomla.zip
-      - echo "/tests/www/pgsql/configuration.php" > /tmp/blacklist.iniAdd
+      - echo "/tests/www/pgsql/configuration.php" > /tmp/blacklist.ini
       - echo "opcache.blacklist_filename=/tmp/blacklist.ini" >> /etc/php/*/apache2/conf.d/10-opcache.ini
       - apache2ctl -D FOREGROUND &
       - chmod +rwx /root
