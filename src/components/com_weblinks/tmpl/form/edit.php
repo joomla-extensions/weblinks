@@ -2,7 +2,7 @@
 
 /**
  * @package     Joomla.Site
- * @subpackage  com_weblinks
+ * @subpackage  Weblinks
  *
  * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -13,12 +13,19 @@
 // phpcs:enable PSR1.Files.SideEffects
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 
 HTMLHelper::_('behavior.keepalive');
 HTMLHelper::_('behavior.formvalidator');
+$assoc = Associations::isEnabled();
+// Fieldsets to not automatically render by /layouts/joomla/edit/params.php
+$this->ignore_fieldsets = array('details', 'images', 'item_associations', 'jmetadata');
+$this->useCoreUI = true;
+
 $captchaEnabled = false;
 $captchaSet = $this->params->get('captcha', Factory::getApplication()->get('captcha', '0'));
 foreach (PluginHelper::getPlugin('captcha') as $plugin) {
@@ -43,38 +50,76 @@ $params = $this->state->get('params');
     endif; ?>
     <form action="<?php echo Route::_('index.php?option=com_weblinks&view=form&w_id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate form-vertical">
 
-        <?php echo $this->form->renderField('title'); ?>
-        <?php echo $this->form->renderField('alias'); ?>
-        <?php echo $this->form->renderField('catid'); ?>
-        <?php echo $this->form->renderField('url'); ?>
-        <?php echo $this->form->renderField('tags'); ?>
+        <?php echo LayoutHelper::render('joomla.edit.title_alias', $this); ?>
 
-        <?php if ($params->get('save_history', 0)) :
-            ?>
-            <?php echo $this->form->renderField('version_note'); ?>
-            <?php
-        endif; ?>
+        <div class="main-card">
+            <?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => 'details')); ?>
 
-        <?php if ($this->user->authorise('core.edit.state', 'com_weblinks.weblink')) :
-            ?>
-            <?php echo $this->form->renderField('state'); ?>
-            <?php
-        endif; ?>
-        <?php echo $this->form->renderField('language'); ?>
-        <?php echo $this->form->renderField('description'); ?>
+            <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'details', empty($this->item->id) ? Text::_('COM_WEBLINKS_NEW_WEBLINK', true) : Text::_('COM_WEBLINKS_EDIT_WEBLINK', true)); ?>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-vertical">
+                        <div>
+                            <fieldset class="adminform">
+                                <?php echo $this->form->renderField('url'); ?>
+                                <?php echo $this->form->renderField('description'); ?>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <?php echo LayoutHelper::render('joomla.edit.global', $this); ?>
+                </div>
+            </div>
+            <?php echo HTMLHelper::_('uitab.endTab'); ?>
 
-        <?php echo $this->form->renderField('image_first', 'images'); ?>
-        <?php echo $this->form->renderField('image_first_alt', 'images'); ?>
-        <?php echo $this->form->renderField('image_first_alt_empty', 'images'); ?>
-        <?php echo $this->form->renderField('float_first', 'images'); ?>
-        <?php echo $this->form->renderField('image_first_caption', 'images'); ?>
+            <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'images', Text::_('JGLOBAL_FIELDSET_IMAGE_OPTIONS', true)); ?>
+            <div class="row">
+                <div class="col-12">
+                    <fieldset id="fieldset-image; ?>" class="options-form">
+                        <legend><?php echo Text::_('JGLOBAL_FIELDSET_IMAGE_OPTIONS'); ?></legend>
+                        <div>
+                            <?php echo $this->form->renderField('JGLOBAL_FIELDSET_IMAGE_OPTIONS'); ?>
+                            <?php foreach ($this->form->getGroup('images') as $field) :
+                                ?>
+                                <?php echo $field->renderField(); ?>
+                                <?php
+                            endforeach; ?>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
 
-        <?php echo $this->form->renderField('image_second', 'images'); ?>
-        <?php echo $this->form->renderField('image_second_alt', 'images'); ?>
-        <?php echo $this->form->renderField('image_second_alt_empty', 'images'); ?>
-        <?php echo $this->form->renderField('float_second', 'images'); ?>
-        <?php echo $this->form->renderField('image_second_caption', 'images'); ?>
+            <?php echo HTMLHelper::_('uitab.endTab'); ?>
 
+            <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'publishing', Text::_('JGLOBAL_FIELDSET_PUBLISHING', true)); ?>
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <fieldset id="fieldset-publishingdata" class="options-form">
+                        <legend><?php echo Text::_('JGLOBAL_FIELDSET_PUBLISHING'); ?></legend>
+                        <?php echo LayoutHelper::render('joomla.edit.publishingdata', $this); ?>
+                    </fieldset>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <fieldset id="fieldset-metadata" class="options-form">
+                        <legend><?php echo Text::_('JGLOBAL_FIELDSET_METADATA_OPTIONS'); ?></legend>
+                        <?php echo LayoutHelper::render('joomla.edit.metadata', $this); ?>
+                    </fieldset>
+                </div>
+            </div>
+            <?php echo HTMLHelper::_('uitab.endTab'); ?>
+
+            <?php echo LayoutHelper::render('joomla.edit.params', $this); ?>
+
+            <?php if ($assoc) :
+                ?>
+                <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'associations', Text::_('JGLOBAL_FIELDSET_ASSOCIATIONS')); ?>
+                <fieldset id="fieldset-associations" class="options-form">
+                    <legend><?php echo Text::_('JGLOBAL_FIELDSET_ASSOCIATIONS'); ?></legend>
+                    <?php echo LayoutHelper::render('joomla.edit.associations', $this); ?>
+                </fieldset>
+                <?php echo HTMLHelper::_('uitab.endTab'); ?>
+            <?php endif; ?>
 
         <?php if ($captchaEnabled) :
             ?>
