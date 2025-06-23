@@ -8,8 +8,8 @@
 	<authorEmail>admin@joomla.org</authorEmail>
 	<authorUrl>www.joomla.org</authorUrl>
 	<version>##VERSION##</version>
-  <changelogurl>https://github.com/joomla-extensions/weblinks/changelogs/plg_quickicon_weblinks_changelog.xml</changelogurl>
-  <description>PLG_QUICKICON_WEBLINKS_XML_DESCRIPTION</description>
+    <changelogurl>https://github.com/joomla-extensions/weblinks/changelogs/plg_quickicon_weblinks_changelog.xml</changelogurl>
+    <description>PLG_QUICKICON_WEBLINKS_XML_DESCRIPTION</description>
 	<namespace path="src">Joomla\Plugin\Quickicon\Weblinks</namespace>
     <files>
 		##FILES##
@@ -33,5 +33,5 @@
 				</field>
 			</fieldset>
 		</fields>
-	</config
+	</config>
 </extension>
