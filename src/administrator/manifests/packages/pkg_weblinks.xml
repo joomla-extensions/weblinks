@@ -13,6 +13,7 @@
 	<version>##VERSION##</version>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<description>PKG_WEBLINKS_XML_DESCRIPTION</description>
+	<changelogurl>https://github.com/joomla-extensions/weblinks/changelogs/pkg_weblinks_changelog.xml</changelogurl>
 	<scriptfile>script.php</scriptfile>
 	<files>
 		<!-- The id for each extension is the element stored in the DB -->

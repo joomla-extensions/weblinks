@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<changelogs>
+    <changelog>
+        <element>pkg_weblinks</element>
+        <type>package</type>
+        <version>5.0.0</version>
+    </changelog>
+    <addition>
+        <item>Changelogs Plugin: Shows the Changes made in the release</item>
+        <item>Webservices Plugin: Adds an API for Weblinks with Rate Limiting</item>
+        <item>Quickicon Plugin: Displays a Quickicon in the Dashboard</item>
+    </addition>
+</changelogs>
