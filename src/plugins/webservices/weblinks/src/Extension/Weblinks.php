@@ -174,9 +174,17 @@ class Weblinks extends CMSPlugin
         // Increment the request count
         $rateData['count']++;
 
+        // Calculate remaining requests and reset time
+        $remainingRequests = $maxRequests - $rateData['count'];
+        $resetTime         = $rateData['start'] + $windowSeconds;
+
+        // Set rate-limiting headers
+        $this->setRateLimitHeaders($remainingRequests, $resetTime);
+
         // Check if the rate limit is exceeded
         if ($rateData['count'] > $maxRequests) {
-            $this->handleRateLimitExceeded();
+            $retryAfter = $resetTime - time();
+            $this->handleRateLimitExceeded(max($retryAfter, 0));
         }
 
         // Save the updated rate data
@@ -223,9 +231,17 @@ class Weblinks extends CMSPlugin
         // Increment the request count
         $rateData['count']++;
 
+        // Calculate remaining requests and reset time
+        $remainingRequests = $maxRequests - $rateData['count'];
+        $resetTime         = $rateData['start'] + $windowSeconds;
+
+        // Set rate-limiting headers
+        $this->setRateLimitHeaders($remainingRequests, $resetTime);
+
         // Check if the rate limit is exceeded
         if ($rateData['count'] > $maxRequests) {
-            $this->handleRateLimitExceeded();
+            $retryAfter = $resetTime - time();
+            $this->handleRateLimitExceeded(max($retryAfter, 0));
         }
 
         // Save the updated rate data
@@ -235,16 +251,20 @@ class Weblinks extends CMSPlugin
     /**
      * Handles the response when a user exceeds the API rate limit.
      *
-     * This method sends an HTTP 429 "Too Many Requests" response.
+     * This method sends an HTTP 429 "Too Many Requests" response along with a "Retry-After" header.
+     *
+     * @param   int  $retryAfterSeconds  The number of seconds after which the client can retry.
      *
      * @return  void
      *
      * @since   __DEPLOY_VERSION__
      */
-    private function handleRateLimitExceeded(): void
+    private function handleRateLimitExceeded(int $retryAfterSeconds): void
     {
         // Customize the behavior here (e.g., log the event, return a response, etc.)
         http_response_code(429); // HTTP 429 Too Many Requests
+        $retryTime = gmdate('D, d M Y H:i:s', time() + $retryAfterSeconds) . ' GMT';
+        header('Retry-After: ' . $retryTime);
         echo json_encode([
             'errors' => [
                 [
@@ -255,5 +275,21 @@ class Weblinks extends CMSPlugin
         ]);
 
         exit;
+    }
+
+    /**
+     * Sets the rate limit headers on the response.
+     *
+     * @param   int  $remaining  The number of requests remaining in the window.
+     * @param   int  $resetTime  The Unix timestamp when the rate limit window resets.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function setRateLimitHeaders(int $remainingRequests, int $resetTime): void
+    {
+        header('X-RateLimit-Remaining: ' . max($remainingRequests, 0));
+        header('X-RateLimit-Reset: ' . $resetTime - time());
     }
 }
