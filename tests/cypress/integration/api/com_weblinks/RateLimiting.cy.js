@@ -116,4 +116,35 @@ describe('Weblinks API Rate Limiting', () => {
         // Clean up the category
         cy.task('queryDB', `DELETE FROM #__categories WHERE title = 'Category for POST test' AND extension = 'com_weblinks'`);
     });
+
+    it('should include rate limiting response headers', () => {
+        // First request
+        cy.request({
+            method: 'GET',
+            url: `${Cypress.config('baseUrl')}/api/index.php/v1/weblinks`,
+            failOnStatusCode: false,
+        }).then((response) => {
+            expect(response.status).to.eq(200);
+            expect(response.headers).to.have.property('x-ratelimit-remaining', '1');
+            expect(response.headers).to.have.property('x-ratelimit-reset', '5');
+        });
+
+        // Second request to exceed the limit
+        cy.request({
+            method: 'GET',
+            url: `${Cypress.config('baseUrl')}/api/index.php/v1/weblinks`,
+            failOnStatusCode: false,
+        });
+
+        // Third request - expecting 429
+        cy.request({
+            method: 'GET',
+            url: `${Cypress.config('baseUrl')}/api/index.php/v1/weblinks`,
+            failOnStatusCode: false,
+        }).then((response) => {
+            expect(response.status).to.eq(429);
+            expect(response.headers).to.have.property('retry-after');
+            expect(response.headers).to.have.property('x-ratelimit-remaining', '0');
+        });
+    });
 });
