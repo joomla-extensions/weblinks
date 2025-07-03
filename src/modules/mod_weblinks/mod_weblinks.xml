@@ -54,6 +54,20 @@
 				</field>
 
 				<field
+					name="maxLevel"
+					type="list"
+					label="JGLOBAL_MAXIMUM_CATEGORY_LEVELS_LABEL"
+					showon="groupby:1"
+					>
+					<option value="-1">JALL</option>
+					<option value="1">J1</option>
+					<option value="2">J2</option>
+					<option value="3">J3</option>
+					<option value="4">J4</option>
+					<option value="5">J5</option>
+				</field>
+
+				<field
 					name="groupby_ordering"
 					type="list"
 					label="MOD_WEBLINKS_FIELD_GROUPBYORDERING_LABEL"

@@ -16,6 +16,7 @@ namespace Joomla\Module\Weblinks\Site\Helper;
 
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\Registry\Registry;
 
@@ -39,6 +40,59 @@ class WeblinksHelper
     public function getWeblinks($params, $app)
     {
         // @var \Joomla\Component\Weblinks\Site\Model\CategoryModel $model
+        if ($params->get('groupby')) {
+            return $this->getCategoryTree($params->get('catid', 1), $params, $app, 0, $params->get('maxLevel', -1)) ?? [];
+        }
+
+        return $this->getCategoryWeblinks($params->get('catid', 1), $params, $app);
+    }
+
+    /**
+     * Recursively retrieves a category, its weblinks, and its children categories to build a tree structure.
+     *
+     * @param   int                      $catid     The ID of the parent category to start building the tree from.
+     * @param   Registry                 $params    The module parameters.
+     * @param   CMSApplicationInterface  $app       The application object.
+     * @param   int                      $level     The current depth level of the recursion.
+     * @param   int                      $maxLevel  The maximum depth to recurse.
+     *
+     * @return  \stdClass|null  An object representing the category tree, or null if the initial category is not found.
+     */
+    private function getCategoryTree($catid, $params, $app, $level, $maxLevel)
+    {
+        $categories = Factory::getApplication()->bootComponent('com_weblinks')->getCategory();
+        $category   = $categories->get($catid);
+        $tree       = null;
+
+        if ($category) {
+            $tree           = new \stdClass();
+            $tree->category = $category;
+            $tree->weblinks = $this->getCategoryWeblinks($category->id, $params, $app);
+            $tree->children = [];
+
+            if ($maxLevel == -1 || $level < $maxLevel) {
+                $children = $category->getChildren();
+
+                foreach ($children as $child) {
+                    $tree->children[] = $this->getCategoryTree($child->id, $params, $app, $level + 1, $maxLevel);
+                }
+            }
+        }
+
+        return $tree;
+    }
+
+    /**
+     * Retrieve a list of weblinks for a specific category.
+     *
+     * @param   int                      $catid   The ID of the category.
+     * @param   Registry                 $params  The module parameters.
+     * @param   CMSApplicationInterface  $app     The application object.
+     *
+     * @return  array  An array of weblink items.
+     */
+    private function getCategoryWeblinks($catid, $params, $app)
+    {
         $model = $app->bootComponent('com_weblinks')->getMVCFactory()
             ->createModel('Category', 'Site', ['ignore_request' => true]);
 
@@ -61,9 +115,7 @@ class WeblinksHelper
         $model->setState('list.ordering', $ordering == 'order' ? 'ordering' : $ordering);
         $model->setState('list.direction', $params->get('direction', 'asc'));
 
-        $catid = (int) $params->get('catid', 0);
         $model->setState('category.id', $catid);
-        $model->setState('category.group', $params->get('groupby', 0));
         $model->setState('category.ordering', $params->get('groupby_ordering', 'c.lft'));
         $model->setState('category.direction', $params->get('groupby_direction', 'ASC'));
 
