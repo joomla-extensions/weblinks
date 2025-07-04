@@ -53,8 +53,7 @@ if (empty($weblinks)) {
                 $modalParams['modalWidth'] = 80;
                 echo HTMLHelper::_('bootstrap.renderModal', $modalId, $modalParams);
                 echo '<button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#' . $modalId . '">
-                ' . $item->title . '
-            </button>';
+                ' . $item->title . '</button>';
 
                 break;
             default:
