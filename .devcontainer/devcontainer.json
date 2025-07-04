@@ -1,0 +1,27 @@
+{
+    "name": "PHP Apache Node MySQL Dev",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+    },
+    "extensions": [
+        "felixfbecker.php-debug",
+        "bmewburn.vscode-intelephense-client",
+        "esbenp.prettier-vscode"
+    ],
+    "postCreateCommand": "composer install || true && npm install || true",
+    "forwardPorts": [80, 3306],
+    "portsAttributes": {
+        "80": {
+            "label": "Apache Web Server",
+            "onAutoForward": "openBrowser"
+        },
+        "3306": {
+            "label": "MySQL",
+            "onAutoForward": "notify"
+        }
+    },
+    "remoteUser": "root"
+}
