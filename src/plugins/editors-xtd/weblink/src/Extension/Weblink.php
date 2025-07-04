@@ -16,7 +16,6 @@ namespace Joomla\Plugin\EditorsXtd\Weblink\Extension;
 
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Session\Session;
 use Joomla\Database\DatabaseInterface;
@@ -53,14 +52,14 @@ final class Weblink extends CMSPlugin
 
     /**
      * Display the button
-     *
-     * @param   string  $name  The name of the button to add
-     *
-     * @return  CMSObject  The button options as JObject
-     *
-     * @since  __DEPLOY_VERSION__
-     */
-    public function onDisplay($name)
+      *
+      * @param   string  $name  The name of the button to add
+      *
+      * @return  ?object  The button options as stdClass object or null
+      *
+      * @since  __DEPLOY_VERSION__
+      */
+    public function onDisplay($name): ?object
     {
         $user = $this->getApplication()->getIdentity();
 
@@ -73,7 +72,7 @@ final class Weblink extends CMSPlugin
             $link = 'index.php?option=com_weblinks&amp;view=weblinks&amp;layout=modal&amp;tmpl=component&amp;'
                 . Session::getFormToken() . '=1&amp;editor=' . $name;
 
-            $button          = new CMSObject();
+            $button          = new \stdClass();
             $button->modal   = true;
             $button->link    = $link;
             $button->text    = Text::_('PLG_EDITORS-XTD_WEBLINK_BUTTON_WEBLINK');
@@ -93,5 +92,7 @@ final class Weblink extends CMSPlugin
 
             return $button;
         }
+
+        return null; // return null if conditions are not met
     }
 }

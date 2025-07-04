@@ -116,7 +116,8 @@ class CategoriesModel extends ListModel
             $options['access']     = $this->getState('filter.access');
             $options['published']  = $this->getState('filter.published');
             $options['countItems'] = $params->get('show_cat_num_links', 1) || !$params->get('show_empty_categories_cat', 0);
-            $categories            = Categories::getInstance('Weblinks', $options);
+            $component             = Factory::getApplication()->bootComponent('com_weblinks');
+            $categories            = $component->getCategory($options);
             $this->_parent         = $categories->get($this->getState('filter.parentId', 'root'));
             if (\is_object($this->_parent)) {
                 $this->_items = $this->_parent->getChildren();

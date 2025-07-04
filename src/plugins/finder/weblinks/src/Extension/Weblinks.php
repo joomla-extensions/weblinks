@@ -16,6 +16,7 @@ namespace Joomla\Plugin\Finder\Weblinks\Extension;
 
 use Joomla\CMS\Categories\Categories;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 use Joomla\Component\Finder\Administrator\Indexer\Adapter;
 use Joomla\Component\Finder\Administrator\Indexer\Helper;
@@ -294,7 +295,8 @@ final class Weblinks extends Adapter
         $item->addTaxonomy('Type', 'Web Link');
 
         // Add the category taxonomy data.
-        $categories = Categories::getInstance('com_weblinks', ['published' => false, 'access' => false]);
+        $component  = Factory::getApplication()->bootComponent('com_weblinks');
+        $categories = $component->getCategory(['published' => false, 'access' => false]);
         $category   = $categories->get($item->catid);
 
         // Category does not exist, stop here
