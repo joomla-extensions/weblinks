@@ -57,8 +57,10 @@ class WeblinksHelper
      * @param   int                      $maxLevel  The maximum depth to recurse.
      *
      * @return  \stdClass|null  An object representing the category tree, or null if the initial category is not found.
+     *
+     * @since   __DEPLOY_VERSION__
      */
-    private function getCategoryTree($catid, $params, $app, $level, $maxLevel)
+    private function getCategoryTree(int $catid, Registry $params, CMSApplicationInterface $app, int $level, int $maxLevel): ?\stdClass
     {
         $categories = Factory::getApplication()->bootComponent('com_weblinks')->getCategory();
         $category   = $categories->get($catid);
@@ -90,8 +92,10 @@ class WeblinksHelper
      * @param   CMSApplicationInterface  $app     The application object.
      *
      * @return  array  An array of weblink items.
+     *
+     * @since   __DEPLOY_VERSION__
      */
-    private function getCategoryWeblinks($catid, $params, $app)
+    private function getCategoryWeblinks(int $catid, Registry $params, CMSApplicationInterface $app): array
     {
         $model = $app->bootComponent('com_weblinks')->getMVCFactory()
             ->createModel('Category', 'Site', ['ignore_request' => true]);
