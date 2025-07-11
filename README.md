@@ -45,6 +45,28 @@ After that you can checkout the branch and start testing.
 git checkout move-lang-files
 ```
 
+# For GitHub Codespaces
+
+This repository is configured to run in GitHub Codespaces, providing a fully configured development environment in the cloud.
+
+## Getting Started
+
+1.  **Open in Codespaces**: Click the "Code" button on the repository's main page and select "Open with Codespaces".
+2.  **Wait for Setup**: The environment will be automatically set up, including all dependencies and Joomla installation.
+3.  **Access Joomla**: Once the setup is complete, you can access the Joomla administrator panel and phpMyAdmin through the "Ports" tab in VS Code.
+
+A `codespace-details.txt` file will be created in the root of your workspace once it's finished building with login credentials and other information.
+
+You can checkout pull requests using the Github extension inside the Codespace, and the changes will appear immediately in the Joomla installation making it way easier to test directly from the cloud without any local setup. 
+
+## Xdebug for PHP Debugging
+
+Xdebug is pre-configured and ready to use for debugging your PHP code.
+
+1.  **Start Debugging**: Open the "Run and Debug" view in VS Code (or press `Ctrl+Shift+D`).
+2.  **Listen for Xdebug**: Select "Listen for Xdebug" from the dropdown menu and click the green play button.
+3.  **Set Breakpoints**: Add breakpoints to your code and the debugger will pause execution when they are hit.
+
 # For Linux / MacOS
 
 ## Install
@@ -288,4 +310,3 @@ cd C:\wamp\www\weblinks
 ## Next Steps
 
 Once the prerequisites are installed, follow the "For Linux / MacOS" section starting from Install. The commands (e.g., git clone, composer install, npm ci) work the same in Git Bash, with the only adjustment is replacing paths (e.g., /var/www/html/weblinks) with Windows equivalents (e.g., C:\wamp\www\weblinks if using WAMP, or C:\xampp\htdocs\weblinks for XAMPP)
-
