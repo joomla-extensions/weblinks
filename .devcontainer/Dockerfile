@@ -42,4 +42,8 @@ RUN apt-get update && apt-get install -y \
     a2enmod rewrite && \
     echo "ServerName localhost" >> /etc/apache2/apache2.conf && \
     # Clean up apt cache to reduce image size
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    apt-get clean && rm -rf /var/lib/apt/lists/* && \
+    # Create a custom PHP configuration file to enable file uploads
+    echo "upload_tmp_dir = /tmp" > /usr/local/etc/php/conf.d/custom-php.ini && \
+    echo "post_max_size = 64M" >> /usr/local/etc/php/conf.d/custom-php.ini && \
+    echo "upload_max_filesize = 64M" >> /usr/local/etc/php/conf.d/custom-php.ini
