@@ -14,188 +14,400 @@ namespace Joomla\Component\Weblinks\Site\Model;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\Helper\TagsHelper;
-use Joomla\CMS\Language\Multilanguage;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\MVC\Model\ItemModel;
-use Joomla\CMS\Table\Table;
-use Joomla\Database\ParameterType;
+use Joomla\CMS\Language\Associations;
+use Joomla\CMS\Language\LanguageHelper;
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Versioning\VersionableModelTrait;
+use Joomla\Component\Categories\Site\Helper\CategoriesHelper;
 use Joomla\Registry\Registry;
+use Joomla\String\StringHelper;
 
 /**
  * Weblinks Component Model for a Weblink record
  *
- * @since  1.5
+ * @since  __DEPLOY_VERSION__
  */
-class WeblinkModel extends ItemModel
+class WeblinkModel extends AdminModel
 {
-    /**
-     * Store loaded weblink items
-     *
-     * @var    array
-     * @since  1.6
-     */
-    protected $_item = null;
+    use VersionableModelTrait;
 
     /**
-     * Model context string.
+     * The type alias for this content type.
      *
-     * @var  string
+     * @var    string
+     * @since  __DEPLOY_VERSION__
      */
-    protected $_context = 'com_weblinks.weblink';
+    public $typeAlias = 'com_weblinks.weblink';
 
     /**
-     * Method to auto-populate the model state.
+     * The context used for the associations table
      *
-     * Note. Calling getState in this method will result in recursion.
-     *
-     * @return  void
-     *
-     * @since   1.6
+     * @var    string
+     * @since  __DEPLOY_VERSION__
      */
-    protected function populateState()
+    protected $associationsContext = 'com_weblinks.item';
+
+    /**
+     * The prefix to use with controller messages.
+     *
+     * @var    string
+     * @since  __DEPLOY_VERSION__
+     */
+    protected $text_prefix = 'COM_WEBLINKS';
+
+    /**
+     * Method to test whether a record can be deleted.
+     *
+     * @param   object  $record  A record object.
+     *
+     * @return  boolean  True if allowed to delete the record. Defaults to the permission for the component.
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    protected function canDelete($record)
+    {
+        if (empty($record->id) || $record->state != -2) {
+            return false;
+        }
+
+        return $this->getCurrentUser()->authorise('core.delete', 'com_weblinks.category.' . (int) $record->catid);
+    }
+
+    /**
+     * Method to test whether a record can be deleted.
+     *
+     * @param   object  $record  A record object.
+     *
+     * @return  boolean  True if allowed to change the state of the record. Defaults to the permission for the component.
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    protected function canEditState($record)
+    {
+        if (!empty($record->catid)) {
+            return $this->getCurrentUser()->authorise('core.edit.state', 'com_weblinks.category.' . (int) $record->catid);
+        }
+
+        return parent::canEditState($record);
+    }
+
+    /**
+     * Abstract method for getting the form from the model.
+     *
+     * @param   array    $data      Data for the form.
+     * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+     *
+     * @return  mixed  A JForm object on success, false on failure
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    public function getForm($data = [], $loadData = true)
+    {
+        // Get the form.
+        $form = $this->loadForm('com_weblinks.weblink', 'weblink', ['control' => 'jform', 'load_data' => $loadData]);
+
+        // Determine correct permissions to check.
+        if ($this->getState('weblink.id')) {
+            // Existing record. Can only edit in selected categories.
+            $form->setFieldAttribute('catid', 'action', 'core.edit');
+        } else {
+            // New record. Can only create in selected categories.
+            $form->setFieldAttribute('catid', 'action', 'core.create');
+        }
+
+        // Modify the form based on access controls.
+        if (!$this->canEditState((object) $data)) {
+            // Disable fields for display.
+            $form->setFieldAttribute('ordering', 'disabled', 'true');
+            $form->setFieldAttribute('state', 'disabled', 'true');
+            $form->setFieldAttribute('publish_up', 'disabled', 'true');
+            $form->setFieldAttribute('publish_down', 'disabled', 'true');
+
+            // Disable fields while saving.
+            // The controller has already verified this is a record you can edit.
+            $form->setFieldAttribute('ordering', 'filter', 'unset');
+            $form->setFieldAttribute('state', 'filter', 'unset');
+            $form->setFieldAttribute('publish_up', 'filter', 'unset');
+            $form->setFieldAttribute('publish_down', 'filter', 'unset');
+        }
+
+        // Don't allow to change the created_by user if not allowed to access com_users.
+        if (!$this->getCurrentUser()->authorise('core.manage', 'com_users')) {
+            $form->setFieldAttribute('created_by', 'filter', 'unset');
+        }
+
+        return $form;
+    }
+
+    /**
+     * Method to get the data that should be injected in the form.
+     *
+     * @return  array  The default data is an empty array.
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    protected function loadFormData()
     {
         $app = Factory::getApplication();
 
-        // Load the object state.
-        $pk = $app->getInput()->getInt('id');
-        $this->setState('weblink.id', $pk);
+        // Check the session for previously entered form data.
+        $data = $app->getUserState('com_weblinks.edit.weblink.data', []);
 
-        // Load the parameters.
-        $params = $app->getParams();
-        $this->setState('params', $params);
+        if (empty($data)) {
+            $data = $this->getItem();
 
-        $user = $this->getCurrentUser();
-
-        if (!$user->authorise('core.edit.state', 'com_weblinks') && !$user->authorise('core.edit', 'com_weblinks')) {
-            $this->setState('filter.published', 1);
-            $this->setState('filter.archived', 2);
-        }
-
-        $this->setState('filter.language', Multilanguage::isEnabled());
-    }
-
-    /**
-     * Method to get an object.
-     *
-     * @param   integer  $pk  The id of the object to get.
-     *
-     * @return  mixed  Object on success, false on failure.
-     */
-    public function getItem($pk = null)
-    {
-        $user = $this->getCurrentUser();
-
-        $pk = (!empty($pk)) ? $pk : (int) $this->getState('weblink.id');
-
-        if ($this->_item === null) {
-            $this->_item = [];
-        }
-
-        if (!isset($this->_item[$pk])) {
-            try {
-                $db    = $this->getDatabase();
-                $query = $db->getQuery(true)
-                    ->select($this->getState('item.select', 'a.*'))
-                    ->from('#__weblinks AS a')
-                    ->where($db->quoteName('a.id') . ' = :id')
-                    ->bind(':id', $pk, ParameterType::INTEGER);
-
-                // Join on category table.
-                $query->select('c.title AS category_title, c.alias AS category_alias, c.access AS category_access')
-                    ->innerJoin('#__categories AS c on c.id = a.catid')
-                    ->where('c.published > 0');
-
-                // Join on user table.
-                $query->select('u.name AS author')
-                    ->join('LEFT', '#__users AS u on u.id = a.created_by');
-
-                // Filter by language
-                if ($this->getState('filter.language')) {
-                    $query->whereIn($db->quoteName('a.language'), [Factory::getLanguage()->getTag(), '*'], ParameterType::STRING);
-                }
-
-                // Join over the categories to get parent category titles
-                $query->select('parent.title as parent_title, parent.id as parent_id, parent.path as parent_route, parent.alias as parent_alias')
-                    ->join('LEFT', '#__categories as parent ON parent.id = c.parent_id');
-
-                if (!$user->authorise('core.edit.state', 'com_weblinks') && !$user->authorise('core.edit', 'com_weblinks')) {
-                    // Filter by start and end dates.
-                    $nowDate = Factory::getDate()->toSql();
-                    $query->where('(' . $db->quoteName('a.publish_up')
-                        . ' IS NULL OR ' . $db->quoteName('a.publish_up') . ' <= :publish_up)')
-                        ->where('(' . $db->quoteName('a.publish_down')
-                            . ' IS NULL OR ' . $db->quoteName('a.publish_down') . ' >= :publish_down)')
-                        ->bind(':publish_up', $nowDate)
-                        ->bind(':publish_down', $nowDate);
-                }
-
-                // Filter by published state.
-                $published = $this->getState('filter.published');
-                $archived  = $this->getState('filter.archived');
-
-                if (is_numeric($published)) {
-                    $query->whereIn($db->quoteName('a.state'), [$published, $archived]);
-                }
-
-                $db->setQuery($query);
-
-                $data = $db->loadObject();
-
-                if (empty($data)) {
-                    throw new \Exception(Text::_('COM_WEBLINKS_ERROR_WEBLINK_NOT_FOUND'), 404);
-                }
-
-                // Check for published state if filter set.
-                if ((is_numeric($published) || is_numeric($archived)) && (($data->state != $published) && ($data->state != $archived))) {
-                    throw new \Exception(Text::_('COM_WEBLINKS_ERROR_WEBLINK_NOT_FOUND'), 404);
-                }
-
-                // Convert parameter fields to objects.
-                $data->params   = new Registry($data->params);
-                $data->metadata = new Registry($data->metadata);
-
-                // Some contexts may not use tags data at all, so we allow callers to disable loading tag data
-                if ($this->getState('load_tags', true)) {
-                    $data->tags = new TagsHelper();
-                    $data->tags->getItemTags('com_weblinks.weblink', $data->id);
-                }
-
-                // Compute access permissions.
-                if ($this->getState('filter.access')) {
-                    // If the access filter has been set, we already know this user can view.
-                    $data->params->set('access-view', true);
-                } else {
-                    // If no access filter is set, the layout takes some responsibility for display of limited information.
-                    $groups = $user->getAuthorisedViewLevels();
-                    $data->params->set('access-view', \in_array($data->access, $groups) && \in_array($data->category_access, $groups));
-                }
-
-                $this->_item[$pk] = $data;
-            } catch (\Exception $e) {
-                $this->setError($e);
-                $this->_item[$pk] = false;
+            // Prime some default values.
+            if ($this->getState('weblink.id') == 0) {
+                $data->set('catid', $app->getInput()->get('catid', $app->getUserState('com_weblinks.weblinks.filter.category_id'), 'int'));
             }
         }
 
-        return $this->_item[$pk];
+        $this->preprocessData('com_weblinks.weblink', $data);
+
+        return $data;
     }
 
     /**
-     * Returns a reference to the a Table object, always creating it.
+     * Method to get a single record.
      *
-     * @param   string  $type    The table type to instantiate
-     * @param   string  $prefix  A prefix for the table class name. Optional.
-     * @param   array   $config  Configuration array for model. Optional.
+     * @param   integer  $pk  The id of the primary key.
      *
-     * @return  Table  A database object
+     * @return  mixed  Object on success, false on failure.
      *
-     * @since   1.6
+     * @since  __DEPLOY_VERSION__
      */
-    public function getTable($type = 'Weblink', $prefix = 'Administrator', $config = [])
+    public function getItem($pk = null)
     {
-        return parent::getTable($type, $prefix, $config);
+        if ($item = parent::getItem($pk)) {
+            // Convert the metadata field to an array.
+            $registry       = new Registry($item->metadata ?? '');
+            $item->metadata = $registry->toArray();
+
+            // Convert the images field to an array.
+            $registry     = new Registry($item->images ?? '');
+            $item->images = $registry->toArray();
+
+            // Load associated web links items
+            $assoc = Associations::isEnabled();
+
+            if ($assoc) {
+                $item->associations = [];
+
+                if ($item->id != null) {
+                    $associations = Associations::getAssociations('com_weblinks', '#__weblinks', 'com_weblinks.item', $item->id);
+
+                    foreach ($associations as $tag => $association) {
+                        $item->associations[$tag] = $association->id;
+                    }
+                }
+            }
+
+            if (!empty($item->id)) {
+                $item->tags = new TagsHelper();
+                $item->tags->getTagIds($item->id, 'com_weblinks.weblink');
+                $item->metadata['tags'] = $item->tags;
+            }
+        }
+
+        return $item;
+    }
+
+    /**
+     * Prepare and sanitise the table data prior to saving.
+     *
+     * @param   \Joomla\CMS\Table\Table  $table  A reference to a JTable object.
+     *
+     * @return  void
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    protected function prepareTable($table)
+    {
+        $date = Factory::getDate();
+        $user = $this->getCurrentUser();
+
+        $table->title = htmlspecialchars_decode($table->title, ENT_QUOTES);
+        $table->alias = ApplicationHelper::stringURLSafe($table->alias);
+
+        if (empty($table->alias)) {
+            $table->alias = ApplicationHelper::stringURLSafe($table->title);
+        }
+
+        if (empty($table->id)) {
+            // Set the values
+
+            // Set ordering to the last item if not set
+            if (empty($table->ordering)) {
+                $db    = $this->getDatabase();
+                $query = $db->getQuery(true)
+                    ->select('MAX(ordering)')
+                    ->from($db->quoteName('#__weblinks'));
+
+                $db->setQuery($query);
+                $max = $db->loadResult();
+
+                $table->ordering = $max + 1;
+            } else {
+                // Set the values
+                $table->modified    = $date->toSql();
+                $table->modified_by = $user->id;
+            }
+        }
+
+        // Increment the weblink version number.
+        $table->version++;
+    }
+
+    /**
+     * A protected method to get a set of ordering conditions.
+     *
+     * @param   \Joomla\CMS\Table\Table  $table  A JTable object.
+     *
+     * @return  array  An array of conditions to add to ordering queries.
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    protected function getReorderConditions($table)
+    {
+        $condition   = [];
+        $condition[] = 'catid = ' . (int) $table->catid;
+
+        return $condition;
+    }
+
+    /**
+     * Method to save the form data.
+     *
+     * @param   array  $data  The form data.
+     *
+     * @return  boolean  True on success.
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    public function save($data)
+    {
+        // Cast catid to integer for comparison
+        $catid = (int) $data['catid'];
+
+        // Check if New Category exists
+        if ($catid > 0) {
+            $catid = CategoriesHelper::validateCategoryId($data['catid'], 'com_weblinks');
+        }
+
+        // Save New Category
+        if ($catid == 0 && $this->canCreateCategory()) {
+            $table              = [];
+            $table['title']     = $data['catid'];
+            $table['parent_id'] = 1;
+            $table['extension'] = 'com_weblinks';
+            $table['language']  = $data['language'];
+            $table['published'] = 1;
+
+            // Create new category and get catid back
+            $data['catid'] = CategoriesHelper::createCategory($table);
+        }
+
+        // Alter the title for save as copy
+        if ($this->getState('task') === 'save2copy') {
+            [$name, $alias] = $this->generateNewTitle($data['catid'], $data['alias'], $data['title']);
+            $data['title']  = $name;
+            $data['alias']  = $alias;
+            $data['state']  = 0;
+        }
+
+        return parent::save($data);
+    }
+
+    /**
+     * Method to change the title & alias.
+     *
+     * @param   integer  $category_id  The id of the parent.
+     * @param   string   $alias        The alias.
+     * @param   string   $name         The title.
+     *
+     * @return  array  Contains the modified title and alias.
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    protected function generateNewTitle($category_id, $alias, $name)
+    {
+        // Alter the title & alias
+        $table = $this->getTable();
+
+        while ($table->load(['alias' => $alias, 'catid' => $category_id])) {
+            if ($name == $table->title) {
+                $name = StringHelper::increment($name);
+            }
+
+            $alias = StringHelper::increment($alias, 'dash');
+        }
+
+        return [$name, $alias];
+    }
+
+    /**
+     * Allows preprocessing of the JForm object.
+     *
+     * @param   \JForm  $form   The form object
+     * @param   array   $data   The data to be merged into the form object
+     * @param   string  $group  The plugin group to be executed
+     *
+     * @return  void
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    protected function preprocessForm(Form $form, $data, $group = 'content')
+    {
+        if ($this->canCreateCategory()) {
+            $form->setFieldAttribute('catid', 'allowAdd', 'true');
+        }
+
+        // Association weblinks items
+        if (Associations::isEnabled()) {
+            $languages = LanguageHelper::getContentLanguages(false, false, null, 'ordering', 'asc');
+
+            if (\count($languages) > 1) {
+                $addform = new \SimpleXMLElement('<form />');
+                $fields  = $addform->addChild('fields');
+                $fields->addAttribute('name', 'associations');
+                $fieldset = $fields->addChild('fieldset');
+                $fieldset->addAttribute('name', 'item_associations');
+
+                foreach ($languages as $language) {
+                    $field = $fieldset->addChild('field');
+                    $field->addAttribute('name', $language->lang_code);
+                    $field->addAttribute('type', 'modal_weblink');
+                    $field->addAttribute('language', $language->lang_code);
+                    $field->addAttribute('label', $language->title);
+                    $field->addAttribute('translate_label', 'false');
+                    $field->addAttribute('select', 'true');
+                    $field->addAttribute('new', 'true');
+                    $field->addAttribute('edit', 'true');
+                    $field->addAttribute('clear', 'true');
+                    $field->addAttribute('addfieldprefix', 'Joomla\\Component\\Weblinks\\Site\\Field');
+                }
+
+                $form->load($addform, false);
+            }
+        }
+
+        parent::preprocessForm($form, $data, $group);
+    }
+
+    /**
+     * Is the user allowed to create an on the fly category?
+     *
+     * @return  bool
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    private function canCreateCategory()
+    {
+        return $this->getCurrentUser()->authorise('core.create', 'com_weblinks');
     }
 
     /**

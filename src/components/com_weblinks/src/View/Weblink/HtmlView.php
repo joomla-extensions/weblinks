@@ -16,6 +16,7 @@ use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Component\Weblinks\Site\Model\WeblinkModel;
+use Joomla\Registry\Registry;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -80,8 +81,9 @@ class HtmlView extends BaseHtmlView
         $item         = $this->item;
         $item->slug   = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
         $temp         = $item->params;
+        $registry     = new Registry($temp);
         $item->params = clone $app->getParams();
-        $item->params->merge($temp);
+        $item->params->merge($registry);
         $offset = $this->state->get('list.offset');
 
         $dispatcher = $this->getDispatcher();

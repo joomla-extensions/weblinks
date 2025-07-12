@@ -65,7 +65,7 @@ if (!$canEdit) {
         endif; ?>
 
         <div class="p-3">
-            <?php $images = json_decode($this->item->images); ?>
+            <?php $images = (object) $this->item->images; ?>
             <?php if (!empty($images->image_first)) :
                 ?>
                 <?php $imgFloat = '';?>
