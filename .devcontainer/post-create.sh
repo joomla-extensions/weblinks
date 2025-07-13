@@ -12,7 +12,7 @@ ADMIN_USER="ci-admin"
 ADMIN_REAL_NAME="john doe"
 ADMIN_PASS="joomla-17082005"
 ADMIN_EMAIL="admin@example.org"
-WORKSPACE_ROOT="/workspaces/weblinks-codespaces"
+WORKSPACE_ROOT="/workspaces/weblinks"
 JOOMLA_ROOT="/var/www/html"
 
 git config --global --add safe.directory $WORKSPACE_ROOT
