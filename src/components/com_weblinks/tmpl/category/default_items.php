@@ -233,7 +233,11 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
                                         <?php
                                     endif; ?>
 
-                                    <?php echo $item->description; ?>
+                                    <?php if ($this->params->get('prepare_content')) : ?>
+                                        <?php echo HTMLHelper::_('content.prepare', $item->description); ?>
+                                    <?php else : ?>
+                                        <?php echo $item->description; ?>
+                                    <?php endif; ?>
 
                               </div>
                                 <?php
