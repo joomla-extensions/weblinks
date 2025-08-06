@@ -14,28 +14,30 @@
 
 use Joomla\CMS\Helper\ModuleHelper;
 
-if (!isset($firstRender)) {
-    static $firstRender = true;
-}
-
 if (!$categoryNode) {
     return;
 }
 
 $hasWeblinks = !empty($categoryNode->weblinks);
 
-// check if the current category has any weblinks.
-// We only create a div and apply logic if it does.
-if ($hasWeblinks) {
+// check if the current category is the root category
+$isRootCategory = ($categoryNode->category->id == $params->get('catid'));
+
+// check if the "Show Parent Category" option is turned off
+$hideParent = !$params->get('show_parent_category', 0);
+
+// We should skip rendering the content of this category if it's the root and the "hide parent" option is on
+$skipContent = $isRootCategory && $hideParent;
+
+// Render the category content only if it has weblinks and we are not skipping it
+if ($hasWeblinks && !$skipContent) {
     $cssClass = 'weblinks-category';
 
-    // Apply padding only if this is NOT the first category.
-    if (!$firstRender) {
+    // Apply padding based on the nesting level. Level 0 is the root.
+    $firstDisplayedLevel = $hideParent ? 1 : 0;
+    if ($categoryNode->level > $firstDisplayedLevel) {
         $cssClass .= ' ps-4';
     }
-
-    // To apply padding for the rest of the categories.
-    $firstRender = false;
 
     // Echo the opening tag BEFORE processing children.
     echo '<div class="' . $cssClass . '">';

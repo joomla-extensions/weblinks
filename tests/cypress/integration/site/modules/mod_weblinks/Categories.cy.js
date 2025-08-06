@@ -25,7 +25,8 @@ describe('Test in frontend that the weblinks module', () => {
           const params = {
             catid: id1,
             maxLevel: '3',
-            groupby: '1'
+            groupby: '1',
+            show_parent_category: '1'
           };
           cy.db_createModule({ module: 'mod_weblinks', params: JSON.stringify(params) }).then(() => {
             // 4. Visit page and test
@@ -85,7 +86,8 @@ describe('Test in frontend that the weblinks module', () => {
           const params = {
             catid: catId1,
             maxLevel: '1',
-            groupby: '1'
+            groupby: '1',
+            show_parent_category: '1'
           };
 
           cy.db_createModule({ module: 'mod_weblinks', params: JSON.stringify(params) }).then(() => {
@@ -138,7 +140,8 @@ describe('Test in frontend that the weblinks module', () => {
         const params = {
           catid: catId1,
           maxLevel: '2',
-          groupby: '1'
+          groupby: '1',
+          show_parent_category: '1'
         };
         cy.db_createModule({ module: 'mod_weblinks', params: JSON.stringify(params) }).then(() => {
           // 4. Visit page and test
