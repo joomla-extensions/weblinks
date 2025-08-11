@@ -347,6 +347,24 @@ Cypress.Commands.add('db_createField', (field) => {
 });
 
 /**
+   * Creates a field value in the database with the given data.
+   * This links a custom field to a specific item (e.g., a weblink) and gives it a value.
+   *
+   * @param {Object} fieldValueData The field value data to insert
+   *
+   * @returns integer
+   */
+Cypress.Commands.add('db_createFieldValue', (fieldValueData) => {
+  const defaultFieldValueOptions = {
+    field_id: 0,
+    item_id: 0,
+    value: '',
+  };
+
+  return cy.task('queryDB', createInsertQuery('fields_values', { ...defaultFieldValueOptions, ...fieldValueData })).then(async (info) => info.insertId);
+});
+
+/**
  * Creates a field group in the database with the given data. The field group contains some default values when
  * not all required fields are passed in the given data. The id of the inserted field group is returned.
  *
