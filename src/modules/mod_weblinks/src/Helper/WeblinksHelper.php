@@ -39,12 +39,42 @@ class WeblinksHelper
      **/
     public function getWeblinks($params, $app)
     {
+        $catidArray = (array) $params->get('catid', []);
+
         // @var \Joomla\Component\Weblinks\Site\Model\CategoryModel $model
         if ($params->get('groupby')) {
-            return $this->getCategoryTree($params->get('catid', 1), $params, $app, 0, $params->get('maxLevel', -1)) ?? [];
+            // Get all category objects for the selected IDs
+            $allSelectedCategories = [];
+            $categoriesFactory     = Factory::getApplication()->bootComponent('com_weblinks')->getCategory();
+            foreach ($catidArray as $id) {
+                $category = $categoriesFactory->get($id);
+                if ($category) {
+                    $allSelectedCategories[$id] = $category;
+                }
+            }
+
+            // Filter to find only the root selections
+            $rootCatIds = [];
+            foreach ($allSelectedCategories as $id => $category) {
+                $parentId = $category->getParent()->id;
+                if (!isset($allSelectedCategories[$parentId])) {
+                    $rootCatIds[] = $id;
+                }
+            }
+
+            if (empty($rootCatIds) && !empty($catidArray)) {
+                $rootCatIds = $catidArray;
+            }
+
+            //  build trees only for the root categories
+            $trees = [];
+            foreach ($rootCatIds as $id) {
+                $trees[] = $this->getCategoryTree($id, $params, $app, 0, $params->get('maxLevel', -1));
+            }
+            return $trees;
         }
 
-        return $this->getCategoryWeblinks($params->get('catid', 1), $params, $app);
+        return $this->getCategoryWeblinks($catidArray, $params, $app);
     }
 
     /**
@@ -96,8 +126,11 @@ class WeblinksHelper
      *
      * @since   __DEPLOY_VERSION__
      */
-    private function getCategoryWeblinks(int $catid, Registry $params, CMSApplicationInterface $app): array
+    private function getCategoryWeblinks(int|array $catid, Registry $params, CMSApplicationInterface $app): array
     {
+        if (!\is_array($catid)) {
+            $catid = [$catid];
+        }
         $model = $app->bootComponent('com_weblinks')->getMVCFactory()
             ->createModel('Category', 'Site', ['ignore_request' => true]);
 

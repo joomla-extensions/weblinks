@@ -28,6 +28,10 @@
 					label="JCATEGORY"
 					extension="com_weblinks"
 					required="true"
+					multiple="true"
+					filter="intarray"
+					class="multipleCategories"
+					layout="joomla.form.field.list-fancy-select"
 				/>
 
 				<field
