@@ -15,8 +15,9 @@
 use Joomla\CMS\Helper\ModuleHelper;
 
 if ($params->get('groupby', 0)) {
-    $categoryNode = $list;
-    require ModuleHelper::getLayoutPath('mod_weblinks', $params->get('layout', 'default') . '_category');
+    foreach ($list as $categoryNode) {
+        require ModuleHelper::getLayoutPath('mod_weblinks', $params->get('layout', 'default') . '_category');
+    }
 } else {
     $weblinks = $list;
     require ModuleHelper::getLayoutPath('mod_weblinks', $params->get('layout', 'default') . '_items');

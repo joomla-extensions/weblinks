@@ -20,11 +20,18 @@ if (!$categoryNode) {
 
 $hasWeblinks = !empty($categoryNode->weblinks);
 
-// check if the current category is the root category
-$isRootCategory = ($categoryNode->category->id == $params->get('catid'));
+$selectedCategories = (array) $params->get('catid', []);
 
 // check if the "Show Parent Category" option is turned off
 $hideParent = !$params->get('show_parent_category', 0);
+
+// a category is a root if it's selected and its parent is not
+$parent = $categoryNode->category->getParent();
+
+$isCurrentSelected = in_array($categoryNode->category->id, $selectedCategories);
+$isParentSelected = in_array($parent->id, $selectedCategories);
+
+$isRootCategory = $isCurrentSelected && !$isParentSelected;
 
 // We should skip rendering the content of this category if it's the root and the "hide parent" option is on
 $skipContent = $isRootCategory && $hideParent;
