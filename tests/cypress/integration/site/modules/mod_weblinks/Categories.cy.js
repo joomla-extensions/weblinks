@@ -317,5 +317,4 @@ describe('Test in frontend that the weblinks module', () => {
       });
     });
   });
-
 });
