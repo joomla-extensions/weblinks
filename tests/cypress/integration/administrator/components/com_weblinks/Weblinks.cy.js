@@ -135,7 +135,7 @@ describe('Test in backend that the weblinks component', () => {
         cy.contains('Test Weblink 1').should('exist');
         cy.contains('Test Weblink 2').should('exist');
 
-        cy.reload();
+        cy.get('button.js-stools-btn-clear').click();
         cy.get('button.js-stools-btn-filter').click();
         cy.get('#filter_category_id').select(sourceCategory.toString());
         cy.contains('Test Weblink 1').should('not.exist');
