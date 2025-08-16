@@ -134,6 +134,7 @@ describe('Test in backend that the categories list', () => {
     cy.db_createCategory({ title: 'Test weblink category', extension: 'com_weblinks' });
 
       cy.reload();
+      cy.searchForItem('Test weblink category');
       cy.checkAllResults();
       cy.clickToolbarButton('Action');
       cy.contains('Batch').click();
@@ -152,6 +153,7 @@ describe('Test in backend that the categories list', () => {
       cy.db_createCategory({ title: 'Test weblink category', extension: 'com_weblinks' });
 
       cy.reload();
+      cy.searchForItem('Test weblink category');
       cy.checkAllResults();
       cy.clickToolbarButton('Action');
       cy.contains('Batch').click();
@@ -221,5 +223,4 @@ describe('Test in backend that the categories list', () => {
       }
     });
   });
-
 });
