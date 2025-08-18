@@ -86,6 +86,87 @@ describe('Test in backend that the categories list', () => {
     cy.checkForSystemMessage('Category deleted.');
   });
 
+  it('can archive the test category', () => {
+    cy.db_createCategory({ title: 'Test weblink category', published: 1, extension: 'com_weblinks' }).then(() => {
+      cy.reload();
+      cy.searchForItem('Test weblink category');
+      cy.checkAllResults();
+      cy.clickToolbarButton('Action');
+      cy.contains('Archive').click();
+
+      cy.checkForSystemMessage('Category archived.');
+    });
+  });
+
+  it('can unarchive the test weblink', () => {
+    cy.db_createCategory({ title: 'Test weblink category', published: 2, extension: 'com_weblinks' }).then(() => {
+      cy.reload();
+      cy.searchForItem('Test weblink category');
+      cy.get('button.js-stools-btn-filter').click();
+      cy.get('#filter_published').select('2')
+      cy.get('.js-grid-item-action').click();
+
+      cy.checkForSystemMessage('Category unpublished.');
+    });
+  });
+
+  it('can batch move categories to a new parent', () => {
+    cy.db_createCategory({ title: 'Test weblink parent', alias: 'parent-category', extension: 'com_weblinks' }).then((parentCategory) => {
+      cy.db_createCategory({ title: 'Test weblink category', extension: 'com_weblinks' });
+
+        cy.reload();
+        cy.clickToolbarButton('Rebuild');
+        cy.searchForItem('Test weblink category');
+        cy.checkAllResults();
+        cy.clickToolbarButton('Action');
+        cy.contains('Batch').click();
+        cy.get('#batch-category-id').select(parentCategory.toString());
+        cy.contains('Process').click();
+
+        cy.checkForSystemMessage('Batch process completed.');
+
+        cy.contains('a', 'Test weblink category').click();
+        cy.contains('Test weblink parent').should('exist');
+      });
+  });
+
+  it('can batch change the access level of categories', () => {
+    cy.db_createCategory({ title: 'Test weblink category', extension: 'com_weblinks' });
+
+      cy.reload();
+      cy.searchForItem('Test weblink category');
+      cy.checkAllResults();
+      cy.clickToolbarButton('Action');
+      cy.contains('Batch').click();
+      cy.get('#batch-access').select('Registered');
+      cy.contains('Process').click();
+
+      cy.checkForSystemMessage('Batch process completed.');
+
+      cy.get('button.js-stools-btn-filter').click();
+      cy.get('#filter_access').select('Registered');
+      cy.contains('Test weblink category').should('exist');
+  });
+
+  it('can batch add tags to categories', () => {
+    cy.db_createTag({ title: 'Test Tag' }).then((tagId) => {
+      cy.db_createCategory({ title: 'Test weblink category', extension: 'com_weblinks' });
+
+      cy.reload();
+      cy.searchForItem('Test weblink category');
+      cy.checkAllResults();
+      cy.clickToolbarButton('Action');
+      cy.contains('Batch').click();
+      cy.get('#batch-tag-id').select(tagId.toString());
+      cy.contains('Process').click();
+
+      cy.checkForSystemMessage('Batch process completed.');
+
+      cy.contains('a', 'Test weblink category').click();
+      cy.contains('Test Tag').should('exist');
+    });
+  });
+
   it('Verifies all category tabs are present and functional', () => {
     // Visit the category edit page
     cy.visit('/administrator/index.php?option=com_categories&task=category.add&extension=com_weblinks');
