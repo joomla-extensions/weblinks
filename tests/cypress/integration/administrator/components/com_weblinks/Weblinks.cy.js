@@ -1,7 +1,7 @@
 describe('Test in backend that the weblinks component', () => {
   beforeEach(() => {
     cy.doAdministratorLogin();
-    cy.task('queryDB', "DELETE FROM #__weblinks WHERE title = 'Test weblink'");
+    cy.task('queryDB', "DELETE FROM #__weblinks WHERE title LIKE '%Test weblink%'");
     cy.visit('/administrator/index.php?option=com_weblinks&view=weblinks&filter=');
   });
 
@@ -87,6 +87,97 @@ describe('Test in backend that the weblinks component', () => {
       cy.clickDialogConfirm(true);
 
       cy.checkForSystemMessage('Web Link deleted');
+    });
+  });
+
+  it('can archive the test weblink', () => {
+    cy.db_createWeblink({ title: 'Test weblink', state: 0 }).then(() => {
+      cy.reload();
+      cy.searchForItem('Test weblink');
+      cy.checkAllResults();
+      cy.clickToolbarButton('Action');
+      cy.contains('Archive').click();
+
+      cy.checkForSystemMessage('Web Link archived');
+    });
+  });
+
+  it('can unarchive the test weblink', () => {
+    cy.db_createWeblink({ title: 'Test weblink', state: 2 }).then(() => {
+
+      cy.reload();
+      cy.searchForItem('Test weblink');
+      cy.get('button.js-stools-btn-filter').click();
+      cy.get('#filter_published').select('2')
+      cy.get('.js-grid-item-action').click();
+
+      cy.checkForSystemMessage('Web Link unpublished');
+    });
+  });
+
+  it('can batch move weblinks to a new category', () => {
+    cy.db_createCategory({ title: 'Source Category', extension: 'com_weblinks' }).then((sourceCategory) => {
+      cy.db_createCategory({ title: 'Destination Category', extension: 'com_weblinks' }).then((destinationCategory) => {
+        cy.db_createWeblink({ title: 'Test Weblink 1', alias: 'test-weblink-1', catid: sourceCategory });
+        cy.db_createWeblink({ title: 'Test Weblink 2', alias: 'test-weblink-2', catid: sourceCategory });
+
+        cy.reload();
+        cy.checkAllResults();
+        cy.clickToolbarButton('Action');
+        cy.contains('Batch').click();
+        cy.get('#batch-category-id').select(destinationCategory.toString());
+        cy.get('#batch-submit-button-id').click();
+
+        cy.checkForSystemMessage('Batch process completed.');
+
+        cy.get('button.js-stools-btn-filter').click();
+        cy.get('#filter_category_id').select(destinationCategory.toString());
+        cy.contains('Test Weblink 1').should('exist');
+        cy.contains('Test Weblink 2').should('exist');
+
+        cy.get('button.js-stools-btn-clear').click();
+        cy.get('button.js-stools-btn-filter').click();
+        cy.get('#filter_category_id').select(sourceCategory.toString());
+        cy.contains('Test Weblink 1').should('not.exist');
+        cy.contains('Test Weblink 2').should('not.exist');
+      });
+    });
+  });
+
+  it('can batch change the access level of weblinks', () => {
+      cy.db_createWeblink({ title: 'Test Weblink 1', alias: 'test-weblink-1', access: 1 });
+      cy.db_createWeblink({ title: 'Test Weblink 2', alias: 'test-weblink-2', access: 1 });
+
+      cy.reload();
+      cy.checkAllResults();
+      cy.clickToolbarButton('Action');
+      cy.contains('Batch').click();
+      cy.get('#batch-access').select('Registered');
+      cy.get('#batch-submit-button-id').click();
+
+      cy.checkForSystemMessage('Batch process completed.');
+
+      cy.get('button.js-stools-btn-filter').click();
+      cy.get('#filter_access').select('Registered');
+      cy.contains('Test Weblink 1').should('exist');
+      cy.contains('Test Weblink 2').should('exist');
+  });
+
+  it('can batch add tags to weblinks', () => {
+    cy.db_createTag({ title: 'Test Tag' }).then((tagId) => {
+      cy.db_createWeblink({ title: 'Test Weblink' }).then((weblink) => {
+        cy.reload();
+        cy.checkAllResults();
+        cy.clickToolbarButton('Action');
+        cy.contains('Batch').click();
+        cy.get('#batch-tag-id').select(tagId.toString());
+        cy.get('#batch-submit-button-id').click();
+
+        cy.checkForSystemMessage('Batch process completed.');
+
+        cy.contains('a', 'Test Weblink').click({force:true});
+        cy.contains('Test Tag').should('exist');
+      });
     });
   });
 
