@@ -36,7 +36,7 @@ echo "--> Building extension..."
 echo "--> Installing Joomla..."
 rm -f $JOOMLA_ROOT/index.html
 cd $JOOMLA_ROOT
-curl -o joomla.zip -L https://joomla.org/latest
+curl -o joomla.zip -L https://update.joomla.org/releases/5.3.2/Joomla_5.3.2-Stable-Full_Package.zip
 unzip -q joomla.zip
 rm joomla.zip
 
