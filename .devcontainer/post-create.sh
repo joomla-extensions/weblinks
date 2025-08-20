@@ -36,7 +36,7 @@ echo "--> Building extension..."
 echo "--> Installing Joomla..."
 rm -f $JOOMLA_ROOT/index.html
 cd $JOOMLA_ROOT
-curl -o joomla.zip -L https://update.joomla.org/releases/5.3.2/Joomla_5.3.2-Stable-Full_Package.zip
+curl -o joomla.zip -L https://joomla.org/latest
 unzip -q joomla.zip
 rm joomla.zip
 
@@ -103,6 +103,8 @@ chmod +x ./node_modules/.bin/cypress
 chown -R www-data:www-data $JOOMLA_ROOT
 npx cypress install
 cp cypress.config.dist.js cypress.config.js
+sed -i "/db_prefix: process.env.DB_PREFIX/a \    cmsPath: '${JOOMLA_ROOT}'," cypress.config.js
+sed -i "s|baseUrl: 'http://localhost/'|baseUrl: 'http://localhost'|" cypress.config.js
 service apache2 restart
 
 # Save details
