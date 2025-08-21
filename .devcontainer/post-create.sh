@@ -36,9 +36,9 @@ echo "--> Building extension..."
 echo "--> Installing Joomla..."
 rm -f $JOOMLA_ROOT/index.html
 cd $JOOMLA_ROOT
-curl -o joomla.zip -L https://joomla.org/latest
-unzip -q joomla.zip
-rm joomla.zip
+curl -o joomla.tar -L https://developer.joomla.org/download-nightly.php/nextstable/debug/full/joomla.tar
+tar xfa joomla.tar
+rm joomla.tar
 
 php installation/joomla.php install \
     --site-name="Joomla CMS Test" \

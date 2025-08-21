@@ -5,7 +5,8 @@ FROM php:8.2-apache-bookworm
 RUN apt-get update && apt-get install -y \
     # System tools and git
     git \
-    unzip \
+    zstd \
+    wget \
     curl \
     sudo \
     # PHP extensions dependencies
