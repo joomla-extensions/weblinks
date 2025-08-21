@@ -79,16 +79,31 @@ class Com_WeblinksInstallerScript implements DatabaseAwareInterface
     }
 
     /**
-     * Function to perform changes during install
+     * Method to run after the install routine.
      *
+     * @param   string                      $type    The action being performed
      * @param   JInstallerAdapterComponent  $parent  The class calling this method
      *
      * @return  void
      *
-     * @since   3.4
+     * @since   3.4.1
      */
-    public function install($parent)
+    public function postflight($type, $parent)
     {
+        // Only execute database changes on MySQL databases
+        $dbName = $this->getDatabase()->name;
+
+        if (strpos($dbName, 'mysql') !== false) {
+            // Add Missing Table Columns if needed
+            $this->addColumnsIfNeeded();
+
+            // Drop the Table Columns if needed
+            $this->dropColumnsIfNeeded();
+        }
+
+        // Insert missing UCM Records if needed
+        $this->insertMissingUcmRecords();
+
         // Initialize a new category
         $category = new Category($this->getDatabase());
 
@@ -130,33 +145,6 @@ class Com_WeblinksInstallerScript implements DatabaseAwareInterface
             // Build the path for our category
             $category->rebuildPath($category->id);
         }
-    }
-
-    /**
-     * Method to run after the install routine.
-     *
-     * @param   string                      $type    The action being performed
-     * @param   JInstallerAdapterComponent  $parent  The class calling this method
-     *
-     * @return  void
-     *
-     * @since   3.4.1
-     */
-    public function postflight($type, $parent)
-    {
-        // Only execute database changes on MySQL databases
-        $dbName = $this->getDatabase()->name;
-
-        if (strpos($dbName, 'mysql') !== false) {
-            // Add Missing Table Columns if needed
-            $this->addColumnsIfNeeded();
-
-            // Drop the Table Columns if needed
-            $this->dropColumnsIfNeeded();
-        }
-
-        // Insert missing UCM Records if needed
-        $this->insertMissingUcmRecords();
     }
 
     /**

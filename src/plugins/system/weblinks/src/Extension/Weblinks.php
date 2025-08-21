@@ -33,14 +33,6 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
     use DatabaseAwareTrait;
 
     /**
-     * Load the language file on instantiation.
-     *
-     * @var    boolean
-     * @since  __DEPLOY_VERSION__
-     */
-    protected $autoloadLanguage = true;
-
-    /**
      * Supported Extensions
      *
      * @var    array
@@ -90,6 +82,8 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      */
     public function onGetStats(Event $event)
     {
+        $this->loadLanguage();
+
         if (!ComponentHelper::isEnabled('com_weblinks')) {
             return;
         }
