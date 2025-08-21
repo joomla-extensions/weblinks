@@ -114,7 +114,6 @@ describe('Test in frontend that the weblinks dashboard', () => {
     cy.db_createWeblink({ title: 'Test weblink 1', alias: 'test-weblink-1' }).then(() => {
       cy.db_createWeblink({ title: 'Test weblink 2', alias: 'test-weblink-2' }).then(() => {
         cy.reload();
-        cy.contains('Clear').click();
         cy.checkAllResults();
         cy.clickToolbarButton('Action');
         cy.contains('Batch').click();

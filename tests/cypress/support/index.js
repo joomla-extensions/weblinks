@@ -11,4 +11,5 @@ afterEach(() => {
   // Check for logs
   cy.task('checkForLogs');
   cy.task('cleanupDB');
+  Cypress.session.clearAllSavedSessions();
 });
