@@ -36,7 +36,7 @@ echo "--> Building extension..."
 echo "--> Installing Joomla..."
 rm -f $JOOMLA_ROOT/index.html
 cd $JOOMLA_ROOT
-curl -o joomla.tar -L https://developer.joomla.org/download-nightly.php/nextstable/debug/full/joomla.tar
+curl -o joomla.tar -L https://developer.joomla.org/download-nightly.php/stable/debug/full/joomla.tar
 tar xfa joomla.tar
 rm joomla.tar
 
