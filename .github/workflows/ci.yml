@@ -21,7 +21,7 @@ jobs:
       - name: Cache Composer packages
         uses: actions/cache@v3
         with:
-          path: /tmp/composer-cache
+          path: vendor
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
@@ -38,11 +38,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Restore Composer dependencies from previous job
+      - name: Restore Composer dependencies from cache
         uses: actions/cache@v3
         with:
           path: vendor
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
 
       - name: Run PHP-CS-Fixer and PHPCS
         run: |
@@ -111,9 +113,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Restore Composer dependencies from cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
       - name: Run PHPStan
         run: vendor/bin/phpstan
-        continue-on-error: true # Maps to 'failure: ignore'
+        continue-on-error: true
 
   phpunit:
     name: PHPUnit
@@ -123,6 +133,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Restore Composer dependencies from cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
 
       - name: Run PHPUnit
         run: vendor/bin/phpunit
@@ -221,8 +239,7 @@ jobs:
     runs-on: ubuntu-latest
     container: joomlaprojects/docker-images:packager
     needs: [system_tests_mysql, system_tests_postgres]
-    # This job only runs if a previous job in the "needs" list fails
-    if: failure() && needs.system_tests_mysql.result == 'failure' || needs.system_tests_postgres.result == 'failure'
+    if: failure() && (needs.system_tests_mysql.result == 'failure' || needs.system_tests_postgres.result == 'failure')
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -233,5 +250,3 @@ jobs:
           name: system-test-failures
           path: tests/cypress/output/
           if-no-files-found: ignore
-        # Note: The original Drone step used SFTP. This uses GitHub's built-in artifact storage.
-        # For the exact SFTP/rclone logic, you would need to create a custom step with secrets.
