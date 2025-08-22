@@ -5,7 +5,8 @@ FROM php:8.2-apache-bookworm
 RUN apt-get update && apt-get install -y \
     # System tools and git
     git \
-    unzip \
+    zstd \
+    wget \
     curl \
     sudo \
     # PHP extensions dependencies
@@ -43,6 +44,14 @@ RUN apt-get update && apt-get install -y \
     # Clean up apt cache to reduce image size
     apt-get clean && rm -rf /var/lib/apt/lists/* && \
     # Create a custom PHP configuration file to enable file uploads
+    # Create the log directory and file with correct permissions for the www-data user
+    mkdir -p /var/log/ && \
+    touch /var/log/php_errors.log && \
+    chown -R www-data:www-data /var/log/ && \
+    chmod 766 /var/log/php_errors.log && \
     echo "upload_tmp_dir = /tmp" > /usr/local/etc/php/conf.d/custom-php.ini && \
     echo "post_max_size = 64M" >> /usr/local/etc/php/conf.d/custom-php.ini && \
-    echo "upload_max_filesize = 64M" >> /usr/local/etc/php/conf.d/custom-php.ini
+    echo "upload_max_filesize = 64M" >> /usr/local/etc/php/conf.d/custom-php.ini && \
+    echo "log_errors = On" >> /usr/local/etc/php/conf.d/custom-php.ini && \
+    echo "error_log = /var/log/php_errors.log" >> /usr/local/etc/php/conf.d/custom-php.ini && \
+    echo "error_reporting = E_ALL" >> /usr/local/etc/php/conf.d/custom-php.ini
