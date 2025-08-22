@@ -1,0 +1,237 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+env:
+  PHP_VERSION: "8.3"
+  NODE_VERSION: "20"
+
+jobs:
+  composer:
+    name: Composer Install
+    runs-on: ubuntu-latest
+    container: joomlaprojects/docker-images:php8.3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache Composer packages
+        uses: actions/cache@v3
+        with:
+          path: /tmp/composer-cache
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --no-progress --ignore-platform-reqs
+
+  phpcs:
+    name: PHP Code Sniffer
+    runs-on: ubuntu-latest
+    container: joomlaprojects/docker-images:php8.1
+    needs: [composer]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Restore Composer dependencies from previous job
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+
+      - name: Run PHP-CS-Fixer and PHPCS
+        run: |
+          echo $(date)
+          ./vendor/bin/php-cs-fixer fix -vvv --dry-run --diff
+          ./vendor/bin/phpcs --extensions=php -p --standard=ruleset.xml src/
+          echo $(date)
+
+  npm:
+    name: NPM Install
+    runs-on: ubuntu-latest
+    container: node:20-bullseye-slim
+    needs: [phpcs]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: /tmp/npm-cache
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm i --unsafe-perm
+        env:
+          npm_config_cache: /tmp/npm-cache
+
+  prepare_tests:
+    name: Prepare Tests
+    runs-on: ubuntu-latest
+    container: joomlaprojects/docker-images:cypress8.2
+    needs: [npm]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache Cypress
+        uses: actions/cache@v3
+        with:
+          path: /root/.cache/Cypress
+          key: ${{ runner.os }}-cypress-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Prepare Test Environment
+        run: |
+          mv cypress.config.dist.js cypress.config.js
+          npx cypress install
+          npx cypress verify
+          vendor/bin/robo build
+          curl https://joomla.org/latest -L --output joomla.zip
+          mkdir joomla
+          cp joomla.zip joomla/joomla.zip
+          cd joomla
+          unzip joomla.zip
+        env:
+          CYPRESS_VERIFY_TIMEOUT: 100000
+
+  phpstan:
+    name: PHPStan
+    runs-on: ubuntu-latest
+    container: joomlaprojects/docker-images:php8.2
+    needs: [prepare_tests]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run PHPStan
+        run: vendor/bin/phpstan
+        continue-on-error: true # Maps to 'failure: ignore'
+
+  phpunit:
+    name: PHPUnit
+    runs-on: ubuntu-latest
+    container: joomlaprojects/docker-images:php8.2
+    needs: [prepare_tests]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run PHPUnit
+        run: vendor/bin/phpunit
+
+  system_tests_mysql:
+    name: System Tests (MySQL)
+    runs-on: ubuntu-latest
+    container: joomlaprojects/docker-images:cypress8.2
+    needs: [prepare_tests]
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_USER: joomla_ut
+          MYSQL_PASSWORD: joomla_ut
+          MYSQL_ROOT_PASSWORD: joomla_ut
+          MYSQL_DATABASE: test_joomla
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache Cypress
+        uses: actions/cache@v3
+        with:
+          path: /root/.cache/Cypress
+          key: ${{ runner.os }}-cypress-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Run MySQL System Tests
+        run: |
+          mkdir /tests/www/mysql/
+          cp joomla.zip /tests/www/mysql/joomla.zip
+          cp dist/pkg-weblinks-current.zip /tests/www/mysql/pkg-weblinks-current.zip
+          cd /tests/www/mysql/
+          unzip joomla.zip
+          apache2ctl -D FOREGROUND &
+          chmod +rwx /root
+          php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-17082005 --db-type=mysqli --db-host=mysql --db-name=test_joomla --db-pass=joomla_ut --db-user=joomla_ut --db-encryption=0 --db-prefix=mysql_
+          php cli/joomla.php config:set debug=true error_reporting=maximum
+          php cli/joomla.php extension:install --path=/tests/www/mysql/pkg-weblinks-current.zip
+          chmod -R 777 /tests/www/mysql/
+          chown -R www-data /tests/www/mysql/
+          cd $GITHUB_WORKSPACE
+          npx cypress run --browser=firefox --e2e --env cmsPath=/tests/www/mysql,db_type=mysqli,db_host=mysql,db_name=test_joomla,db_user=joomla_ut,db_password=joomla_ut,db_prefix=mysql_,logFile=/var/log/apache2/error.log --config baseUrl=http://localhost/mysql,screenshotsFolder=$GITHUB_WORKSPACE/tests/cypress/output/screenshot
+
+  system_tests_postgres:
+    name: System Tests (PostgreSQL)
+    runs-on: ubuntu-latest
+    container: joomlaprojects/docker-images:cypress8.2
+    needs: [prepare_tests]
+    services:
+      postgres:
+        image: postgres:12-alpine
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: joomla_ut
+          POSTGRES_DB: test_joomla
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache Cypress
+        uses: actions/cache@v3
+        with:
+          path: /root/.cache/Cypress
+          key: ${{ runner.os }}-cypress-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Run PostgreSQL System Tests
+        run: |
+          mkdir /tests/www/pgsql/
+          cp joomla.zip /tests/www/pgsql/joomla.zip
+          cp dist/pkg-weblinks-current.zip /tests/www/pgsql/pkg-weblinks-current.zip
+          cd /tests/www/pgsql/
+          unzip joomla.zip
+          apache2ctl -D FOREGROUND &
+          chmod +rwx /root
+          php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-17082005 --db-type=pgsql --db-host=postgres --db-name=test_joomla --db-pass=joomla_ut --db-user=root --db-encryption=0 --db-prefix=pgsql_
+          php cli/joomla.php config:set debug=true error_reporting=maximum
+          php cli/joomla.php extension:install --path=/tests/www/pgsql/pkg-weblinks-current.zip
+          chmod -R 777 /tests/www/pgsql/
+          chown -R www-data /tests/www/pgsql/
+          cd $GITHUB_WORKSPACE
+          npx cypress run --browser=firefox --e2e --env cmsPath=/tests/www/pgsql,db_type=pgsql,db_host=postgres,db_name=test_joomla,db_user=root,db_password=joomla_ut,db_prefix=pgsql_,logFile=/var/log/apache2/error.log --config baseUrl=http://localhost/pgsql,screenshotsFolder=$GITHUB_WORKSPACE/tests/cypress/output/screenshot
+
+  artifacts_system_tests:
+    name: Upload Artifacts on Failure
+    runs-on: ubuntu-latest
+    container: joomlaprojects/docker-images:packager
+    needs: [system_tests_mysql, system_tests_postgres]
+    # This job only runs if a previous job in the "needs" list fails
+    if: failure() && needs.system_tests_mysql.result == 'failure' || needs.system_tests_postgres.result == 'failure'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: system-test-failures
+          path: tests/cypress/output/
+          if-no-files-found: ignore
+        # Note: The original Drone step used SFTP. This uses GitHub's built-in artifact storage.
+        # For the exact SFTP/rclone logic, you would need to create a custom step with secrets.
