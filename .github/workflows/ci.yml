@@ -93,6 +93,7 @@ jobs:
       - name: Prepare Test Environment
         run: |
           mv cypress.config.dist.js cypress.config.js
+          chmod +x node_modules/.bin/cypress || true
           npx cypress install
           npx cypress verify
           vendor/bin/robo build
