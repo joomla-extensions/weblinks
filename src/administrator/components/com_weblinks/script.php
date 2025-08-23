@@ -14,7 +14,6 @@
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\InstallerAdapter;
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Category;
 use Joomla\Database\DatabaseAwareInterface;
 use Joomla\Database\DatabaseAwareTrait;
@@ -119,27 +118,27 @@ class Com_WeblinksInstallerScript implements DatabaseAwareInterface
                 'language',
                 'created_time',
                 'modified_time',
-                'version'
+                'version',
             ];
 
             $values = [
-                1, // parent_id (root)
-                1, // lft (will be corrected by rebuildPath)
-                2, // rgt (will be corrected by rebuildPath)  
-                1, // level
+                1,
+                1,
+                2,
+                1,
                 $db->quote('uncategorised'),
                 $db->quote('com_weblinks'),
                 $db->quote('Uncategorised'),
                 $db->quote('uncategorised'),
                 $db->quote(''),
-                1, // published
-                1, // access
+                1,
+                1,
                 $db->quote('{"category_layout":"","image":""}'),
                 $db->quote('{"author":"","robots":""}'),
                 $db->quote('*'),
                 $db->quote(Factory::getDate()->toSql()),
                 $db->quote(Factory::getDate()->toSql()),
-                1 // version
+                1,
             ];
 
             $query = $db->getQuery(true)
@@ -152,7 +151,6 @@ class Com_WeblinksInstallerScript implements DatabaseAwareInterface
                 $db->execute();
                 $categoryId = $db->insertid();
 
-                // Now fix the nested set values properly
                 $category = new Category($db);
                 $category->load($categoryId);
                 $category->setLocation(1, 'last-child');
