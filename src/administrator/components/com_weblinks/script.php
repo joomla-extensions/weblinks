@@ -79,6 +79,91 @@ class Com_WeblinksInstallerScript implements DatabaseAwareInterface
     }
 
     /**
+     * Function to perform changes during install
+     *
+     * @param   JInstallerAdapterComponent  $parent  The class calling this method
+     *
+     * @return  void
+     *
+     * @since   3.4
+     */
+    public function install($parent)
+    {
+        $db = $this->getDatabase();
+
+        // Check if the Uncategorised category exists
+        $query = $db->getQuery(true)
+            ->select('id')
+            ->from('#__categories')
+            ->where('extension = ' . $db->quote('com_weblinks'))
+            ->where('title = ' . $db->quote('Uncategorised'));
+        $db->setQuery($query);
+        $existingCategory = $db->loadResult();
+
+        if (!$existingCategory) {
+            // Insert category directly without triggering events
+            $columns = [
+                'parent_id',
+                'lft',
+                'rgt',
+                'level',
+                'path',
+                'extension',
+                'title',
+                'alias',
+                'description',
+                'published',
+                'access',
+                'params',
+                'metadata',
+                'language',
+                'created_time',
+                'modified_time',
+                'version'
+            ];
+
+            $values = [
+                1, // parent_id (root)
+                1, // lft (will be corrected by rebuildPath)
+                2, // rgt (will be corrected by rebuildPath)  
+                1, // level
+                $db->quote('uncategorised'),
+                $db->quote('com_weblinks'),
+                $db->quote('Uncategorised'),
+                $db->quote('uncategorised'),
+                $db->quote(''),
+                1, // published
+                1, // access
+                $db->quote('{"category_layout":"","image":""}'),
+                $db->quote('{"author":"","robots":""}'),
+                $db->quote('*'),
+                $db->quote(Factory::getDate()->toSql()),
+                $db->quote(Factory::getDate()->toSql()),
+                1 // version
+            ];
+
+            $query = $db->getQuery(true)
+                ->insert('#__categories')
+                ->columns($db->quoteName($columns))
+                ->values(implode(',', $values));
+            $db->setQuery($query);
+
+            try {
+                $db->execute();
+                $categoryId = $db->insertid();
+
+                // Now fix the nested set values properly
+                $category = new Category($db);
+                $category->load($categoryId);
+                $category->setLocation(1, 'last-child');
+                $category->rebuildPath($categoryId);
+            } catch (Exception $e) {
+                Factory::getApplication()->enqueueMessage('Error creating weblinks category: ' . $e->getMessage());
+            }
+        }
+    }
+
+    /**
      * Method to run after the install routine.
      *
      * @param   string                      $type    The action being performed
@@ -103,48 +188,6 @@ class Com_WeblinksInstallerScript implements DatabaseAwareInterface
 
         // Insert missing UCM Records if needed
         $this->insertMissingUcmRecords();
-
-        // Initialize a new category
-        $category = new Category($this->getDatabase());
-
-        // Check if the Uncategorised category exists before adding it
-        if (!$category->load(['extension' => 'com_weblinks', 'title' => 'Uncategorised'])) {
-            $category->extension        = 'com_weblinks';
-            $category->title            = 'Uncategorised';
-            $category->description      = '';
-            $category->published        = 1;
-            $category->access           = 1;
-            $category->params           = '{"category_layout":"","image":""}';
-            $category->metadata         = '{"author":"","robots":""}';
-            $category->metadesc         = '';
-            $category->metakey          = '';
-            $category->language         = '*';
-            $category->checked_out_time = null;
-            $category->version          = 1;
-            $category->hits             = 0;
-            $category->modified_user_id = 0;
-            $category->checked_out      = null;
-
-            // Set the location in the tree
-            $category->setLocation(1, 'last-child');
-
-            // Check to make sure our data is valid
-            if (!$category->check()) {
-                Factory::getApplication()->enqueueMessage(Text::sprintf('COM_WEBLINKS_ERROR_INSTALL_CATEGORY', $category->getError()));
-
-                return;
-            }
-
-            // Now store the category
-            if (!$category->store(true)) {
-                Factory::getApplication()->enqueueMessage(Text::sprintf('COM_WEBLINKS_ERROR_INSTALL_CATEGORY', $category->getError()));
-
-                return;
-            }
-
-            // Build the path for our category
-            $category->rebuildPath($category->id);
-        }
     }
 
     /**
