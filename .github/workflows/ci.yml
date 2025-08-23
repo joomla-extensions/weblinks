@@ -29,10 +29,20 @@ jobs:
       - name: Install dependencies
         run: composer install --no-progress --ignore-platform-reqs
 
+      - name: Verify Robo is installed
+        run: |
+          if [ -f "vendor/bin/robo" ]; then
+            echo "Robo is installed successfully"
+            vendor/bin/robo --version
+          else
+            echo "ERROR: Robo is not installed. Check your composer.json dependencies."
+            exit 1
+          fi
+
   phpcs:
     name: PHP Code Sniffer
     runs-on: ubuntu-latest
-    container: joomlaprojects/docker-images:php8.1
+    container: joomlaprojects/docker-images:php8.3
     needs: [composer]
     steps:
       - name: Checkout code
@@ -46,18 +56,24 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
+      - name: Verify dependencies exist
+        run: |
+          if [ ! -d "vendor" ] || [ ! -f "vendor/autoload.php" ]; then
+            echo "Composer dependencies not found, installing..."
+            composer install --no-progress --ignore-platform-reqs
+          fi
+
       - name: Run PHP-CS-Fixer and PHPCS
         run: |
-          echo $(date)
+          echo "Start time: $(date)"
           ./vendor/bin/php-cs-fixer fix -vvv --dry-run --diff
           ./vendor/bin/phpcs --extensions=php -p --standard=ruleset.xml src/
-          echo $(date)
+          echo "End time: $(date)"
 
   npm:
     name: NPM Install
     runs-on: ubuntu-latest
     container: node:20-bullseye-slim
-    needs: [phpcs]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -65,24 +81,53 @@ jobs:
       - name: Cache node modules
         uses: actions/cache@v3
         with:
-          path: /tmp/npm-cache
+          path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
 
       - name: Install dependencies
-        run: npm i --unsafe-perm
+        run: npm ci
         env:
-          npm_config_cache: /tmp/npm-cache
+          npm_config_cache: ~/.npm
 
   prepare_tests:
     name: Prepare Tests
     runs-on: ubuntu-latest
-    container: joomlaprojects/docker-images:cypress8.2
-    needs: [npm]
+    container: joomlaprojects/docker-images:php8.3
+    needs: [composer, npm]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Restore Composer dependencies from cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Verify and install Composer dependencies if missing
+        run: |
+          if [ ! -d "vendor" ] || [ ! -f "vendor/autoload.php" ] || [ ! -f "vendor/bin/robo" ]; then
+            echo "Composer dependencies missing or incomplete, installing..."
+            composer install --no-progress --ignore-platform-reqs
+          fi
+          
+          # Verify Robo is available
+          if [ ! -f "vendor/bin/robo" ]; then
+            echo "ERROR: vendor/bin/robo not found after installation"
+            exit 1
+          fi
+
+      - name: Restore NPM cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Install NPM dependencies
         run: npm ci
@@ -90,28 +135,57 @@ jobs:
       - name: Cache Cypress
         uses: actions/cache@v3
         with:
-          path: /root/.cache/Cypress
+          path: ~/.cache/Cypress
           key: ${{ runner.os }}-cypress-${{ hashFiles('**/package-lock.json') }}
 
       - name: Prepare Test Environment
         run: |
-          mv cypress.config.dist.js cypress.config.js
-          chmod +x node_modules/.bin/cypress || true
+          echo "=== Preparing test environment ==="
+          
+          # Only move cypress config if it exists
+          if [ -f "cypress.config.dist.js" ]; then
+            mv cypress.config.dist.js cypress.config.js
+            echo "✓ Cypress config file moved"
+          fi
+          
+          # Install and verify Cypress
+          echo "Installing Cypress..."
           npx cypress install
           npx cypress verify
+          echo "✓ Cypress verified"
+          
+          # Run robo build (essential step)
+          echo "Running robo build..."
           vendor/bin/robo build
-          curl https://joomla.org/latest -L --output joomla.zip
-          mkdir joomla
-          cp joomla.zip joomla/joomla.zip
-          cd joomla
-          unzip joomla.zip
+          echo "✓ Robo build completed"
+          
+          # Download Joomla
+          echo "Downloading Joomla..."
+          JOOMLA_URL=$(curl -s https://downloads.joomla.org/cms/joomla5/latest-5.x/joomla.xml | grep -oP '<downloadurl>([^<]+)</downloadurl>' | sed -e 's/<downloadurl>//' -e 's/<\/downloadurl>//' | head -1)
+          curl -L "$JOOMLA_URL" --output joomla.zip
+          
+          # Verify download
+          if [ ! -f "joomla.zip" ]; then
+            echo "ERROR: Failed to download Joomla"
+            exit 1
+          fi
+          
+          # Create and extract Joomla
+          mkdir -p joomla
+          unzip -q joomla.zip -d joomla/
+          echo "✓ Joomla prepared successfully"
+          
+          # List built artifacts
+          echo "Built artifacts:"
+          ls -la dist/ || echo "No dist directory found"
+
         env:
           CYPRESS_VERIFY_TIMEOUT: 100000
 
   phpstan:
     name: PHPStan
     runs-on: ubuntu-latest
-    container: joomlaprojects/docker-images:php8.2
+    container: joomlaprojects/docker-images:php8.3
     needs: [prepare_tests]
     steps:
       - name: Checkout code
@@ -125,14 +199,21 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
+      - name: Verify dependencies exist
+        run: |
+          if [ ! -d "vendor" ] || [ ! -f "vendor/autoload.php" ]; then
+            echo "Composer dependencies not found, installing..."
+            composer install --no-progress --ignore-platform-reqs
+          fi
+
       - name: Run PHPStan
-        run: vendor/bin/phpstan
+        run: vendor/bin/phpstan analyse
         continue-on-error: true
 
   phpunit:
     name: PHPUnit
     runs-on: ubuntu-latest
-    container: joomlaprojects/docker-images:php8.2
+    container: joomlaprojects/docker-images:php8.3
     needs: [prepare_tests]
     steps:
       - name: Checkout code
@@ -145,6 +226,13 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
+
+      - name: Verify dependencies exist
+        run: |
+          if [ ! -d "vendor" ] || [ ! -f "vendor/autoload.php" ]; then
+            echo "Composer dependencies not found, installing..."
+            composer install --no-progress --ignore-platform-reqs
+          fi
 
       - name: Run PHPUnit
         run: vendor/bin/phpunit
@@ -171,28 +259,61 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Restore Composer dependencies from cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Restore NPM cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Cache Cypress
         uses: actions/cache@v3
         with:
-          path: /root/.cache/Cypress
+          path: ~/.cache/Cypress
           key: ${{ runner.os }}-cypress-${{ hashFiles('**/package-lock.json') }}
 
       - name: Run MySQL System Tests
         run: |
-          mkdir /tests/www/mysql/
-          cp joomla.zip /tests/www/mysql/joomla.zip
-          cp dist/pkg-weblinks-current.zip /tests/www/mysql/pkg-weblinks-current.zip
+          mkdir -p /tests/www/mysql/
+          cp joomla.zip /tests/www/mysql/
+          cp dist/pkg-weblinks-current.zip /tests/www/mysql/
           cd /tests/www/mysql/
-          unzip joomla.zip
+          unzip -q joomla.zip
+          
+          # Start Apache in background
           apache2ctl -D FOREGROUND &
-          chmod +rwx /root
-          php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-170[...]
+          APACHE_PID=$!
+          
+          # Wait for MySQL to be ready
+          echo "Waiting for MySQL to be ready..."
+          for i in {1..30}; do
+            if mysqladmin ping -h mysql -u root -pjoomla_ut --silent; then
+              echo "MySQL is ready!"
+              break
+            fi
+            echo "Waiting for MySQL... attempt $i"
+            sleep 2
+          done
+
+          # Install Joomla
+          php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-170 --db-type=mysqli --db-host=mysql --db-user=joomla_ut --db-pass=joomla_ut --db-name=test_joomla --db-prefix=mysql_
+          
           php cli/joomla.php config:set debug=true error_reporting=maximum
           php cli/joomla.php extension:install --path=/tests/www/mysql/pkg-weblinks-current.zip
           chmod -R 777 /tests/www/mysql/
           chown -R www-data /tests/www/mysql/
+          
           cd $GITHUB_WORKSPACE
-          npx cypress run --browser=firefox --e2e --env cmsPath=/tests/www/mysql,db_type=mysqli,db_host=mysql,db_name=test_joomla,db_user=joomla_ut,db_password=joomla_ut,db_prefix=mysql_,logFile=[...]
+          npx cypress run --browser=firefox --e2e --env cmsPath=/tests/www/mysql,db_type=mysqli,db_host=mysql,db_name=test_joomla,db_user=joomla_ut,db_password=joomla_ut,db_prefix=mysql_
 
   system_tests_postgres:
     name: System Tests (PostgreSQL)
@@ -215,33 +336,65 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Restore Composer dependencies from cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Restore NPM cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Cache Cypress
         uses: actions/cache@v3
         with:
-          path: /root/.cache/Cypress
+          path: ~/.cache/Cypress
           key: ${{ runner.os }}-cypress-${{ hashFiles('**/package-lock.json') }}
 
       - name: Run PostgreSQL System Tests
         run: |
-          mkdir /tests/www/pgsql/
-          cp joomla.zip /tests/www/pgsql/joomla.zip
-          cp dist/pkg-weblinks-current.zip /tests/www/pgsql/pkg-weblinks-current.zip
+          mkdir -p /tests/www/pgsql/
+          cp joomla.zip /tests/www/pgsql/
+          cp dist/pkg-weblinks-current.zip /tests/www/pgsql/
           cd /tests/www/pgsql/
-          unzip joomla.zip
+          unzip -q joomla.zip
+          
+          # Start Apache in background
           apache2ctl -D FOREGROUND &
-          chmod +rwx /root
-          php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-170[...]
+          APACHE_PID=$!
+          
+          # Wait for PostgreSQL to be ready
+          echo "Waiting for PostgreSQL to be ready..."
+          for i in {1..30}; do
+            if PGPASSWORD=joomla_ut pg_isready -h postgres -U root; then
+              echo "PostgreSQL is ready!"
+              break
+            fi
+            echo "Waiting for PostgreSQL... attempt $i"
+            sleep 2
+          done
+
+          # Install Joomla
+          php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-170 --db-type=pgsql --db-host=postgres --db-user=root --db-pass=joomla_ut --db-name=test_joomla --db-prefix=pgsql_
+          
           php cli/joomla.php config:set debug=true error_reporting=maximum
           php cli/joomla.php extension:install --path=/tests/www/pgsql/pkg-weblinks-current.zip
           chmod -R 777 /tests/www/pgsql/
           chown -R www-data /tests/www/pgsql/
+          
           cd $GITHUB_WORKSPACE
-          npx cypress run --browser=firefox --e2e --env cmsPath=/tests/www/pgsql,db_type=pgsql,db_host=postgres,db_name=test_joomla,db_user=root,db_password=joomla_ut,db_prefix=pgsql_,logFile=/va[...]
+          npx cypress run --browser=firefox --e2e --env cmsPath=/tests/www/pgsql,db_type=pgsql,db_host=postgres,db_name=test_joomla,db_user=root,db_password=joomla_ut,db_prefix=pgsql_
 
   artifacts_system_tests:
     name: Upload Artifacts on Failure
     runs-on: ubuntu-latest
-    container: joomlaprojects/docker-images:packager
     needs: [system_tests_mysql, system_tests_postgres]
     if: failure() && (needs.system_tests_mysql.result == 'failure' || needs.system_tests_postgres.result == 'failure')
     steps:
@@ -252,5 +405,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: system-test-failures
-          path: tests/cypress/output/
+          path: |
+            tests/cypress/output/
+            cypress/screenshots/
+            cypress/videos/
           if-no-files-found: ignore
