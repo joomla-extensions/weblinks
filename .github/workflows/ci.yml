@@ -8,6 +8,7 @@ on:
 env:
   PHP_VERSION: "8.3"
   NODE_VERSION: "20"
+  CYPRESS_CACHE_FOLDER: /root/.cache/Cypress
 
 jobs:
   composer:
@@ -96,6 +97,8 @@ jobs:
     runs-on: ubuntu-latest
     container: joomlaprojects/docker-images:cypress8.2
     needs: [composer, npm]
+    env:
+      CYPRESS_CACHE_FOLDER: /root/.cache/Cypress
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -135,8 +138,19 @@ jobs:
       - name: Cache Cypress
         uses: actions/cache@v3
         with:
-          path: ~/.cache/Cypress
+          path: /root/.cache/Cypress
           key: ${{ runner.os }}-cypress-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Ensure Cypress is installed
+        run: |
+          # Check if Cypress binary exists, install if missing
+          if [ ! -d "/root/.cache/Cypress" ]; then
+            echo "Cypress binary missing, installing..."
+            npx cypress install
+          else
+            echo "Cypress binary found in cache"
+            npx cypress verify
+          fi
 
       - name: Prepare Test Environment
         run: |
@@ -147,9 +161,6 @@ jobs:
             mv cypress.config.dist.js cypress.config.js
             echo "✓ Cypress config file moved"
           fi
-          
-          # Skip Cypress installation since it's already included in the container
-          echo "Cypress is already installed in the container"
           
           # Verify Cypress is available
           npx cypress --version
@@ -185,7 +196,6 @@ jobs:
           name: build-artifacts
           path: |
             dist/
-            joomla.zip
           if-no-files-found: warn
 
   phpstan:
@@ -248,6 +258,8 @@ jobs:
     runs-on: ubuntu-latest
     container: joomlaprojects/docker-images:cypress8.2
     needs: [prepare_tests]
+    env:
+      CYPRESS_CACHE_FOLDER: /root/.cache/Cypress
     services:
       mysql:
         image: mysql:8.0
@@ -300,8 +312,19 @@ jobs:
       - name: Cache Cypress
         uses: actions/cache@v3
         with:
-          path: ~/.cache/Cypress
+          path: /root/.cache/Cypress
           key: ${{ runner.os }}-cypress-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Ensure Cypress is installed
+        run: |
+          # Check if Cypress binary exists, install if missing
+          if [ ! -d "/root/.cache/Cypress" ]; then
+            echo "Cypress binary missing, installing..."
+            npx cypress install
+          else
+            echo "Cypress binary found in cache"
+            npx cypress verify
+          fi
 
       - name: Download and extract Joomla
         run: |
@@ -353,7 +376,7 @@ jobs:
           done
 
           # Install Joomla
-          php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-170082005--db-type=mysqli --db-host=mysql --db-user=joomla_ut --db-pass=joomla_ut --db-name=test_joomla --db-prefix=mysql_
+          php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-170082005 --db-type=mysqli --db-host=mysql --db-user=joomla_ut --db-pass=joomla_ut --db-name=test_joomla --db-prefix=mysql_
           
           php cli/joomla.php config:set debug=true error_reporting=maximum
           php cli/joomla.php extension:install --path=/tests/www/mysql/pkg-weblinks-current.zip
@@ -368,6 +391,8 @@ jobs:
     runs-on: ubuntu-latest
     container: joomlaprojects/docker-images:cypress8.2
     needs: [prepare_tests]
+    env:
+      CYPRESS_CACHE_FOLDER: /root/.cache/Cypress
     services:
       postgres:
         image: postgres:12-alpine
@@ -419,8 +444,19 @@ jobs:
       - name: Cache Cypress
         uses: actions/cache@v3
         with:
-          path: ~/.cache/Cypress
+          path: /root/.cache/Cypress
           key: ${{ runner.os }}-cypress-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Ensure Cypress is installed
+        run: |
+          # Check if Cypress binary exists, install if missing
+          if [ ! -d "/root/.cache/Cypress" ]; then
+            echo "Cypress binary missing, installing..."
+            npx cypress install
+          else
+            echo "Cypress binary found in cache"
+            npx cypress verify
+          fi
 
       - name: Download and extract Joomla
         run: |
@@ -472,7 +508,7 @@ jobs:
           done
 
           # Install Joomla
-          php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-170082005 --db-type=pgsql --db-host=postgres --db-user=root --db-pass=joomla_ut --db-name=test_joomla --db-prefix=pgsql_
+          php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-17008205 --db-type=pgsql --db-host=postgres --db-user=root --db-pass=joomla_ut --db-name=test_joomla --db-prefix=pgsql_
           
           php cli/joomla.php config:set debug=true error_reporting=maximum
           php cli/joomla.php extension:install --path=/tests/www/pgsql/pkg-weblinks-current.zip
