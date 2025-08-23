@@ -94,11 +94,21 @@ jobs:
   prepare_tests:
     name: Prepare Tests
     runs-on: ubuntu-latest
-    container: joomlaprojects/docker-images:php8.3
+    container: node:20-bullseye
     needs: [composer, npm]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Install PHP and Composer
+        run: |
+          # Install PHP and required extensions
+          apt-get update
+          apt-get install -y php php-curl php-zip php-xml php-mbstring php-mysql php-pgsql php-sqlite3
+          
+          # Install Composer
+          curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+          composer --version
 
       - name: Restore Composer dependencies from cache
         uses: actions/cache@v3
@@ -267,6 +277,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
+      - name: Verify dependencies exist
+        run: |
+          if [ ! -d "vendor" ] || [ ! -f "vendor/autoload.php" ]; then
+            echo "Composer dependencies not found, installing..."
+            composer install --no-progress --ignore-platform-reqs
+          fi
+
       - name: Restore NPM cache
         uses: actions/cache@v3
         with:
@@ -274,6 +291,9 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+
+      - name: Install NPM dependencies
+        run: npm ci
 
       - name: Cache Cypress
         uses: actions/cache@v3
@@ -344,6 +364,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
+      - name: Verify dependencies exist
+        run: |
+          if [ ! -d "vendor" ] || [ ! -f "vendor/autoload.php" ]; then
+            echo "Composer dependencies not found, installing..."
+            composer install --no-progress --ignore-platform-reqs
+          fi
+
       - name: Restore NPM cache
         uses: actions/cache@v3
         with:
@@ -351,6 +378,9 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+
+      - name: Install NPM dependencies
+        run: npm ci
 
       - name: Cache Cypress
         uses: actions/cache@v3
