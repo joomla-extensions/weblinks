@@ -189,6 +189,7 @@ jobs:
           # List built artifacts
           echo "Built artifacts:"
           ls -la dist/ || echo "No dist directory found"
+          ls -la || echo "No files in root directory"
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -349,12 +350,19 @@ jobs:
           # Copy Joomla files to test directory
           cp -r ./* /tests/www/mysql/ || true
           
-          # Verify the package exists before copying
+          # Find the package file (check multiple possible locations and names)
           if [ -f "dist/pkg-weblinks-current.zip" ]; then
+            echo "Found package in dist/pkg-weblinks-current.zip"
             cp dist/pkg-weblinks-current.zip /tests/www/mysql/
+          elif [ -f "pkg-weblinks-current.zip" ]; then
+            echo "Found package in pkg-weblinks-current.zip"
+            cp pkg-weblinks-current.zip /tests/www/mysql/
           else
-            echo "WARNING: dist/pkg-weblinks-current.zip not found, checking if it exists elsewhere..."
-            find . -name "*.zip" -type f | head -5
+            echo "ERROR: No package file found. Looking for pkg-weblinks-current.zip"
+            echo "Available files in dist/:"
+            ls -la dist/ 2>/dev/null || echo "dist/ directory doesn't exist"
+            echo "Available zip files:"
+            find . -name "*.zip" -type f
             exit 1
           fi
           
@@ -376,10 +384,13 @@ jobs:
           done
 
           # Install Joomla
-          php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-170082005 --db-type=mysqli --db-host=mysql --db-user=joomla_ut --db-pass=joomla_ut --db-name=test_joomla --db-prefix=mysql_
+          php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-17082005 --db-type=mysqli --db-host=mysql --db-user=joomla_ut --db-pass=joomla_ut --db-name=test_joomla --db-prefix=mysql_
           
           php cli/joomla.php config:set debug=true error_reporting=maximum
+          
+          # Install the package
           php cli/joomla.php extension:install --path=/tests/www/mysql/pkg-weblinks-current.zip
+          
           chmod -R 777 /tests/www/mysql/
           chown -R www-data /tests/www/mysql/
           
@@ -481,12 +492,19 @@ jobs:
           # Copy Joomla files to test directory
           cp -r ./* /tests/www/pgsql/ || true
           
-          # Verify the package exists before copying
+          # Find the package file (check multiple possible locations and names)
           if [ -f "dist/pkg-weblinks-current.zip" ]; then
+            echo "Found package in dist/pkg-weblinks-current.zip"
             cp dist/pkg-weblinks-current.zip /tests/www/pgsql/
+          elif [ -f "pkg-weblinks-current.zip" ]; then
+            echo "Found package in pkg-weblinks-current.zip"
+            cp pkg-weblinks-current.zip /tests/www/pgsql/
           else
-            echo "WARNING: dist/pkg-weblinks-current.zip not found, checking if it exists elsewhere..."
-            find . -name "*.zip" -type f | head -5
+            echo "ERROR: No package file found. Looking for pkg-weblinks-current.zip"
+            echo "Available files in dist/:"
+            ls -la dist/ 2>/dev/null || echo "dist/ directory doesn't exist"
+            echo "Available zip files:"
+            find . -name "*.zip" -type f
             exit 1
           fi
           
@@ -508,10 +526,13 @@ jobs:
           done
 
           # Install Joomla
-          php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-17008205 --db-type=pgsql --db-host=postgres --db-user=root --db-pass=joomla_ut --db-name=test_joomla --db-prefix=pgsql_
+          php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-17082005 --db-type=pgsql --db-host=postgres --db-user=root --db-pass=joomla_ut --db-name=test_joomla --db-prefix=pgsql_
           
           php cli/joomla.php config:set debug=true error_reporting=maximum
+          
+          # Install the package
           php cli/joomla.php extension:install --path=/tests/www/pgsql/pkg-weblinks-current.zip
+          
           chmod -R 777 /tests/www/pgsql/
           chown -R www-data /tests/www/pgsql/
           
