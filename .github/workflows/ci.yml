@@ -179,6 +179,15 @@ jobs:
           echo "Built artifacts:"
           ls -la dist/ || echo "No dist directory found"
 
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            dist/
+            joomla.zip
+          if-no-files-found: warn
+
   phpstan:
     name: PHPStan
     runs-on: ubuntu-latest
@@ -256,6 +265,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+          path: .
+
       - name: Restore Composer dependencies from cache
         uses: actions/cache@v3
         with:
@@ -307,8 +322,19 @@ jobs:
       - name: Run MySQL System Tests
         run: |
           mkdir -p /tests/www/mysql/
+          
+          # Copy Joomla files to test directory
           cp -r ./* /tests/www/mysql/ || true
-          cp dist/pkg-weblinks-current.zip /tests/www/mysql/
+          
+          # Verify the package exists before copying
+          if [ -f "dist/pkg-weblinks-current.zip" ]; then
+            cp dist/pkg-weblinks-current.zip /tests/www/mysql/
+          else
+            echo "WARNING: dist/pkg-weblinks-current.zip not found, checking if it exists elsewhere..."
+            find . -name "*.zip" -type f | head -5
+            exit 1
+          fi
+          
           cd /tests/www/mysql/
           
           # Start Apache in background
@@ -357,6 +383,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+          path: .
 
       - name: Restore Composer dependencies from cache
         uses: actions/cache@v3
@@ -409,8 +441,19 @@ jobs:
       - name: Run PostgreSQL System Tests
         run: |
           mkdir -p /tests/www/pgsql/
+          
+          # Copy Joomla files to test directory
           cp -r ./* /tests/www/pgsql/ || true
-          cp dist/pkg-weblinks-current.zip /tests/www/pgsql/
+          
+          # Verify the package exists before copying
+          if [ -f "dist/pkg-weblinks-current.zip" ]; then
+            cp dist/pkg-weblinks-current.zip /tests/www/pgsql/
+          else
+            echo "WARNING: dist/pkg-weblinks-current.zip not found, checking if it exists elsewhere..."
+            find . -name "*.zip" -type f | head -5
+            exit 1
+          fi
+          
           cd /tests/www/pgsql/
           
           # Start Apache in background
