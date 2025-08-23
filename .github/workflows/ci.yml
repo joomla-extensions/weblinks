@@ -159,20 +159,20 @@ jobs:
           vendor/bin/robo build
           echo "✓ Robo build completed"
           
-          # Download Joomla
-          echo "Downloading Joomla..."
-          JOOMLA_URL=$(curl -s https://downloads.joomla.org/cms/joomla5/latest-5.x/joomla.xml | grep -oP '<downloadurl>([^<]+)</downloadurl>' | sed -e 's/<downloadurl>//' -e 's/<\/downloadurl>//' | head -1)
-          curl -L "$JOOMLA_URL" --output joomla.zip
+          # Download Joomla nightly build
+          echo "Downloading Joomla nightly build..."
+          curl -o joomla.tar.zst -L https://developer.joomla.org/download-nightly.php/stable/debug/full/joomla.tar.zst
           
           # Verify download
-          if [ ! -f "joomla.zip" ]; then
+          if [ ! -f "joomla.tar.zst" ]; then
             echo "ERROR: Failed to download Joomla"
             exit 1
           fi
           
-          # Create and extract Joomla
-          mkdir -p joomla
-          unzip -q joomla.zip -d joomla/
+          # Extract Joomla
+          echo "Extracting Joomla..."
+          tar xfa joomla.tar.zst
+          rm joomla.tar.zst
           echo "✓ Joomla prepared successfully"
           
           # List built artifacts
@@ -288,13 +288,28 @@ jobs:
           path: ~/.cache/Cypress
           key: ${{ runner.os }}-cypress-${{ hashFiles('**/package-lock.json') }}
 
+      - name: Download and extract Joomla
+        run: |
+          echo "Downloading Joomla nightly build..."
+          curl -o joomla.tar.zst -L https://developer.joomla.org/download-nightly.php/stable/debug/full/joomla.tar.zst
+          
+          # Verify download
+          if [ ! -f "joomla.tar.zst" ]; then
+            echo "ERROR: Failed to download Joomla"
+            exit 1
+          fi
+          
+          # Extract Joomla
+          echo "Extracting Joomla..."
+          tar xfa joomla.tar.zst
+          rm joomla.tar.zst
+
       - name: Run MySQL System Tests
         run: |
           mkdir -p /tests/www/mysql/
-          cp joomla.zip /tests/www/mysql/
+          cp -r ./* /tests/www/mysql/ || true
           cp dist/pkg-weblinks-current.zip /tests/www/mysql/
           cd /tests/www/mysql/
-          unzip -q joomla.zip
           
           # Start Apache in background
           apache2ctl -D FOREGROUND &
@@ -375,13 +390,28 @@ jobs:
           path: ~/.cache/Cypress
           key: ${{ runner.os }}-cypress-${{ hashFiles('**/package-lock.json') }}
 
+      - name: Download and extract Joomla
+        run: |
+          echo "Downloading Joomla nightly build..."
+          curl -o joomla.tar.zst -L https://developer.joomla.org/download-nightly.php/stable/debug/full/joomla.tar.zst
+          
+          # Verify download
+          if [ ! -f "joomla.tar.zst" ]; then
+            echo "ERROR: Failed to download Joomla"
+            exit 1
+          fi
+          
+          # Extract Joomla
+          echo "Extracting Joomla..."
+          tar xfa joomla.tar.zst
+          rm joomla.tar.zst
+
       - name: Run PostgreSQL System Tests
         run: |
           mkdir -p /tests/www/pgsql/
-          cp joomla.zip /tests/www/pgsql/
+          cp -r ./* /tests/www/pgsql/ || true
           cp dist/pkg-weblinks-current.zip /tests/www/pgsql/
           cd /tests/www/pgsql/
-          unzip -q joomla.zip
           
           # Start Apache in background
           apache2ctl -D FOREGROUND &
