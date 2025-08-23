@@ -94,21 +94,11 @@ jobs:
   prepare_tests:
     name: Prepare Tests
     runs-on: ubuntu-latest
-    container: node:20-bullseye
+    container: joomlaprojects/docker-images:cypress8.2
     needs: [composer, npm]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Install PHP and Composer
-        run: |
-          # Install PHP and required extensions
-          apt-get update
-          apt-get install -y php php-curl php-zip php-xml php-mbstring php-mysql php-pgsql php-sqlite3
-          
-          # Install Composer
-          curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-          composer --version
 
       - name: Restore Composer dependencies from cache
         uses: actions/cache@v3
@@ -158,11 +148,11 @@ jobs:
             echo "✓ Cypress config file moved"
           fi
           
-          # Install and verify Cypress
-          echo "Installing Cypress..."
-          npx cypress install
-          npx cypress verify
-          echo "✓ Cypress verified"
+          # Skip Cypress installation since it's already included in the container
+          echo "Cypress is already installed in the container"
+          
+          # Verify Cypress is available
+          npx cypress --version
           
           # Run robo build (essential step)
           echo "Running robo build..."
@@ -188,9 +178,6 @@ jobs:
           # List built artifacts
           echo "Built artifacts:"
           ls -la dist/ || echo "No dist directory found"
-
-        env:
-          CYPRESS_VERIFY_TIMEOUT: 100000
 
   phpstan:
     name: PHPStan
