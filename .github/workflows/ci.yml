@@ -58,7 +58,6 @@ jobs:
           cp joomla.zip joomla/joomla.zip
           cd joomla
           unzip joomla.zip
-          composer install --no-dev --optimize-autoloader
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -85,8 +84,6 @@ jobs:
       - name: Setup Joomla for tests
         run: |
           unzip joomla.zip -d joomla/
-          cd joomla
-          composer install --no-dev --optimize-autoloader
       - name: Run PHPStan
         continue-on-error: true
         run: vendor/bin/phpstan analyse src --level=0 --no-progress
