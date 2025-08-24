@@ -1,0 +1,32 @@
+name: 'Setup Dependencies'
+description: 'Install Composer and NPM dependencies with caching'
+inputs:
+  composer-cache-key:
+    description: 'Composer cache key'
+    required: false
+    default: 'composer'
+  npm-cache:
+    description: 'Enable NPM caching'
+    required: false
+    default: 'false'
+runs:
+  using: 'composite'
+  steps:
+    - name: Cache Composer dependencies
+      uses: actions/cache@v4
+      with:
+        path: /tmp/composer-cache
+        key: ${{ inputs.composer-cache-key }}-cache-v1
+    - name: Install Composer dependencies
+      shell: bash
+      run: composer install --no-progress --ignore-platform-reqs
+    - name: Setup Node.js
+      if: inputs.npm-cache == 'true'
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+    - name: Install NPM dependencies
+      if: inputs.npm-cache == 'true'
+      shell: bash
+      run: npm ci --unsafe-perm
