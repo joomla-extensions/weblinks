@@ -137,22 +137,8 @@ jobs:
       - name: Install NPM dependencies
         run: npm ci
 
-      - name: Cache Cypress
-        uses: actions/cache@v3
-        with:
-          path: /github/home/.cache/Cypress
-          key: ${{ runner.os }}-cypress-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Ensure Cypress is installed
-        run: |
-          # Check if Cypress binary exists, install if missing
-          if [ ! -d "/github/home/.cache/Cypress" ] && [ ! -d "/root/.cache/Cypress" ]; then
-            echo "Cypress binary missing, installing..."
-            npx cypress install
-          else
-            echo "Cypress binary found in cache"
-            npx cypress verify
-          fi
+      - name: Install Cypress binary
+        run: npx cypress install
 
       - name: Prepare Test Environment
         run: |
@@ -313,22 +299,8 @@ jobs:
       - name: Install NPM dependencies
         run: npm ci
 
-      - name: Cache Cypress
-        uses: actions/cache@v3
-        with:
-          path: /github/home/.cache/Cypress
-          key: ${{ runner.os }}-cypress-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Ensure Cypress is installed
-        run: |
-          # Check if Cypress binary exists, install if missing
-          if [ ! -d "/github/home/.cache/Cypress" ] && [ ! -d "/root/.cache/Cypress" ]; then
-            echo "Cypress binary missing, installing..."
-            npx cypress install
-          else
-            echo "Cypress binary found in cache"
-            npx cypress verify
-          fi
+      - name: Install Cypress binary
+        run: npx cypress install
 
       - name: Download and extract Joomla
         run: |
@@ -456,22 +428,8 @@ jobs:
       - name: Install NPM dependencies
         run: npm ci
 
-      - name: Cache Cypress
-        uses: actions/cache@v3
-        with:
-          path: /github/home/.cache/Cypress
-          key: ${{ runner.os }}-cypress-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Ensure Cypress is installed
-        run: |
-          # Check if Cypress binary exists, install if missing
-          if [ ! -d "/github/home/.cache/Cypress" ] && [ ! -d "/root/.cache/Cypress" ]; then
-            echo "Cypress binary missing, installing..."
-            npx cypress install
-          else
-            echo "Cypress binary found in cache"
-            npx cypress verify
-          fi
+      - name: Install Cypress binary
+        run: npx cypress install
 
       - name: Download and extract Joomla
         run: |
