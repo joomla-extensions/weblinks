@@ -13,7 +13,7 @@ runs:
   using: 'composite'
   steps:
     - name: Cache Composer dependencies
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: /tmp/composer-cache
         key: ${{ inputs.composer-cache-key }}-${{ hashFiles('**/composer.lock') }}

@@ -59,7 +59,7 @@ jobs:
           cd joomla
           unzip joomla.zip
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
           path: |
@@ -128,7 +128,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: build-artifacts
       - uses: ./.github/actions/setup-dependencies
@@ -151,7 +151,7 @@ jobs:
           cd $GITHUB_WORKSPACE
           npx cypress run --browser=firefox --e2e --env cmsPath=/tests/www/${{ matrix.database.type }},db_type=${{ matrix.database.type }},db_host=${{ matrix.database.host }},db_name=test_joomla,db_user=${{ matrix.database.user }},db_password=${{ matrix.database.password }},db_prefix=${{ matrix.database.prefix }},logFile=/var/log/apache2/error.log --config baseUrl=http://localhost/${{ matrix.database.type }},screenshotsFolder=$GITHUB_WORKSPACE/tests/cypress/output/screenshot
       - name: Upload test results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: cypress-screenshots-${{ matrix.database.type }}
