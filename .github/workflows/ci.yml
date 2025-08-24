@@ -8,7 +8,8 @@ on:
 env:
   PHP_VERSION: "8.3"
   NODE_VERSION: "20"
-  CYPRESS_CACHE_FOLDER: /root/.cache/Cypress
+  CYPRESS_CACHE_FOLDER: /github/home/.cache/Cypress
+  npm_config_cache: ~/.npm
 
 jobs:
   composer:
@@ -75,6 +76,8 @@ jobs:
     name: NPM Install
     runs-on: ubuntu-latest
     container: node:20-bullseye-slim
+    env:
+      npm_config_cache: ~/.npm
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -89,8 +92,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-        env:
-          npm_config_cache: ~/.npm
 
   prepare_tests:
     name: Prepare Tests
@@ -98,7 +99,8 @@ jobs:
     container: joomlaprojects/docker-images:cypress8.2
     needs: [composer, npm]
     env:
-      CYPRESS_CACHE_FOLDER: /root/.cache/Cypress
+      CYPRESS_CACHE_FOLDER: /github/home/.cache/Cypress
+      npm_config_cache: ~/.npm
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -138,13 +140,13 @@ jobs:
       - name: Cache Cypress
         uses: actions/cache@v3
         with:
-          path: /root/.cache/Cypress
+          path: /github/home/.cache/Cypress
           key: ${{ runner.os }}-cypress-${{ hashFiles('**/package-lock.json') }}
 
       - name: Ensure Cypress is installed
         run: |
           # Check if Cypress binary exists, install if missing
-          if [ ! -d "/root/.cache/Cypress" ]; then
+          if [ ! -d "/github/home/.cache/Cypress" ] && [ ! -d "/root/.cache/Cypress" ]; then
             echo "Cypress binary missing, installing..."
             npx cypress install
           else
@@ -260,7 +262,8 @@ jobs:
     container: joomlaprojects/docker-images:cypress8.2
     needs: [prepare_tests]
     env:
-      CYPRESS_CACHE_FOLDER: /root/.cache/Cypress
+      CYPRESS_CACHE_FOLDER: /github/home/.cache/Cypress
+      npm_config_cache: ~/.npm
     services:
       mysql:
         image: mysql:8.0
@@ -313,13 +316,13 @@ jobs:
       - name: Cache Cypress
         uses: actions/cache@v3
         with:
-          path: /root/.cache/Cypress
+          path: /github/home/.cache/Cypress
           key: ${{ runner.os }}-cypress-${{ hashFiles('**/package-lock.json') }}
 
       - name: Ensure Cypress is installed
         run: |
           # Check if Cypress binary exists, install if missing
-          if [ ! -d "/root/.cache/Cypress" ]; then
+          if [ ! -d "/github/home/.cache/Cypress" ] && [ ! -d "/root/.cache/Cypress" ]; then
             echo "Cypress binary missing, installing..."
             npx cypress install
           else
@@ -403,7 +406,8 @@ jobs:
     container: joomlaprojects/docker-images:cypress8.2
     needs: [prepare_tests]
     env:
-      CYPRESS_CACHE_FOLDER: /root/.cache/Cypress
+      CYPRESS_CACHE_FOLDER: /github/home/.cache/Cypress
+      npm_config_cache: ~/.npm
     services:
       postgres:
         image: postgres:12-alpine
@@ -455,13 +459,13 @@ jobs:
       - name: Cache Cypress
         uses: actions/cache@v3
         with:
-          path: /root/.cache/Cypress
+          path: /github/home/.cache/Cypress
           key: ${{ runner.os }}-cypress-${{ hashFiles('**/package-lock.json') }}
 
       - name: Ensure Cypress is installed
         run: |
           # Check if Cypress binary exists, install if missing
-          if [ ! -d "/root/.cache/Cypress" ]; then
+          if [ ! -d "/github/home/.cache/Cypress" ] && [ ! -d "/root/.cache/Cypress" ]; then
             echo "Cypress binary missing, installing..."
             npx cypress install
           else
