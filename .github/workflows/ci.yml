@@ -8,8 +8,6 @@ on:
 env:
   PHP_VERSION: "8.3"
   NODE_VERSION: "20"
-  CYPRESS_CACHE_FOLDER: /github/home/.cache/Cypress
-  npm_config_cache: ~/.npm
 
 jobs:
   composer:
@@ -76,8 +74,6 @@ jobs:
     name: NPM Install
     runs-on: ubuntu-latest
     container: node:20-bullseye-slim
-    env:
-      npm_config_cache: ~/.npm
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -98,9 +94,6 @@ jobs:
     runs-on: ubuntu-latest
     container: joomlaprojects/docker-images:cypress8.2
     needs: [composer, npm]
-    env:
-      CYPRESS_CACHE_FOLDER: /github/home/.cache/Cypress
-      npm_config_cache: ~/.npm
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -137,8 +130,11 @@ jobs:
       - name: Install NPM dependencies
         run: npm ci
 
-      - name: Install Cypress binary
-        run: npx cypress install
+      - name: Install Cypress using GitHub Action
+        uses: cypress-io/github-action@v6
+        with:
+          runTests: false
+          install: true
 
       - name: Prepare Test Environment
         run: |
@@ -247,9 +243,6 @@ jobs:
     runs-on: ubuntu-latest
     container: joomlaprojects/docker-images:cypress8.2
     needs: [prepare_tests]
-    env:
-      CYPRESS_CACHE_FOLDER: /github/home/.cache/Cypress
-      npm_config_cache: ~/.npm
     services:
       mysql:
         image: mysql:8.0
@@ -299,8 +292,11 @@ jobs:
       - name: Install NPM dependencies
         run: npm ci
 
-      - name: Install Cypress binary
-        run: npx cypress install
+      - name: Install Cypress using GitHub Action
+        uses: cypress-io/github-action@v6
+        with:
+          runTests: false
+          install: true
 
       - name: Download and extract Joomla
         run: |
@@ -377,9 +373,6 @@ jobs:
     runs-on: ubuntu-latest
     container: joomlaprojects/docker-images:cypress8.2
     needs: [prepare_tests]
-    env:
-      CYPRESS_CACHE_FOLDER: /github/home/.cache/Cypress
-      npm_config_cache: ~/.npm
     services:
       postgres:
         image: postgres:12-alpine
@@ -428,8 +421,11 @@ jobs:
       - name: Install NPM dependencies
         run: npm ci
 
-      - name: Install Cypress binary
-        run: npx cypress install
+      - name: Install Cypress using GitHub Action
+        uses: cypress-io/github-action@v6
+        with:
+          runTests: false
+          install: true
 
       - name: Download and extract Joomla
         run: |
