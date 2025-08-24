@@ -7,7 +7,7 @@ runs:
       uses: actions/cache@v4
       with:
         path: ~/.cache/Cypress
-        key: cypress-${{ hashFiles('**/package-lock.json') }}
+        key: cypress-cache-v1
     - name: Setup Cypress
       shell: bash
       env:

@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main, 4.0-dev ]
+    branches: [ main, 5.x-dev ]
   pull_request:
-    branches: [ main, 4.0-dev ]
+    branches: [ main, 5.x-dev ]
 
 jobs:
   composer:
@@ -75,6 +75,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-dependencies
+      - name: Create minimal joomla structure
+        run: mkdir -p joomla
       - name: Run PHPStan
         run: vendor/bin/phpstan
 
@@ -85,46 +87,35 @@ jobs:
       image: joomlaprojects/docker-images:php8.2
     steps:
       - uses: actions/checkout@v4
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
       - uses: ./.github/actions/setup-dependencies
+      - name: Setup Joomla for tests
+        run: |
+          unzip joomla.zip -d joomla/
       - name: Run PHPUnit
         run: vendor/bin/phpunit
 
-  system-tests:
+  system-tests-mysql:
     runs-on: ubuntu-latest
     needs: prepare_tests
     container:
       image: joomlaprojects/docker-images:cypress8.2
-    strategy:
-      matrix:
-        database:
-          - type: mysql
-            image: mysql:8.0
-            host: mysql
-            user: joomla_ut
-            password: joomla_ut
-            prefix: mysql_
-            health_cmd: "mysqladmin ping"
-            env:
-              MYSQL_USER: joomla_ut
-              MYSQL_PASSWORD: joomla_ut
-              MYSQL_ROOT_PASSWORD: joomla_ut
-              MYSQL_DATABASE: test_joomla
-          - type: pgsql
-            image: postgres:12-alpine
-            host: postgres
-            user: root
-            password: joomla_ut
-            prefix: pgsql_
-            health_cmd: "pg_isready"
-            env:
-              POSTGRES_USER: root
-              POSTGRES_PASSWORD: joomla_ut
-              POSTGRES_DB: test_joomla
     services:
-      database:
-        image: ${{ matrix.database.image }}
-        env: ${{ matrix.database.env }}
-        options: --health-cmd="${{ matrix.database.health_cmd }}" --health-interval=10s --health-timeout=5s --health-retries=5
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_USER: joomla_ut
+          MYSQL_PASSWORD: joomla_ut
+          MYSQL_DATABASE: test_joomla
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -u root -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
     steps:
       - uses: actions/checkout@v4
       - name: Download artifacts
@@ -134,25 +125,75 @@ jobs:
       - uses: ./.github/actions/setup-dependencies
         with:
           npm-cache: 'true'
-      - name: Setup and run tests
+      - uses: ./.github/actions/setup-cypress
+      - name: Setup and run MySQL tests
         run: |
-          mkdir /tests/www/${{ matrix.database.type }}/
-          cp joomla.zip /tests/www/${{ matrix.database.type }}/joomla.zip
-          cp dist/pkg-weblinks-current.zip /tests/www/${{ matrix.database.type }}/pkg-weblinks-current.zip
-          cd /tests/www/${{ matrix.database.type }}/
+          apt-get update && apt-get install -y default-mysql-client
+          echo "ServerName localhost" >> /etc/apache2/apache2.conf
+          mysql -h mysql -u root -proot -e "ALTER USER 'joomla_ut'@'%' IDENTIFIED WITH mysql_native_password BY 'joomla_ut'; FLUSH PRIVILEGES;"
+          mkdir /tests/www/mysql/
+          cp joomla.zip /tests/www/mysql/joomla.zip
+          cp dist/pkg-weblinks-current.zip /tests/www/mysql/pkg-weblinks-current.zip
+          cd /tests/www/mysql/
           unzip joomla.zip
           apache2ctl -D FOREGROUND &
           chmod +rwx /root
-          php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-17082005 --db-type=${{ matrix.database.type }} --db-host=${{ matrix.database.host }} --db-name=test_joomla --db-pass=${{ matrix.database.password }} --db-user=${{ matrix.database.user }} --db-encryption=0 --db-prefix=${{ matrix.database.prefix }}
+          php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-17082005 --db-type=mysqli --db-host=mysql --db-name=test_joomla --db-pass=joomla_ut --db-user=joomla_ut --db-encryption=0 --db-prefix=mysql_
           php cli/joomla.php config:set debug=true error_reporting=maximum
-          php cli/joomla.php extension:install --path=/tests/www/${{ matrix.database.type }}/pkg-weblinks-current.zip
-          chmod -R 777 /tests/www/${{ matrix.database.type }}/
-          chown -R www-data /tests/www/${{ matrix.database.type }}/
+          php cli/joomla.php extension:install --path=/tests/www/mysql/pkg-weblinks-current.zip
+          chmod -R 777 /tests/www/mysql/
+          chown -R www-data /tests/www/mysql/
           cd $GITHUB_WORKSPACE
-          npx cypress run --browser=firefox --e2e --env cmsPath=/tests/www/${{ matrix.database.type }},db_type=${{ matrix.database.type }},db_host=${{ matrix.database.host }},db_name=test_joomla,db_user=${{ matrix.database.user }},db_password=${{ matrix.database.password }},db_prefix=${{ matrix.database.prefix }},logFile=/var/log/apache2/error.log --config baseUrl=http://localhost/${{ matrix.database.type }},screenshotsFolder=$GITHUB_WORKSPACE/tests/cypress/output/screenshot
+          npx cypress run --browser=chrome --e2e --env cmsPath=/tests/www/mysql,db_type=mysqli,db_host=mysql,db_name=test_joomla,db_user=joomla_ut,db_password=joomla_ut,db_prefix=mysql_,logFile=/var/log/apache2/error.log --config baseUrl=http://localhost/mysql,screenshotsFolder=$GITHUB_WORKSPACE/tests/cypress/output/screenshot
       - name: Upload test results
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: cypress-screenshots-${{ matrix.database.type }}
+          name: cypress-screenshots-mysql
+          path: tests/cypress/output/
+
+  system-tests-postgres:
+    runs-on: ubuntu-latest
+    needs: prepare_tests
+    container:
+      image: joomlaprojects/docker-images:cypress8.2
+    services:
+      postgres:
+        image: postgres:12-alpine
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: joomla_ut
+          POSTGRES_DB: test_joomla
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+      - uses: ./.github/actions/setup-dependencies
+        with:
+          npm-cache: 'true'
+      - uses: ./.github/actions/setup-cypress
+      - name: Setup and run PostgreSQL tests
+        run: |
+          mkdir /tests/www/pgsql/
+          cp joomla.zip /tests/www/pgsql/joomla.zip
+          cp dist/pkg-weblinks-current.zip /tests/www/pgsql/pkg-weblinks-current.zip
+          cd /tests/www/pgsql/
+          unzip joomla.zip
+          apache2ctl -D FOREGROUND &
+          chmod +rwx /root
+          php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-17082005 --db-type=pgsql --db-host=postgres --db-name=test_joomla --db-pass=joomla_ut --db-user=root --db-encryption=0 --db-prefix=pgsql_
+          php cli/joomla.php config:set debug=true error_reporting=maximum
+          php cli/joomla.php extension:install --path=/tests/www/pgsql/pkg-weblinks-current.zip
+          chmod -R 777 /tests/www/pgsql/
+          chown -R www-data /tests/www/pgsql/
+          cd $GITHUB_WORKSPACE
+          npx cypress run --browser=chrome --e2e --env cmsPath=/tests/www/pgsql,db_type=pgsql,db_host=postgres,db_name=test_joomla,db_user=root,db_password=joomla_ut,db_prefix=pgsql_,logFile=/var/log/apache2/error.log --config baseUrl=http://localhost/pgsql,screenshotsFolder=$GITHUB_WORKSPACE/tests/cypress/output/screenshot
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots-postgres
           path: tests/cypress/output/

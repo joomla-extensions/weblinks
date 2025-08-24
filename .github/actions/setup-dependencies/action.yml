@@ -16,7 +16,7 @@ runs:
       uses: actions/cache@v4
       with:
         path: /tmp/composer-cache
-        key: ${{ inputs.composer-cache-key }}-${{ hashFiles('**/composer.lock') }}
+        key: ${{ inputs.composer-cache-key }}-cache-v1
     - name: Install Composer dependencies
       shell: bash
       run: composer install --no-progress --ignore-platform-reqs
