@@ -58,6 +58,7 @@ jobs:
           cp joomla.zip joomla/joomla.zip
           cd joomla
           unzip joomla.zip
+          composer install --no-dev --optimize-autoloader
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -66,25 +67,14 @@ jobs:
             dist/
             joomla.zip
 
-  phpstan:
+  php-tests:
     runs-on: ubuntu-latest
     needs: prepare_tests
+    strategy:
+      matrix:
+        php-version: ['8.1', '8.2', '8.3', '8.4']
     container:
-      image: joomlaprojects/docker-images:php8.2
-    continue-on-error: true
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-dependencies
-      - name: Create minimal joomla structure
-        run: mkdir -p joomla
-      - name: Run PHPStan
-        run: vendor/bin/phpstan
-
-  phpunit:
-    runs-on: ubuntu-latest
-    needs: prepare_tests
-    container:
-      image: joomlaprojects/docker-images:php8.2
+      image: joomlaprojects/docker-images:php${{ matrix.php-version }}
     steps:
       - uses: actions/checkout@v4
       - name: Download artifacts
@@ -95,6 +85,11 @@ jobs:
       - name: Setup Joomla for tests
         run: |
           unzip joomla.zip -d joomla/
+          cd joomla
+          composer install --no-dev --optimize-autoloader
+      - name: Run PHPStan
+        continue-on-error: true
+        run: vendor/bin/phpstan analyse src --level=0 --no-progress
       - name: Run PHPUnit
         run: vendor/bin/phpunit
 
