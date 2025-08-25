@@ -145,7 +145,7 @@ jobs:
             db-host: postgres
             alter-user-cmd: ""
     container:
-      image: joomlaprojects/docker-images:php${{ matrix.php-version }}
+      image: joomlaprojects/docker-images:cypress${{ matrix.php-version }}
     services:
       mysql:
         image: mysql:8.0
