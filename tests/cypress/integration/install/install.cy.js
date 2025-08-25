@@ -13,8 +13,5 @@ describe('Install Joomla and Weblinks package', () => {
     cy.doAdministratorLogout()
     // Update to the correct secret for the API tests because of the bearer token
     cy.config_setParameter('secret', 'tEstValue');
-    // Extend Joomla Session Lifetime for Tests
-    cy.config_setParameter('lifetime', 1440);
-    cy.config_setParameter('session_handler', 'database');
   })
 })
