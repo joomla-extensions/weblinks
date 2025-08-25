@@ -7,18 +7,18 @@ on:
     branches: [ main, 5.x-dev ]
 
 x-checkout: &checkout
-  - uses: actions/checkout@v4
+  uses: actions/checkout@v4
 
 x-setup-deps: &setup-deps
-  - uses: ./.github/actions/setup-dependencies
+  uses: ./.github/actions/setup-dependencies
 
 x-setup-deps-npm: &setup-deps-npm
-  - uses: ./.github/actions/setup-dependencies
-    with:
-      npm-cache: 'true'
+  uses: ./.github/actions/setup-dependencies
+  with:
+    npm-cache: 'true'
 
 x-setup-cypress: &setup-cypress
-  - uses: ./.github/actions/setup-cypress
+  uses: ./.github/actions/setup-cypress
 
 jobs:
   composer:
@@ -26,8 +26,8 @@ jobs:
     container:
       image: joomlaprojects/docker-images:php8.2
     steps:
-      <<: *checkout
-      <<: *setup-deps
+      - <<: *checkout
+      - <<: *setup-deps
 
   phpcs:
     runs-on: ubuntu-latest
@@ -35,8 +35,8 @@ jobs:
     container:
       image: joomlaprojects/docker-images:php8.2
     steps:
-      <<: *checkout
-      <<: *setup-deps
+      - <<: *checkout
+      - <<: *setup-deps
       - name: Run PHP CS Fixer and PHPCS
         run: |
           echo $(date)
@@ -50,8 +50,8 @@ jobs:
     container:
       image: joomlaprojects/docker-images:php8.2
     steps:
-      <<: *checkout
-      <<: *setup-deps-npm
+      - <<: *checkout
+      - <<: *setup-deps-npm
 
   prepare_tests:
     runs-on: ubuntu-latest
@@ -59,9 +59,9 @@ jobs:
     container:
       image: joomlaprojects/docker-images:php8.2
     steps:
-      <<: *checkout
-      <<: *setup-deps-npm
-      <<: *setup-cypress
+      - <<: *checkout
+      - <<: *setup-deps-npm
+      - <<: *setup-cypress
       - name: Build and prepare Joomla
         run: |
           vendor/bin/robo build
@@ -87,12 +87,12 @@ jobs:
     container:
       image: joomlaprojects/docker-images:php${{ matrix.php-version }}
     steps:
-      <<: *checkout
+      - <<: *checkout
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           name: build-artifacts
-      <<: *setup-deps
+      - <<: *setup-deps
       - name: Setup Joomla for tests
         run: unzip joomla.zip -d joomla/
       - name: Run PHPStan
@@ -172,7 +172,7 @@ jobs:
           MARIADB_USER: joomla_ut
           MARIADB_PASSWORD: joomla_ut
           MARIADB_DATABASE: test_joomla
-        options: --health-cmd="mariadb-admin ping -h localhost -uroot -proot" --health-interval=10s --health-timeout=5s --health-retries=3
+        options: --health-ccmd="mariadb-admin ping -h localhost -uroot -proot" --health-interval=10s --health-timeout=5s --health-retries=3
       postgres:
         image: postgres:12-alpine
         env:
@@ -181,13 +181,13 @@ jobs:
           POSTGRES_DB: test_joomla
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
-      <<: *checkout
+      - <<: *checkout
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           name: build-artifacts
-      <<: *setup-deps-npm
-      <<: *setup-cypress
+      - <<: *setup-deps-npm
+      - <<: *setup-cypress
       - name: Setup and run ${{ matrix.db }} (PHP ${{ matrix.php-version }}) tests
         run: |
           ${{ matrix.alter-user-cmd }}
