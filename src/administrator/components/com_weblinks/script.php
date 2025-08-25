@@ -18,6 +18,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Category;
 use Joomla\Database\DatabaseAwareInterface;
 use Joomla\Database\DatabaseAwareTrait;
+use Joomla\Event\Dispatcher;
 use Joomla\Filesystem\File;
 use Joomla\Filesystem\Folder;
 
@@ -91,6 +92,7 @@ class Com_WeblinksInstallerScript implements DatabaseAwareInterface
     {
         // Initialize a new category
         $category = new Category($this->getDatabase());
+        $category->setDispatcher(new Dispatcher());
 
         // Check if the Uncategorised category exists before adding it
         if (!$category->load(['extension' => 'com_weblinks', 'title' => 'Uncategorised'])) {
