@@ -95,6 +95,6 @@
 			<downloadurl type="full" format="zip">https://github.com/joomla-extensions/weblinks/releases/download/5.0.0-beta1/pkg-weblinks-5.0.0-beta1.zip</downloadurl>
 		</downloads>
 		<sha512>da85704e6d1093eb5324487b60934bc1f0c8cf4832980f65659b318c1bbab4cff10a12f59c6a9fa2ba4abc42ee1a366c99de8df7ad19e9a1e853127ec3b746d9</sha512>
-		<targetplatform name="joomla" version="(5\.[01234]|(6\.[0])" />
+		<targetplatform name="joomla" version="5\.[01234]|6\.0" />
 	</update>
 </updates>
