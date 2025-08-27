@@ -4,9 +4,7 @@
         <element>weblinks</element>
         <type>plugin</type>
         <version>5.0.0</version>
-        <attributes>
-            <group>quickicon</group>
-        </attributes>
+         <folder>quickicon</folder>
         <addition>
             <item>Quickicon for Weblinks available on Quickicons group "mod_quickicon"</item>
         </addition>

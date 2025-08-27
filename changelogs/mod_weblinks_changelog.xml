@@ -4,5 +4,8 @@
         <element>mod_weblinks</element>
         <type>module</type>
         <version>5.0.0</version>
+        <note>
+            <item>Joomla 6 ready</item>
+        </note>
     </changelog>
 </changelogs>

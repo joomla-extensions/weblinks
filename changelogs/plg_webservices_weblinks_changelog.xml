@@ -4,9 +4,7 @@
         <element>weblinks</element>
         <type>plugin</type>
         <version>5.0.0</version>
-        <attributes>
-            <group>webservices</group>
-        </attributes>
+        <folder>webservices</folder>
         <addition>
             <item>API for Webinks with CRUD</item>
             <item>Rate Limiting for public API requests</item>

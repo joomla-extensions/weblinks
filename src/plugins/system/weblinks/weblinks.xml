@@ -8,7 +8,7 @@
 	<authorEmail>admin@joomla.org</authorEmail>
 	<authorUrl>www.joomla.org</authorUrl>
 	<version>##VERSION##</version>
-	<changelogurl>https://github.com/joomla-extensions/weblinks/changelogs/plg_system_weblinks_changelog.xml</changelogurl>
+	<changelogurl>https://raw.githubusercontent.com/joomla-extensions/weblinks/5.x-dev/changelogs/plg_system_weblinks_changelog.xml</changelogurl>
 	<description>PLG_SYSTEM_WEBLINKS_XML_DESCRIPTION</description>
 	<namespace path="src">Joomla\Plugin\System\Weblinks</namespace>
 	<files>
