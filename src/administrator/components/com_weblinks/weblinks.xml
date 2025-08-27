@@ -10,7 +10,7 @@
 	<authorUrl>www.joomla.org</authorUrl>
 	<version>##VERSION##</version>
 	<description>COM_WEBLINKS_XML_DESCRIPTION</description>
-	<changelogurl>https://github.com/joomla-extensions/weblinks/changelogs/com_weblinks_changelog.xml</changelogurl>
+	<changelogurl>https://raw.githubusercontent.com/joomla-extensions/weblinks/5.x-dev/changelogs/com_weblinks_changelog.xml</changelogurl>
 	<scriptfile>script.php</scriptfile>
 	<namespace path="src">Joomla\Component\Weblinks</namespace>
 

@@ -4,8 +4,9 @@
         <element>weblink</element>
         <type>plugin</type>
         <version>5.0.0</version>
-        <attributes>
-            <group>editors-xtd</group>
-        </attributes>
+        <folder>editors-xtd</folder>
+        <note>
+            <item>Joomla 6 ready</item>
+        </note>
     </changelog>
 </changelogs>

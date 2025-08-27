@@ -4,8 +4,9 @@
         <element>weblinks</element>
         <type>plugin</type>
         <version>5.0.0</version>
-        <attributes>
-            <group>system</group>
-        </attributes>
+        <folder>system</folder>
+        <note>
+            <item>Joomla 6 ready</item>
+        </note>
     </changelog>
 </changelogs>
