@@ -4,10 +4,16 @@
         <element>pkg_weblinks</element>
         <type>package</type>
         <version>5.0.0</version>
+        <addition>
+            <item>Changelogs Plugin: Shows the Changes made in the release</item>
+            <item>Webservices Plugin: Adds an API for Weblinks with Rate Limiting</item>
+            <item>Quickicon Plugin: Displays a Quickicon in the Dashboard</item>
+        </addition>
+        <change>
+			<item>Code clean</item>
+		</change>
+        <note>
+            <item>Joomla 6 ready</item>
+        </note>
     </changelog>
-    <addition>
-        <item>Changelogs Plugin: Shows the Changes made in the release</item>
-        <item>Webservices Plugin: Adds an API for Weblinks with Rate Limiting</item>
-        <item>Quickicon Plugin: Displays a Quickicon in the Dashboard</item>
-    </addition>
 </changelogs>
