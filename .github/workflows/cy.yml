@@ -55,7 +55,7 @@ jobs:
       - name: Build and prepare Joomla
         run: |
           vendor/bin/robo build
-          curl https://joomla.org/latest -L --output joomla.zip
+          curl "https://downloads.joomla.org/cms/joomla5/5-4-0/Joomla_5-4-0-Stable-Full_Package.zip?format=zip" -L --output joomla.zip
           mkdir joomla
           cp joomla.zip joomla/joomla.zip
           cd joomla
