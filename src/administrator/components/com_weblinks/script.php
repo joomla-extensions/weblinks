@@ -210,8 +210,8 @@ class Com_WeblinksInstallerScript implements DatabaseAwareInterface
                 $db->quote('Weblink') . ', '
                 . $db->quote('com_weblinks.weblink') . ', '
                 . $db->quote(
-                    '{"special":{"dbtable":"#__weblinks","key":"id","type":"Weblink","prefix":"WeblinksTable","config":"array()"},
-					"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}'
+                    '{"special":{"dbtable":"#__weblinks","key":"id","type":"WeblinkTable","prefix":"Joomla\\Component\\Weblinks\\Administrator\\Table\\","config":"array()"},
+					"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"Joomla\\CMS\\Table\\","config":"array()"}}'
                 ) . ', '
                 . $db->quote('') . ', '
                 . $db->quote(
@@ -248,8 +248,8 @@ class Com_WeblinksInstallerScript implements DatabaseAwareInterface
                 $db->quote('Weblinks Category') . ', '
                 . $db->quote('com_weblinks.category') . ', '
                 . $db->quote('
-					{"special":{"dbtable":"#__categories","key":"id","type":"Category","prefix":"JTable","config":"array()"},
-					"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}') . ', '
+					{"special":{"dbtable":"#__categories","key":"id","type":"CategoryTable","prefix":"Joomla\\Component\\Categories\\Administrator\\Table\\","config":"array()"},
+					"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"Joomla\\CMS\\Table\\","config":"array()"}}') . ', '
                 . $db->quote('') . ', '
                 . $db->quote('
 					{"common":{"core_content_item_id":"id","core_title":"title","core_state":"published","core_alias":"alias",
