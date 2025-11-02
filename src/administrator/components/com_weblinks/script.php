@@ -1,158 +1,261 @@
 <?php
-// Installer script for Weblinks (partial file - only function updated)
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Component\ComponentHelper;
+namespace Joomla\Component\Weblinks\Administrator\Script;
 
-class com_weblinksInstallerScript
+use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseInterface;
+
+/**
+ * Installer script for com_weblinks.
+ */
+class InstallerScript
 {
-    private function getDatabase()
+    /**
+     * Get the database object.
+     *
+     * @return DatabaseInterface
+     */
+    private function getDatabase(): DatabaseInterface
     {
-        return \JFactory::getDbo();
+        return Factory::getDbo();
     }
 
-    private function insertMissingUcmRecords()
+    /**
+     * Ensure that required UCM content type records exist and are valid.
+     *
+     * This method will insert or update the com_weblinks content type rows if they
+     * are missing or malformed (missing 'special'/'prefix').
+     *
+     * @return void
+     */
+    private function insertMissingUcmRecords(): void
     {
         $db = $this->getDatabase();
 
-        // Helper to validate stored JSON and ensure it contains required keys
-        $validateTypeJson = function ($json) {
-            if (empty($json)) {
-                return false;
-            }
-
-            $data = json_decode($json, true);
-            if (!is_array($data)) {
-                return false;
-            }
-
-            // Ensure 'special' and 'prefix' exist where expected
-            if (isset($data['special']) && is_array($data['special']) && isset($data['special']['prefix'])) {
-                return true;
-            }
-
-            // Also accept legacy structure where 'common' contains mapping, but require prefix
-            if (isset($data['common']) && is_array($data['common'])) {
-                foreach ($data['common'] as $k => $v) {
-                    if (is_array($v) && isset($v['prefix'])) {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        };
-
-        // Template JSON values for the two types
-        $categoryTypeJson = '{"special":{"dbtable":"#__categories","key":"id","type":"Category","prefix":"JTable","config":"array()"},"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}';
-
-        $weblinkTypeJson = '{"special":{"dbtable":"#__weblinks","key":"id","type":"Weblink","prefix":"JTable","config":"array()"},"common":{"dbtable":"#__ucm_content","key":"ucm_id","type":"Corecontent","prefix":"JTable","config":"array()"}}';
-
         $types = [
-            ['alias' => 'com_weblinks.category', 'title' => 'Category', 'json' => $categoryTypeJson],
-            ['alias' => 'com_weblinks.weblink', 'title' => 'Web Link', 'json' => $weblinkTypeJson],
+            [
+                'alias' => 'com_weblinks.category',
+                'title' => 'Category',
+                'json'  => json_encode([
+                    'special' => [
+                        'dbtable' => '#__categories',
+                        'key'     => 'id',
+                        'type'    => 'Category',
+                        'prefix'  => 'JTable',
+                        'config'  => 'array()',
+                    ],
+                    'common' => [
+                        'dbtable' => '#__ucm_content',
+                        'key'     => 'ucm_id',
+                        'type'    => 'Corecontent',
+                        'prefix'  => 'JTable',
+                        'config'  => 'array()',
+                    ],
+                ]),
+            ],
+            [
+                'alias' => 'com_weblinks.weblink',
+                'title' => 'Web Link',
+                'json'  => json_encode([
+                    'special' => [
+                        'dbtable' => '#__weblinks',
+                        'key'     => 'id',
+                        'type'    => 'Weblink',
+                        'prefix'  => 'JTable',
+                        'config'  => 'array()',
+                    ],
+                    'common' => [
+                        'dbtable' => '#__ucm_content',
+                        'key'     => 'ucm_id',
+                        'type'    => 'Corecontent',
+                        'prefix'  => 'JTable',
+                        'config'  => 'array()',
+                    ],
+                ]),
+            ],
         ];
 
         foreach ($types as $type) {
             $query = $db->getQuery(true)
-                ->select($db->quoteName(['type_id', 'type_title', 'rules']))
+                ->select($db->quoteName(['type_id', 'type_alias', 'rules', 'type', 'params']))
                 ->from($db->quoteName('#__content_types'))
                 ->where($db->quoteName('type_alias') . ' = ' . $db->quote($type['alias']));
 
             $db->setQuery($query);
-            $row = $db->loadObject();
+
+            try {
+                $row = $db->loadObject();
+            } catch (\RuntimeException $e) {
+                // Query failed; skip this type defensively.
+                continue;
+            }
 
             $needsUpsert = false;
 
-            if (!$row) {
+            if (! $row) {
                 $needsUpsert = true;
             } else {
-                // Determine which column stores the JSON: prefer 'rules' or 'type' or 'params'
                 $storedJson = '';
-                if (isset($row->rules)) {
+
+                if (isset($row->rules) && $row->rules !== '') {
                     $storedJson = $row->rules;
-                } elseif (isset($row->type)) {
+                } elseif (isset($row->type) && $row->type !== '') {
                     $storedJson = $row->type;
-                } elseif (isset($row->params)) {
+                } elseif (isset($row->params) && $row->params !== '') {
                     $storedJson = $row->params;
                 }
 
-                if (!$validateTypeJson($storedJson)) {
+                if (! $this->isValidUcmJson($storedJson)) {
                     $needsUpsert = true;
                 }
             }
 
             if ($needsUpsert) {
-                if ($row && isset($row->type_id)) {
-                    // Update existing row: try to update the first available JSON column
-                    $upd = $db->getQuery(true)
-                        ->update($db->quoteName('#__content_types'))
-                        ->where($db->quoteName('type_id') . ' = ' . (int) $row->type_id);
-
-                    // Pick a field to update. Use 'rules' if present, otherwise use 'type' or 'params'.
-                    $fieldsToTry = ['rules', 'type', 'params'];
-                    $updated = false;
-                    foreach ($fieldsToTry as $field) {
-                        // Check column existence is non-trivial here; we will attempt to set 'rules' first.
-                        $upd2 = clone $upd;
-                        $upd2->set($db->quoteName($field) . ' = ' . $db->quote($type['json']));
-                        $db->setQuery($upd2);
-                        try {
-                            $db->execute();
-                            $updated = true;
-                            break;
-                        } catch (\Exception $e) {
-                            // ignore and try next field
-                        }
-                    }
-
-                    if (!$updated) {
-                        // As a last resort, replace the entire row using REPLACE (may differ by DB driver)
-                        $replace = "REPLACE INTO " . $db->quoteName('#__content_types') . " (type_alias, type_title, rules) VALUES (" . $db->quote($type['alias']) . "," . $db->quote($type['title']) . "," . $db->quote($type['json']) . ")";
-                        try {
-                            $db->setQuery($replace);
-                            $db->execute();
-                        } catch (\Exception $e) {
-                            // Give up silently to avoid breaking install; core will still handle gracefully.
-                        }
+                if (! empty($row) && isset($row->type_id)) {
+                    $updated = $this->updateContentTypeRow($db, (int) $row->type_id, $type['json']);
+                    if (! $updated) {
+                        $this->replaceContentTypeRow($db, $type['alias'], $type['title'], $type['json']);
                     }
                 } else {
-                    // Insert a new row with minimal required columns. Adjust for Joomla version schema as needed.
-                    $ins = $db->getQuery(true)
-                        ->insert($db->quoteName('#__content_types'))
-                        ->columns([
-                            $db->quoteName('created_user_id'),
-                            $db->quoteName('created_time'),
-                            $db->quoteName('modified_user_id'),
-                            $db->quoteName('modified_time'),
-                            $db->quoteName('type_alias'),
-                            $db->quoteName('type_title'),
-                            $db->quoteName('rules')
-                        ])
-                        ->values(implode(',', [
-                            (int) 0,
-                            $db->quote(date('Y-m-d H:i:s')),
-                            (int) 0,
-                            $db->quote(date('Y-m-d H:i:s')),
-                            $db->quote($type['alias']),
-                            $db->quote($type['title']),
-                            $db->quote($type['json'])
-                        ]));
-
-                    try {
-                        $db->setQuery($ins);
-                        $db->execute();
-                    } catch (\Exception $e) {
-                        // Ignore failures to avoid breaking install; this is defensive.
-                    }
+                    $this->insertContentTypeRow($db, $type['alias'], $type['title'], $type['json']);
                 }
             }
         }
     }
-}
 
-?>
+    /**
+     * Validate the UCM JSON string.
+     *
+     * @param  string  $json
+     * @return bool
+     */
+    private function isValidUcmJson(string $json): bool
+    {
+        if ($json === '') {
+            return false;
+        }
+
+        $data = json_decode($json, true);
+
+        if (! is_array($data)) {
+            return false;
+        }
+
+        if (isset($data['special']['prefix'])) {
+            return true;
+        }
+
+        if (isset($data['common']) && is_array($data['common'])) {
+            foreach ($data['common'] as $v) {
+                if (is_array($v) && isset($v['prefix'])) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Attempt to update content types row's JSON columns.
+     *
+     * @param  DatabaseInterface  $db
+     * @param  int                $typeId
+     * @param  string             $json
+     * @return bool
+     */
+    private function updateContentTypeRow(DatabaseInterface $db, int $typeId, string $json): bool
+    {
+        $fieldsToTry = ['rules', 'type', 'params'];
+
+        foreach ($fieldsToTry as $field) {
+            $upd = $db->getQuery(true)
+                ->update($db->quoteName('#__content_types'))
+                ->set($db->quoteName($field) . ' = ' . $db->quote($json))
+                ->where($db->quoteName('type_id') . ' = ' . $db->quote($typeId));
+
+            $db->setQuery($upd);
+
+            try {
+                $db->execute();
+
+                return true;
+            } catch (\RuntimeException $e) {
+                // try next field
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Insert a content type row.
+     *
+     * @param  DatabaseInterface  $db
+     * @param  string             $alias
+     * @param  string             $title
+     * @param  string             $json
+     * @return void
+     */
+    private function insertContentTypeRow(DatabaseInterface $db, string $alias, string $title, string $json): void
+    {
+        $ins = $db->getQuery(true)
+            ->insert($db->quoteName('#__content_types'))
+            ->columns([
+                $db->quoteName('created_user_id'),
+                $db->quoteName('created_time'),
+                $db->quoteName('modified_user_id'),
+                $db->quoteName('modified_time'),
+                $db->quoteName('type_alias'),
+                $db->quoteName('type_title'),
+                $db->quoteName('rules'),
+            ])
+            ->values(implode(',', [
+                (int) 0,
+                $db->quote(date('Y-m-d H:i:s')),
+                (int) 0,
+                $db->quote(date('Y-m-d H:i:s')),
+                $db->quote($alias),
+                $db->quote($title),
+                $db->quote($json),
+            ]));
+
+        $db->setQuery($ins);
+
+        try {
+            $db->execute();
+        } catch (\RuntimeException $e) {
+            // Intentionally not throwing to avoid breaking installation process.
+        }
+    }
+
+    /**
+     * Replace the content type row as a last resort.
+     *
+     * @param  DatabaseInterface  $db
+     * @param  string             $alias
+     * @param  string             $title
+     * @param  string             $json
+     * @return void
+     */
+    private function replaceContentTypeRow(DatabaseInterface $db, string $alias, string $title, string $json): void
+    {
+        $replace = 'REPLACE INTO ' . $db->quoteName('#__content_types')
+            . ' (type_alias, type_title, rules) VALUES ('
+            . $db->quote($alias) . ', '
+            . $db->quote($title) . ', '
+            . $db->quote($json) . ')';
+
+        $db->setQuery($replace);
+
+        try {
+            $db->execute();
+        } catch (\RuntimeException $e) {
+            // Skip failure.
+        }
+    }
+}
