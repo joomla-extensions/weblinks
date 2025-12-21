@@ -53,19 +53,42 @@ jobs:
         with:
           npm-cache: 'true'
       - uses: ./.github/actions/setup-cypress
-      - name: Fetch and Download Joomla ${{ matrix.joomla-version }}
+
+      - name: Determine Joomla ${{ matrix.joomla-version }} URL
+        id: joomla-info
+        run: |
+          if [ "${{ matrix.joomla-version }}" == "6" ]; then
+            # Joomla 6 is currently the 'latest' redirect
+            URL=$(curl -sIL -o /dev/null -w '%{url_effective}' https://joomla.org/latest)
+          else
+            # Scrape for the latest J5 Full Package
+            HTML_CONTENT=$(curl -sL https://downloads.joomla.org/cms/joomla5)
+            RELATIVE_URL=$(echo "$HTML_CONTENT" | grep -oP '/cms/joomla5/[^"]+Full_Package.zip' | head -n 1)
+            URL="https://downloads.joomla.org${RELATIVE_URL}"
+          fi
+          echo "url=$URL" >> $GITHUB_OUTPUT
+          echo "url_hash=$(echo -n $URL | md5sum | awk '{print $1}')" >> $GITHUB_OUTPUT
+
+      - name: Cache Joomla Zip
+        id: cache-joomla
+        uses: actions/cache@v4
+        with:
+          path: joomla.zip
+          key: joomla-core-${{ matrix.joomla-version }}-${{ steps.joomla-info.outputs.url_hash }}
+
+      - name: Download Joomla ${{ matrix.joomla-version }}
+        if: steps.cache-joomla.outputs.cache-hit != 'true'
+        run: |
+          curl -sL "${{ steps.joomla-info.outputs.url }}" -o joomla.zip
+
+      - name: Build and Verify
         run: |
           vendor/bin/robo build
-          if [ "${{ matrix.joomla-version }}" == "6" ]; then
-            # Always get the absolute latest stable (now J6)
-            curl -L https://joomla.org/latest -o joomla.zip
-          else
-            # Scrape the downloads page to find the latest 5.x Full Package zip link
-            # This extracts the first link containing 'Joomla_5' and 'Full_Package.zip'
-            J5_URL=$(curl -s https://downloads.joomla.org/cms/joomla5 | grep -oP 'https://downloads.joomla.org/cms/joomla5/[^"]+Joomla_5[^"]+Full_Package.zip' | head -n 1)
-            echo "Found Joomla 5 URL: $J5_URL"
-            curl -L "$J5_URL" -o joomla.zip
+          if ! unzip -t joomla.zip > /dev/null; then
+            echo "Error: joomla.zip is corrupt."
+            exit 1
           fi
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -97,7 +120,7 @@ jobs:
             db-type: mysqli
             db-host: mariadb
             db-prefix: mariadb_
-            image: mariadb:10.4 # Default for J5
+            image: mariadb:10.4 
             alter-user-cmd: "apt-get update && apt-get install -y mariadb-client"
 
           - db: pgsql
@@ -107,7 +130,6 @@ jobs:
             image: postgres:12-alpine
             alter-user-cmd: ""
 
-          # Joomla 6 Overrides
           - joomla-version: 6
             db: mariadb
             image: mariadb:10.6
@@ -158,6 +180,7 @@ jobs:
         with:
           npm-cache: 'true'
       - uses: ./.github/actions/setup-cypress
+
       - name: Setup and run ${{ matrix.db }} (J${{ matrix.joomla-version }} / PHP ${{ matrix.php-version }})
         run: |
           ${{ matrix.alter-user-cmd }}
@@ -173,11 +196,12 @@ jobs:
           chmod -R 777 /tests/www/${{ matrix.db }}/
           chown -R www-data /tests/www/${{ matrix.db }}/
           cd $GITHUB_WORKSPACE
-          npx cypress run --browser=chrome --e2e --env cmsPath=/tests/www/${{ matrix.db }},db_type=${{ matrix.db-type }},db_host=${{ matrix.db-host }},db_name=test_joomla,db_user=${{ matrix.db == 'pgsql' && 'root' || 'joomla_ut' }},db_password=joomla_ut,db_prefix=${{ matrix.db-prefix }},logFile=/var/log/apache2/error.log --config baseUrl=http://localhost/${{ matrix.db }}
+          # Disabled video recording with --config video=false
+          npx cypress run --browser=chrome --e2e --config video=false --env cmsPath=/tests/www/${{ matrix.db }},db_type=${{ matrix.db-type }},db_host=${{ matrix.db-host }},db_name=test_joomla,db_user=${{ matrix.db == 'pgsql' && 'root' || 'joomla_ut' }},db_password=joomla_ut,db_prefix=${{ matrix.db-prefix }},logFile=/var/log/apache2/error.log --config baseUrl=http://localhost/${{ matrix.db }}
 
-      - name: Upload test results
+      - name: Upload Screenshots on Failure
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: cypress-j${{ matrix.joomla-version }}-${{ matrix.db }}-php${{ matrix.php-version }}
+          name: cypress-screenshots-j${{ matrix.joomla-version }}-${{ matrix.db }}-php${{ matrix.php-version }}
           path: tests/cypress/output/screenshot
