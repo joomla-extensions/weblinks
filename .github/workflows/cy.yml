@@ -44,7 +44,7 @@ jobs:
     needs: npm
     strategy:
       matrix:
-        joomla-version: [5, 6]
+        joomla-version: ['5', '6', '6.1']
     container:
       image: joomlaprojects/docker-images:cypress8.2
     steps:
@@ -54,18 +54,21 @@ jobs:
           npm-cache: 'true'
       - uses: ./.github/actions/setup-cypress
 
-      - name: Determine Joomla ${{ matrix.joomla-version }} URL
+      - name: Determine Nightly URL for Joomla ${{ matrix.joomla-version }}
         id: joomla-info
         run: |
-          if [ "${{ matrix.joomla-version }}" == "6" ]; then
-            # Joomla 6 is currently the 'latest' redirect
-            URL=$(curl -sIL -o /dev/null -w '%{url_effective}' https://joomla.org/latest)
-          else
-            # Scrape for the latest J5 Full Package
-            HTML_CONTENT=$(curl -sL https://downloads.joomla.org/cms/joomla5)
-            RELATIVE_URL=$(echo "$HTML_CONTENT" | grep -oP '/cms/joomla5/[^"]+Full_Package.zip' | head -n 1)
-            URL="https://downloads.joomla.org${RELATIVE_URL}"
+          if [ "${{ matrix.joomla-version }}" == "5" ]; then BRANCH="5.4-dev"; fi
+          if [ "${{ matrix.joomla-version }}" == "6" ]; then BRANCH="6.0-dev"; fi
+          if [ "${{ matrix.joomla-version }}" == "6.1" ]; then BRANCH="6.1-dev"; fi
+          
+          HTML_CONTENT=$(curl -sL https://developer.joomla.org/nightly-builds.html)
+          URL=$(echo "$HTML_CONTENT" | grep -oP "https://github.com/joomla-projects/joomla-native-builds/releases/download/[^\"]+Joomla_${BRANCH}[^\"]+Full_Package.zip" | head -n 1)
+          
+          if [ -z "$URL" ]; then
+            echo "ERROR: Could not find nightly URL for $BRANCH"
+            exit 1
           fi
+          
           echo "url=$URL" >> $GITHUB_OUTPUT
           echo "url_hash=$(echo -n $URL | md5sum | awk '{print $1}')" >> $GITHUB_OUTPUT
 
@@ -74,20 +77,17 @@ jobs:
         uses: actions/cache@v4
         with:
           path: joomla.zip
-          key: joomla-core-${{ matrix.joomla-version }}-${{ steps.joomla-info.outputs.url_hash }}
+          key: joomla-nightly-${{ matrix.joomla-version }}-${{ steps.joomla-info.outputs.url_hash }}
 
       - name: Download Joomla ${{ matrix.joomla-version }}
         if: steps.cache-joomla.outputs.cache-hit != 'true'
         run: |
-          curl -sL "${{ steps.joomla-info.outputs.url }}" -o joomla.zip
+          curl -LfsS "${{ steps.joomla-info.outputs.url }}" -o joomla.zip
 
       - name: Build and Verify
         run: |
           vendor/bin/robo build
-          if ! unzip -t joomla.zip > /dev/null; then
-            echo "Error: joomla.zip is corrupt."
-            exit 1
-          fi
+          unzip -t joomla.zip > /dev/null
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -96,6 +96,7 @@ jobs:
           path: |
             dist/
             joomla.zip
+          retention-days: 1
 
   system-tests:
     runs-on: ubuntu-latest
@@ -103,8 +104,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        joomla-version: [5, 6]
-        php-version: ['8.1', '8.2', '8.3', '8.4']
+        joomla-version: ['5', '6', '6.1']
+        php-version: ['8.2', '8.3', '8.4']
         db: [mysql, mariadb, pgsql]
         include:
           - db: mysql
@@ -115,32 +116,27 @@ jobs:
             alter-user-cmd: |
               apt-get update && apt-get install -y default-mysql-client
               mysql -h mysql -u root -proot -e "ALTER USER 'joomla_ut'@'%' IDENTIFIED WITH mysql_native_password BY 'joomla_ut'; FLUSH PRIVILEGES;"
-          
           - db: mariadb
             db-type: mysqli
             db-host: mariadb
             db-prefix: mariadb_
             image: mariadb:10.4 
             alter-user-cmd: "apt-get update && apt-get install -y mariadb-client"
-
           - db: pgsql
             db-type: pgsql
             db-host: postgres
             db-prefix: pgsql_
             image: postgres:12-alpine
             alter-user-cmd: ""
-
-          - joomla-version: 6
+          - joomla-version: '6'
             db: mariadb
             image: mariadb:10.6
-
+          - joomla-version: '6.1'
+            db: mariadb
+            image: mariadb:10.6
         exclude:
-          - joomla-version: 5
+          - joomla-version: '5'
             php-version: '8.4'
-          - joomla-version: 6
-            php-version: '8.1'
-          - joomla-version: 6
-            php-version: '8.2'
 
     container:
       image: joomlaprojects/docker-images:cypress${{ matrix.php-version }}
@@ -148,26 +144,15 @@ jobs:
     services:
       mysql:
         image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_USER: joomla_ut
-          MYSQL_PASSWORD: joomla_ut
-          MYSQL_DATABASE: test_joomla
+        env: { MYSQL_ROOT_PASSWORD: root, MYSQL_USER: joomla_ut, MYSQL_PASSWORD: joomla_ut, MYSQL_DATABASE: test_joomla }
         options: --health-cmd="mysqladmin ping -h localhost -u root -proot" --health-interval=10s --health-timeout=5s --health-retries=3
       mariadb:
         image: ${{ matrix.image }}
-        env:
-          MARIADB_ROOT_PASSWORD: root
-          MARIADB_USER: joomla_ut
-          MARIADB_PASSWORD: joomla_ut
-          MARIADB_DATABASE: test_joomla
+        env: { MARIADB_ROOT_PASSWORD: root, MARIADB_USER: joomla_ut, MARIADB_PASSWORD: joomla_ut, MARIADB_DATABASE: test_joomla }
         options: --health-cmd="mariadb-admin ping -h localhost -uroot -proot" --health-interval=10s --health-timeout=5s --health-retries=3
       postgres:
         image: postgres:12-alpine
-        env:
-          POSTGRES_USER: root
-          POSTGRES_PASSWORD: joomla_ut
-          POSTGRES_DB: test_joomla
+        env: { POSTGRES_USER: root, POSTGRES_PASSWORD: joomla_ut, POSTGRES_DB: test_joomla }
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
@@ -179,6 +164,11 @@ jobs:
       - uses: ./.github/actions/setup-dependencies
         with:
           npm-cache: 'true'
+      
+      # Added PHPStan check
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyse src --level=5 --no-progress
+
       - uses: ./.github/actions/setup-cypress
 
       - name: Setup and run ${{ matrix.db }} (J${{ matrix.joomla-version }} / PHP ${{ matrix.php-version }})
@@ -196,7 +186,6 @@ jobs:
           chmod -R 777 /tests/www/${{ matrix.db }}/
           chown -R www-data /tests/www/${{ matrix.db }}/
           cd $GITHUB_WORKSPACE
-          # Disabled video recording with --config video=false
           npx cypress run --browser=chrome --e2e --config video=false --env cmsPath=/tests/www/${{ matrix.db }},db_type=${{ matrix.db-type }},db_host=${{ matrix.db-host }},db_name=test_joomla,db_user=${{ matrix.db == 'pgsql' && 'root' || 'joomla_ut' }},db_password=joomla_ut,db_prefix=${{ matrix.db-prefix }},logFile=/var/log/apache2/error.log --config baseUrl=http://localhost/${{ matrix.db }}
 
       - name: Upload Screenshots on Failure
@@ -205,3 +194,4 @@ jobs:
         with:
           name: cypress-screenshots-j${{ matrix.joomla-version }}-${{ matrix.db }}-php${{ matrix.php-version }}
           path: tests/cypress/output/screenshot
+          retention-days: 7
