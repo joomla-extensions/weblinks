@@ -61,11 +61,13 @@ jobs:
           if [ "${{ matrix.joomla-version }}" == "6" ]; then BRANCH="6.0-dev"; fi
           if [ "${{ matrix.joomla-version }}" == "6.1" ]; then BRANCH="6.1-dev"; fi
           
-          HTML_CONTENT=$(curl -sL https://developer.joomla.org/nightly-builds.html)
-          URL=$(echo "$HTML_CONTENT" | grep -oP "https://github.com/joomla-projects/joomla-native-builds/releases/download/[^\"]+Joomla_${BRANCH}[^\"]+Full_Package.zip" | head -n 1)
+          echo "Searching for branch: $BRANCH"
+          
+          # Double-Grep strategy: Find all zip links, then filter by branch name
+          URL=$(curl -sL https://developer.joomla.org/nightly-builds.html | grep -oE 'https://github.com/joomla-projects/joomla-native-builds/releases/download/[^"]+Full_Package.zip' | grep "$BRANCH" | head -n 1)
           
           if [ -z "$URL" ]; then
-            echo "ERROR: Could not find nightly URL for $BRANCH"
+            echo "::error::Could not find nightly URL for branch $BRANCH."
             exit 1
           fi
           
@@ -87,7 +89,10 @@ jobs:
       - name: Build and Verify
         run: |
           vendor/bin/robo build
-          unzip -t joomla.zip > /dev/null
+          if ! unzip -t joomla.zip > /dev/null; then
+             echo "ERROR: joomla.zip is corrupt or invalid."
+             exit 1
+          fi
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -137,6 +142,10 @@ jobs:
         exclude:
           - joomla-version: '5'
             php-version: '8.4'
+          - joomla-version: '6'
+            php-version: '8.2'
+          - joomla-version: '6.1'
+            php-version: '8.2'
 
     container:
       image: joomlaprojects/docker-images:cypress${{ matrix.php-version }}
@@ -161,11 +170,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-artifacts-j${{ matrix.joomla-version }}
+      
       - uses: ./.github/actions/setup-dependencies
         with:
           npm-cache: 'true'
-      
-      # Added PHPStan check
+
       - name: Run PHPStan
         run: vendor/bin/phpstan analyse src --level=5 --no-progress
 
