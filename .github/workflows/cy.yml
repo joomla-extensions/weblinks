@@ -57,29 +57,27 @@ jobs:
       - name: Determine Nightly URL for Joomla ${{ matrix.joomla-version }}
         id: joomla-info
         run: |
-          # Map matrix version to nightly page identifiers
-          if [ "${{ matrix.joomla-version }}" == "5" ]; then SEARCH="Joomla! 5"; fi
-          if [ "${{ matrix.joomla-version }}" == "6" ]; then SEARCH="Joomla! 6.0"; fi
-          if [ "${{ matrix.joomla-version }}" == "6.1" ]; then SEARCH="Joomla! 6.1"; fi
+          # Use single '=' for POSIX compatibility in 'sh'
+          if [ "${{ matrix.joomla-version }}" = "5" ]; then SEARCH="Joomla! 5"; fi
+          if [ "${{ matrix.joomla-version }}" = "6" ]; then SEARCH="Joomla! 6.0"; fi
+          if [ "${{ matrix.joomla-version }}" = "6.1" ]; then SEARCH="Joomla! 6.1"; fi
           
           echo "Targeting section: $SEARCH"
           
-          # Fetch the page content
-          HTML=$(curl -sL https://developer.joomla.org/nightly-builds.html)
-          
-          # Logic: Find the line with the version header, 
-          # then look at the following lines for the Full_Package link.
-          # We use awk to find the section and print the first URL that appears after it.
-          URL=$(echo "$HTML" | awk "/$SEARCH/{flag=1;next} /Full_Package.zip/{if(flag){print;exit}}" | grep -oP 'https://github.com/[^"]+')
+          # Fetch the page and find the first Full_Package.zip URL after the version header
+          URL=$(curl -sL https://developer.joomla.org/nightly-builds.html | \
+                awk "/$SEARCH/{flag=1;next} /Full_Package.zip/{if(flag){print;exit}}" | \
+                grep -oE 'https://github.com/[^"]+' | head -n 1)
           
           if [ -z "$URL" ]; then
-            echo "::error::Could not find nightly URL for $SEARCH. Please check the page manually."
+            echo "::error::Could not find nightly URL for $SEARCH."
             exit 1
           fi
           
           echo "Found URL: $URL"
           echo "url=$URL" >> $GITHUB_OUTPUT
-          echo "url_hash=$(echo -n $URL | md5sum | awk '{print $1}')" >> $GITHUB_OUTPUT
+          # Generate hash for caching
+          echo "url_hash=$(echo -n "$URL" | md5sum | cut -d' ' -f1)" >> $GITHUB_OUTPUT
 
       - name: Cache Joomla Zip
         id: cache-joomla
@@ -96,7 +94,6 @@ jobs:
       - name: Build and Verify
         run: |
           vendor/bin/robo build
-          # Validation: Ensure it's a zip and not an HTML error page
           if ! unzip -t joomla.zip > /dev/null; then
             echo "ERROR: joomla.zip is invalid. Showing first 20 lines for debug:"
             head -n 20 joomla.zip
