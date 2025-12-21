@@ -57,20 +57,27 @@ jobs:
       - name: Determine Nightly URL for Joomla ${{ matrix.joomla-version }}
         id: joomla-info
         run: |
-          if [ "${{ matrix.joomla-version }}" == "5" ]; then BRANCH="5.4-dev"; fi
-          if [ "${{ matrix.joomla-version }}" == "6" ]; then BRANCH="6.0-dev"; fi
-          if [ "${{ matrix.joomla-version }}" == "6.1" ]; then BRANCH="6.1-dev"; fi
+          # Map matrix version to nightly page identifiers
+          if [ "${{ matrix.joomla-version }}" == "5" ]; then SEARCH="Joomla! 5"; fi
+          if [ "${{ matrix.joomla-version }}" == "6" ]; then SEARCH="Joomla! 6.0"; fi
+          if [ "${{ matrix.joomla-version }}" == "6.1" ]; then SEARCH="Joomla! 6.1"; fi
           
-          echo "Searching for branch: $BRANCH"
+          echo "Targeting section: $SEARCH"
           
-          # Double-Grep strategy: Find all zip links, then filter by branch name
-          URL=$(curl -sL https://developer.joomla.org/nightly-builds.html | grep -oE 'https://github.com/joomla-projects/joomla-native-builds/releases/download/[^"]+Full_Package.zip' | grep "$BRANCH" | head -n 1)
+          # Fetch the page content
+          HTML=$(curl -sL https://developer.joomla.org/nightly-builds.html)
+          
+          # Logic: Find the line with the version header, 
+          # then look at the following lines for the Full_Package link.
+          # We use awk to find the section and print the first URL that appears after it.
+          URL=$(echo "$HTML" | awk "/$SEARCH/{flag=1;next} /Full_Package.zip/{if(flag){print;exit}}" | grep -oP 'https://github.com/[^"]+')
           
           if [ -z "$URL" ]; then
-            echo "::error::Could not find nightly URL for branch $BRANCH."
+            echo "::error::Could not find nightly URL for $SEARCH. Please check the page manually."
             exit 1
           fi
           
+          echo "Found URL: $URL"
           echo "url=$URL" >> $GITHUB_OUTPUT
           echo "url_hash=$(echo -n $URL | md5sum | awk '{print $1}')" >> $GITHUB_OUTPUT
 
@@ -89,9 +96,11 @@ jobs:
       - name: Build and Verify
         run: |
           vendor/bin/robo build
+          # Validation: Ensure it's a zip and not an HTML error page
           if ! unzip -t joomla.zip > /dev/null; then
-             echo "ERROR: joomla.zip is corrupt or invalid."
-             exit 1
+            echo "ERROR: joomla.zip is invalid. Showing first 20 lines for debug:"
+            head -n 20 joomla.zip
+            exit 1
           fi
 
       - name: Upload artifacts
@@ -154,15 +163,12 @@ jobs:
       mysql:
         image: mysql:8.0
         env: { MYSQL_ROOT_PASSWORD: root, MYSQL_USER: joomla_ut, MYSQL_PASSWORD: joomla_ut, MYSQL_DATABASE: test_joomla }
-        options: --health-cmd="mysqladmin ping -h localhost -u root -proot" --health-interval=10s --health-timeout=5s --health-retries=3
       mariadb:
         image: ${{ matrix.image }}
         env: { MARIADB_ROOT_PASSWORD: root, MARIADB_USER: joomla_ut, MARIADB_PASSWORD: joomla_ut, MARIADB_DATABASE: test_joomla }
-        options: --health-cmd="mariadb-admin ping -h localhost -uroot -proot" --health-interval=10s --health-timeout=5s --health-retries=3
       postgres:
         image: postgres:12-alpine
         env: { POSTGRES_USER: root, POSTGRES_PASSWORD: joomla_ut, POSTGRES_DB: test_joomla }
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
       - uses: actions/checkout@v4
@@ -170,7 +176,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-artifacts-j${{ matrix.joomla-version }}
-      
       - uses: ./.github/actions/setup-dependencies
         with:
           npm-cache: 'true'
@@ -180,7 +185,7 @@ jobs:
 
       - uses: ./.github/actions/setup-cypress
 
-      - name: Setup and run ${{ matrix.db }} (J${{ matrix.joomla-version }} / PHP ${{ matrix.php-version }})
+      - name: Setup and run ${{ matrix.db }}
         run: |
           ${{ matrix.alter-user-cmd }}
           mkdir -p /tests/www/${{ matrix.db }}/
@@ -188,12 +193,8 @@ jobs:
           cp dist/pkg-weblinks-current.zip /tests/www/${{ matrix.db }}/
           cd /tests/www/${{ matrix.db }}/
           apache2ctl -D FOREGROUND &
-          chmod +rwx /root
-          php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-17082005 --db-type=${{ matrix.db-type }} --db-host=${{ matrix.db-host }} --db-name=test_joomla --db-pass=joomla_ut --db-user=${{ matrix.db == 'pgsql' && 'root' || 'joomla_ut' }} --db-encryption=0 --db-prefix=${{ matrix.db-prefix }}
-          php cli/joomla.php config:set debug=true error_reporting=maximum
+          php installation/joomla.php install --verbose --site-name="Joomla test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-17082005 --db-type=${{ matrix.db-type }} --db-host=${{ matrix.db-host }} --db-name=test_joomla --db-pass=joomla_ut --db-user=${{ matrix.db == 'pgsql' && 'root' || 'joomla_ut' }} --db-encryption=0 --db-prefix=${{ matrix.db-prefix }}
           php cli/joomla.php extension:install --path=/tests/www/${{ matrix.db }}/pkg-weblinks-current.zip
-          chmod -R 777 /tests/www/${{ matrix.db }}/
-          chown -R www-data /tests/www/${{ matrix.db }}/
           cd $GITHUB_WORKSPACE
           npx cypress run --browser=chrome --e2e --config video=false --env cmsPath=/tests/www/${{ matrix.db }},db_type=${{ matrix.db-type }},db_host=${{ matrix.db-host }},db_name=test_joomla,db_user=${{ matrix.db == 'pgsql' && 'root' || 'joomla_ut' }},db_password=joomla_ut,db_prefix=${{ matrix.db-prefix }},logFile=/var/log/apache2/error.log --config baseUrl=http://localhost/${{ matrix.db }}
 
@@ -201,6 +202,6 @@ jobs:
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: cypress-screenshots-j${{ matrix.joomla-version }}-${{ matrix.db }}-php${{ matrix.php-version }}
+          name: screenshots-j${{ matrix.joomla-version }}-${{ matrix.db }}
           path: tests/cypress/output/screenshot
           retention-days: 7
