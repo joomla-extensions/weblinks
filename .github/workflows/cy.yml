@@ -174,20 +174,24 @@ jobs:
 
       - name: Deploy Joomla and Set Full Permissions
         run: |
-          # 1. Create base directory and extract
+          # 1. Prepare base with universal access
           mkdir -p /tests/www/${{ matrix.db }}/
+          chmod -R 777 /tests/www/
+          
+          # 2. Extract
           unzip joomla.zip -d /tests/www/${{ matrix.db }}/
           
-          # 2. Create the specific subdirectories you requested
+          # 3. Create requested paths
           mkdir -p /tests/www/${{ matrix.db }}/administrator/logs/
           mkdir -p /tests/www/${{ matrix.db }}/tmp/api_rate_limit/
           
-          # 3. FIX: Grant ownership to www-data and full write access to the entire tree
-          # This allows Joomla to create configuration.php and write to logs/tmp
-          chown -R www-data:www-data /tests/www/${{ matrix.db }}/
-          chmod -R 775 /tests/www/${{ matrix.db }}/
+          # 4. NUCLEAR FIX: Grant 777 to everything in the site root
+          # This allows ANY user (root, www-data, etc.) to write configuration.php
+          chmod -R 777 /tests/www/${{ matrix.db }}/
           
-          # 4. Copy the extension package for installation later
+          # 5. Debug (Check ownership and permissions in logs)
+          ls -la /tests/www/${{ matrix.db }}/
+          
           cp dist/pkg-weblinks-current.zip /tests/www/${{ matrix.db }}/
 
       - name: Install Joomla and Run Tests
