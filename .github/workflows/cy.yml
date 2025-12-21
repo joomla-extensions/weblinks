@@ -63,7 +63,7 @@ jobs:
                 head -1)
           
           if [ -z "$URL" ]; then
-            echo "::error::Could not find URL for version ${{ matrix.joomla-version }} in joomla/joomla-cms releases."
+            echo "::error::Could not find URL for version ${{ matrix.joomla-version }} in joomla/joomla-cms."
             exit 1
           fi
           
@@ -172,25 +172,29 @@ jobs:
 
       - uses: ./.github/actions/setup-cypress
 
-      - name: Deploy Joomla and Set Full Permissions
+      - name: Deploy and Debug Permissions
         run: |
-          # 1. Prepare base with universal access
+          # Create and extract
           mkdir -p /tests/www/${{ matrix.db }}/
-          chmod -R 777 /tests/www/
-          
-          # 2. Extract
           unzip joomla.zip -d /tests/www/${{ matrix.db }}/
           
-          # 3. Create requested paths
+          # Create requested log and tmp paths
           mkdir -p /tests/www/${{ matrix.db }}/administrator/logs/
           mkdir -p /tests/www/${{ matrix.db }}/tmp/api_rate_limit/
           
-          # 4. NUCLEAR FIX: Grant 777 to everything in the site root
-          # This allows ANY user (root, www-data, etc.) to write configuration.php
-          chmod -R 777 /tests/www/${{ matrix.db }}/
+          # PRE-EMPTIVE FIX: Create the configuration file manually first
+          touch /tests/www/${{ matrix.db }}/configuration.php
           
-          # 5. Debug (Check ownership and permissions in logs)
-          ls -la /tests/www/${{ matrix.db }}/
+          # Identify the Web User for the logs
+          echo "Apache User Identity:"
+          ps aux | grep -E 'apache|httpd|php' | grep -v grep
+          
+          # GLOBAL PERMISSION RESET
+          chown -R www-data:www-data /tests/www/
+          chmod -R 777 /tests/www/
+          
+          # Verification
+          ls -la /tests/www/${{ matrix.db }}/configuration.php
           
           cp dist/pkg-weblinks-current.zip /tests/www/${{ matrix.db }}/
 
@@ -199,16 +203,20 @@ jobs:
           ${{ matrix.alter-user-cmd }}
           cd /tests/www/${{ matrix.db }}/
           
-          # Start Apache
+          # Start Apache in background
           apache2ctl -D FOREGROUND &
           
-          # Run CLI Installation
+          # CLI Install
           php installation/joomla.php install --verbose --site-name="Joomla test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-17082005 --db-type=${{ matrix.db-type }} --db-host=${{ matrix.db-host }} --db-name=test_joomla --db-pass=joomla_ut --db-user=${{ matrix.db == 'pgsql' && 'root' || 'joomla_ut' }} --db-encryption=0 --db-prefix=${{ matrix.db-prefix }}
           
-          # Install the extension
+          # Post-Install Permission Enforcement (Joomla often hardens this to 444)
+          chmod 777 /tests/www/${{ matrix.db }}/configuration.php
+          chown www-data:www-data /tests/www/${{ matrix.db }}/configuration.php
+          
+          # Extension Install
           php cli/joomla.php extension:install --path=/tests/www/${{ matrix.db }}/pkg-weblinks-current.zip
           
-          # Execute Cypress
+          # Cypress Run
           cd $GITHUB_WORKSPACE
           npx cypress run --browser=chrome --e2e --config video=false --env cmsPath=/tests/www/${{ matrix.db }},db_type=${{ matrix.db-type }},db_host=${{ matrix.db-host }},db_name=test_joomla,db_user=${{ matrix.db == 'pgsql' && 'root' || 'joomla_ut' }},db_password=joomla_ut,db_prefix=${{ matrix.db-prefix }},logFile=/var/log/apache2/error.log --config baseUrl=http://localhost/${{ matrix.db }}
 
