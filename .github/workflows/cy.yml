@@ -168,16 +168,29 @@ jobs:
           npm-cache: 'true'
 
       - name: Run PHPStan (Ignore Errors)
-        # Added || true to ensure the job continues even if static analysis fails
         run: vendor/bin/phpstan analyse src --level=5 --no-progress --no-interaction || true
 
       - uses: ./.github/actions/setup-cypress
 
+      - name: Setup Environment and Filesystem Permissions
+        run: |
+          # Ensure base directory exists
+          mkdir -p /tests/www/${{ matrix.db }}/
+          
+          # Unzip Joomla core
+          unzip joomla.zip -d /tests/www/${{ matrix.db }}/
+          
+          # Create specific paths required for the test environment
+          mkdir -p /tests/www/${{ matrix.db }}/administrator/logs/
+          mkdir -p /tests/www/${{ matrix.db }}/tmp/api_rate_limit/
+          
+          # Apply recursive permissions to ensure web server write access
+          chmod -R 777 /tests/www/${{ matrix.db }}/administrator/logs/
+          chmod -R 777 /tests/www/${{ matrix.db }}/tmp/api_rate_limit/
+
       - name: Setup and run ${{ matrix.db }}
         run: |
           ${{ matrix.alter-user-cmd }}
-          mkdir -p /tests/www/${{ matrix.db }}/
-          unzip joomla.zip -d /tests/www/${{ matrix.db }}/
           cp dist/pkg-weblinks-current.zip /tests/www/${{ matrix.db }}/
           cd /tests/www/${{ matrix.db }}/
           apache2ctl -D FOREGROUND &
