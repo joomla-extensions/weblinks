@@ -63,7 +63,7 @@ jobs:
                 head -1)
           
           if [ -z "$URL" ]; then
-            echo "::error::Could not find URL for version ${{ matrix.joomla-version }} in joomla/joomla-cms."
+            echo "::error::Could not find URL for version ${{ matrix.joomla-version }} in joomla/joomla-cms releases."
             exit 1
           fi
           
@@ -86,7 +86,7 @@ jobs:
         run: |
           vendor/bin/robo build
           if ! unzip -t joomla.zip > /dev/null; then
-            echo "ERROR: joomla.zip is invalid."
+            echo "ERROR: joomla.zip is invalid or not found."
             exit 1
           fi
 
@@ -148,14 +148,14 @@ jobs:
     
     services:
       mysql:
-        image: mysql:8.0
+        image: ${{ matrix.db == 'mysql' && matrix.image || 'mysql:8.0' }}
         env: { MYSQL_ROOT_PASSWORD: root, MYSQL_USER: joomla_ut, MYSQL_PASSWORD: joomla_ut, MYSQL_DATABASE: test_joomla }
       mariadb:
-        image: ${{ matrix.image }}
+        image: ${{ matrix.db == 'mariadb' && matrix.image || 'mariadb:10.4' }}
         env: { MARIADB_ROOT_PASSWORD: root, MARIADB_USER: joomla_ut, MARIADB_PASSWORD: joomla_ut, MARIADB_DATABASE: test_joomla }
       postgres:
         image: postgres:12-alpine
-        env: { POSTGRES_USER: root, POSTGRES_PASSWORD: joomla_ut, POSTGRES_DB: test_joomla }
+        env: { POSTGRES_USER: root, POSTGRES_PASSWORD: root, POSTGRES_DB: test_joomla }
 
     steps:
       - uses: actions/checkout@v4
@@ -172,58 +172,28 @@ jobs:
 
       - uses: ./.github/actions/setup-cypress
 
-      - name: Deploy and Debug Permissions
-        run: |
-          # Create and extract
-          mkdir -p /tests/www/${{ matrix.db }}/
-          unzip joomla.zip -d /tests/www/${{ matrix.db }}/
-          
-          # Create requested log and tmp paths
-          mkdir -p /tests/www/${{ matrix.db }}/administrator/logs/
-          mkdir -p /tests/www/${{ matrix.db }}/tmp/api_rate_limit/
-          
-          # PRE-EMPTIVE FIX: Create the configuration file manually first
-          touch /tests/www/${{ matrix.db }}/configuration.php
-          
-          # Identify the Web User for the logs
-          echo "Apache User Identity:"
-          ps aux | grep -E 'apache|httpd|php' | grep -v grep
-          
-          # GLOBAL PERMISSION RESET
-          chown -R www-data:www-data /tests/www/
-          chmod -R 777 /tests/www/
-          
-          # Verification
-          ls -la /tests/www/${{ matrix.db }}/configuration.php
-          
-          cp dist/pkg-weblinks-current.zip /tests/www/${{ matrix.db }}/
-
-      - name: Install Joomla and Run Tests
+      - name: Setup and run ${{ matrix.db }}
         run: |
           ${{ matrix.alter-user-cmd }}
+          DB_USER=${{ matrix.db == 'pgsql' && 'root' || 'joomla_ut' }}
+          DB_PASS=${{ matrix.db == 'pgsql' && 'root' || 'joomla_ut' }}
+          mkdir -p /tests/www/${{ matrix.db }}/
+          unzip joomla.zip -d /tests/www/${{ matrix.db }}/
+          cp dist/pkg-weblinks-current.zip /tests/www/${{ matrix.db }}/
+          chown -R www-data:www-data /tests/www/${{ matrix.db }}/
+          chmod -R 755 /tests/www/${{ matrix.db }}/
           cd /tests/www/${{ matrix.db }}/
-          
-          # Start Apache in background
           apache2ctl -D FOREGROUND &
-          
-          # CLI Install
-          php installation/joomla.php install --verbose --site-name="Joomla test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-17082005 --db-type=${{ matrix.db-type }} --db-host=${{ matrix.db-host }} --db-name=test_joomla --db-pass=joomla_ut --db-user=${{ matrix.db == 'pgsql' && 'root' || 'joomla_ut' }} --db-encryption=0 --db-prefix=${{ matrix.db-prefix }}
-          
-          # Post-Install Permission Enforcement (Joomla often hardens this to 444)
-          chmod 777 /tests/www/${{ matrix.db }}/configuration.php
-          chown www-data:www-data /tests/www/${{ matrix.db }}/configuration.php
-          
-          # Extension Install
+          php installation/joomla.php install --verbose --site-name="Joomla test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-17082005 --db-type=${{ matrix.db-type }} --db-host=${{ matrix.db-host }} --db-name=test_joomla --db-pass=$DB_PASS --db-user=$DB_USER --db-encryption=0 --db-prefix=${{ matrix.db-prefix }}
+          chmod 644 configuration.php
           php cli/joomla.php extension:install --path=/tests/www/${{ matrix.db }}/pkg-weblinks-current.zip
-          
-          # Cypress Run
           cd $GITHUB_WORKSPACE
-          npx cypress run --browser=chrome --e2e --config video=false --env cmsPath=/tests/www/${{ matrix.db }},db_type=${{ matrix.db-type }},db_host=${{ matrix.db-host }},db_name=test_joomla,db_user=${{ matrix.db == 'pgsql' && 'root' || 'joomla_ut' }},db_password=joomla_ut,db_prefix=${{ matrix.db-prefix }},logFile=/var/log/apache2/error.log --config baseUrl=http://localhost/${{ matrix.db }}
+          npx cypress run --browser=chrome --e2e --config video=false --env cmsPath=/tests/www/${{ matrix.db }},db_type=${{ matrix.db-type }},db_host=${{ matrix.db-host }},db_name=test_joomla,db_user=$DB_USER,db_password=$DB_PASS,db_prefix=${{ matrix.db-prefix }},logFile=/var/log/apache2/error.log --config baseUrl=http://localhost/${{ matrix.db }}
 
       - name: Upload Screenshots on Failure
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: screenshots-j${{ matrix.joomla-version }}-${{ matrix.db }}
+          name: screenshots-j${{ matrix.joomla-version }}-${{ matrix.db }}-php${{ matrix.php-version }}
           path: tests/cypress/output/screenshot
           retention-days: 7
