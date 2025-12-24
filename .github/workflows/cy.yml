@@ -45,10 +45,6 @@ jobs:
     strategy:
       matrix:
         joomla-version: ['5.4', '6.0', '6.1']
-    outputs:
-      url-54: ${{ steps.joomla-info-54.outputs.url }}
-      url-60: ${{ steps.joomla-info-60.outputs.url }}
-      url-61: ${{ steps.joomla-info-61.outputs.url }}
     container:
       image: joomlaprojects/docker-images:cypress8.2
     steps:
@@ -59,7 +55,7 @@ jobs:
       - uses: ./.github/actions/setup-cypress
 
       - name: Determine Nightly URL for Joomla ${{ matrix.joomla-version }}
-        id: joomla-info-${{ matrix.joomla-version }}
+        id: joomla-info
         run: |
           URL=$(curl -s "https://api.github.com/repos/joomla/joomla-cms/releases" | \
                 grep -oP '"browser_download_url":\s*"[^"]*'"${{ matrix.joomla-version }}"'[^"]*Full_Package\.zip"' | \
@@ -80,17 +76,17 @@ jobs:
         uses: actions/cache@v4
         with:
           path: joomla.zip
-          key: joomla-core-${{ matrix.joomla-version }}-${{ steps.joomla-info-${{ matrix.joomla-version }}.outputs.url_hash }}
+          key: joomla-core-${{ matrix.joomla-version }}-${{ steps.joomla-info.outputs.url_hash }}
 
       - name: Download Joomla ${{ matrix.joomla-version }}
         if: steps.cache-joomla.outputs.cache-hit != 'true'
         run: |
-          echo "⬇️ Downloading from: ${{ steps.joomla-info-${{ matrix.joomla-version }}.outputs.url }}"
-          curl -LfsS "${{ steps.joomla-info-${{ matrix.joomla-version }}.outputs.url }}" -o joomla.zip
+          echo "⬇️ Downloading from: ${{ steps.joomla-info.outputs.url }}"
+          curl -LfsS "${{ steps.joomla-info.outputs.url }}" -o joomla.zip
 
       - name: Build and Verify
         run: |
-          echo "📦 Downloaded Joomla ${{ matrix.joomla-version }} from: ${{ steps.joomla-info-${{ matrix.joomla-version }}.outputs.url }}"
+          echo "📦 Downloaded Joomla ${{ matrix.joomla-version }} from: ${{ steps.joomla-info.outputs.url }}"
           vendor/bin/robo build
           if ! unzip -t joomla.zip > /dev/null; then
             echo "ERROR: joomla.zip is invalid or not found."
@@ -184,9 +180,6 @@ jobs:
           ${{ matrix.alter-user-cmd }}
           DB_USER=${{ matrix.db == 'pgsql' && 'root' || 'joomla_ut' }}
           DB_PASS=${{ matrix.db == 'pgsql' && 'root' || 'joomla_ut' }}
-          
-          echo "📦 Using Joomla ${{ matrix.joomla-version }} downloaded from:"
-          echo "${{ matrix.joomla-version == '5.4' && needs.prepare_tests.outputs.url-54 || matrix.joomla-version == '6.0' && needs.prepare_tests.outputs.url-60 || needs.prepare_tests.outputs.url-61 }}"
           
           if [ -f joomla.zip ]; then
             echo "✅ joomla.zip exists ($(du -h joomla.zip | cut -f1))"
