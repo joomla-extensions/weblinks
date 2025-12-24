@@ -203,7 +203,7 @@ jobs:
           apache2ctl -D FOREGROUND &
           php installation/joomla.php install --verbose --site-name="Joomla test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-17082005 --db-type=${{ matrix.db-type }} --db-host=${{ matrix.db-host }} --db-name=test_joomla --db-pass=$DB_PASS --db-user=$DB_USER --db-encryption=0 --db-prefix=${{ matrix.db-prefix }}
           php cli/joomla.php extension:install --path=/tests/www/${{ matrix.db }}/pkg-weblinks-current.zip
-          mkdir -p tmp/api_rate_limit
+          mkdir -p tmp/api_rate_limit tmp/plg_system_ratelimit
           chown -R www-data:www-data /tests/www/${{ matrix.db }}/
           chmod -R 777 /tests/www/${{ matrix.db }}/
           
