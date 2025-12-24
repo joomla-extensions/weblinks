@@ -220,10 +220,3 @@ jobs:
         if: failure()
         with:
           name: screenshots-j${{ matrix.joomla-version }}-${{ matrix.db }}-php${{ matrix.php-version }}
-          path: tests/cypress/output/screenshot
-          retention-days: 7/upload-artifact@v4
-        if: failure()
-        with:
-          name: screenshots-j${{ matrix.joomla-version }}-${{ matrix.db }}-php${{ matrix.php-version }}
-          path: tests/cypress/output/screenshot
-          retention-days: 7
