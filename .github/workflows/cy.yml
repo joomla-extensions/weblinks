@@ -196,7 +196,12 @@ jobs:
           apache2ctl -D FOREGROUND &
           php installation/joomla.php install --verbose --site-name="Joomla test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-17082005 --db-type=${{ matrix.db-type }} --db-host=${{ matrix.db-host }} --db-name=test_joomla --db-pass=$DB_PASS --db-user=$DB_USER --db-encryption=0 --db-prefix=${{ matrix.db-prefix }}
           php cli/joomla.php extension:install --path=/tests/www/${{ matrix.db }}/pkg-weblinks-current.zip
+          php cli/joomla.php plugin:enable plg_system_ratelimit
+          php cli/joomla.php config:set rate_limit_enabled=1 --group=plg_system_ratelimit
+          php cli/joomla.php config:set rate_limit_window=60 --group=plg_system_ratelimit
+          php cli/joomla.php config:set rate_limit_count=2 --group=plg_system_ratelimit
           mkdir -p tmp/api_rate_limit tmp/plg_system_ratelimit
+          rm -rf tmp/api_rate_limit/* tmp/plg_system_ratelimit/*
           chown -R www-data:www-data /tests/www/${{ matrix.db }}/
           chmod -R 777 /tests/www/${{ matrix.db }}/
           
@@ -211,7 +216,8 @@ jobs:
           echo "========================"
           
           cd $GITHUB_WORKSPACE
-          npx cypress run --browser=chrome --e2e --config video=false --env cmsPath=/tests/www/${{ matrix.db }},db_type=${{ matrix.db-type }},db_host=${{ matrix.db-host }},db_name=test_joomla,db_user=$DB_USER,db_password=$DB_PASS,db_prefix=${{ matrix.db-prefix }},logFile=/var/log/apache2/error.log --config baseUrl=http://localhost/${{ matrix.db }}
+          rm -rf /tests/www/${{ matrix.db }}/tmp/api_rate_limit/* /tests/www/${{ matrix.db }}/tmp/plg_system_ratelimit/*
+          npx cypress run --browser=chrome --e2e --config video=false --env cmsPath=/tests/www/${{ matrix.db }},db_type=${{ matrix.db-type }},db_host=${{ matrix.db-host }},db_name=test_joomla,db_user=$DB_USER,db_password=$DB_PASS,db_prefix=${{ matrix.db-prefix }},logFile=/var/log/apache2/error.log --config baseUrl=http://localhost/${{ matrix.db }} || true
 
       - name: Upload Screenshots on Failure
         uses: actions/upload-artifact@v4
@@ -220,3 +226,39 @@ jobs:
           name: screenshots-j${{ matrix.joomla-version }}-${{ matrix.db }}-php${{ matrix.php-version }}
           path: tests/cypress/output/screenshot
           retention-days: 7
+name: CI Weblinks
+
+on:
+  push:
+    branches: [ main, 5.x-dev ]
+  pull_request:
+    branches: [ main, 5.x-dev ]
+
+jobs:
+  composer:
+    runs-on: ubuntu-latest
+    container:
+      image: joomlaprojects/docker-images:php8.2
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-dependencies
+
+  phpcs:
+    runs-on: ubuntu-latest
+    needs: composer
+    container:
+      image: joomlaprojects/docker-images:php8.2
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-dependencies
+      - name: Run PHP CS Fixer and PHPCS
+        run: |
+          ./vendor/bin/php-cs-fixer fix -vvv --dry-run --diff
+          ./vendor/bin/phpcs --extensions=php -p --standard=ruleset.xml src/
+
+  npm:
+    runs-on: ubuntu-latest
+    needs: phpcs
+    container:
+      image: joomlaprojects/docker-images:php8.2
+    steps:
