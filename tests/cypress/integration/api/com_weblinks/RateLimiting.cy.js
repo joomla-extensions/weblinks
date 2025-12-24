@@ -31,6 +31,7 @@ describe('Weblinks API Rate Limiting', () => {
 
         // Configure rate limiting params via UI
         setPluginParams(true, 2, 5); // Enable public, 2 requests, 5 seconds window
+        cy.wait(6000);
     });
 
     afterEach(() => {
