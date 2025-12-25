@@ -1,12 +1,16 @@
 name: Setup Cypress
-description: Ensure Cypress is executable in container
+description: Fix Cypress permissions and verify binary
 
 runs:
   using: composite
   steps:
-    - name: Fix Cypress permissions
+    - name: Fix Cypress binary permissions
       shell: bash
       run: |
+        if [ -f /usr/local/bin/cypress ]; then
+          chmod +x /usr/local/bin/cypress
+        fi
+
         if [ -d "$HOME/.cache/Cypress" ]; then
           chmod -R +x "$HOME/.cache/Cypress"
         fi
@@ -14,4 +18,4 @@ runs:
     - name: Verify Cypress
       shell: bash
       run: |
-        npx cypress verify
+        /usr/local/bin/cypress verify
