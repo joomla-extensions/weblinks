@@ -1,5 +1,5 @@
 name: Setup Dependencies
-description: Install Composer and npm dependencies
+description: Install Composer and (optionally) npm dependencies
 inputs:
   npm-cache:
     required: false
@@ -8,20 +8,42 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/cache@v4
+    # -------------------------------
+    # Composer (always available)
+    # -------------------------------
+    - name: Cache Composer vendor
+      uses: actions/cache@v4
       with:
         path: vendor
         key: composer-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
 
-    - run: composer install --no-interaction --prefer-dist
+    - name: Install Composer dependencies
       shell: bash
+      run: composer install --no-interaction --prefer-dist
 
-    - if: inputs.npm-cache == 'true'
+    # -------------------------------
+    # npm (ONLY if available)
+    # -------------------------------
+    - name: Detect npm
+      id: has-npm
+      shell: bash
+      run: |
+        if command -v npm >/dev/null 2>&1; then
+          echo "available=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "available=false" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: Cache npm
+      if: inputs.npm-cache == 'true' && steps.has-npm.outputs.available == 'true'
       uses: actions/cache@v4
       with:
         path: ~/.npm
         key: npm-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
 
-    - if: inputs.npm-cache == 'true'
-      run: npm ci
+    - name: Install npm dependencies
+      if: inputs.npm-cache == 'true' && steps.has-npm.outputs.available == 'true'
       shell: bash
+      run: |
+        npm ci
+        chmod -R +x node_modules/.bin || true
