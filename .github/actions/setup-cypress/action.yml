@@ -1,13 +1,17 @@
 name: Setup Cypress
-description: Install Cypress and browser dependencies
+description: Ensure Cypress is executable in container
 
 runs:
   using: composite
   steps:
-    - uses: actions/cache@v4
-      with:
-        path: ~/.cache/Cypress
-        key: cypress-${{ runner.os }}
-
-    - run: npx cypress install
+    - name: Fix Cypress permissions
       shell: bash
+      run: |
+        if [ -d "$HOME/.cache/Cypress" ]; then
+          chmod -R +x "$HOME/.cache/Cypress"
+        fi
+
+    - name: Verify Cypress
+      shell: bash
+      run: |
+        npx cypress verify
