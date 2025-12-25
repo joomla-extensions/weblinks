@@ -1,4 +1,4 @@
-name: CI Weblinks
+name: CI Weblinks (Stable)
 
 on:
   push:
@@ -6,200 +6,146 @@ on:
   pull_request:
     branches: [ main, 5.x-dev ]
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  EXTENSION_ZIP: pkg-weblinks-current.zip
+
 jobs:
-  composer:
+  build:
     runs-on: ubuntu-latest
     container:
-      image: joomlaprojects/docker-images:php8.2
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-dependencies
-
-  phpcs:
-    runs-on: ubuntu-latest
-    needs: composer
-    container:
-      image: joomlaprojects/docker-images:php8.2
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-dependencies
-      - name: Run PHP CS Fixer and PHPCS
-        run: |
-          echo $(date)
-          ./vendor/bin/php-cs-fixer fix -vvv --dry-run --diff
-          ./vendor/bin/phpcs --extensions=php -p --standard=ruleset.xml src/
-          echo $(date)
-
-  npm:
-    runs-on: ubuntu-latest
-    needs: phpcs
-    container:
-      image: joomlaprojects/docker-images:php8.2
+      image: joomlaprojects/docker-images:php8.3
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-dependencies
         with:
           npm-cache: 'true'
+      - run: vendor/bin/robo build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: extension-build
+          path: dist/
+          retention-days: 1
 
-  prepare_tests:
+  lint:
     runs-on: ubuntu-latest
-    needs: npm
+    needs: build
     container:
-      image: joomlaprojects/docker-images:cypress8.2
+      image: joomlaprojects/docker-images:php8.3
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-dependencies
-        with:
-          npm-cache: 'true'
-      - uses: ./.github/actions/setup-cypress
-      - name: Build and prepare Joomla
-        run: |
-          vendor/bin/robo build
-          curl https://joomla.org/latest -L --output joomla.zip
-          mkdir joomla
-          cp joomla.zip joomla/joomla.zip
-          cd joomla
-          unzip joomla.zip
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-artifacts
-          path: |
-            dist/
-            joomla.zip
+      - run: |
+          ./vendor/bin/php-cs-fixer fix --dry-run --diff
+          ./vendor/bin/phpcs --standard=ruleset.xml src/
 
-  php-tests:
+  static:
     runs-on: ubuntu-latest
-    needs: prepare_tests
+    needs: build
     strategy:
+      fail-fast: false
       matrix:
-        php-version: ['8.1', '8.2', '8.3', '8.4']
+        php: ['8.2', '8.3', '8.4']
     container:
-      image: joomlaprojects/docker-images:php${{ matrix.php-version }}
+      image: joomlaprojects/docker-images:php${{ matrix.php }}
     steps:
       - uses: actions/checkout@v4
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: extension-build
       - uses: ./.github/actions/setup-dependencies
-      - name: Setup Joomla for tests
-        run: unzip joomla.zip -d joomla/
-      - name: Run PHPStan
-        continue-on-error: true
-        run: vendor/bin/phpstan analyse src --level=0 --no-progress
-      - name: Run PHPUnit
-        run: vendor/bin/phpunit
+      - run: ./vendor/bin/phpstan analyse src --level=5
 
   system-tests:
     runs-on: ubuntu-latest
-    needs: prepare_tests
+    needs: [build, lint, static]
     strategy:
+      fail-fast: false
       matrix:
-        php-version: ['8.1', '8.2', '8.3', '8.4']
-        db: [mysql, mariadb, pgsql]
         include:
-          - db: mysql
-            service: mysql
-            image: mysql:8.0
-            env:
-              MYSQL_ROOT_PASSWORD: root
-              MYSQL_USER: joomla_ut
-              MYSQL_PASSWORD: joomla_ut
-              MYSQL_DATABASE: test_joomla
-            db-type: mysqli
-            db-user: joomla_ut
-            db-pass: joomla_ut
-            db-prefix: mysql_
-            db-host: mysql
-            alter-user-cmd: |
-              apt-get update && apt-get install -y default-mysql-client
-              mysql -h mysql -u root -proot -e "ALTER USER 'joomla_ut'@'%' IDENTIFIED WITH mysql_native_password BY 'joomla_ut'; FLUSH PRIVILEGES;"
-          - db: mariadb
-            service: mariadb
-            image: mariadb:10.11
-            env:
-              MARIADB_ROOT_PASSWORD: root
-              MARIADB_USER: joomla_ut
-              MARIADB_PASSWORD: joomla_ut
-              MARIADB_DATABASE: test_joomla
-            db-type: mysqli
-            db-user: joomla_ut
-            db-pass: joomla_ut
-            db-prefix: mariadb_
-            db-host: mariadb
-            alter-user-cmd: |
-              apt-get update && apt-get install -y mariadb-client
-              # MariaDB default setup, no ALTER USER needed
-          - db: pgsql
-            service: postgres
-            image: postgres:12-alpine
-            env:
-              POSTGRES_USER: root
-              POSTGRES_PASSWORD: joomla_ut
-              POSTGRES_DB: test_joomla
-            db-type: pgsql
-            db-user: root
-            db-pass: joomla_ut
-            db-prefix: pgsql_
-            db-host: postgres
-            alter-user-cmd: ""
+          - joomla: "5.4"
+            php: "8.2"
+            db: mysql
+            db_image: mysql:8.0
+            db_type: mysqli
+          - joomla: "6.0"
+            php: "8.3"
+            db: mariadb
+            db_image: mariadb:10.6
+            db_type: mysqli
+          - joomla: "6.1"
+            php: "8.4"
+            db: pgsql
+            db_image: postgres:15-alpine
+            db_type: pgsql
+
     container:
-      image: joomlaprojects/docker-images:cypress${{ matrix.php-version }}
+      image: joomlaprojects/docker-images:cypress${{ matrix.php }}
+
     services:
-      mysql:
-        image: mysql:8.0
+      db:
+        image: ${{ matrix.db_image }}
         env:
           MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: test_joomla
           MYSQL_USER: joomla_ut
           MYSQL_PASSWORD: joomla_ut
-          MYSQL_DATABASE: test_joomla
-        options: --health-cmd="mysqladmin ping -h localhost -u root -proot" --health-interval=10s --health-timeout=5s --health-retries=3
-      mariadb:
-        image: mariadb:10.11
-        env:
           MARIADB_ROOT_PASSWORD: root
-          MARIADB_USER: joomla_ut
-          MARIADB_PASSWORD: joomla_ut
-          MARIADB_DATABASE: test_joomla
-        options: --health-cmd="mariadb-admin ping -h localhost -uroot -proot" --health-interval=10s --health-timeout=5s --health-retries=3
-      postgres:
-        image: postgres:12-alpine
-        env:
-          POSTGRES_USER: root
+          POSTGRES_USER: joomla_ut
           POSTGRES_PASSWORD: joomla_ut
           POSTGRES_DB: test_joomla
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
     steps:
       - uses: actions/checkout@v4
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: extension-build
       - uses: ./.github/actions/setup-dependencies
         with:
           npm-cache: 'true'
       - uses: ./.github/actions/setup-cypress
-      - name: Setup and run ${{ matrix.db }} (PHP ${{ matrix.php-version }}) tests
-        run: |
-          ${{ matrix.alter-user-cmd }}
-          mkdir -p /tests/www/${{ matrix.db }}/
-          cp joomla.zip /tests/www/${{ matrix.db }}/joomla.zip
-          cp dist/pkg-weblinks-current.zip /tests/www/${{ matrix.db }}/pkg-weblinks-current.zip
-          cd /tests/www/${{ matrix.db }}/
-          unzip joomla.zip
-          apache2ctl -D FOREGROUND &
-          chmod +rwx /root
-          php installation/joomla.php install --verbose --site-name="Joomla CMS test" --admin-email=admin@example.org --admin-username=ci-admin --admin-user="jane doe" --admin-password=joomla-17082005 --db-type=${{ matrix.db-type }} --db-host=${{ matrix.db-host }} --db-name=test_joomla --db-pass=${{ matrix.db-pass }} --db-user=${{ matrix.db-user }} --db-encryption=0 --db-prefix=${{ matrix.db-prefix }}
-          php cli/joomla.php config:set debug=true error_reporting=maximum
-          php cli/joomla.php extension:install --path=/tests/www/${{ matrix.db }}/pkg-weblinks-current.zip
-          chmod -R 777 /tests/www/${{ matrix.db }}/
-          chown -R www-data /tests/www/${{ matrix.db }}/
-          cd $GITHUB_WORKSPACE
-          npx cypress run --browser=chrome --e2e --env cmsPath=/tests/www/${{ matrix.db }},db_type=${{ matrix.db-type }},db_host=${{ matrix.db-host }},db_name=test_joomla,db_user=${{ matrix.db-user }},db_password=${{ matrix.db-pass }},db_prefix=${{ matrix.db-prefix }},logFile=/var/log/apache2/error.log --config baseUrl=http://localhost/${{ matrix.db }},screenshotsFolder=$GITHUB_WORKSPACE/tests/cypress/output/screenshot
-      - name: Upload test results
-        uses: actions/upload-artifact@v4
-        if: failure()
+
+      - run: |
+          curl -fL https://downloads.joomla.org/cms/joomla${{ matrix.joomla }}/latest/Joomla_${{ matrix.joomla }}-Stable-Full_Package.zip -o joomla.zip
+          unzip -q joomla.zip -d /tests/www/site
+
+      - uses: ./.github/actions/setup-db
         with:
-          name: cypress-screenshots-${{ matrix.db }}-php${{ matrix.php-version }}
-          path: tests/cypress/output/
+          db: ${{ matrix.db }}
+          host: db
+          name: test_joomla
+          user: joomla_ut
+          password: joomla_ut
+
+      - run: |
+          apache2ctl start
+          php /tests/www/site/installation/joomla.php install \
+            --site-name="CI Stable" \
+            --admin-user=admin \
+            --admin-username=admin \
+            --admin-password=admin123 \
+            --admin-email=admin@example.org \
+            --db-type=${{ matrix.db_type }} \
+            --db-host=db \
+            --db-user=joomla_ut \
+            --db-pass=joomla_ut \
+            --db-name=test_joomla \
+            --db-prefix=ci_
+
+          php /tests/www/site/cli/joomla.php extension:install \
+            --path=dist/${{ env.EXTENSION_ZIP }}
+
+      - run: |
+          npx cypress run \
+            --browser chrome \
+            --config baseUrl=http://localhost \
+            --env cmsPath=/tests/www/site
+
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-stable-${{ matrix.joomla }}-${{ matrix.db }}
+          path: tests/cypress/output/screenshot

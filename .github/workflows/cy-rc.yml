@@ -1,0 +1,58 @@
+name: CI Weblinks (Joomla RC)
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  rc:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    container:
+      image: joomlaprojects/docker-images:cypress8.4
+
+    services:
+      db:
+        image: mariadb:11.4
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: test_joomla
+          MYSQL_USER: joomla_ut
+          MYSQL_PASSWORD: joomla_ut
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-dependencies
+      - uses: ./.github/actions/setup-cypress
+
+      - run: |
+          curl -fL https://downloads.joomla.org/cms/joomla6.2/rc/Joomla_6.2-RC-Full_Package.zip -o joomla.zip
+          unzip -q joomla.zip -d /tests/www/site
+
+      - uses: ./.github/actions/setup-db
+        with:
+          db: mariadb
+          host: db
+          name: test_joomla
+          user: joomla_ut
+          password: joomla_ut
+
+      - run: |
+          apache2ctl start
+          php /tests/www/site/installation/joomla.php install \
+            --site-name="CI RC" \
+            --admin-user=admin \
+            --admin-username=admin \
+            --admin-password=admin123 \
+            --admin-email=admin@example.org \
+            --db-type=mysqli \
+            --db-host=db \
+            --db-user=joomla_ut \
+            --db-pass=joomla_ut \
+            --db-name=test_joomla \
+            --db-prefix=rc_
+
+          php /tests/www/site/cli/joomla.php extension:install \
+            --path=dist/pkg-weblinks-current.zip
+
+      - run: npx cypress run --browser chrome

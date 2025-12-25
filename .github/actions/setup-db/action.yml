@@ -1,0 +1,31 @@
+name: Setup Database
+description: Wait for database readiness
+inputs:
+  db:
+    required: true
+  host:
+    required: true
+  name:
+    required: true
+  user:
+    required: true
+  password:
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: |
+        for i in {1..30}; do
+          case "${{ inputs.db }}" in
+            mysql|mariadb)
+              mysql -h ${{ inputs.host }} -u${{ inputs.user }} -p${{ inputs.password }} -e "SELECT 1" && exit 0
+              ;;
+            pgsql)
+              PGPASSWORD=${{ inputs.password }} psql -h ${{ inputs.host }} -U ${{ inputs.user }} -d ${{ inputs.name }} -c "SELECT 1" && exit 0
+              ;;
+          esac
+          sleep 2
+        done
+        exit 1
