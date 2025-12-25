@@ -32,7 +32,10 @@ jobs:
       - name: Run PHPStan
         # continue-on-error allows the workflow to proceed even if PHPStan finds issues
         continue-on-error: true
-        run: ./vendor/bin/phpstan analyse src --level=5 --no-progress --no-interaction
+        run: |
+          # Create a dummy joomla dir to satisfy phpstan.neon requirements
+          mkdir -p joomla
+          ./vendor/bin/phpstan analyse src --level=5 --no-progress --no-interaction
 
   npm:
     runs-on: ubuntu-latest
