@@ -1,32 +1,49 @@
-name: 'Setup Dependencies'
-description: 'Install Composer and NPM dependencies with caching'
+name: Setup Dependencies
+description: Install Composer and (optionally) npm dependencies
 inputs:
-  composer-cache-key:
-    description: 'Composer cache key'
-    required: false
-    default: 'composer'
   npm-cache:
-    description: 'Enable NPM caching'
     required: false
     default: 'false'
+
 runs:
-  using: 'composite'
+  using: composite
   steps:
-    - name: Cache Composer dependencies
+    # -------------------------------
+    # Composer (always available)
+    # -------------------------------
+    - name: Cache Composer vendor
       uses: actions/cache@v4
       with:
-        path: /tmp/composer-cache
-        key: ${{ inputs.composer-cache-key }}-cache-v1
+        path: vendor
+        key: composer-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+
     - name: Install Composer dependencies
       shell: bash
-      run: composer install --no-progress --ignore-platform-reqs
-    - name: Setup Node.js
-      if: inputs.npm-cache == 'true'
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'npm'
-    - name: Install NPM dependencies
-      if: inputs.npm-cache == 'true'
+      run: composer install --no-interaction --prefer-dist
+
+    # -------------------------------
+    # npm (ONLY if available)
+    # -------------------------------
+    - name: Detect npm
+      id: has-npm
       shell: bash
-      run: npm ci --unsafe-perm
+      run: |
+        if command -v npm >/dev/null 2>&1; then
+          echo "available=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "available=false" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: Cache npm
+      if: inputs.npm-cache == 'true' && steps.has-npm.outputs.available == 'true'
+      uses: actions/cache@v4
+      with:
+        path: ~/.npm
+        key: npm-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+    - name: Install npm dependencies
+      if: inputs.npm-cache == 'true' && steps.has-npm.outputs.available == 'true'
+      shell: bash
+      run: |
+        npm ci
+        chmod -R +x node_modules/.bin || true

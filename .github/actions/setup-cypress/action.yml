@@ -1,18 +1,21 @@
-name: 'Setup Cypress'
-description: 'Setup Cypress with caching and verification'
+name: Setup Cypress
+description: Fix Cypress permissions and verify binary
+
 runs:
-  using: 'composite'
+  using: composite
   steps:
-    - name: Cache Cypress
-      uses: actions/cache@v4
-      with:
-        path: ~/.cache/Cypress
-        key: cypress-cache-v1
-    - name: Setup Cypress
+    - name: Fix Cypress binary permissions
       shell: bash
-      env:
-        CYPRESS_VERIFY_TIMEOUT: 100000
       run: |
-        mv cypress.config.dist.js cypress.config.js
-        npx cypress install
-        npx cypress verify
+        if [ -f /usr/local/bin/cypress ]; then
+          chmod +x /usr/local/bin/cypress
+        fi
+
+        if [ -d "$HOME/.cache/Cypress" ]; then
+          chmod -R +x "$HOME/.cache/Cypress"
+        fi
+
+    - name: Verify Cypress
+      shell: bash
+      run: |
+        /usr/local/bin/cypress verify

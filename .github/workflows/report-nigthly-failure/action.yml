@@ -1,0 +1,32 @@
+name: Report Nightly Failure
+description: Create GitHub issue on nightly CI failure
+
+inputs:
+  title:
+    required: true
+  label:
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/github-script@v7
+      with:
+        script: |
+          const title = '${{ inputs.title }}'
+          const { data: issues } = await github.rest.issues.listForRepo({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            labels: '${{ inputs.label }}',
+            state: 'open'
+          })
+
+          if (issues.find(i => i.title === title)) return
+
+          await github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title,
+            labels: ['${{ inputs.label }}'],
+            body: `Nightly CI failed.\n\nRun: ${context.runId}`
+          })

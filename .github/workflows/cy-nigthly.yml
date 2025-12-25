@@ -1,0 +1,81 @@
+name: CI Weblinks (Nightly Joomla)
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+env:
+  EXTENSION_ZIP: pkg-weblinks-current.zip
+  CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+
+jobs:
+  nightly:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2]
+
+    container:
+      image: joomlaprojects/docker-images:cypress8.4
+
+    services:
+      db:
+        image: mariadb:11.4
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: test_joomla
+          MYSQL_USER: joomla_ut
+          MYSQL_PASSWORD: joomla_ut
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-dependencies
+      - uses: ./.github/actions/setup-cypress
+
+      - run: |
+          curl -fL https://downloads.joomla.org/cms/joomla6.2/nightly/Joomla_6.2-Nightly-Full_Package.zip -o joomla.zip
+          unzip -q joomla.zip -d /tests/www/site
+
+      - uses: ./.github/actions/setup-db
+        with:
+          db: mariadb
+          host: db
+          name: test_joomla
+          user: joomla_ut
+          password: joomla_ut
+
+      - run: |
+          apache2ctl start
+          php /tests/www/site/installation/joomla.php install \
+            --site-name="CI Nightly" \
+            --admin-user=admin \
+            --admin-username=admin \
+            --admin-password=admin123 \
+            --admin-email=admin@example.org \
+            --db-type=mysqli \
+            --db-host=db \
+            --db-user=joomla_ut \
+            --db-pass=joomla_ut \
+            --db-name=test_joomla \
+            --db-prefix=night_
+
+          php /tests/www/site/cli/joomla.php extension:install \
+            --path=dist/${{ env.EXTENSION_ZIP }}
+
+      - name: Cypress (parallel)
+        run: |
+          npx cypress run \
+            --browser chrome \
+            --parallel \
+            --record \
+            --ci-build-id nightly-${{ github.run_id }} \
+            --group shard-${{ matrix.shard }}
+
+      - if: failure()
+        uses: ./.github/actions/report-nightly-failure
+        with:
+          title: "Nightly CI failure (Joomla 6.2)"
+          label: nightly
