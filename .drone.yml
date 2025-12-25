@@ -87,7 +87,7 @@ steps:
 
   - name: phpmin-system-postgres
     depends_on: [ prepare_tests ]
-    image: joomlaprojects/docker-images:cypress8.
+    image: joomlaprojects/docker-images:cypress8.3
     volumes:
       - name: cypress-cache
         path: /root/.cache/Cypress
