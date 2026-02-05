@@ -130,7 +130,7 @@ class WeblinksComponent extends MVCComponent implements
      */
     protected function getTableNameForSection(?string $section = null)
     {
-        return ($section === 'category' ? 'categories' : 'weblinks');
+        return $section === 'category' ? 'categories' : 'weblinks';
     }
 
     /**

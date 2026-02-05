@@ -38,7 +38,7 @@ class Pkg_WeblinksInstallerScript extends InstallerScript
      */
     public function __construct()
     {
-        $this->minimumJoomla = '4.4.0';
+        $this->minimumJoomla = '5.2.0';
         $this->minimumPhp    = JOOMLA_MINIMUM_PHP;
     }
 }

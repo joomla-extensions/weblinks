@@ -129,8 +129,9 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
                         switch ($item->params->get('target', $this->params->get('target'))) {
                             case 1:
                                 // Open in a new window
-                                echo '<a href="' . $link . '" target="_blank" class="' . $menuclass . '" rel="nofollow">' .
-                                    $this->escape($item->title) . '</a>';
+                                echo '<a href="' . $link . '" target="_blank" class="' . $menuclass . '"
+                                rel="'  . $item->params->get('follow', 'nofollow') . '">'
+                                . $this->escape($item->title) . '</a>';
 
                                 break;
                             case 2:
@@ -157,8 +158,9 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
                                 break;
                             default:
                                 // Open in parent window
-                                echo '<a href="' . $link . '" class="' . $menuclass . '" rel="nofollow">' .
-                                    $this->escape($item->title) . ' </a>';
+                                echo '<a href="' . $link . '" target="_blank" class="' . $menuclass . '"
+                                rel="'  . $item->params->get('follow', 'nofollow') . '">'
+                                . $this->escape($item->title) . '</a>';
 
                                 break;
                         }
@@ -231,7 +233,11 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
                                         <?php
                                     endif; ?>
 
-                                    <?php echo $item->description; ?>
+                                    <?php if ($this->params->get('prepare_content')) : ?>
+                                        <?php echo HTMLHelper::_('content.prepare', $item->description); ?>
+                                    <?php else : ?>
+                                        <?php echo $item->description; ?>
+                                    <?php endif; ?>
 
                               </div>
                                 <?php
