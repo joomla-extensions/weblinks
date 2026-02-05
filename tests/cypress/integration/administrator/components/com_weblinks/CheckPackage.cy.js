@@ -58,6 +58,8 @@ describe('Test that the weblinks extension package', () => {
       .within(() => {
         cy.get('td').eq(2).should('contain', 'Administrator'); // Location column
         cy.get('td').eq(3).should('contain', 'Component'); // Type column
+        // todo make version check dinamic
+        // cy.get('td').eq(4).should('contain', '5.0.0-dev'); // Version column
         cy.get('td').eq(7).should('contain', 'N/A'); // Folder column
       });
   });
@@ -73,6 +75,20 @@ describe('Test that the weblinks extension package', () => {
         cy.get('td').eq(2).should('contain', 'Site'); // Location column
         cy.get('td').eq(3).should('contain', 'Package'); // Type column
         cy.get('td').eq(7).should('contain', 'N/A'); // Folder column
+      });
+  });
+
+  it('has Quickicon plugin installed', () => {
+    // Check if the row with "Quick Icon - Weblinks" exists
+    cy.get('#manageList tbody tr') // Target the table rows
+      .contains('th', 'Quick Icon - Weblinks') // Check the <th> in the row
+      .parents('tr') // Navigate to the parent row
+      .should('exist') // Confirm the row exists
+      // Verify other cells in the same row
+      .within(() => {
+        cy.get('td').eq(2).should('contain', 'Site'); // Location column
+        cy.get('td').eq(3).should('contain', 'Plugin'); // Type column
+        cy.get('td').eq(7).should('contain', 'quickicon'); // Folder column
       });
   });
 })

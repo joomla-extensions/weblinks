@@ -15,6 +15,7 @@ namespace Joomla\Component\Weblinks\Site\Controller;
 // phpcs:enable PSR1.Files.SideEffects
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Utilities\ArrayHelper;
 
@@ -156,7 +157,55 @@ class WeblinkController extends FormController
      */
     public function edit($key = null, $urlVar = 'w_id')
     {
+        $app = $this->app;
+        $id  = $this->input->getInt('id');
+        $cid = $this->input->get('cid', [], 'array');
+
+        // Determine the record ID
+        if ($id) {
+            $recordId = $id;
+        } elseif (!empty($cid)) {
+            $recordId = (int) reset($cid);
+        } else {
+            $this->setRedirect(Route::_('index.php?option=com_weblinks&view=weblinks'));
+            return false;
+        }
+
+        // Ensure the ID is set for parent::edit and allowEdit
+        $this->input->set($urlVar, $recordId);
+
+        // Manually check if the user can edit this item
+        $data = ['id' => $recordId];
+        if (!$this->allowEdit($data, 'id')) {
+            $app->enqueueMessage(Text::_('JERROR_ALERTNOAUTHOR'), 'error');
+            $app->setHeader('status', 403, true);
+            $this->setRedirect(Route::_('index.php?option=com_weblinks&view=weblinks'));
+            return false;
+        }
+
         return parent::edit($key, $urlVar);
+    }
+
+    /**
+     * Method to run batch operations.
+     *
+     * @param   object  $model  The model.
+     *
+     * @return  boolean   True if successful, false otherwise and internal error is set.
+     *
+     * @since   1.7
+     */
+    public function batch($model = null)
+    {
+        $this->checkToken();
+
+        // Set the model
+        $model = $this->getModel('Weblink');
+
+        // Preset the redirect
+        $this->setRedirect(Route::_('index.php?option=com_weblinks&view=weblinks' . $this->getRedirectToListAppend(), false));
+
+        return parent::batch($model);
     }
 
     /**

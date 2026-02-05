@@ -147,21 +147,19 @@ class CategoryModel extends ListModel
             ->from($db->quoteName('#__weblinks') . ' AS a')
             ->whereIn($db->quoteName('a.access'), $viewLevels);
 
-        // Filter by category.
+        // Filter by category
         if ($categoryId = $this->getState('category.id')) {
-            // Group by subcategory
-            if ($this->getState('category.group', 0)) {
-                $query->select('c.title AS category_title')
-                    ->where('c.parent_id = :parent_id')
-                    ->bind(':parent_id', $categoryId, ParameterType::INTEGER)
-                    ->join('LEFT', '#__categories AS c ON c.id = a.catid')
-                    ->whereIn($db->quoteName('c.access'), $viewLevels);
+            // Handle array of category IDs
+            if (\is_array($categoryId)) {
+                $query->whereIn($db->quoteName('a.catid'), $categoryId);
             } else {
                 $query->where('a.catid = :catid')
-                    ->bind(':catid', $categoryId, ParameterType::INTEGER)
-                    ->join('LEFT', '#__categories AS c ON c.id = a.catid')
-                    ->whereIn($db->quoteName('c.access'), $viewLevels);
+                    ->bind(':catid', $categoryId, ParameterType::INTEGER);
             }
+
+            // Join categories table
+            $query->join('LEFT', '#__categories AS c ON c.id = a.catid')
+                ->whereIn($db->quoteName('c.access'), $viewLevels);
 
             // Filter by published category
             $cpublished = $this->getState('filter.c.published');

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.1" type="plugin" group="webservices" method="upgrade">
+	<name>plg_webservices_weblinks</name>
+	<author>Joomla! Project</author>
+	<creationDate>##DATE##</creationDate>
+	<copyright>(C) 2005 - ##YEAR## Open Source Matters. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<authorEmail>admin@joomla.org</authorEmail>
+	<authorUrl>www.joomla.org</authorUrl>
+	<version>##VERSION##</version>
+	<changelogurl>https://raw.githubusercontent.com/joomla-extensions/weblinks/5.x-dev/changelogs/plg_webservices_weblinks_changelog.xml</changelogurl>
+	<description>PLG_WEBSERVICES_WEBLINKS_XML_DESCRIPTION</description>
+	<namespace path="src">Joomla\Plugin\WebServices\Weblinks</namespace>
+	<files>
+		##FILES##
+	</files>
+	<languages folder="language">
+		##LANGUAGE_FILES##
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field
+					name="public"
+					type="radio"
+					label="PLG_WEBSERVICES_WEBLINK_PUBLIC_LABEL"
+					layout="joomla.form.field.radio.switcher"
+					default="0"
+					filter="boolean"
+					>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field
+					name="max_requests"
+					type="number"
+					label="PLG_WEBSERVICES_WEBLINKS_MAX_REQUESTS_LABEL"
+					description="PLG_WEBSERVICES_WEBLINKS_MAX_REQUESTS_DESC"
+					default="2"
+					min="1"
+					showon="public:1"
+				/>
+				<field
+					name="window_seconds"
+					type="number"
+					label="PLG_WEBSERVICES_WEBLINKS_WINDOW_SECONDS_LABEL"
+					description="PLG_WEBSERVICES_WEBLINKS_WINDOW_SECONDS_DESC"
+					default="180"
+					min="1"
+					showon="public:1"
+				/>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

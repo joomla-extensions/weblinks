@@ -51,7 +51,7 @@ if (!$canEdit) {
 
     <div itemprop="articleBody">
        <div class="p-3">
-            <a href="<?php echo $weblinkUrl; ?>" target="_blank" itemprop="url">
+            <a href="<?php echo $weblinkUrl; ?>" target="_blank" rel="<?php echo $this->params->get('follow', 'nofollow'); ?>" itemprop="url">
                 <?php echo $weblinkUrl; ?>
           </a>
        </div>
@@ -65,7 +65,7 @@ if (!$canEdit) {
         endif; ?>
 
         <div class="p-3">
-            <?php $images = json_decode($this->item->images); ?>
+            <?php $images = (object) $this->item->images; ?>
             <?php if (!empty($images->image_first)) :
                 ?>
                 <?php $imgFloat = '';?>
