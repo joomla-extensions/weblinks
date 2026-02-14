@@ -1,0 +1,18 @@
+name: 'Setup Cypress'
+description: 'Setup Cypress with caching and verification'
+runs:
+  using: 'composite'
+  steps:
+    - name: Cache Cypress
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/Cypress
+        key: cypress-cache-v1
+    - name: Setup Cypress
+      shell: bash
+      env:
+        CYPRESS_VERIFY_TIMEOUT: 100000
+      run: |
+        mv cypress.config.dist.js cypress.config.js
+        npx cypress install
+        npx cypress verify

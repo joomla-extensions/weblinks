@@ -97,5 +97,36 @@ describe('Test in frontend that the weblinks', () => {
         });
       });
   });
+    it('should show correct rel attribute for follow', () => {
+        // Set follow parameter to 'follow'
+        cy.db_updateExtensionParameter('follow', 'follow', 'com_weblinks');
+        // Create test weblink with title and URL
+        cy.db_createWeblink({
+            title: 'Follow Test',
+            url: 'https://follow.example',
+        }).then((weblink) => {
+            // Visit weblink category page
+            cy.visit(`/index.php?option=com_weblinks&view=category&id=${weblink.catid}`);
+            // Verify rel attribute is 'follow'
+            cy.contains('a', 'Follow Test')
+                .should('have.attr', 'rel', 'follow');
+        });
+    });
+
+    it('should show correct rel attribute for nofollow', () => {
+        // Set follow parameter to 'nofollow'
+        cy.db_updateExtensionParameter('follow', 'nofollow', 'com_weblinks');
+        // Create test weblink with title and URL
+        cy.db_createWeblink({
+            title: 'Nofollow Test',
+            url: 'https://nofollow.example',
+        }).then((weblink) => {
+            // Visit weblink category page
+            cy.visit(`/index.php?option=com_weblinks&view=category&id=${weblink.catid}`);
+            // Verify rel attribute is 'nofollow'
+            cy.contains('a', 'Nofollow Test')
+                .should('have.attr', 'rel', 'nofollow');
+        });
+    });
 });
 

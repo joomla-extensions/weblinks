@@ -58,11 +58,9 @@
 
 		<field
 			name="hits"
-			type="text"
+			type="hits"
 			label="JGLOBAL_HITS"
-			class="readonly"
-			readonly="true"
-			filter="unset"
+			addfieldprefix="Joomla\Component\Weblinks\Administrator\Field"
 			default="0"
 		/>
 
@@ -234,6 +232,16 @@
 			name="jbasic"
 			label="COM_WEBLINKS_FIELDSET_OPTIONS"
 			>
+			<field 
+				name="follow"
+				type="list"
+				label="COM_WEBLINKS_FIELD_FOLLOW_LABEL"
+				default="nofollow"
+				>
+				<option value="follow">COM_WEBLINKS_FIELD_VALUE_FOLLOW</option>
+				<option value="nofollow">COM_WEBLINKS_FIELD_VALUE_NOFOLLOW</option>
+			</field>
+			
 			<field
 				name="target"
 				type="list"
