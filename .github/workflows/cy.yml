@@ -140,7 +140,7 @@ jobs:
             db-prefix: mysql_
             alter-user-cmd: |
               apt-get update && apt-get install -y default-mysql-client
-              mysql -h mysql -u root -proot -e "ALTER USER 'joomla_ut'@'%' IDENTIFIED WITH mysql_native_password BY 'joomla_ut'; FLUSH PRIVILEGES;"
+              mysql -h mysql -u root -proot --skip-ssl -e "ALTER USER 'joomla_ut'@'%' IDENTIFIED WITH mysql_native_password BY 'joomla_ut'; FLUSH PRIVILEGES;"
           - db: mariadb
             db-type: mysqli
             db-host: mariadb
@@ -224,7 +224,7 @@ jobs:
           echo "=== Test Environment ==="
           php cli/joomla.php --version | head -1
           php -v | head -1
-          [ "${{ matrix.db }}" = "pgsql" ] && psql -h ${{ matrix.db-host }} -U $DB_USER -d test_joomla -t -c 'SELECT version();' | head -1 | xargs || mysql -h ${{ matrix.db-host }} -u $DB_USER -p$DB_PASS -e 'SELECT VERSION();' -s -N
+          [ "${{ matrix.db }}" = "pgsql" ] && psql -h ${{ matrix.db-host }} -U $DB_USER -d test_joomla -t -c 'SELECT version();' | head -1 | xargs || mysql -h ${{ matrix.db-host }} -u $DB_USER -p$DB_PASS --skip-ssl -e 'SELECT VERSION();' -s -N
           echo "========================"
           cd $GITHUB_WORKSPACE
           npx cypress run --browser=chrome --e2e --config video=false --env cmsPath=/tests/www/${{ matrix.db }},db_type=${{ matrix.db-type }},db_host=${{ matrix.db-host }},db_name=test_joomla,db_user=$DB_USER,db_password=$DB_PASS,db_prefix=${{ matrix.db-prefix }},logFile=/var/log/apache2/error.log --config baseUrl=http://localhost/${{ matrix.db }}
