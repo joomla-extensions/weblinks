@@ -12,6 +12,8 @@ jobs:
     container:
       image: joomlaprojects/docker-images:php8.3
     steps:
+      - name: Fix Git safe directory error
+        run: git config --global --add safe.directory /__w/weblinks/weblinks
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-dependencies
 
@@ -21,6 +23,8 @@ jobs:
     container:
       image: joomlaprojects/docker-images:php8.3
     steps:
+      - name: Fix Git safe directory error
+        run: git config --global --add safe.directory /__w/weblinks/weblinks
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-dependencies
       - name: Run PHP CS Fixer and PHPCS
@@ -34,6 +38,8 @@ jobs:
     container:
       image: joomlaprojects/docker-images:php8.3
     steps:
+      - name: Fix Git safe directory error
+        run: git config --global --add safe.directory /__w/weblinks/weblinks
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-dependencies
         with:
@@ -48,6 +54,8 @@ jobs:
     container:
       image: joomlaprojects/docker-images:cypress8.3
     steps:
+      - name: Fix Git safe directory error
+        run: git config --global --add safe.directory /__w/weblinks/weblinks
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-dependencies
         with:
@@ -111,6 +119,8 @@ jobs:
     container:
       image: joomlaprojects/docker-images:php8.3
     steps:
+      - name: Fix Git safe directory error
+        run: git config --global --add safe.directory /__w/weblinks/weblinks
       - uses: actions/checkout@v4
       - name: Download artifacts
         uses: actions/download-artifact@v4
@@ -169,7 +179,7 @@ jobs:
 
     container:
       image: joomlaprojects/docker-images:cypress${{ matrix.php-version }}
-    
+
     services:
       mysql:
         image: ${{ matrix.db == 'mysql' && matrix.image || 'mysql:8.0' }}
@@ -193,6 +203,8 @@ jobs:
           POSTGRES_DB: ${{ matrix.db == 'pgsql' && 'test_joomla' || 'unused' }}
 
     steps:
+      - name: Fix Git safe directory error
+        run: git config --global --add safe.directory /__w/weblinks/weblinks
       - uses: actions/checkout@v4
       - name: Download artifacts
         uses: actions/download-artifact@v4
@@ -224,7 +236,7 @@ jobs:
           echo "=== Test Environment ==="
           php cli/joomla.php --version | head -1
           php -v | head -1
-          [ "${{ matrix.db }}" = "pgsql" ] && psql -h ${{ matrix.db-host }} -U $DB_USER -d test_joomla -t -c 'SELECT version();' | head -1 | xargs || mysql -h ${{ matrix.db-host }} -u $DB_USER -p$DB_PASS -e 'SELECT VERSION();' -s -N
+          [ "${{ matrix.db }}" = "pgsql" ] && psql -h ${{ matrix.db-host }} -U $DB_USER -d test_joomla -t -c 'SELECT version();' | head -1 | xargs || mysql -h ${{ matrix.db-host }} --ssl-mode=DISABLED -u $DB_USER -p$DB_PASS -e 'SELECT VERSION();' -s -N
           echo "========================"
           cd $GITHUB_WORKSPACE
           npx cypress run --browser=chrome --e2e --config video=false --env cmsPath=/tests/www/${{ matrix.db }},db_type=${{ matrix.db-type }},db_host=${{ matrix.db-host }},db_name=test_joomla,db_user=$DB_USER,db_password=$DB_PASS,db_prefix=${{ matrix.db-prefix }},logFile=/var/log/apache2/error.log --config baseUrl=http://localhost/${{ matrix.db }}
