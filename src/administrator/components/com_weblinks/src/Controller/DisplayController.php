@@ -42,7 +42,7 @@ class DisplayController extends BaseController
          *
          * @since   1.5
          */
-    public function display($cacheable = false, $urlparams = false)
+    public function display($cacheable = false, $urlparams = [])
     {
         $view   = $this->input->get('view', 'weblinks');
         $layout = $this->input->get('layout', 'default');
