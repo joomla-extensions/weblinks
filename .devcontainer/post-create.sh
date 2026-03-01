@@ -69,7 +69,9 @@ fi
 # --- 6. Download and prepare phpMyAdmin ---
 PMA_ROOT="/var/www/html/phpmyadmin"
 echo "--> Downloading phpMyAdmin into $PMA_ROOT..."
-PMA_VERSION=5.2.3
+PMA_VERSION=$(curl -s https://api.github.com/repos/phpmyadmin/phpmyadmin/releases/latest | grep '"tag_name":' | sed -E 's/.*"RELEASE_([^"]+)".*/\1/' | tr '_' '.')
+
+echo "The current version is: $PMA_VERSION"
 mkdir -p $PMA_ROOT
 curl -o /tmp/phpmyadmin.tar.gz https://files.phpmyadmin.net/phpMyAdmin/${PMA_VERSION}/phpMyAdmin-${PMA_VERSION}-all-languages.tar.gz
 tar xf /tmp/phpmyadmin.tar.gz --strip-components=1 -C $PMA_ROOT
