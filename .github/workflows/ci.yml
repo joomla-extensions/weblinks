@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: [ main, 5.x-dev ]
 
-env:
-  # This forces the runner to use Node 24 for actions
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   composer:
     runs-on: ubuntu-latest
@@ -117,7 +113,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Download artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           name: build-artifacts-j${{ matrix.joomla-version }}
       - uses: ./.github/actions/setup-dependencies
@@ -199,7 +195,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Download artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           name: build-artifacts-j${{ matrix.joomla-version }}
       - uses: ./.github/actions/setup-dependencies
