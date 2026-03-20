@@ -12,7 +12,7 @@ jobs:
     container:
       image: joomlaprojects/docker-images:php8.3
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-dependencies
 
   phpcs:
@@ -21,7 +21,7 @@ jobs:
     container:
       image: joomlaprojects/docker-images:php8.3
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-dependencies
       - name: Run PHP CS Fixer and PHPCS
         run: |
@@ -34,7 +34,7 @@ jobs:
     container:
       image: joomlaprojects/docker-images:php8.3
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-dependencies
         with:
           npm-cache: 'true'
@@ -48,7 +48,7 @@ jobs:
     container:
       image: joomlaprojects/docker-images:cypress8.3
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-dependencies
         with:
           npm-cache: 'true'
@@ -72,7 +72,7 @@ jobs:
 
       - name: Cache Joomla Zip
         id: cache-joomla
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: joomla.zip
           key: joomla-core-${{ matrix.joomla-version }}-${{ steps.joomla-info.outputs.url_hash }}
@@ -94,7 +94,7 @@ jobs:
           fi
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: build-artifacts-j${{ matrix.joomla-version }}
           path: |
@@ -111,7 +111,7 @@ jobs:
     container:
       image: joomlaprojects/docker-images:php8.3
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
@@ -193,7 +193,7 @@ jobs:
           POSTGRES_DB: ${{ matrix.db == 'pgsql' && 'test_joomla' || 'unused' }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
@@ -231,7 +231,7 @@ jobs:
 
       - name: Upload Screenshots on Failure
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: screenshots-j${{ matrix.joomla-version }}-${{ matrix.db }}-php${{ matrix.php-version }}
           path: tests/cypress/output/screenshot

@@ -13,7 +13,7 @@ runs:
   using: 'composite'
   steps:
     - name: Cache Composer dependencies
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: /tmp/composer-cache
         key: ${{ inputs.composer-cache-key }}-cache-v1
@@ -22,9 +22,9 @@ runs:
       run: composer install --no-progress --ignore-platform-reqs
     - name: Setup Node.js
       if: inputs.npm-cache == 'true'
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v6
       with:
-        node-version: '20'
+        node-version: '24'
         cache: 'npm'
     - name: Install NPM dependencies
       if: inputs.npm-cache == 'true'
