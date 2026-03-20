@@ -113,7 +113,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Download artifacts
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           name: build-artifacts-j${{ matrix.joomla-version }}
       - uses: ./.github/actions/setup-dependencies
@@ -195,7 +195,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Download artifacts
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           name: build-artifacts-j${{ matrix.joomla-version }}
       - uses: ./.github/actions/setup-dependencies
