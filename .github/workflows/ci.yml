@@ -44,7 +44,7 @@ jobs:
     needs: npm
     strategy:
       matrix:
-        joomla-version: ['5.4', '6.0', '6.1']
+        joomla-version: ['5.4', '6.0', '6.1', '6.2']
     container:
       image: joomlaprojects/docker-images:cypress8.3
     steps:
