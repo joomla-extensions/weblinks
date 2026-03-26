@@ -129,8 +129,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        joomla-version: ['5.4', '6.0', '6.1']
-        php-version: ['8.2', '8.3', '8.4']
+        joomla-version: ['5.4', '6.0', '6.1', '6.2']
+        php-version: ['8.2', '8.3', '8.4', '8.5']
         db: [mysql, mariadb, pgsql]
         include:
           - db: mysql
@@ -161,10 +161,12 @@ jobs:
             image: mariadb:10.6
         exclude:
           - joomla-version: '5.4'
-            php-version: '8.4'
+            php-version: '8.5'
           - joomla-version: '6.0'
             php-version: '8.2'
           - joomla-version: '6.1'
+            php-version: '8.2'
+          - joomla-version: '6.2'
             php-version: '8.2'
 
     container:
