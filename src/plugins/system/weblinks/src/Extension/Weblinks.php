@@ -67,7 +67,8 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            'onGetStats' => 'onGetStats',
+            'onGetStats'    => 'onGetStats',
+            'onAfterRender' => 'onAfterRender',
         ];
     }
 
@@ -115,5 +116,86 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
         ];
 
         $event->setArgument('result', $result);
+    }
+
+    /**
+     * Method to grab help URLs and replace them in the body.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function onAfterRender()
+    {
+        $input     = Factory::getApplication()->getInput();
+        $option    = $input->get('option');
+        $view      = $input->get('view');
+        $extension = $input->get('extension');
+        $body      = Factory::getApplication()->getBody();
+        $lang      = Factory::getLanguage()->getTag();
+        $modified  = false;
+       
+        // 1. Handle com_categories for weblinks
+        if ($option === 'com_categories' && $extension === 'com_weblinks') {
+            $helpUrl = Uri::root() . 'administrator/components/com_weblinks/help/' . $lang . '/categories.html';
+            
+            // Multiple patterns to catch different URL formats
+            $patterns = [
+                '#https?://help\.joomla\.org/proxy\?keyref=Help[0-9]+:Components_Weblinks_Categories[^"\']*#',
+                '#https?://help\.joomla\.org/proxy\?keyref=Help[0-9]+:Components_Weblinks_&lang=[^"\']*#',
+                '#https?://help\.joomla\.org/[0-9]+/en-GB/Components_Weblinks_Categories\.html[^"\']*#',
+            ];
+            
+            foreach ($patterns as $pattern) {
+                if (preg_match($pattern, $body)) {
+                    $body = preg_replace($pattern, $helpUrl, $body);
+                    $modified = true;
+                }
+            }
+        }
+
+        // 2. Handle main weblinks view (list view)
+        if ($option === 'com_weblinks' && ($view === 'weblinks' || $view === null)) {
+            $helpUrl = Uri::root() . 'administrator/components/com_weblinks/help/' . $lang . '/weblinks.html';
+            
+            $patterns = [
+                '#https?://help\.joomla\.org/proxy\?keyref=Help[0-9]+:Components_Weblinks_Links[^"\']*#',
+                '#https?://help\.joomla\.org/proxy\?keyref=Help[0-9]+:Components_Weblinks[^"\']*#',
+                '#https?://help\.joomla\.org/[0-9]+/en-GB/Components_Weblinks_Links\.html[^"\']*#',
+            ];
+            
+            foreach ($patterns as $pattern) {
+                if (preg_match($pattern, $body)) {
+                    $body = preg_replace($pattern, $helpUrl, $body);
+                    $modified = true;
+                }
+            }
+        }
+        
+        // 3. Handle weblink edit view
+        if ($option === 'com_weblinks' && $view === 'weblink') {
+            $helpUrl = Uri::root() . 'administrator/components/com_weblinks/help/' . $lang . '/weblink.edit.html';
+            
+            $patterns = [
+                '#https?://help\.joomla\.org/proxy\?keyref=Help[0-9]+:Components_Weblinks_Links_Edit[^"\']*#',
+                '#https?://help\.joomla\.org/proxy\?keyref=Help[0-9]+:Components_Weblinks_Edit[^"\']*#',
+                '#https?://help\.joomla\.org/[0-9]+/en-GB/Components_Weblinks_Links_Edit\.html[^"\']*#',
+                '#https?://help\.joomla\.org/proxy\?keyref=Help[0-9]+:Components_Weblinks_Link_Edit[^"\']*#',
+            ];
+            
+            foreach ($patterns as $pattern) {
+                if (preg_match($pattern, $body)) {
+                    $body = preg_replace($pattern, $helpUrl, $body);
+                    $modified = true;
+                }
+            }
+        }
+
+        // Set the modified body back if changes were made
+        if ($modified) {
+            Factory::getApplication()->setBody($body);
+        }
+        
+        return true;
     }
 }
