@@ -13,6 +13,7 @@
 	<namespace path="src">Joomla\Plugin\System\Weblinks</namespace>
 	<files>
 		##FILES##
+		
 	</files>
 	<languages folder="language">
 		##LANGUAGE_FILES##

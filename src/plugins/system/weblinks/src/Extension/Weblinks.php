@@ -11,8 +11,10 @@
 namespace Joomla\Plugin\System\Weblinks\Extension;
 
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Event\DispatcherInterface;
