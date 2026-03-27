@@ -6,6 +6,8 @@ Build Status
 |-------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
 | [![Build Status](https://github.com/joomla-extensions/weblinks/actions/workflows/cy.yml/badge.svg?branch=5.x-dev)](https://github.com/joomla-extensions/weblinks/tree/5.x-dev) | [![PHP](https://img.shields.io/badge/PHP-V8.1.0-green)](https://www.php.net/) | [![node-lts](https://img.shields.io/badge/Node-V20.0-green)](https://nodejs.org/en/) | [![npm](https://img.shields.io/badge/npm-v10.1.0-green)](https://nodejs.org/en/) |
 
+![Downloads](https://img.shields.io/github/downloads/joomla-extensions/weblinks/total)
+
 Weblinks for Joomla! provides a component and accompanying extensions to create a directory of weblinks.
 
 # How to test a PR
