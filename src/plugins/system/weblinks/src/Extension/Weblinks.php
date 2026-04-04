@@ -132,14 +132,16 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
         $input     = Factory::getApplication()->getInput();
         $option    = $input->get('option');
         $view      = $input->get('view');
+        $layout    = $input->get('layout');
+        $component = $input->get('component');
         $extension = $input->get('extension');
         $body      = Factory::getApplication()->getBody();
         $lang      = Factory::getLanguage()->getTag();
         $modified  = false;
 
         // 1. Handle com_categories for weblinks
-        if ($option === 'com_categories' && $extension === 'com_weblinks') {
-            $helpUrl = Uri::root() . 'administrator/components/com_weblinks/help/' . $lang . '/categories.html';
+        if ($option === 'com_categories' && $extension === 'com_weblinks' && $layout !== 'edit') {
+            $helpUrl = Uri::root() . 'administrator/components/com_weblinks/help/' . $lang . '/weblinks-categories.html';
 
             // Multiple patterns to catch different URL formats
             $patterns = [
@@ -156,9 +158,28 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
             }
         }
 
+        // 1a. Handle com_categories edit for weblinks
+        if ($option === 'com_categories' && $extension === 'com_weblinks' && $layout === 'edit') {
+            $helpUrl = Uri::root() . 'administrator/components/com_weblinks/help/' . $lang . '/weblinks-categories-edit.html';
+
+            // Multiple patterns to catch different URL formats
+            $patterns = [
+                '#https?://help\.joomla\.org/proxy\?keyref=Help[0-9]+:Components_Weblinks_Categories_Edit[^"\']*#',
+                '#https?://help\.joomla\.org/proxy\?keyref=Help[0-9]+:Components_Weblinks_Categories_Edit&lang=[^"\']*#',
+                '#https?://help\.joomla\.org/[0-9]+/en-GB/0:Components_Weblinks_Categories_Edit&\.html[^"\']*#',
+            ];
+
+            foreach ($patterns as $pattern) {
+                if (preg_match($pattern, $body)) {
+                    $body     = preg_replace($pattern, $helpUrl, $body);
+                    $modified = true;
+                }
+            }
+        }
+
         // 2. Handle main weblinks view (list view)
         if ($option === 'com_weblinks' && ($view === 'weblinks' || $view === null)) {
-            $helpUrl = Uri::root() . 'administrator/components/com_weblinks/help/' . $lang . '/weblinks.html';
+            $helpUrl = Uri::root() . 'administrator/components/com_weblinks/help/' . $lang . '/weblinks-links.html';
 
             $patterns = [
                 '#https?://help\.joomla\.org/proxy\?keyref=Help[0-9]+:Components_Weblinks_Links[^"\']*#',
@@ -174,15 +195,15 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
             }
         }
 
-        // 3. Handle weblink edit view
-        if ($option === 'com_weblinks' && $view === 'weblink') {
-            $helpUrl = Uri::root() . 'administrator/components/com_weblinks/help/' . $lang . '/weblink.edit.html';
+        // 3. Handle weblinks options view
+        if ($option === 'com_config' && $view === 'component' && $component === 'com_weblinks') {
+            $helpUrl = Uri::root() . 'administrator/components/com_weblinks/help/' . $lang . '/weblinks-options.html';
 
             $patterns = [
-                '#https?://help\.joomla\.org/proxy\?keyref=Help[0-9]+:Components_Weblinks_Links_Edit[^"\']*#',
-                '#https?://help\.joomla\.org/proxy\?keyref=Help[0-9]+:Components_Weblinks_Edit[^"\']*#',
-                '#https?://help\.joomla\.org/[0-9]+/en-GB/Components_Weblinks_Links_Edit\.html[^"\']*#',
-                '#https?://help\.joomla\.org/proxy\?keyref=Help[0-9]+:Components_Weblinks_Link_Edit[^"\']*#',
+                '#https?://help\.joomla\.org/proxy\?keyref=Help[0-9]+:Help[^"\']*#',
+                '#https?://help\.joomla\.org/proxy\?keyref=Help[0-9]+:Help[^"\']*#',
+                '#https?://help\.joomla\.org/[0-9]+/en-GB/Help\.html[^"\']*#',
+                '#https?://help\.joomla\.org/proxy\?keyref=Help[0-9][^"\']*#',
             ];
 
             foreach ($patterns as $pattern) {
