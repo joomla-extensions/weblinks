@@ -19,6 +19,7 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Tag\TaggableTableInterface;
 use Joomla\CMS\Tag\TaggableTableTrait;
 use Joomla\CMS\Versioning\VersionableTableInterface;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 use Joomla\String\StringHelper;
 
@@ -58,7 +59,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
      *
      * @since   1.5
      */
-    public function __construct($db)
+    public function __construct(DatabaseInterface $db, ?DispatcherInterface $dispatcher = null)
     {
         $this->typeAlias = 'com_weblinks.weblink';
         parent::__construct('#__weblinks', 'id', $db);
@@ -120,7 +121,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
         }
 
         // Verify that the alias is unique
-        $table = new WeblinkTable($this->getDbo());
+        $table = new WeblinkTable($db, $this->getDispatcher());
 
         if (
             $table->load(['language' => $this->language, 'alias' => $this->alias, 'catid' => (int) $this->catid])
@@ -156,7 +157,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
         }
 
         // Check for existing name
-        $db    = $this->getDbo();
+        $db    = $this->getDatabase();
         $query = $db->getQuery(true)
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__weblinks'))
