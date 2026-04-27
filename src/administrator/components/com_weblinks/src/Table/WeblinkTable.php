@@ -120,6 +120,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
             $this->publish_down = null;
         }
 
+        $db    = $this->getDatabase();
         // Verify that the alias is unique
         $table = new WeblinkTable($db, $this->getDispatcher());
 
