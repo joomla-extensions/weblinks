@@ -19,7 +19,9 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Tag\TaggableTableInterface;
 use Joomla\CMS\Tag\TaggableTableTrait;
 use Joomla\CMS\Versioning\VersionableTableInterface;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
+use Joomla\Event\DispatcherInterface;
 use Joomla\String\StringHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -58,10 +60,10 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
      *
      * @since   1.5
      */
-    public function __construct($db)
+    public function __construct(DatabaseInterface $db, ?DispatcherInterface $dispatcher = null)
     {
         $this->typeAlias = 'com_weblinks.weblink';
-        parent::__construct('#__weblinks', 'id', $db);
+        parent::__construct('#__weblinks', 'id', $db, $dispatcher);
         // Set the published column alias
         $this->setColumnAlias('published', 'state');
     }
@@ -118,9 +120,8 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
         if (!$this->publish_down) {
             $this->publish_down = null;
         }
-
         // Verify that the alias is unique
-        $table = new WeblinkTable($this->getDbo());
+        $table = new WeblinkTable($this->getDatabase(), $this->getDispatcher());
 
         if (
             $table->load(['language' => $this->language, 'alias' => $this->alias, 'catid' => (int) $this->catid])
@@ -153,7 +154,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
         }
 
         // Check for existing name
-        $db    = $this->getDbo();
+        $db    = $this->getDatabase();
         $query = $db->getQuery(true)
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__weblinks'))
