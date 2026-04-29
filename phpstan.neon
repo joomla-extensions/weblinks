@@ -5,6 +5,6 @@ parameters:
   paths:
     - src
   bootstrapFiles:
-    - joomla/libraries/autoload.php
+    - ../../vendor/autoload.php
   ignoreErrors:
   reportUnmatchedIgnoredErrors: false
