@@ -117,10 +117,11 @@ jobs:
         with:
           name: build-artifacts-j${{ matrix.joomla-version }}
       - uses: ./.github/actions/setup-dependencies
+      - name: Extract Joomla
+        run: unzip -q joomla.zip -d joomla
       - name: Run PHPStan
         continue-on-error: true
-        run: |
-          unzip -q joomla.zip -d joomla
+        run:
           ./vendor/bin/phpstan analyse src --level=5 --no-progress --no-interaction
 
   system-tests:
