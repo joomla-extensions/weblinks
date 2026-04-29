@@ -116,6 +116,7 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           name: build-artifacts-j${{ matrix.joomla-version }}
+          path: libraries/vendor
       - uses: ./.github/actions/setup-dependencies
       - name: Extract Joomla
         run: unzip -q joomla.zip -d joomla
