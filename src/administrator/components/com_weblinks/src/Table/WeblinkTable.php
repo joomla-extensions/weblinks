@@ -126,8 +126,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
             $table->load(['language' => $this->language, 'alias' => $this->alias, 'catid' => (int) $this->catid])
             && ($table->id != $this->id || $this->id == 0)
         ) {
-            $this->setError(Text::_('COM_WEBLINKS_ERROR_UNIQUE_ALIAS'));
-            return false;
+            throw new \Exception(Text::_('COM_WEBLINKS_ERROR_UNIQUE_ALIAS'));
         }
 
         // Convert IDN urls to punycode
@@ -145,14 +144,12 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
     public function check()
     {
         if (InputFilter::checkAttribute(['href', $this->url])) {
-            $this->setError(Text::_('COM_WEBLINKS_ERR_TABLES_PROVIDE_URL'));
-            return false;
+            throw new \Exception(Text::_('COM_WEBLINKS_ERR_TABLES_PROVIDE_URL'));
         }
 
         // Check for valid name
         if (trim($this->title) === '') {
-            $this->setError(Text::_('COM_WEBLINKS_ERR_TABLES_TITLE'));
-            return false;
+            throw new \Exception(Text::_('COM_WEBLINKS_ERR_TABLES_TITLE'));
         }
 
         // Check for existing name
@@ -169,8 +166,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
         $db->setQuery($query);
         $xid = (int) $db->loadResult();
         if ($xid && $xid != (int) $this->id) {
-            $this->setError(Text::_('COM_WEBLINKS_ERR_TABLES_NAME'));
-            return false;
+            throw new \Exception(Text::_('COM_WEBLINKS_ERR_TABLES_NAME'));
         }
 
         if (empty($this->alias)) {
@@ -184,8 +180,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
 
         // Check the publish down date is not earlier than publish up.
         if ((int) $this->publish_down > 0 && $this->publish_down < $this->publish_up) {
-            $this->setError(Text::_('JGLOBAL_START_PUBLISH_AFTER_FINISH'));
-            return false;
+            throw new \Exception(Text::_('JGLOBAL_START_PUBLISH_AFTER_FINISH'));
         }
 
         /*

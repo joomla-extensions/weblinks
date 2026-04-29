@@ -72,7 +72,7 @@ class Router extends RouterView
      * Weblinks Component router constructor
      *
      * @param   SiteApplication           $app              The application object
-     * @param   AbstractMenu              $menu             The menu object to work with
+     * @param   AbstractMenu              $menu             The menu object to work witha
      * @param   CategoryFactoryInterface  $categoryFactory  The category object
      * @param   DatabaseInterface         $db               The database object
      */
