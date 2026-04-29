@@ -4,7 +4,7 @@ parameters:
   level: 0
   paths:
     - src
-  scanDirectories:
-    - joomla
+  bootstrapFiles:
+    - joomla/libraries/autoload.php
   ignoreErrors:
   reportUnmatchedIgnoredErrors: false
