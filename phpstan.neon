@@ -5,6 +5,6 @@ parameters:
   paths:
     - src
   bootstrapFiles:
-    - ../../vendor/autoload.php
+    - /administrator/cache/autoload_psr4.php
   ignoreErrors:
   reportUnmatchedIgnoredErrors: false
