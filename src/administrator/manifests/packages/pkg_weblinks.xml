@@ -13,6 +13,7 @@
 	<version>##VERSION##</version>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<description>PKG_WEBLINKS_XML_DESCRIPTION</description>
+	<changelogurl>https://raw.githubusercontent.com/joomla-extensions/weblinks/5.x-dev/changelogs/pkg_weblinks_changelog.xml</changelogurl>
 	<scriptfile>script.php</scriptfile>
 	<files>
 		<!-- The id for each extension is the element stored in the DB -->
@@ -21,8 +22,9 @@
 		<file type="plugin" id="weblinks" group="finder">plg_finder_weblinks.zip</file>
 		<file type="plugin" id="weblinks" group="search">plg_search_weblinks.zip</file>
 		<file type="plugin" id="weblinks" group="system">plg_system_weblinks.zip</file>
-		<file type="plugin" id="weblinks" group="editors-xtd">plg_editors-xtd_weblink.zip</file>
+		<file type="plugin" id="weblink" group="editors-xtd">plg_editors-xtd_weblink.zip</file>
 		<file type="plugin" id="weblinks" group="webservices">plg_webservices_weblinks.zip</file>
+		<file type="plugin" id="weblinks" group="quickicon">plg_quickicon_weblinks.zip</file>
 	</files>
 	<languages folder="language">
 		<language tag="en-GB">en-GB/pkg_weblinks.sys.ini</language>

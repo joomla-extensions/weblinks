@@ -2,6 +2,8 @@
 
 Thanks for your interest in this extension for Joomla. Please review the following notes about contributing and maintaining this package.
 
+Please follow our [Generative AI policy](https://developer.joomla.org/generative-ai-policy.html) when using AI to contribute to the Joomla! Weblinks project.
+
 ## Version Strategy
 
 * When in doubt, refer to the new Joomla development strategy modelled on Semver (link).
