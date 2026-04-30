@@ -36,23 +36,23 @@ $onclick   = $this->escape($function);
 $multilang = Multilanguage::isEnabled();
 if (!empty($editor)) {
 // This view is used also in com_menus. Load the xtd script only if the editor is set!
-    $this->document->addScriptOptions('xtd-weblinks', array('editor' => $editor));
+    $this->document->addScriptOptions('xtd-weblinks', ['editor' => $editor]);
     $onclick = "jSelectWeblink";
 }
 
-$iconStates = array(
+$iconStates = [
     -2 => 'icon-trash',
-    0 => 'icon-unpublish',
-    1 => 'icon-publish',
-    2 => 'icon-archive',
-);
+    0  => 'icon-unpublish',
+    1  => 'icon-publish',
+    2  => 'icon-archive',
+];
 
 ?>
 <div class="container-popup">
 
     <form action="<?php echo Route::_('index.php?option=com_weblinks&view=weblinks&layout=modal&tmpl=component&function=' . $function . '&' . Session::getFormToken() . '=1&editor=' . $editor); ?>" method="post" name="adminForm" id="adminForm" class="form-inline">
 
-    <?php echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this)); ?>
+    <?php echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]); ?>
 
         <?php if (empty($this->items)) :
             ?>

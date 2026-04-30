@@ -23,7 +23,7 @@ HTMLHelper::_('behavior.keepalive');
 HTMLHelper::_('behavior.formvalidator');
 $assoc = Associations::isEnabled();
 // Fieldsets to not automatically render by /layouts/joomla/edit/params.php
-$this->ignore_fieldsets = array('details', 'images', 'item_associations', 'jmetadata');
+$this->ignore_fieldsets = ['details', 'images', 'item_associations', 'jmetadata'];
 $this->useCoreUI = true;
 
 $captchaEnabled = false;
@@ -53,7 +53,7 @@ $params = $this->state->get('params');
         <?php echo LayoutHelper::render('joomla.edit.title_alias', $this); ?>
 
         <div class="main-card">
-            <?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => 'details')); ?>
+            <?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', ['active' => 'details']); ?>
 
             <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'details', empty($this->item->id) ? Text::_('COM_WEBLINKS_NEW_WEBLINK', true) : Text::_('COM_WEBLINKS_EDIT_WEBLINK', true)); ?>
             <div class="row">
