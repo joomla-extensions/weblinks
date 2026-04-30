@@ -20,7 +20,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\User\UserFactoryInterface;
+use Joomla\CMS\User\UserFactoryAwareTrait;
 use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
 use Joomla\Registry\Registry;
 
@@ -31,6 +31,7 @@ use Joomla\Registry\Registry;
  */
 class Icon
 {
+    use UserFactoryAwareTrait;
     /**
      * The application
      *
@@ -114,10 +115,9 @@ class Icon
             property_exists($weblink, 'checked_out')
             && property_exists($weblink, 'checked_out_time')
             && $weblink->checked_out
-            && $weblink->checked_out !== $user->get('id')
+            && $weblink->checked_out !== $this->application->getIdentity()->id
         ) {
-            $userFactory  = Factory::getContainer()->get(UserFactoryInterface::class);
-            $checkoutUser = $userFactory->loadUserById($weblink->checked_out);
+            $checkoutUser = $this->getUserFactory()->loadUserById($weblink->checked_out);
             $date         = HTMLHelper::_('date', $weblink->checked_out_time);
             $tooltip      = Text::sprintf('COM_WEBLINKS_CHECKED_OUT_BY', $checkoutUser->name)
                 . ' <br> ' . $date;
