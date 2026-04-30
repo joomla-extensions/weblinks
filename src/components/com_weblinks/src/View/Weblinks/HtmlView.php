@@ -94,7 +94,7 @@ class HtmlView extends BaseHtmlView
             throw new GenericDataException(implode("\n", $errors), 500);
         }
 
-        if (!\count($this->items) && $this->isEmptyState = $this->get('IsEmptyState')) {
+        if (!\count($this->items) && $this->isEmptyState =$model->getIsEmptyState()) {
             $this->setLayout('emptystate');
         }
 

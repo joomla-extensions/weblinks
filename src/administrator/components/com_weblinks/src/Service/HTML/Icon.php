@@ -32,6 +32,7 @@ use Joomla\Registry\Registry;
 class Icon
 {
     use UserFactoryAwareTrait;
+
     /**
      * The application
      *
