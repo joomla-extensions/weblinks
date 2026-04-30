@@ -19,7 +19,9 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Tag\TaggableTableInterface;
 use Joomla\CMS\Tag\TaggableTableTrait;
 use Joomla\CMS\Versioning\VersionableTableInterface;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
+use Joomla\Event\DispatcherInterface;
 use Joomla\String\StringHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -58,10 +60,10 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
      *
      * @since   1.5
      */
-    public function __construct($db)
+    public function __construct(DatabaseInterface $db, ?DispatcherInterface $dispatcher = null)
     {
         $this->typeAlias = 'com_weblinks.weblink';
-        parent::__construct('#__weblinks', 'id', $db);
+        parent::__construct('#__weblinks', 'id', $db, $dispatcher);
         // Set the published column alias
         $this->setColumnAlias('published', 'state');
     }
@@ -118,16 +120,14 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
         if (!$this->publish_down) {
             $this->publish_down = null;
         }
-
         // Verify that the alias is unique
-        $table = new WeblinkTable($this->getDatabase());
+        $table = new WeblinkTable($this->getDatabase(), $this->getDispatcher());
 
         if (
             $table->load(['language' => $this->language, 'alias' => $this->alias, 'catid' => (int) $this->catid])
             && ($table->id != $this->id || $this->id == 0)
         ) {
-            $this->setError(Text::_('COM_WEBLINKS_ERROR_UNIQUE_ALIAS'));
-            return false;
+            throw new \Exception(Text::_('COM_WEBLINKS_ERROR_UNIQUE_ALIAS'));
         }
 
         // Convert IDN urls to punycode
@@ -145,14 +145,12 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
     public function check()
     {
         if (InputFilter::checkAttribute(['href', $this->url])) {
-            $this->setError(Text::_('COM_WEBLINKS_ERR_TABLES_PROVIDE_URL'));
-            return false;
+            throw new \Exception(Text::_('COM_WEBLINKS_ERR_TABLES_PROVIDE_URL'));
         }
 
         // Check for valid name
         if (trim($this->title) === '') {
-            $this->setError(Text::_('COM_WEBLINKS_ERR_TABLES_TITLE'));
-            return false;
+            throw new \Exception(Text::_('COM_WEBLINKS_ERR_TABLES_TITLE'));
         }
 
         // Check for existing name
@@ -169,8 +167,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
         $db->setQuery($query);
         $xid = (int) $db->loadResult();
         if ($xid && $xid != (int) $this->id) {
-            $this->setError(Text::_('COM_WEBLINKS_ERR_TABLES_NAME'));
-            return false;
+            throw new \Exception(Text::_('COM_WEBLINKS_ERR_TABLES_NAME'));
         }
 
         if (empty($this->alias)) {
@@ -184,8 +181,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
 
         // Check the publish down date is not earlier than publish up.
         if ((int) $this->publish_down > 0 && $this->publish_down < $this->publish_up) {
-            $this->setError(Text::_('JGLOBAL_START_PUBLISH_AFTER_FINISH'));
-            return false;
+            throw new \Exception(Text::_('JGLOBAL_START_PUBLISH_AFTER_FINISH'));
         }
 
         /*
