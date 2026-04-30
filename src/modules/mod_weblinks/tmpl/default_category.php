@@ -28,8 +28,8 @@ $hideParent = !$params->get('show_parent_category', 0);
 // a category is a root if it's selected and its parent is not
 $parent = $categoryNode->category->getParent();
 
-$isCurrentSelected = in_array($categoryNode->category->id, $selectedCategories);
-$isParentSelected = in_array($parent->id, $selectedCategories);
+$isCurrentSelected = \in_array($categoryNode->category->id, $selectedCategories);
+$isParentSelected = \in_array($parent->id, $selectedCategories);
 
 $isRootCategory = $isCurrentSelected && !$isParentSelected;
 

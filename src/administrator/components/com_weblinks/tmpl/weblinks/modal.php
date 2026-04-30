@@ -36,7 +36,7 @@ $onclick   = $this->escape($function);
 $multilang = Multilanguage::isEnabled();
 if (!empty($editor)) {
 // This view is used also in com_menus. Load the xtd script only if the editor is set!
-    $this->document->addScriptOptions('xtd-weblinks', array('editor' => $editor));
+    $this->document->addScriptOptions('xtd-weblinks', ['editor' => $editor]);
     $onclick = "jSelectWeblink";
 }
 
