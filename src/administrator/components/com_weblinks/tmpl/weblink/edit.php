@@ -102,11 +102,12 @@ $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=c
                     <?php echo LayoutHelper::render('joomla.edit.associations', $this); ?>
              </fieldset>
             <?php echo HTMLHelper::_('uitab.endTab'); ?>
-            <?php elseif ($isModal && $assoc) :
-                ?>
+            <?php
+        elseif ($isModal && $assoc) :
+            ?>
             <div class="hidden"><?php echo $this->loadTemplate('associations'); ?></div>
             <?php
-            endif; ?>
+        endif; ?>
 
         <?php echo HTMLHelper::_('uitab.endTabSet'); ?>
 

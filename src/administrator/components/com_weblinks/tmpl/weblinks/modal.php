@@ -35,8 +35,8 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 $onclick   = $this->escape($function);
 $multilang = Multilanguage::isEnabled();
 if (!empty($editor)) {
-    // This view is used also in com_menus. Load the xtd script only if the editor is set!
-    $this->document->addScriptOptions('xtd-weblinks', ['editor' => $editor]);
+// This view is used also in com_menus. Load the xtd script only if the editor is set!
+    $this->document->addScriptOptions('xtd-weblinks', array('editor' => $editor));
     $onclick = "jSelectWeblink";
 }
 
@@ -59,8 +59,9 @@ $iconStates = [
           <div class="alert alert-no-items">
                 <?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
            </div>
-            <?php else :
-                ?>
+            <?php
+        else :
+            ?>
          <table class="table table-sm">
              <caption class="visually-hidden">
                 <?php echo Text::_('COM_WEBLINKS_WEBLINKS_TABLE_CAPTION'); ?>,
@@ -99,15 +100,16 @@ $iconStates = [
                     <?php $lang = ''; ?>
                     <?php if ($item->language && $multilang) :
                         ?>
-                        <?php $tag = \strlen($item->language); ?>
+                        <?php $tag = strlen($item->language); ?>
                         <?php if ($tag == 5) :
                             ?>
                             <?php $lang = substr($item->language, 0, 2); ?>
-                            <?php elseif ($tag == 6) :
-                                ?>
+                            <?php
+                        elseif ($tag == 6) :
+                            ?>
                             <?php $lang = substr($item->language, 0, 3); ?>
                             <?php
-                            endif; ?>
+                        endif; ?>
                         <?php
                     endif; ?>
                     <tr class="row<?php echo $i % 2; ?>">
@@ -116,12 +118,12 @@ $iconStates = [
                       </td>
                       <th scope="row">
                             <?php $attribs = 'data-function="' . $this->escape($onclick) . '"'
-                                    . ' data-id="' . $item->id . '"'
-                                    . ' data-title="' . $this->escape(addslashes($item->title)) . '"'
-                                    . ' data-cat-id="' . $this->escape($item->catid) . '"'
-                                    . ' data-uri="' . $this->escape(RouteHelper::getWeblinkRoute($item->id, $item->catid, $item->language)) . '"'
-                                    . ' data-language="' . $this->escape($lang) . '"';
-                    ?>
+                                . ' data-id="' . $item->id . '"'
+                                . ' data-title="' . $this->escape(addslashes($item->title)) . '"'
+                                . ' data-cat-id="' . $this->escape($item->catid) . '"'
+                                . ' data-uri="' . $this->escape(RouteHelper::getWeblinkRoute($item->id, $item->catid, $item->language)) . '"'
+                                . ' data-language="' . $this->escape($lang) . '"';
+                            ?>
                             <a class="select-link" href="javascript:void(0)" <?php echo $attribs; ?>>
                                 <?php echo $this->escape($item->title); ?>
                          </a>
@@ -153,7 +155,7 @@ $iconStates = [
             <?php
         endif; ?>
 
-        <?php // load the pagination.?>
+        <?php // load the pagination. ?>
         <?php echo $this->pagination->getListFooter(); ?>
 
       <input type="hidden" name="task" value="" />
