@@ -17,20 +17,16 @@ use Joomla\CMS\HTML\HTMLHelper;
 /** @var \Joomla\Component\Weblinks\Administrator\View\Weblink\HtmlView $this */
 
 HTMLHelper::_('bootstrap.tooltip', '.hasTooltip', ['placement' => 'bottom']);
-
 // @deprecated 4.0 the function parameter, the inline js and the buttons are not needed since 3.7.0.
-$function  = Factory::getApplication()->getInput()->getCmd('function', 'jEditWeblink_' . $this->getItemId());
-
+$function  = Factory::getApplication()->getInput()->getCmd('function', 'jEditWeblink_' . (int) $this->item->id);
 // Function to update input title when changed
-$wa = Factory::getApplication()->getDocument()->getWebAssetManager();
-$script = <<<JS
+$this->getDocument()->addScriptDeclaration('
 	function jEditWeblinkModal() {
 		if (window.parent && document.formvalidator.isValid(document.getElementById("weblink-form"))) {
-			return window.parent.{$this->escape($function)}(document.getElementById("jform_title").value);
+			return window.parent.' . $this->escape($function) . '(document.getElementById("jform_title").value);
 		}
 	}
-JS;
-$wa->addInlineScript($script);
+');
 ?>
 <button id="applyBtn" type="button" class="hidden" onclick="Joomla.submitbutton('weblink.apply'); jEditWeblinkModal();"></button>
 <button id="saveBtn" type="button" class="hidden" onclick="Joomla.submitbutton('weblink.save'); jEditWeblinkModal();"></button>
