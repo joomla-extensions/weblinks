@@ -132,6 +132,6 @@
             <tag>beta</tag>
         </tags>
 		<sha512>3326b799d845512610ce80f33c075af605f985928000a4ff882bd14defb8aa6c752ffdc6d256f7cfb855251cb5740e1f7ff8ae0828dea6617c7fc0576fe6571c</sha512>
-		<targetplatform name="joomla" version="5\.[01234]|6\.0" />
+		<targetplatform name="joomla" version="5\.[01234]|6\.[012]" />
 	</update>
 </updates>
