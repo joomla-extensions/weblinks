@@ -163,7 +163,7 @@ class Com_WeblinksInstallerScript implements DatabaseAwareInterface
 
         if ($type !== 'uninstall') {
             // Insert missing UCM Records if needed
-            $this->insertMissingUcmRecords();
+            //$this->insertMissingUcmRecords();
         }
     }
 
