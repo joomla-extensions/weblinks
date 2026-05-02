@@ -161,8 +161,10 @@ class Com_WeblinksInstallerScript implements DatabaseAwareInterface
             $this->dropColumnsIfNeeded();
         }
 
-        // Insert missing UCM Records if needed
-        $this->insertMissingUcmRecords();
+        if ($type !== 'uninstall') {
+            // Insert missing UCM Records if needed
+            $this->insertMissingUcmRecords();
+        }
     }
 
     /**
