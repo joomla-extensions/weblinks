@@ -41,8 +41,8 @@ return new class () implements ServiceProviderInterface {
 
                 public function __construct(AdministratorApplication $app, DatabaseInterface $db)
                 {
-                    $this->app = $app;
-                    $this->db  = $db;
+                    $this->app           = $app;
+                    $this->db            = $db;
                     $this->minimumJoomla = '5.0.0';
                     $this->minimumPhp    = '8.1.0';
                     $this->app->getLanguage()->load('com_weblinks.sys', JPATH_ADMINISTRATOR, null, true);
