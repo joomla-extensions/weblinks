@@ -13,6 +13,7 @@
 // phpcs:enable PSR1.Files.SideEffects
 
 use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Installer\InstallerScript;
 use Joomla\CMS\Installer\InstallerScriptInterface;
@@ -39,7 +40,7 @@ return new class () implements ServiceProviderInterface {
                 public function __construct(AdministratorApplication $app, DatabaseInterface $db)
                 {
                     $this->app           = $app;
-                    $this->db            = $db;
+                    $this->db            = $db ?: Factory::getContainer()->get(DatabaseInterface::class);
                     $this->minimumJoomla = '5.0.0';
                     $this->minimumPhp    = '8.1.0';
                     $this->app->getLanguage()->load('com_weblinks.sys', JPATH_ADMINISTRATOR, null, true);
