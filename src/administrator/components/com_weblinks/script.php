@@ -31,13 +31,10 @@ return new class () implements ServiceProviderInterface {
     {
         $container->set(
             InstallerScriptInterface::class,
-            new class (
-                $container->get(AdministratorApplication::class),
-                $container->get(DatabaseInterface::class)
-            ) extends InstallerScript implements InstallerScriptInterface {
+            new class ($container->get(AdministratorApplication::class), $container->get(DatabaseInterface::class)) extends InstallerScript implements InstallerScriptInterface {
                 private AdministratorApplication $app;
                 private DatabaseInterface $db;
-          
+
 
                 public function __construct(AdministratorApplication $app, DatabaseInterface $db)
                 {
@@ -195,4 +192,3 @@ return new class () implements ServiceProviderInterface {
         );
     }
 };
-
