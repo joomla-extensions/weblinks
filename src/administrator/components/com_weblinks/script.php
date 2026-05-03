@@ -43,7 +43,7 @@ return new class () implements ServiceProviderInterface {
                     $this->db            = $db ?: Factory::getContainer()->get(DatabaseInterface::class);
                     $this->minimumJoomla = '5.0.0';
                     $this->minimumPhp    = '8.1.0';
-                    $this->app->getLanguage()->load('com_weblinks.sys', JPATH_ADMINISTRATOR, null, true);
+                    //$this->app->getLanguage()->load('com_weblinks.sys', JPATH_ADMINISTRATOR, null, true);
                 }
 
                 public function install(InstallerAdapter $parent): bool
