@@ -39,7 +39,7 @@ return new class () implements ServiceProviderInterface {
 
                 public function __construct(AdministratorApplication $app, DatabaseInterface $db)
                 {
-                    $this->app           = $app;
+                    $this->app           = $app ?: Factory::getApplication();
                     $this->db            = $db ?: Factory::getContainer()->get(DatabaseInterface::class);
                     $this->minimumJoomla = '5.0.0';
                     $this->minimumPhp    = '8.1.0';
