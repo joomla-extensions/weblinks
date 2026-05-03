@@ -44,6 +44,7 @@ return new class () implements ServiceProviderInterface {
                 {
                     $this->app = $app;
                     $this->db  = $db;
+                    $this->app ->getLanguage()->load('com_patchtester.sys', JPATH_ADMINISTRATOR, null, true);
                 }
 
                 public function install(InstallerAdapter $parent): bool
