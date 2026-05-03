@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<menu
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="urn:joomla.org"
+	xsi:schemaLocation="urn:joomla.org menu.xsd"
+	>
+	<menuitem
+		title="COM_WEBLINKS"
+		type="heading"
+		icon="calendar"
+		dashboard="example"
+		>
+		<menuitem
+			title="COM_WEBLINKS_MENU"
+			type="component"
+			element="com_weblinks"
+			link="index.php?option=com_weblinks"
+		/>
+
+		<menuitem
+			title="COM_WEBLINKS_MENU_CATEGORIES"
+			type="component"
+			element="com_categories"
+			link="index.php?option=com_categories&amp;view=categories&amp;extension=com_weblinks"
+		/>
+        <menuitem
+			title="COM_WEBLINKS_MENU_FIELDS"
+			type="component"
+			element="com_fields"
+			link="index.php?option=com_fields&amp;view=fields&amp;context=com_weblinks.weblink"
+		/>
+        <menuitem
+			title="COM_WEBLINKS_MENU_FIELDS_GROUPS"
+			type="component"
+			element="com_fields"
+			link="index.php?option=com_fields&amp;view=groups&amp;context=com_weblinks.weblink"
+		/>
+	</menuitem>
+</menu>

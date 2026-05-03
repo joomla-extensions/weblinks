@@ -14,6 +14,7 @@
 
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Installer\InstallerAdapter;
+use Joomla\CMS\Installer\InstallerScript;
 use Joomla\CMS\Installer\InstallerScriptInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Category;
@@ -33,23 +34,24 @@ return new class () implements ServiceProviderInterface {
             new class (
                 $container->get(AdministratorApplication::class),
                 $container->get(DatabaseInterface::class)
-            ) implements InstallerScriptInterface {
+            ) extends InstallerScript implements InstallerScriptInterface {
                 private AdministratorApplication $app;
                 private DatabaseInterface $db;
-                private string $minimumJoomla = '5.0.0';
-                private string $minimumPhp    = '8.1.0';
-
+          
 
                 public function __construct(AdministratorApplication $app, DatabaseInterface $db)
                 {
                     $this->app = $app;
                     $this->db  = $db;
+                    $this->minimumJoomla = '5.0.0';
+                    $this->minimumPhp    = '8.1.0';
                     $this->app->getLanguage()->load('com_weblinks.sys', JPATH_ADMINISTRATOR, null, true);
                 }
 
                 public function install(InstallerAdapter $parent): bool
                 {
                     $this->createCategory();
+                    $this->addDashboardMenu('weblink', 'weblink');
                     $this->app->enqueueMessage(Text::_('COM_WEBLINKS_SUCCESS_INSTALL'));
 
                     return true;
@@ -58,7 +60,7 @@ return new class () implements ServiceProviderInterface {
                 public function update(InstallerAdapter $parent): bool
                 {
                     $this->app->enqueueMessage(Text::_('COM_WEBLINKS_SUCCESS_UPDATE'));
-
+                    $this->addDashboardMenu('weblink', 'weblink');
                     return true;
                 }
 
@@ -69,7 +71,7 @@ return new class () implements ServiceProviderInterface {
                     return true;
                 }
 
-                public function preflight(string $type, InstallerAdapter $parent): bool
+                public function preflight($type, $parent): bool
                 {
 
                     if (version_compare(PHP_VERSION, $this->minimumPhp, '<')) {
@@ -193,3 +195,4 @@ return new class () implements ServiceProviderInterface {
         );
     }
 };
+
