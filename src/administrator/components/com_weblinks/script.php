@@ -4,7 +4,7 @@
  * @package     Joomla.Administrator
  * @subpackage  Weblinks
  *
- * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2026 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -13,7 +13,6 @@
 // phpcs:enable PSR1.Files.SideEffects
 
 use Joomla\CMS\Application\AdministratorApplication;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Installer\InstallerScript;
 use Joomla\CMS\Installer\InstallerScriptInterface;
@@ -28,6 +27,13 @@ use Joomla\Filesystem\File;
 use Joomla\Filesystem\Folder;
 
 return new class () implements ServiceProviderInterface {
+    /**
+     * Registers the Weblinks installer script in the DI container.
+     *
+     * @param  Container  $container  The DI container.
+     *
+     * @return void
+     */
     public function register(Container $container)
     {
         $container->set(
@@ -36,16 +42,30 @@ return new class () implements ServiceProviderInterface {
                 private AdministratorApplication $app;
                 private DatabaseInterface $db;
 
-
+                /**
+                 * Class constructor.
+                 *
+                 * @param  AdministratorApplication  $app  The administrator application.
+                 * @param  DatabaseInterface         $db   The database driver.
+                 */
                 public function __construct(AdministratorApplication $app, DatabaseInterface $db)
                 {
-                    $this->app           = $app ?: Factory::getApplication();
-                    $this->db            = $db ?: Factory::getContainer()->get(DatabaseInterface::class);
+                    $this->app           = $app;
+                    $this->db            = $db;
                     $this->minimumJoomla = '5.0.0';
                     $this->minimumPhp    = '8.1.0';
-                    //$this->app->getLanguage()->load('com_weblinks.sys', JPATH_ADMINISTRATOR, null, true);
+                    if ($this->app->isClient('administrator')) {
+                        $this->app->getLanguage()->load('com_weblinks.sys', JPATH_ADMINISTRATOR, null, true);
+                    }
                 }
 
+                /**
+                 * Runs on component installation.
+                 *
+                 * @param  InstallerAdapter  $parent  The installer adapter.
+                 *
+                 * @return bool  True on success.
+                 */
                 public function install(InstallerAdapter $parent): bool
                 {
                     $this->createCategory();
@@ -55,6 +75,13 @@ return new class () implements ServiceProviderInterface {
                     return true;
                 }
 
+                /**
+                 * Runs on component update.
+                 *
+                 * @param  InstallerAdapter  $parent  The installer adapter.
+                 *
+                 * @return bool  True on success.
+                 */
                 public function update(InstallerAdapter $parent): bool
                 {
                     $this->app->enqueueMessage(Text::_('COM_WEBLINKS_SUCCESS_UPDATE'));
@@ -62,6 +89,13 @@ return new class () implements ServiceProviderInterface {
                     return true;
                 }
 
+                /**
+                 * Runs on component uninstall.
+                 *
+                 * @param  InstallerAdapter  $parent  The installer adapter.
+                 *
+                 * @return bool  True on success.
+                 */
                 public function uninstall(InstallerAdapter $parent): bool
                 {
                     $this->app->enqueueMessage(Text::_('COM_WEBLINKS_SUCCESS_UNINSTALL'));
@@ -69,6 +103,14 @@ return new class () implements ServiceProviderInterface {
                     return true;
                 }
 
+                /**
+                 * Method to run before install/update/uninstall.
+                 *
+                 * @param  string           $type    The type of change (install, update, discover_install, uninstall).
+                 * @param  InstallerAdapter $parent  The installer adapter.
+                 *
+                 * @return bool  False to abort the operation.
+                 */
                 public function preflight($type, $parent): bool
                 {
 
@@ -85,6 +127,14 @@ return new class () implements ServiceProviderInterface {
                     return true;
                 }
 
+                /**
+                 * Method to run after install/update/uninstall.
+                 *
+                 * @param  string           $type    The type of change (install, update, discover_install, uninstall).
+                 * @param  InstallerAdapter $parent  The installer adapter.
+                 *
+                 * @return bool  True on success.
+                 */
                 public function postflight(string $type, InstallerAdapter $parent): bool
                 {
                     $this->deleteUnexistingFiles();
@@ -92,6 +142,11 @@ return new class () implements ServiceProviderInterface {
                     return true;
                 }
 
+                /**
+                 * Ensures the default 'Uncategorised' category for com_weblinks exists.
+                 *
+                 * @return bool  True on success, false on failure.
+                 */
                 private function createCategory(): bool
                 {
                     // Initialize a new category
@@ -144,6 +199,11 @@ return new class () implements ServiceProviderInterface {
                     return true;
                 }
 
+                /**
+                 * Removes legacy/unexisting files and folders from previous versions.
+                 *
+                 * @return void
+                 */
                 private function deleteUnexistingFiles()
                 {
                     $files = [
