@@ -44,7 +44,11 @@
 		##FRONTEND_LANGUAGE_FILES##
 	</languages>
 	<administration>
-		<menu img="class:weblinks">com_weblinks</menu>
+		<menu img="class:weblinks">com_weblinks
+			<params>
+				<dashboard>weblink</dashboard>
+			</params>
+		</menu>
 		<submenu>
 			<!--
 				Note that all & must be escaped to &amp; for the file to be valid
@@ -71,4 +75,7 @@
 			##API_COMPONENT_FILES##
 		</files>
 	</api>
+	<dashboards>
+		<dashboard title="COM_WEBLINKS_DASHBOARD_TITLE" icon="icon-file-alt">weblink</dashboard>
+	</dashboards>
 </extension>
