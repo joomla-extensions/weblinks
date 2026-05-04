@@ -40,13 +40,11 @@ return new class () implements ServiceProviderInterface {
         $container->set(
             InstallerScriptInterface::class,
             new class ($container->get(DatabaseInterface::class)) extends InstallerScript implements InstallerScriptInterface {
-                // private ApplicationInterface $app;
                 private DatabaseInterface $db;
 
                 /**
                  * Class constructor.
                  *
-                 * @param  ApplicationInterface  $app  The CMS application.
                  * @param  DatabaseInterface        $db   The database driver.
                  */
                 public function __construct(DatabaseInterface $db)
@@ -55,9 +53,6 @@ return new class () implements ServiceProviderInterface {
                     $this->db            = $db;
                     $this->minimumJoomla = '5.0.0';
                     $this->minimumPhp    = '8.1.0';
-                    // if ($this->app->isClient('administrator')) {
-                    $this->app->getLanguage()->load('com_weblinks.sys', JPATH_ADMINISTRATOR, null, true);
-                    // }
                 }
 
                 /**
@@ -69,6 +64,7 @@ return new class () implements ServiceProviderInterface {
                  */
                 public function install(InstallerAdapter $parent): bool
                 {
+                    $this->app->getLanguage()->load('com_weblinks', JPATH_ADMINISTRATOR, 'en-GB', false, true);
                     $this->createCategory();
                     $this->addDashboardMenu('weblink', 'weblink');
                     $this->app->enqueueMessage(Text::_('COM_WEBLINKS_SUCCESS_INSTALL'));
@@ -85,6 +81,7 @@ return new class () implements ServiceProviderInterface {
                  */
                 public function update(InstallerAdapter $parent): bool
                 {
+                    $this->app->getLanguage()->load('com_weblinks', JPATH_ADMINISTRATOR, 'en-GB', false, true);
                     $this->app->enqueueMessage(Text::_('COM_WEBLINKS_SUCCESS_UPDATE'));
                     $this->addDashboardMenu('weblink', 'weblink');
                     return true;
@@ -99,6 +96,7 @@ return new class () implements ServiceProviderInterface {
                  */
                 public function uninstall(InstallerAdapter $parent): bool
                 {
+                    $this->app->getLanguage()->load('com_weblinks', JPATH_ADMINISTRATOR, 'en-GB', false, true);
                     $this->app->enqueueMessage(Text::_('COM_WEBLINKS_SUCCESS_UNINSTALL'));
 
                     return true;
