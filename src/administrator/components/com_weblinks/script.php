@@ -13,6 +13,8 @@
 // phpcs:enable PSR1.Files.SideEffects
 
 use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Application\ApplicationInterface;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Installer\InstallerScript;
 use Joomla\CMS\Installer\InstallerScriptInterface;
@@ -38,25 +40,25 @@ return new class () implements ServiceProviderInterface {
     {
         $container->set(
             InstallerScriptInterface::class,
-            new class ($container->get(AdministratorApplication::class), $container->get(DatabaseInterface::class)) extends InstallerScript implements InstallerScriptInterface {
-                private AdministratorApplication $app;
+            new class ($container->get(DatabaseInterface::class)) extends InstallerScript implements InstallerScriptInterface {
+               // private ApplicationInterface $app;
                 private DatabaseInterface $db;
 
                 /**
                  * Class constructor.
                  *
-                 * @param  AdministratorApplication  $app  The administrator application.
-                 * @param  DatabaseInterface         $db   The database driver.
+                 * @param  ApplicationInterface  $app  The CMS application.
+                 * @param  DatabaseInterface        $db   The database driver.
                  */
-                public function __construct(AdministratorApplication $app, DatabaseInterface $db)
+                public function __construct(DatabaseInterface $db)
                 {
-                    $this->app           = $app;
+                    $this->app           = Factory::getApplication();
                     $this->db            = $db;
                     $this->minimumJoomla = '5.0.0';
                     $this->minimumPhp    = '8.1.0';
-                    if ($this->app->isClient('administrator')) {
+                   // if ($this->app->isClient('administrator')) {
                         $this->app->getLanguage()->load('com_weblinks.sys', JPATH_ADMINISTRATOR, null, true);
-                    }
+                   // }
                 }
 
                 /**
