@@ -12,7 +12,6 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Application\ApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\InstallerAdapter;
@@ -41,7 +40,7 @@ return new class () implements ServiceProviderInterface {
         $container->set(
             InstallerScriptInterface::class,
             new class ($container->get(DatabaseInterface::class)) extends InstallerScript implements InstallerScriptInterface {
-               // private ApplicationInterface $app;
+                // private ApplicationInterface $app;
                 private DatabaseInterface $db;
 
                 /**
@@ -56,9 +55,9 @@ return new class () implements ServiceProviderInterface {
                     $this->db            = $db;
                     $this->minimumJoomla = '5.0.0';
                     $this->minimumPhp    = '8.1.0';
-                   // if ($this->app->isClient('administrator')) {
-                        $this->app->getLanguage()->load('com_weblinks.sys', JPATH_ADMINISTRATOR, null, true);
-                   // }
+                    // if ($this->app->isClient('administrator')) {
+                    $this->app->getLanguage()->load('com_weblinks.sys', JPATH_ADMINISTRATOR, null, true);
+                    // }
                 }
 
                 /**
