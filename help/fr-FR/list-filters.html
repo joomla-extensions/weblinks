@@ -1,0 +1,46 @@
+<!DOCTYPE html><html lang='fr'><head><meta charset='UTF-8'><title>list-filters</title><style>body{font-family:sans-serif; padding:20px; max-width:900px; margin:auto; line-height:1.6;} img{max-width:100%; height:auto; display:block; margin: 1em 0;}</style></head><body>
+            <div class="row">
+                <div class="col document-title pb-1">
+                    
+                    <h2 id="document-title">
+                    Filtres de Liste                                        </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-9" id="document-panel" tabindex="0">
+                    <!-- Filename: Help6.x:List_Filters  / Display title: Filtres de Liste -->
+<h2 id="0">Objectif</h2>
+<p>La plupart des composants ont des vues en liste qui affichent des éléments de la base de données. Il peut y avoir des centaines, des milliers, ou même des millions d'éléments. Ainsi, les filtres de liste sont utilisés pour réduire la liste affichée à ceux susceptibles de contenir celui sur lequel vous devez travailler.</p>
+<p>Par exemple, les éléments mis à la corbeille ne sont généralement pas affichés par défaut. Si vous souhaitez voir vos éléments mis à la corbeille, vous devez configurer le filtre <strong>- Sélectionner le statut -</strong> sur <strong>Mis à la corbeille</strong>. La capture d'écran suivante montre les filtres pour la page des articles.</p>
+<h2 id="1">Options de Filtrage de la Liste des Articles</h2>
+<p><picture class="responsive-image"><source type="image/webp" srcset="images/articles-list-filter-options_1200.webp 1200w, images/articles-list-filter-options_992.webp 992w, images/articles-list-filter-options_768.webp 768w, images/articles-list-filter-options_576.webp 576w"><source type="image/png" srcset="images/articles-list-filter-options_1200.png 1200w, images/articles-list-filter-options_992.png 992w, images/articles-list-filter-options_768.png 768w, images/articles-list-filter-options_576.png 576w"><img width="1440" height="345" decoding="async" loading="lazy" src="images/articles-list-filter-options.png" alt="Liste des articles" class="screenshot"></source></source></picture></p>
+<p>Pour <strong>afficher</strong> ou <strong>masquer</strong> les options, sélectionnez le bouton <strong>Options de Filtre</strong>. Notez que les Options sont toujours affichées lorsque vous revenez sur une page dans laquelle une Option a été sélectionnée.</p>
+<p>Le nombre d'options affichées varie en fonction du composant. Même le composant Contenu, qui affiche la liste des articles, peut avoir des filtres supplémentaires. Par exemple, un filtre <strong>- Sélectionner un Étape -</strong> est affiché si le composant Contenu a les <strong>Flux de Travail</strong> activés.</p>
+<h2 id="2">La Barre de Recherche</h2>
+<h3 id="3">Rechercher par Texte</h3>
+<p><em>Survolez</em> ou <em>sélectionnez</em> le champ de <em>recherche</em> pour voir une <em>infobulle</em> ou entendre un équivalent <em>audio</em> indiquant les champs qui seront recherchés. Le comportement par défaut est de rechercher le texte saisi dans le titre.</p>
+<p>Le composant de contenu permet un préfixe pour rechercher dans l'ID, l'auteur ou le contenu. Chacun de ces termes nécessite un deux-points mais peut être en n'importe quelle <em>casse</em>. Par exemple <em>ID:19</em> ou <em>Author:John</em> ou <em>content:lorem ipsum</em>.</p>
+<p>Pour effectuer une recherche, saisissez une partie du terme de recherche et sélectionnez l'icône <strong>Recherche</strong> (<span class="filter-search-bar__button-icon icon-search" aria-hidden="true"></span>).</p>
+<h3 id="4">Options de Filtrage et Réinitialisation</h3>
+<p>Le bouton <strong>Options de Filtrage</strong> est utilisé pour basculer l'affichage des divers filtres. S'il n'y a pas de filtres pour un composant, ce bouton sera absent.</p>
+<p>Le bouton <strong>Réinitialiser</strong> est utilisé pour supprimer tous les filtres et restaurer la liste à son état non filtré. S'il n'y a pas de filtres pour un composant, ce bouton sera absent.</p>
+<h3 id="5">Ordre des Résultats</h3>
+<p>L'ordre dans lequel les résultats sont présentés est sélectionnable par l'utilisateur. Pour les articles, l'ordre par défaut est <em>ID Descendant</em>, ce qui place les articles les plus récents en haut de la liste. Mais vous pouvez souhaiter rechercher des articles par le nombre de hits, <em>Hits descendant</em>, ou les articles qui disparaîtront bientôt, <em>Fin de publication ascendant</em>.</p>
+<p>L'ordre des résultats peut être modifié en sélectionnant une icône d'ordre dans les en-têtes de colonne de la liste. L'icône par défaut <em>ID Descendant</em> est représentée par un caret vers le bas (<span class="ms-1 icon-caret-down" aria-hidden="true"></span>). Il change en caret vers le haut si l'ordre de tri est inversé, <em>ID Ascendant</em>.</p>
+<h3 id="6">Nombre de Résultats</h3>
+<p>Le nombre de résultats dans une liste est défini dans la page de Configuration Globale, onglet Site, champ Limite de Liste par Défaut. La valeur par défaut pour une nouvelle installation est de 20.</p>
+<p>Il y a des occasions où cela n'est pas pratique. Vous pouvez souhaiter voir <em>50</em> ou <em>100</em>. Attention si vous choisissez <em>Tout</em>. Il peut falloir beaucoup de temps pour récupérer les résultats et rendre la page. Le serveur peut manquer de mémoire ou de temps et déclencher une erreur fatale. Et votre navigateur peut prendre beaucoup de temps pour afficher la page.</p>
+<p>La valeur par défaut pour cet ensemble de documentation a été fixée à 5 car cela suffit pour les captures d'écran illustratives.</p>
+<h2 id="7">Comment Utiliser les Filtres</h2>
+<p>L'objectif de chaque filtre devrait être évident à partir de son étiquette de sélection non filtrée. Par exemple, le filtre Articles <strong>- Sélectionner le Statut -</strong> propose cinq choix : <em>Supprimé</em>, <em>Non publié</em>, <em>Publié</em>, <em>Archivé</em> et <em>Tous</em>. Le dernier est fonctionnellement équivalent à non filtré (<em>- Sélectionner le Statut -</em>).</p>
+<p>Lorsqu'une option de filtre est modifiée, la page se recharge automatiquement avec les nouveaux résultats filtrés par la nouvelle option de filtre.</p>
+<h2 id="8">Masquer des colonnes</h2>
+<p>Certaines listes de composants comportent de nombreuses colonnes et peuvent être trop larges pour votre écran. Cela est particulièrement vrai pour certaines traductions du texte d'en-tête de colonne. Le résultat le plus agaçant est que les titres peuvent se chevaucher et être difficiles à lire.</p>
+<p>Pour faire plus de place pour le titre, vous pouvez ouvrir la liste déroulante des colonnes et sélectionner les colonnes moins importantes à masquer. Ensuite, fermez à nouveau la liste des colonnes. L'effet est immédiat, car il utilise JavaScript pour masquer les colonnes sélectionnées dans la mise en page. Elles sont toujours présentes dans la page.</p>
+<p>Vos paramètres sont sauvegardés par votre navigateur, ils seront donc utilisés jusqu'à ce que vous les modifiiez de nouveau, même si vous vous déconnectez puis reconnectez.</p>
+<p><em>Traduit par openai.com</em></p>
+
+                        </div>
+                
+            </div>
+        </body></html>
