@@ -141,7 +141,8 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
 
         // 1. Handle com_categories for weblinks
         if ($option === 'com_categories' && $extension === 'com_weblinks' && $layout !== 'edit') {
-            $helpUrl = Uri::root() . 'administrator/components/com_weblinks/help/' . $lang . '/weblinks-categories.html';
+            //$helpUrl = Uri::root() . 'administrator/components/com_weblinks/help/' . $lang . '/weblinks-categories.html';
+            $helpUrl = 'https://raw.githubusercontent.com/joomla-extensions/weblinks/5.x-dev/src/help/' . $lang . '/weblinks-categories.html';
 
             // Multiple patterns to catch different URL formats
             $patterns = [
@@ -160,7 +161,8 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
 
         // 1a. Handle com_categories edit for weblinks
         if ($option === 'com_categories' && $extension === 'com_weblinks' && $layout === 'edit') {
-            $helpUrl = Uri::root() . 'administrator/components/com_weblinks/help/' . $lang . '/weblinks-categories-edit.html';
+            //$helpUrl = Uri::root() . 'administrator/components/com_weblinks/help/' . $lang . '/weblinks-categories-edit.html';
+            $helpUrl = 'https://raw.githubusercontent.com/joomla-extensions/weblinks/5.x-dev/src/help/' . $lang . '/weblinks-categories-edit.html';
 
             // Multiple patterns to catch different URL formats
             $patterns = [
@@ -179,7 +181,8 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
 
         // 2. Handle main weblinks view (list view)
         if ($option === 'com_weblinks' && ($view === 'weblinks' || $view === null)) {
-            $helpUrl = Uri::root() . 'administrator/components/com_weblinks/help/' . $lang . '/weblinks-links.html';
+            //$helpUrl = Uri::root() . 'administrator/components/com_weblinks/help/' . $lang . '/weblinks-links.html';
+            $helpUrl = 'https://raw.githubusercontent.com/joomla-extensions/weblinks/5.x-dev/src/help/' . $lang . '/weblinks-links.html';
 
             $patterns = [
                 '#https?://help\.joomla\.org/proxy\?keyref=Help[0-9]+:Components_Weblinks_Links[^"\']*#',
@@ -197,7 +200,8 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
 
         // 3. Handle weblinks options view
         if ($option === 'com_config' && $view === 'component' && $component === 'com_weblinks') {
-            $helpUrl = Uri::root() . 'administrator/components/com_weblinks/help/' . $lang . '/weblinks-options.html';
+            //$helpUrl = Uri::root() . 'administrator/components/com_weblinks/help/' . $lang . '/weblinks-options.html';
+            $helpUrl = 'https://raw.githubusercontent.com/joomla-extensions/weblinks/5.x-dev/src/help/' . $lang . '/weblinks-options.html';
 
             $patterns = [
                 '#https?://help\.joomla\.org/proxy\?keyref=Help[0-9]+:Help[^"\']*#',
