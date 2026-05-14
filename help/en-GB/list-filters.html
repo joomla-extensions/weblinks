@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>list-filters</title><style>body{font-family:sans-serif; padding:20px; max-width:900px; margin:auto; line-height:1.6;} img{max-width:100%; height:auto; display:block; margin: 1em 0;}</style></head><body>
+            <div class="row">
+                <div class="col document-title pb-1">
+                    
+                    <h2 id="document-title">
+                    List Filters                                        </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-9" id="document-panel" tabindex="0">
+                    <!-- Filename: Help6.x:List_Filters / Display title: List Filters -->
+<h2 id="0">Purpose¶</h2>
+<p>Most components have list views that display items from the database. There
+may be hundreds of items, thousands perhaps, or even millions. So List Filters
+are used to reduce the displayed list to those likely to contain the one you
+need to work on.</p>
+<p>For example, trashed items are not usually displayed by default. If you wish
+to see your trashed items you need to set the <strong>- Select Status -</strong> filter to
+<strong>Trashed</strong>. The following screenshot shows the Filters for the Articles page.</p>
+<h2 id="1">Articles List Filter Options¶</h2>
+<p><picture class="responsive-image"><source type="image/webp" srcset="images/articles-list-filter-options_1200.webp 1200w, images/articles-list-filter-options_992.webp 992w, images/articles-list-filter-options_768.webp 768w, images/articles-list-filter-options_576.webp 576w"><source type="image/png" srcset="images/articles-list-filter-options_1200.png 1200w, images/articles-list-filter-options_992.png 992w, images/articles-list-filter-options_768.png 768w, images/articles-list-filter-options_576.png 576w"><img width="1440" height="345" decoding="async" loading="lazy" src="images/articles-list-filter-options.png" alt="Articles list" class="screenshot"></source></source></picture></p>
+<p>To <strong>show</strong> or <strong>hide</strong> the Options select the <strong>Filter Options</strong> button. Note
+that the Options are always displayed on return to any page in which an Option
+has been selected.</p>
+<p>The number of Options displayed varies with the component. Even the Content
+component, which displays the Articles list, may have additional filters. For
+example, a <strong>- Select Stage -</strong> filter is displayed if the Content component
+has <strong>Workflows</strong> enabled.</p>
+<h2 id="2">The Search Bar</h2>
+<h3 id="3">Search by Text</h3>
+<p><em>Hover</em> or <em>Select</em> the <em>Search</em> field to see a <em>Tooltip</em> or hear an <em>Audio</em>
+equivalent indicating which fields will be searched. The default behaviour
+is to search for the entered text within the title text.</p>
+<p>The content component allows a prefix to search within the ID, Author or
+Content. Each of those terms needs a colon but may be in any <em>Case</em>, For
+example <em>ID:19</em> or <em>Author:John</em> or <em>content:lorem ipsum</em>.</p>
+<p>To perform a search, enter part of the search term and select the <strong>Search</strong>
+icon (<span class="filter-search-bar__button-icon icon-search" aria-hidden="true"></span>).</p>
+<h3 id="4">Filter Options and Clear</h3>
+<p>The <strong>Filter Options</strong> button is used to toggle view of the various filters. If
+there are no Filters for a component this button will be absent.</p>
+<p>The <strong>Clear</strong> button is used to clear all filters and restore the list to its
+unfiltered state. If there are no filters for a component this button will be
+absent.</p>
+<h3 id="5">Result Order</h3>
+<p>The order in which results are presented is user selectable. For articles, the
+default order is <em>ID Descending</em>, which puts the most recent articles at the
+top of the list. But you may wish to search for articles by most hits,
+<em>Hits descending</em>, or articles that will soon disappear,
+<em>Finish Publishing ascending</em>.</p>
+<p>The result order my be changed by selecting an order icon in the list
+column headings. The default <em>ID Descending</em> icon is represented by a
+down caret (<span class="ms-1 icon-caret-down" aria-hidden="true"></span>).
+It changes to an up caret if the sort order is reversed, <em>ID Ascending</em>.</p>
+<h3 id="6">Number of Results</h3>
+<p>The number of results in a list is set in the Global Configuration page, Site
+tab, Default List Limit field. The default value for a new installation is 20.</p>
+<p>There are occasions when this is not convenient. You may wish to see <em>50</em> or
+<em>100</em>. Be careful if choosing <em>All</em>. It may take a long time to retrieve
+results and render the page. The server my run of memory or time and trigger
+a fatal error. And your browser my take a long time to display the page.</p>
+<p>The default value for this documentation set has been set to 5 because that is
+sufficient for illustrative screenshots.</p>
+<h2 id="7">How to Use Filters</h2>
+<p>The purpose of each filter should be self evident from its unfiltered selector
+label. For example, the Articles <strong>- Select Status -</strong> Filter offers five
+choices: <em>Trashed</em>, <em>Unpublished</em>, <em>Published</em>, <em>Archived</em> and <em>All</em>. The last
+is functionally equivalent to unfiltered (<em>- Select Status -</em>).</p>
+<p>When a filter option is changed the page automatically reloads with the new
+results filtered by the new filter option.</p>
+<h2 id="8">Hide Columns</h2>
+<p>Some component lists have many columns and may be too wide for your screen. This
+is especially true of some translations of the column heading text. The most
+annoying result is that the Titles may wrap and be difficult to read.</p>
+<p>To make more space for the Title you can open the Columns drop-down list and
+select less important columns to hide. Then close the Columns list again. The
+effect is immediate as it uses JavaScript to hide the selected columns in the
+layout. They are still present in the page.</p>
+<p>Your settings are saved by your browser so will be used until you change them
+again, even if you logout and login again.</p>
+
+                        </div>
+                
+            </div>
+        </body></html>
