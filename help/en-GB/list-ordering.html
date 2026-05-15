@@ -1,0 +1,46 @@
+<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>list-ordering</title><style>body{font-family:sans-serif; padding:20px; max-width:900px; margin:auto; line-height:1.6;} img{max-width:100%; height:auto; display:block; margin: 1em 0;}</style></head><body>
+            <div class="row">
+                <div class="col document-title pb-1">
+                    
+                    <h2 id="document-title">
+                    List Ordering                                        </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-9" id="document-panel" tabindex="0">
+                    <!-- Filename: Help6.x:List_Ordering / Display title: List Ordering -->
+<h2 id="0">Where Ordering Matters</h2>
+<p>The ordering of items in a list starts to matter when viewed from the Site
+frontend. For example, suppose you have a number of featured articles that
+you present in a Featured Article layout. The menu data entry form for that
+layout offers a number of <em>Article Order</em> alternatives, one of which is
+<strong>Featured Articles Order</strong>. The default order is the order in which the
+articles are added. But what if you want one particular article to be first
+in the list. If you have a Committee with articles on each member you may want
+the Chairman to be in first position in the front page layout.</p>
+<p>The same principle applies to Category Blog layouts. You may have several
+Committees, each in a different Category. In that case you filter the articles
+list by Category and make the article on the Chairman first in the list.</p>
+<h2 id="1">The Ordering Column</h2>
+<p>In a component list view the Ordering column is typically second from the left
+(in left to right languages) immediately next to the Checkbox column. If the
+list is not sorted by the ordering column it will be empty. In that case you
+need to select the ordering column icon, a double chevron
+(<span class="ms-1 icon-sort"></span>). Each time the icon
+is selected the order toggles from ascending to descending. You need ascending
+order (<span class="ms-1 icon-caret-up"></span>) to drag an
+item upwards towards the top of the list. This is indicated in the sort order
+field of the Search bar.</p>
+<h2 id="2">Drag and Drop</h2>
+<p>With the ordering column set for use, each item will contain a vertical
+ellipsis icon (<span class="icon-ellipsis-v"></span>). This icon can be
+dragged upwards or downwards to change the list order. The new list order is
+set in the database with a JavaScript call. There is no page reload.</p>
+<p>It is tricky! You need to practice. And this is one of the occasions when
+you may wish to set the list limit to <em>All</em>.</p>
+<p><button type="button" onclick="history.back()">Back</button></p>
+
+                        </div>
+                
+            </div>
+        </body></html>
