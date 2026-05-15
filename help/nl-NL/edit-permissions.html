@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang='nl'><head><meta charset='UTF-8'><title>edit-permissions</title><style>body{font-family:sans-serif; padding:20px; max-width:900px; margin:auto; line-height:1.6;} img{max-width:100%; height:auto; display:block; margin: 1em 0;}</style></head><body>
+            <div class="row">
+                <div class="col document-title pb-1">
+                    
+                    <h2 id="document-title">
+                    Machtigingen Bewerken                                        </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-9" id="document-panel" tabindex="0">
+                    <!-- Filename: Help4.x:Edit_Permissions  / Display title: Machtigingen Bewerken -->
+<h2 id="0">Doel</h2>
+<p>Veel extensies hebben bewerkingsschermen met een tabblad Machtigingen dat wordt gebruikt om de machtigingen toe te wijzen aan gebruikersgroepen. Het aantal gebruikersgroepen kan variëren omdat aangepaste gebruikersgroepen kunnen worden toegevoegd voor speciale doeleinden. Het aantal acties dat kan worden gewijzigd, varieert ook per extensie. Dit artikel is een korte beschrijving van de machtigingenschermen voor dergelijke speciale doeleinden.</p>
+<p>Stel je voor dat er een gebruiker is die zorgt voor media (afbeeldingen en bestanden) maar verder geen andere verantwoordelijkheden heeft. Een groep genaamd Oddjob is aangemaakt en toegewezen aan het Toegangsniveau Special. Ook is een gebruiker genaamd Oddjob aangemaakt en toegewezen aan de groep Oddjob.</p>
+<p>Voor meer gedetailleerde informatie over gebruikersgroepen, toegangsniveaus en machtigingen is er een apart tutorial over <a href="/jdocmanual?article=user/users/access-control">Toegangscontrole</a>.</p>
+<h2 id="1">Globale Configuratie Rechten</h2>
+<p>In dit voorbeeld hebben gebruikers in de Oddjob-groep globale rechten gekregen om in te loggen op de Beheerinterface, maar niets anders.</p>
+<p><picture class="responsive-image"><source type="image/webp" srcset="images/global-configuration-permissions-tab_1200.webp 1200w, images/global-configuration-permissions-tab_992.webp 992w, images/global-configuration-permissions-tab_768.webp 768w, images/global-configuration-permissions-tab_576.webp 576w"><source type="image/png" srcset="images/global-configuration-permissions-tab_1200.png 1200w, images/global-configuration-permissions-tab_992.png 992w, images/global-configuration-permissions-tab_768.png 768w, images/global-configuration-permissions-tab_576.png 576w"><img width="1440" height="1360" decoding="async" loading="lazy" src="images/global-configuration-permissions-tab.png" alt="Screenshot van Rechten" class="screenshot"></source></source></picture></p>
+<h2 id="2">Componentconfiguratie Permissies</h2>
+<p>Om toegang te krijgen tot een specifieke component moeten de rechten worden ingesteld in de componentopties.
+In dit voorbeeld de Media-componentopties.</p>
+<p><picture class="responsive-image"><source type="image/webp" srcset="images/media-options-permissions-tab_1200.webp 1200w, images/media-options-permissions-tab_992.webp 992w, images/media-options-permissions-tab_768.webp 768w, images/media-options-permissions-tab_576.webp 576w"><source type="image/png" srcset="images/media-options-permissions-tab_1200.png 1200w, images/media-options-permissions-tab_992.png 992w, images/media-options-permissions-tab_768.png 768w, images/media-options-permissions-tab_576.png 576w"><img width="1440" height="870" decoding="async" loading="lazy" src="images/media-options-permissions-tab.png" alt="Media Screenshot" class="screenshot"></source></source></picture></p>
+<p>Je zult merken dat deze component minder Acties beschikbaar heeft en de Oddjob
+groep net genoeg permissies heeft om het werk te doen.</p>
+<p>Om de permissies voor deze component te wijzigen:</p>
+<ul>
+<li>Selecteer de Groep door op de titel aan de linkerkant te klikken.<br>
+Zoek de gewenste Actie.
+<ul>
+<li>Verwijderen. Gebruikers kunnen dit artikel verwijderen.</li>
+<li>Bewerken. Gebruikers kunnen dit artikel bewerken.</li>
+<li>Status Bewerken. Gebruikers kunnen de gepubliceerde status en gerelateerde informatie voor dit artikel wijzigen.</li>
+</ul>
+</li>
+<li>Selecteer de gewenste permissie voor de actie die je wilt wijzigen.
+<ul>
+<li>Overgenomen. Overgenomen voor gebruikers in deze Groep uit de Globale Configuratie, Artikelopties, of Artikelcategorie.</li>
+<li>Toegestaan. Toegestaan voor gebruikers in deze Groep. Let op: Als deze actie op een van de hogere niveaus is Geweigerd, zal de Toegestane permissie hier niet van kracht worden. Een Geweigerde instelling kan niet worden overschreven.</li>
+<li>Geweigerd. Geweigerd voor gebruikers in deze Groep.</li>
+</ul>
+</li>
+<li>Klik op Opslaan in de Toolbar bovenaan. Wanneer het scherm wordt vernieuwd, zal de kolom Berekende Instelling de effectieve permissie voor deze Groep en Actie tonen.</li>
+</ul>
+<h2 id="3">De Gebruikerservaring</h2>
+<p>Na inloggen zal een gebruiker in de Oddjob-groep de modules zien die <strong>Speciale</strong> toegang hebben ingesteld op het Startdashboard, en een Menu-item link naar de Media-component.</p>
+<p><picture class="responsive-image"><source type="image/webp" srcset="images/home-dashboard-for-oddjob_1200.webp 1200w, images/home-dashboard-for-oddjob_992.webp 992w, images/home-dashboard-for-oddjob_768.webp 768w, images/home-dashboard-for-oddjob_576.webp 576w"><source type="image/png" srcset="images/home-dashboard-for-oddjob_1200.png 1200w, images/home-dashboard-for-oddjob_992.png 992w, images/home-dashboard-for-oddjob_768.png 768w, images/home-dashboard-for-oddjob_576.png 576w"><img width="1440" height="640" decoding="async" loading="lazy" src="images/home-dashboard-for-oddjob.png" alt="Startdashboard voor Oddjob" class="screenshot"></source></source></picture></p>
+<p>En het Mediascherm voor gebruiker Oddjob is zoals verwacht:</p>
+<p><picture class="responsive-image"><source type="image/webp" srcset="images/media-screen-for-oddjob_1200.webp 1200w, images/media-screen-for-oddjob_992.webp 992w, images/media-screen-for-oddjob_768.webp 768w, images/media-screen-for-oddjob_576.webp 576w"><source type="image/png" srcset="images/media-screen-for-oddjob_1200.png 1200w, images/media-screen-for-oddjob_992.png 992w, images/media-screen-for-oddjob_768.png 768w, images/media-screen-for-oddjob_576.png 576w"><img width="1440" height="430" decoding="async" loading="lazy" src="images/media-screen-for-oddjob.png" alt="Mediascherm voor Oddjob" class="screenshot"></source></source></picture></p>
+<p><em>Vertaald door openai.com</em></p>
+
+                        </div>
+                
+            </div>
+        </body></html>
