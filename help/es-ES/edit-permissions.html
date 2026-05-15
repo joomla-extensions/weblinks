@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'><title>edit-permissions</title><style>body{font-family:sans-serif; padding:20px; max-width:900px; margin:auto; line-height:1.6;} img{max-width:100%; height:auto; display:block; margin: 1em 0;}</style></head><body>
+            <div class="row">
+                <div class="col document-title pb-1">
+                    
+                    <h2 id="document-title">
+                    Modifier les Autorisations                                        </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-9" id="document-panel" tabindex="0">
+                    <!-- Filename: Help4.x:Edit_Permissions  / Display title: Modifier les Autorisations -->
+<h2 id="0">Propósito</h2>
+<p>Muchas extensiones tienen pantallas de edición con una pestaña de Permisos que se utiliza para cambiar los permisos asignados a los Grupos de Usuarios. El número de Grupos de Usuarios puede variar ya que se pueden agregar Grupos de Usuarios personalizados para usos especiales. El número de Acciones que se pueden alterar también varía según la extensión. Este artículo es una breve descripción de las pantallas de permisos para dichos propósitos especiales.</p>
+<p>Imagina que hay un usuario que se ocupa de los Medios (imágenes y archivos) pero no se le permiten otras responsabilidades. Se ha creado un grupo llamado Oddjob y se ha asignado al nivel de acceso Especial. También se ha creado un usuario llamado Oddjob y se ha asignado al grupo Oddjob.</p>
+<p>Para obtener información más detallada sobre los Grupos de Usuarios, Niveles de Acceso y Permisos, hay un tutorial por separado sobre <a href="/jdocmanual?article=user/users/access-control">Control de Acceso</a>.</p>
+<h2 id="1">Permisos de Configuración Global</h2>
+<p>En este ejemplo, los usuarios del grupo Oddjob han recibido el permiso global para iniciar sesión en la interfaz de administrador, pero nada más.</p>
+<p><picture class="responsive-image"><source type="image/webp" srcset="images/global-configuration-permissions-tab_1200.webp 1200w, images/global-configuration-permissions-tab_992.webp 992w, images/global-configuration-permissions-tab_768.webp 768w, images/global-configuration-permissions-tab_576.webp 576w"><source type="image/png" srcset="images/global-configuration-permissions-tab_1200.png 1200w, images/global-configuration-permissions-tab_992.png 992w, images/global-configuration-permissions-tab_768.png 768w, images/global-configuration-permissions-tab_576.png 576w"><img width="1440" height="1360" decoding="async" loading="lazy" src="images/global-configuration-permissions-tab.png" alt="Captura de Pantalla de Permisos" class="screenshot"></source></source></picture></p>
+<h2 id="2">Permisos de Configuración del Componente</h2>
+<p>Para acceder a un componente específico se deben configurar los permisos en las opciones del componente.
+En este ejemplo, las opciones del componente Media.</p>
+<p><picture class="responsive-image"><source type="image/webp" srcset="images/media-options-permissions-tab_1200.webp 1200w, images/media-options-permissions-tab_992.webp 992w, images/media-options-permissions-tab_768.webp 768w, images/media-options-permissions-tab_576.webp 576w"><source type="image/png" srcset="images/media-options-permissions-tab_1200.png 1200w, images/media-options-permissions-tab_992.png 992w, images/media-options-permissions-tab_768.png 768w, images/media-options-permissions-tab_576.png 576w"><img width="1440" height="870" decoding="async" loading="lazy" src="images/media-options-permissions-tab.png" alt="Captura de Pantalla de Media" class="screenshot"></source></source></picture></p>
+<p>Notarás que este componente tiene menos Acciones disponibles y al grupo Oddjob se le otorgan suficientes permisos para realizar el trabajo.</p>
+<p>Para cambiar los permisos de este componente:</p>
+<ul>
+<li>Selecciona el Grupo haciendo clic en su título ubicado a la izquierda.<br>
+Encuentra la Acción deseada.
+<ul>
+<li>Eliminar. Los usuarios pueden eliminar este artículo.</li>
+<li>Editar. Los usuarios pueden editar este artículo.</li>
+<li>Editar Estado. Los usuarios pueden cambiar el estado publicado y la información relacionada con este artículo.</li>
+</ul>
+</li>
+<li>Selecciona el permiso deseado para la acción que deseas cambiar.
+<ul>
+<li>Heredado. Heredado para usuarios de este Grupo desde la Configuración Global, Opciones de Artículos, o Categoría de Artículos.</li>
+<li>Permitido. Permitido para usuarios de este Grupo. Nota: Si esta acción está Denegada en uno de los niveles superiores, el permiso Permitido aquí no tendrá efecto. Una configuración de Denegado no puede ser anulada.</li>
+<li>Denegado. Denegado para usuarios de este Grupo.</li>
+</ul>
+</li>
+<li>Haz clic en Guardar en la barra de herramientas en la parte superior. Cuando la pantalla se actualice, la columna de Configuración Calculada mostrará el permiso efectivo para este Grupo y Acción.</li>
+</ul>
+<h2 id="3">La Experiencia del Usuario</h2>
+<p>Después de iniciar sesión, un usuario en el grupo Oddjob verá los módulos del Tablero de Inicio que tengan acceso <strong>Especial</strong> establecido y un enlace en el menú al componente Media.</p>
+<p><picture class="responsive-image"><source type="image/webp" srcset="images/home-dashboard-for-oddjob_1200.webp 1200w, images/home-dashboard-for-oddjob_992.webp 992w, images/home-dashboard-for-oddjob_768.webp 768w, images/home-dashboard-for-oddjob_576.webp 576w"><source type="image/png" srcset="images/home-dashboard-for-oddjob_1200.png 1200w, images/home-dashboard-for-oddjob_992.png 992w, images/home-dashboard-for-oddjob_768.png 768w, images/home-dashboard-for-oddjob_576.png 576w"><img width="1440" height="640" decoding="async" loading="lazy" src="images/home-dashboard-for-oddjob.png" alt="Tablero de Inicio para Oddjob" class="screenshot"></source></source></picture></p>
+<p>Y la pantalla Media para el usuario Oddjob es como se esperaba:</p>
+<p><picture class="responsive-image"><source type="image/webp" srcset="images/media-screen-for-oddjob_1200.webp 1200w, images/media-screen-for-oddjob_992.webp 992w, images/media-screen-for-oddjob_768.webp 768w, images/media-screen-for-oddjob_576.webp 576w"><source type="image/png" srcset="images/media-screen-for-oddjob_1200.png 1200w, images/media-screen-for-oddjob_992.png 992w, images/media-screen-for-oddjob_768.png 768w, images/media-screen-for-oddjob_576.png 576w"><img width="1440" height="430" decoding="async" loading="lazy" src="images/media-screen-for-oddjob.png" alt="Pantalla Media para Oddjob" class="screenshot"></source></source></picture></p>
+<p><em>Traducido por openai.com</em></p>
+<p><button type="button" onclick="history.back()">Back</button></p>
+
+                        </div>
+                
+            </div>
+        </body></html>

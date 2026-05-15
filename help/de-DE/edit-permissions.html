@@ -1,0 +1,52 @@
+<!DOCTYPE html><html lang='de'><head><meta charset='UTF-8'><title>edit-permissions</title><style>body{font-family:sans-serif; padding:20px; max-width:900px; margin:auto; line-height:1.6;} img{max-width:100%; height:auto; display:block; margin: 1em 0;}</style></head><body>
+            <div class="row">
+                <div class="col document-title pb-1">
+                    
+                    <h2 id="document-title">
+                    Berechtigungen bearbeiten                                        </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-9" id="document-panel" tabindex="0">
+                    <!-- Filename: Help4.x:Edit_Permissions / Display title: Berechtigungen bearbeiten -->
+<h2 id="0">Zweck</h2>
+<p>Viele Erweiterungen verfügen über Bearbeitungsbildschirme mit einer Registerkarte Berechtigungen, auf der die den Benutzergruppen zugewiesenen Berechtigungen geändert werden. Die Anzahl der Benutzergruppen kann variieren, da benutzerdefinierte Benutzergruppen für spezielle Zwecke hinzugefügt werden können. Die Anzahl der Aktionen, die geändert werden können, variiert auch je nach Erweiterung. Dieser Artikel enthält eine kurze Beschreibung der Berechtigungsbildschirme für solche speziellen Zwecke.</p>
+<p>Stellen Sie sich vor, es gibt einen Benutzer, der sich um Medien (Bilder und Dateien) kümmert, aber keine anderen Verantwortlichkeiten hat. Eine Gruppe mit dem Namen Oddjob wurde erstellt und der speziellen Zugriffsebene zugewiesen. Ein Benutzer mit dem Namen Oddjob wurde erstellt und der Oddjob-Gruppe zugewiesen.</p>
+<p>Für detailliertere Informationen zu Benutzergruppen, Zugriffsebenen und Berechtigungen gibt es ein separates Tutorial zu <a href="/jdocmanual?article=user/users/access-control">Zugriffskontrolle</a>.</p>
+<h2 id="1">Globale Konfigurationsberechtigungen</h2>
+<p>In diesem Beispiel wurde Benutzern in der Oddjob-Gruppe die globale Berechtigung zum Anmelden an der Administratoroberfläche zugewiesen, aber sonst nichts.</p>
+<p><picture class="responsive-image"><source type="image/webp" srcset="images/global-configuration-permissions-tab_1200.webp 1200w, images/global-configuration-permissions-tab_992.webp 992w, images/global-configuration-permissions-tab_768.webp 768w, images/global-configuration-permissions-tab_576.webp 576w"><source type="image/png" srcset="images/global-configuration-permissions-tab_1200.png 1200w, images/global-configuration-permissions-tab_992.png 992w, images/global-configuration-permissions-tab_768.png 768w, images/global-configuration-permissions-tab_576.png 576w"><img width="1440" height="1360" decoding="async" loading="lazy" src="images/global-configuration-permissions-tab.png" alt="Screenshot der Berechtigungen" class="screenshot"></source></source></picture></p>
+<h2 id="2">Berechtigungen für die Komponentenkonfiguration</h2>
+<p>Um auf eine bestimmte Komponente zuzugreifen, müssen Berechtigungen in den Komponentenoptionen festgelegt werden. In diesem Beispiel die Optionen der Medienkomponente.</p>
+<p><picture class="responsive-image"><source type="image/webp" srcset="images/media-options-permissions-tab_1200.webp 1200w, images/media-options-permissions-tab_992.webp 992w, images/media-options-permissions-tab_768.webp 768w, images/media-options-permissions-tab_576.webp 576w"><source type="image/png" srcset="images/media-options-permissions-tab_1200.png 1200w, images/media-options-permissions-tab_992.png 992w, images/media-options-permissions-tab_768.png 768w, images/media-options-permissions-tab_576.png 576w"><img width="1440" height="870" decoding="async" loading="lazy" src="images/media-options-permissions-tab.png" alt="Medien-Screenshot" class="screenshot"></source></source></picture></p>
+<p>Sie werden feststellen, dass für diese Komponente weniger Aktionen verfügbar sind und die Oddjob-Gruppe gerade genug Berechtigungen hat, um den Job auszuführen.</p>
+<p>So ändern Sie die Berechtigungen für diese Komponente:</p>
+<ul>
+<li>Wählen Sie die Gruppe aus, indem Sie auf den Titel links klicken.<br>
+Finden Sie die gewünschte Aktion.
+<ul>
+<li>Löschen. Benutzer können diesen Artikel löschen.</li>
+<li>Bearbeiten. Benutzer können diesen Artikel bearbeiten.</li>
+<li>Status bearbeiten. Der Benutzer kann den veröffentlichten Status und die zugehörigen Informationen für diesen Artikel ändern.</li>
+</ul>
+</li>
+<li>Wählen Sie die gewünschte Berechtigung für die Aktion aus, die Sie ändern möchten.
+<ul>
+<li>Geerbt. Geerbt für Benutzer in dieser Gruppe aus der globalen Konfiguration, den Artikeloptionen oder der Artikelkategorie.</li>
+<li>Dürfen. Für Benutzer in dieser Gruppe zulässig.Hinweis: Wenn diese Aktion auf einer der höheren Ebenen verweigert wird, wird die hier erlaubte Berechtigung nicht wirksam. Eine abgelehnte Einstellung kann nicht überschrieben werden.</li>
+<li>Leugnen. Für Benutzer in dieser Gruppe abgelehnt.</li>
+</ul>
+</li>
+<li>Klicken Sie oben in der Symbolleiste auf Speichern. Wenn der Bildschirm aktualisiert wird, zeigt die Spalte Berechnete Einstellung die effektive Berechtigung für diese Gruppe und Aktion an.</li>
+</ul>
+<h2 id="3">Die Benutzererfahrung</h2>
+<p>Nach der Anmeldung sieht ein Benutzer in der Oddjob-Gruppe, welche Home-Dashboard-Module <strong>Spezielle</strong> Zugriffseinstellungen haben, und einen Menüpunkt-Link zur Medienkomponente.</p>
+<p><picture class="responsive-image"><source type="image/webp" srcset="images/home-dashboard-for-oddjob_1200.webp 1200w, images/home-dashboard-for-oddjob_992.webp 992w, images/home-dashboard-for-oddjob_768.webp 768w, images/home-dashboard-for-oddjob_576.webp 576w"><source type="image/png" srcset="images/home-dashboard-for-oddjob_1200.png 1200w, images/home-dashboard-for-oddjob_992.png 992w, images/home-dashboard-for-oddjob_768.png 768w, images/home-dashboard-for-oddjob_576.png 576w"><img width="1440" height="640" decoding="async" loading="lazy" src="images/home-dashboard-for-oddjob.png" alt="Start-Dashboard für Oddjob" class="screenshot"></source></source></picture></p>
+<p>Und der Medienbildschirm für Benutzer Oddjob ist wie erwartet:</p>
+<p><picture class="responsive-image"><source type="image/webp" srcset="images/media-screen-for-oddjob_1200.webp 1200w, images/media-screen-for-oddjob_992.webp 992w, images/media-screen-for-oddjob_768.webp 768w, images/media-screen-for-oddjob_576.webp 576w"><source type="image/png" srcset="images/media-screen-for-oddjob_1200.png 1200w, images/media-screen-for-oddjob_992.png 992w, images/media-screen-for-oddjob_768.png 768w, images/media-screen-for-oddjob_576.png 576w"><img width="1440" height="430" decoding="async" loading="lazy" src="images/media-screen-for-oddjob.png" alt="Medienbildschirm für Oddjob" class="screenshot"></source></source></picture></p>
+
+<p><button type="button" onclick="history.back()">Back</button></p>
+                        </div>
+                
+            </div>
+        </body></html>
