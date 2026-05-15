@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang='ru'><head><meta charset='UTF-8'><title>edit-permissions</title><style>body{font-family:sans-serif; padding:20px; max-width:900px; margin:auto; line-height:1.6;} img{max-width:100%; height:auto; display:block; margin: 1em 0;}</style></head><body>
+            <div class="row">
+                <div class="col document-title pb-1">
+                    
+                    <h2 id="document-title">
+                    Разрешения на редактирование                                        </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-9" id="document-panel" tabindex="0">
+                    <!-- Filename: Help4.x:Edit_Permissions / Display title: Разрешения на редактирование  -->
+<h2 id="0">Назначение<a id="content-назначение" class="heading-permalink" title="Permalink">¶</a></h2>
+<p>Многие расширения имеют экраны редактирования с вкладкой «Разрешения», которая используется для изменения разрешений, выделенных для групп пользователей. Количество групп пользователей может варьироваться, так как могут быть добавлены настраиваемые группы пользователей для специальных целей. Количество действий, которые могут быть изменены, также различается в зависимости от расширения. Эта статья является кратким описанием экранов разрешений для таких специальных целей.</p>
+<p>Представьте, что есть пользователь, который занимается носителями (изображениями и файлами), но ему не разрешены никакие другие обязанности. Группа под названием Oddjob была создана и назначена на уровень доступа Special. Пользователь также с именем Oddjob был создан и назначен в группу Oddjob.</p>
+<p>Для более подробной информации о группах пользователей, уровнях доступа и разрешениях имеется отдельное руководство по <a href="/jdocmanual?article=user/users/access-control">Контролю доступа</a>.</p>
+<h2 id="1">Права глобальной конфигурации<a id="content-права-глобальной-конфигурации" class="heading-permalink" title="Permalink">¶</a></h2>
+<p>В этом примере пользователям группы Oddjob предоставлено глобальное
+разрешение на вход в интерфейс администратора, но не более.</p>
+<p><picture class="responsive-image"><source type="image/webp" srcset="images/global-configuration-permissions-tab_1200.webp 1200w, images/global-configuration-permissions-tab_992.webp 992w, images/global-configuration-permissions-tab_768.webp 768w, images/global-configuration-permissions-tab_576.webp 576w"><source type="image/png" srcset="images/global-configuration-permissions-tab_1200.png 1200w, images/global-configuration-permissions-tab_992.png 992w, images/global-configuration-permissions-tab_768.png 768w, images/global-configuration-permissions-tab_576.png 576w"><img width="1440" height="1360" decoding="async" loading="lazy" src="images/global-configuration-permissions-tab.png" alt="Скриншот разрешений" class="screenshot"></source></source></picture></p>
+<h2 id="2">Разрешения на конфигурирование компонента<a id="content-разрешения-на-конфигурирование-компонента" class="heading-permalink" title="Permalink">¶</a></h2>
+<p>Чтобы получить доступ к определенному компоненту, необходимо установить разрешения в параметрах компонента.
+В этом примере используются параметры компонента "Медиа".</p>
+<p><picture class="responsive-image"><source type="image/webp" srcset="images/media-options-permissions-tab_1200.webp 1200w, images/media-options-permissions-tab_992.webp 992w, images/media-options-permissions-tab_768.webp 768w, images/media-options-permissions-tab_576.webp 576w"><source type="image/png" srcset="images/media-options-permissions-tab_1200.png 1200w, images/media-options-permissions-tab_992.png 992w, images/media-options-permissions-tab_768.png 768w, images/media-options-permissions-tab_576.png 576w"><img width="1440" height="870" decoding="async" loading="lazy" src="images/media-options-permissions-tab.png" alt="Снимок экрана Медиа" class="screenshot"></source></source></picture></p>
+<p>Вы заметите, что у этого компонента доступно меньше действий, и группе Oddjob разрешены минимально необходимые разрешения для выполнения работы.</p>
+<p>Чтобы изменить разрешения для этого компонента:</p>
+<ul>
+<li>Выберите группу, кликнув на её название слева.<br>
+Найдите нужное действие.
+<ul>
+<li>Удалить. Пользователи могут удалять эту статью.</li>
+<li>Редактировать. Пользователи могут редактировать эту статью.</li>
+<li>Изменить состояние. Пользователь может изменять состояние публикации и связанную информацию для этой статьи.</li>
+</ul>
+</li>
+<li>Выберите нужное разрешение для действия, которое вы хотите изменить.
+<ul>
+<li>Наследуется. Наследуется для пользователей из этой группы из глобальной конфигурации, параметров статей или категории статей.</li>
+<li>Разрешено. Разрешено для пользователей в этой группе. Примечание: если это действие запрещено на одном из уровней выше, разрешение здесь не вступит в силу. Настройка "Запрещено" не может быть переопределена.</li>
+<li>Запрещено. Запрещено для пользователей в этой группе.</li>
+</ul>
+</li>
+<li>Нажмите "Сохранить" на панели инструментов наверху. Когда экран обновится, столбец "Рассчитанная настройка" покажет фактическое разрешение для этой группы и действия.</li>
+</ul>
+<h2 id="3">Пользовательский опыт<a id="content-пользовательский-опыт" class="heading-permalink" title="Permalink">¶</a></h2>
+<p>После входа в систему пользователь из группы Oddjob увидит модули Главной панели, к которым установлен <strong>Специальный</strong> доступ, и ссылку на компонент Медиа в меню.</p>
+<p><picture class="responsive-image"><source type="image/webp" srcset="images/home-dashboard-for-oddjob_1200.webp 1200w, images/home-dashboard-for-oddjob_992.webp 992w, images/home-dashboard-for-oddjob_768.webp 768w, images/home-dashboard-for-oddjob_576.webp 576w"><source type="image/png" srcset="images/home-dashboard-for-oddjob_1200.png 1200w, images/home-dashboard-for-oddjob_992.png 992w, images/home-dashboard-for-oddjob_768.png 768w, images/home-dashboard-for-oddjob_576.png 576w"><img width="1440" height="640" decoding="async" loading="lazy" src="images/home-dashboard-for-oddjob.png" alt="Главная панель для Oddjob" class="screenshot"></source></source></picture></p>
+<p>Экран Медиа для пользователя Oddjob выглядит следующим образом:</p>
+<p><picture class="responsive-image"><source type="image/webp" srcset="images/media-screen-for-oddjob_1200.webp 1200w, images/media-screen-for-oddjob_992.webp 992w, images/media-screen-for-oddjob_768.webp 768w, images/media-screen-for-oddjob_576.webp 576w"><source type="image/png" srcset="images/media-screen-for-oddjob_1200.png 1200w, images/media-screen-for-oddjob_992.png 992w, images/media-screen-for-oddjob_768.png 768w, images/media-screen-for-oddjob_576.png 576w"><img width="1440" height="430" decoding="async" loading="lazy" src="images/media-screen-for-oddjob.png" alt="Экран Медиа для Oddjob" class="screenshot"></source></source></picture></p>
+<p><em>Переведено openai.com</em></p>
+
+                        </div>
+                
+            </div>
+        </body></html>
