@@ -1,0 +1,67 @@
+<!DOCTYPE html><html lang='it'><head><meta charset='UTF-8'><title>list-filters</title><style>body{font-family:sans-serif; padding:20px; max-width:900px; margin:auto; line-height:1.6;} img{max-width:100%; height:auto; display:block; margin: 1em 0;}</style></head><body>
+            <div class="row">
+                <div class="col document-title pb-1">
+                    
+                    <h2 id="document-title">
+                    Filtri di Elenco                                        </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-9" id="document-panel" tabindex="0">
+                    <!-- Filename: Help6.x:List_Filters / Display title: Filtri di Elenco -->
+<h2 id="0">Scopo¶</h2>
+<p>La maggior parte dei componenti ha viste elenco che mostrano elementi del database. Ci possono essere centinaia di elementi, forse migliaia, o persino milioni. Quindi i filtri elenco vengono utilizzati per ridurre l'elenco visualizzato a quelli che probabilmente contengono quello su cui devi lavorare.</p>
+<p>Ad esempio, gli elementi cestinati di solito non vengono visualizzati per impostazione predefinita. Se desideri vedere i tuoi elementi cestinati, devi impostare il filtro <strong>- Seleziona Stato -</strong> su <strong>Cestinato</strong>. Lo screenshot seguente mostra i filtri per la pagina degli articoli.</p>
+<h2 id="1">Opzioni di Filtro Elenco Articoli¶</h2>
+<p><picture class="responsive-image"><source type="image/webp" srcset="images/articles-list-filter-options_1200.webp 1200w, images/articles-list-filter-options_992.webp 992w, images/articles-list-filter-options_768.webp 768w, images/articles-list-filter-options_576.webp 576w"><source type="image/png" srcset="images/articles-list-filter-options_1200.png 1200w, images/articles-list-filter-options_992.png 992w, images/articles-list-filter-options_768.png 768w, images/articles-list-filter-options_576.png 576w"><img width="1440" height="345" decoding="async" loading="lazy" src="images/articles-list-filter-options.png" alt="Elenco articoli" class="screenshot"></source></source></picture></p>
+<p>Per <strong>mostrare</strong> o <strong>nascondere</strong> le Opzioni, seleziona il pulsante <strong>Opzioni Filtro</strong>. Nota
+che le Opzioni sono sempre visualizzate al ritorno su qualsiasi pagina in cui è stata selezionata un'Opzione.</p>
+<p>Il numero di Opzioni visualizzate varia in base al componente. Anche il componente Contenuto, che mostra l'elenco degli Articoli, può avere filtri aggiuntivi. Ad esempio, un filtro <strong>- Seleziona Fase -</strong> viene visualizzato se il componente Contenuto ha i <strong>Flussi di Lavoro</strong> abilitati.</p>
+<h2 id="2">La Barra di Ricerca</h2>
+<h3 id="3">Ricerca per Testo</h3>
+<p><em>Passa sopra</em> o <em>Seleziona</em> il campo di <em>Ricerca</em> per vedere un <em>Tooltip</em> o ascoltare un <em>Audio</em>
+equivalente che indica quali campi verranno ricercati. Il comportamento predefinito
+è cercare il testo inserito all'interno del titolo.</p>
+<p>Il componente di contenuto consente di usare un prefisso per cercare all'interno dell'ID, Autore o
+Contenuto. Ciascuno di questi termini richiede due punti ma può essere in qualsiasi <em>Maiuscolo o minuscolo</em>. Ad esempio <em>ID:19</em> o <em>Autore:Giovanni</em> o <em>contenuto:lorem ipsum</em>.</p>
+<p>Per eseguire una ricerca, inserisci parte del termine di ricerca e seleziona l'icona <strong>Cerca</strong>
+(<span class="filter-search-bar__button-icon icon-search" aria-hidden="true"></span>).</p>
+<h3 id="4">Opzioni di Filtro e Pulisci</h3>
+<p>Il pulsante <strong>Opzioni di Filtro</strong> viene utilizzato per attivare o disattivare la visualizzazione dei vari filtri. Se
+non ci sono filtri per un componente, questo pulsante sarà assente.</p>
+<p>Il pulsante <strong>Pulisci</strong> viene utilizzato per cancellare tutti i filtri e ripristinare la lista allo stato
+non filtrato. Se non ci sono filtri per un componente, questo pulsante sarà assente.</p>
+<h3 id="5">Ordine dei Risultati</h3>
+<p>L'ordine in cui vengono presentati i risultati è selezionabile dall'utente. Per gli articoli, l'ordine
+predefinito è <em>ID Discendente</em>, che mette gli articoli più recenti in cima alla lista. Ma potresti voler cercare articoli per numero di visite,
+<em>Visite discendente</em>, o articoli che spariranno presto,
+<em>Fine Pubblicazione crescente</em>.</p>
+<p>L'ordine dei risultati può essere cambiato selezionando un'icona di ordinamento nell'intestazione delle colonne della lista. L'icona predefinita <em>ID Discendente</em> è rappresentata da un
+carello giù (<span class="ms-1 icon-caret-down" aria-hidden="true"></span>).
+Cambia in un carello su se l'ordine di ordinamento viene invertito, <em>ID Ascendente</em>.</p>
+<h3 id="6">Numero di Risultati</h3>
+<p>Il numero di risultati in una lista è impostato nella pagina Configurazione Globale, scheda Sito, campo Limite Elenco Predefinito. Il valore predefinito per una nuova installazione è 20.</p>
+<p>Ci sono occasioni in cui questo non è conveniente. Potresti voler vedere <em>50</em> o
+<em>100</em>. Fai attenzione se scegli <em>Tutti</em>. Potrebbe richiedere molto tempo per recuperare
+i risultati e rendere la pagina. Il server potrebbe esaurire la memoria o il tempo e attivare un errore fatale. E il tuo browser potrebbe impiegare molto tempo per visualizzare la pagina.</p>
+<p>Il valore predefinito per questo set di documentazione è stato impostato a 5 perché è
+sufficiente per screenshot illustrativi.</p>
+<h2 id="7">Come Usare i Filtri</h2>
+<p>Lo scopo di ciascun filtro dovrebbe essere evidente dalla sua etichetta del selettore non filtrata. Ad esempio, il filtro <strong>- Seleziona Stato -</strong> degli Articoli offre cinque opzioni: <em>Cestinate</em>, <em>Non Pubblicate</em>, <em>Pubblicate</em>, <em>Archiviato</em> e <em>Tutto</em>. Quest'ultima è funzionalmente equivalente a non filtrato (<em>- Seleziona Stato -</em>).</p>
+<p>Quando viene cambiata un'opzione del filtro, la pagina si ricarica automaticamente con i nuovi risultati filtrati dall'opzione di filtro scelta.</p>
+<h2 id="8">Nascondi Colonne</h2>
+<p>Alcuni elenchi di componenti hanno molte colonne e possono essere troppo larghi per il tuo schermo. Questo
+è particolarmente vero per alcune traduzioni del testo dell'intestazione delle colonne. Il risultato più
+fastidioso è che i Titoli potrebbero andare a capo e diventare difficili da leggere.</p>
+<p>Per fare più spazio per il Titolo, puoi aprire l'elenco a discesa delle Colonne e
+selezionare le colonne meno importanti da nascondere. Quindi chiudi di nuovo l'elenco delle Colonne.
+L'effetto è immediato poiché utilizza JavaScript per nascondere le colonne selezionate nel layout.
+Sono ancora presenti nella pagina.</p>
+<p>Le tue impostazioni vengono salvate dal tuo browser e saranno utilizzate fino a quando non le cambierai di nuovo,
+anche se effettui il logout e il login di nuovo.</p>
+<p><em>Tradotto da openai.com</em></p>
+
+                        </div>
+                
+            </div>
+        </body></html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang='de'><head><meta charset='UTF-8'><title>list-filters</title><style>body{font-family:sans-serif; padding:20px; max-width:900px; margin:auto; line-height:1.6;} img{max-width:100%; height:auto; display:block; margin: 1em 0;}</style></head><body>
+            <div class="row">
+                <div class="col document-title pb-1">
+                    
+                    <h2 id="document-title">
+                    Listenfilter                                        </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-9" id="document-panel" tabindex="0">
+                    <!-- Filename: Help6.x:List_Filters / Display title: Listenfilter -->
+<h2 id="0">Zweck¶</h2>
+<p>Die meisten Komponenten verfügen über Listenansichten, die Elemente aus der Datenbank anzeigen. Dort
+kann Hunderte von Gegenständen sein, vielleicht Tausende oder sogar Millionen. Also listen Sie Filter auf
+werden verwendet, um die angezeigte Liste auf diejenigen zu reduzieren, die wahrscheinlich die von Ihnen
+ich muss daran arbeiten.</p>
+<p>Beispielsweise werden Papierkorb-Elemente normalerweise standardmäßig nicht angezeigt. Wenn Sie es wünschen
+um Ihre Papierkorbartikel anzuzeigen, müssen Sie den Filter ** - Select Status - ** auf setzen
+** Weggeworfen **. Der folgende Screenshot zeigt die Filter für die Artikelseite.</p>
+<h2 id="1">Filteroptionen für Artikellisten¶</h2>
+<p><picture class="responsive-image"><source type="image/webp" srcset="images/articles-list-filter-options_1200.webp 1200w, images/articles-list-filter-options_992.webp 992w, images/articles-list-filter-options_768.webp 768w, images/articles-list-filter-options_576.webp 576w"><source type="image/png" srcset="images/articles-list-filter-options_1200.png 1200w, images/articles-list-filter-options_992.png 992w, images/articles-list-filter-options_768.png 768w, images/articles-list-filter-options_576.png 576w"><img width="1440" height="345" decoding="async" loading="lazy" src="images/articles-list-filter-options.png" alt="Artikelliste" class="screenshot"></source></source></picture></p>
+<p>Um die Optionen <strong>anzuzeigen</strong> oder <strong>auszublenden</strong>, wählen Sie die Schaltfläche <strong>Filteroptionen</strong>. Beachten
+dass die Optionen immer angezeigt werden, wenn Sie zu einer Seite zurückkehren, auf der eine Option angezeigt wird
+ausgewählt wurde.</p>
+<p>Die Anzahl der angezeigten Optionen variiert je nach Komponente. Sogar der Inhalt
+komponente, die die Artikelliste anzeigt, kann zusätzliche Filter haben. Für
+beispiel: Ein <strong>- Select Stage -</strong>-Filter wird angezeigt, wenn die Inhaltskomponente
+hat ** Workflows ** aktiviert.</p>
+<h2 id="2">Die Suchleiste</h2>
+<h3 id="3">Suche nach Text</h3>
+<ul>
+<li>Bewegen Sie den Mauszeiger* oder <em>wählen Sie</em> das <em>Suchfeld</em> aus, um einen <em>Tooltip</em> anzuzeigen oder ein <em>Audio zu hören</em>
+äquivalent, das angibt, welche Felder durchsucht werden. Standardverhalten
+ist es, nach dem eingegebenen Text innerhalb des Titeltextes zu suchen.</li>
+</ul>
+<p>Die Inhaltskomponente ermöglicht die Suche nach einem Präfix innerhalb der ID, des Autors oder
+Inhalt. Jeder dieser Begriffe benötigt einen Doppelpunkt, kann aber in jedem <em>Fall</em> sein, Z
+beispiel <em>ID:19</em> oder <em>Autor: John</em> oder <em>Inhalt: lorem ipsum</em>.</p>
+<p>Um eine Suche durchzuführen, geben Sie einen Teil des Suchbegriffs ein und wählen Sie die <strong>Suche</strong>
+symbol (<span class="filter-search-bar__button-icon icon-search" aria-hidden="true"></span>).</p>
+<h3 id="4">Filteroptionen und Löschen</h3>
+<p>Die Schaltfläche <strong>Filteroptionen</strong> wird verwendet, um die Ansicht der verschiedenen Filter umzuschalten. Wenn
+es gibt keine Filter für eine Komponente, für die diese Schaltfläche fehlt.</p>
+<p>Die Schaltfläche <strong>Löschen</strong> wird verwendet, um alle Filter zu löschen und die Liste wiederherzustellen
+ungefilterter Zustand. Wenn für eine Komponente keine Filter vorhanden sind, wird diese Schaltfläche angezeigt
+abwesend.</p>
+<h3 id="5">Reihenfolge der Ergebnisse</h3>
+<p>Die Reihenfolge, in der die Ergebnisse präsentiert werden, ist vom Benutzer wählbar. Für Artikel, die
+die Standardreihenfolge ist <em>ID absteigend</em>, wodurch die neuesten Artikel an die
+ganz oben auf der Liste. Vielleicht möchten Sie aber nach Artikeln mit den meisten Treffern suchen,
+<em>Treffer absteigend</em> oder Artikel, die bald verschwinden werden,
+<em>Veröffentlichung aufsteigend beenden</em>.</p>
+<p>Die Ergebnisreihenfolge kann durch Auswahl eines Bestellsymbols in der Liste geändert werden
+Spaltenüberschriften. Das Standardsymbol <em>ID absteigend</em> wird durch a dargestellt
+Einfügemarke nach unten (<span class="ms-1 icon-caret-down" aria-hidden="true"></span>).
+Es ändert sich in ein Aufwärts-Caret, wenn die Sortierreihenfolge umgekehrt wird, <em>ID aufsteigend</em>.</p>
+<h3 id="6">Anzahl der Ergebnisse</h3>
+<p>Die Anzahl der Ergebnisse in einer Liste wird auf der globalen Konfigurationsseite Site festgelegt
+registerkarte, Feld Standardlistenlimit. Der Standardwert für eine Neuinstallation ist 20.</p>
+<p>Es gibt Gelegenheiten, in denen dies nicht bequem ist. Vielleicht möchten Sie <em>50</em> sehen oder
+<em>100</em>. Seien Sie vorsichtig, wenn Sie <em>Alle</em> auswählen. Das Abrufen kann lange dauern
+ergebnisse und rendern der Seite. Der Server mein Speicherlauf oder Zeit und Trigger
+ein fataler Fehler. Und Ihr Browser kann lange brauchen, um die Seite anzuzeigen.</p>
+<p>Der Standardwert für diesen Dokumentationssatz wurde auf 5 festgelegt, da dies der Fall ist
+ausreichend für anschauliche Screenshots.</p>
+<h2 id="7">Verwendung von Filtern</h2>
+<p>Der Zweck jedes Filters sollte aus seinem ungefilterten Selektor ersichtlich sein
+Etikett. Zum Beispiel bietet der Filter Artikel <strong>- Status auswählen -</strong> fünf
+auswahlmöglichkeiten: <em>Papierkorb</em>, <em>Unveröffentlicht</em>, <em>Veröffentlicht</em>, <em>Archiviert</em> und <em>Alle</em>. Der letzte
+ist funktional äquivalent zu ungefiltert (<em>- Status auswählen -</em>).</p>
+<p>Wenn eine Filteroption geändert wird, wird die Seite automatisch mit der neuen neu geladen
+ergebnisse, die mit der neuen Filteroption gefiltert wurden.</p>
+<h2 id="8">Spalten ausblenden</h2>
+<p>Einige Komponentenlisten haben viele Spalten und sind möglicherweise zu breit für Ihren Bildschirm. Dieser
+gilt insbesondere für einige Übersetzungen des Spaltenüberschriftentextes. Am meisten
+ärgerliches Ergebnis ist, dass die Titel möglicherweise umgebrochen werden und schwer zu lesen sind.</p>
+<p>Um mehr Platz für den Titel zu schaffen, können Sie die Dropdown-Liste Spalten öffnen und
+wählen Sie weniger wichtige Spalten zum Ausblenden aus. Schließen Sie dann die Spaltenliste wieder. Der
+effekt ist sofort, da JavaScript verwendet wird, um die ausgewählten Spalten in der auszublenden
+Layout. Sie sind immer noch auf der Seite vorhanden.</p>
+<p>Ihre Einstellungen werden von Ihrem Browser gespeichert und werden so lange verwendet, bis Sie sie ändern
+auch wenn Sie sich abmelden und erneut anmelden.</p>
+
+                        </div>
+                
+            </div>
+        </body></html>

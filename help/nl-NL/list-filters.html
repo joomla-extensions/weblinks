@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang='nl'><head><meta charset='UTF-8'><title>list-filters</title><style>body{font-family:sans-serif; padding:20px; max-width:900px; margin:auto; line-height:1.6;} img{max-width:100%; height:auto; display:block; margin: 1em 0;}</style></head><body>
+            <div class="row">
+                <div class="col document-title pb-1">
+                    
+                    <h2 id="document-title">
+                    Lijsten Filteren                                        </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-9" id="document-panel" tabindex="0">
+                    <!-- Filename: Help6.x:List_Filters  / Display title: Lijsten Filteren -->
+<h2 id="0">Doel¶</h2>
+<p>De meeste componenten hebben lijstweergaven die items uit de database weergeven. Er kunnen honderden items zijn, misschien wel duizenden of zelfs miljoenen. Dus worden Lijstfilters gebruikt om de weergegeven lijst te verkleinen tot die items die waarschijnlijk het item bevatten waar je aan wilt werken.</p>
+<p>Bijvoorbeeld, verwijderde items worden meestal niet standaard weergegeven. Als je je verwijderde items wilt zien, moet je de <strong>- Selecteer Status -</strong> filter instellen op <strong>Verwijderd</strong>. De volgende schermafbeelding toont de Filters voor de Artikelenpagina.</p>
+<h2 id="1">Opties voor Artikel Lijst Filteren¶</h2>
+<p><picture class="responsive-image"><source type="image/webp" srcset="images/articles-list-filter-options_1200.webp 1200w, images/articles-list-filter-options_992.webp 992w, images/articles-list-filter-options_768.webp 768w, images/articles-list-filter-options_576.webp 576w"><source type="image/png" srcset="images/articles-list-filter-options_1200.png 1200w, images/articles-list-filter-options_992.png 992w, images/articles-list-filter-options_768.png 768w, images/articles-list-filter-options_576.png 576w"><img width="1440" height="345" decoding="async" loading="lazy" src="images/articles-list-filter-options.png" alt="Articles list" class="screenshot"></source></source></picture></p>
+<p>Om de opties te <strong>tonen</strong> of <strong>verbergen</strong>, selecteer de <strong>Filteropties</strong> knop. Let
+op dat de opties altijd getoond worden bij terugkeer naar een pagina waarin een optie
+is geselecteerd.</p>
+<p>Het aantal weergegeven opties varieert afhankelijk van de component. Zelfs de Inhoud
+component, die de artikellijst weergeeft, kan extra filters hebben. Bijvoorbeeld, een <strong>- Selecteer Fase -</strong> filter wordt weergegeven als de Inhoud component <strong>Workflows</strong> ingeschakeld heeft.</p>
+<h2 id="2">De Zoekbalk</h2>
+<h3 id="3">Zoeken op Tekst</h3>
+<p><em>Hover</em> of <em>Selecteer</em> het <em>Zoeken</em> veld om een <em>Tooltip</em> of een <em>Audio</em>
+equivalent te zien of te horen dat aangeeft welke velden worden doorzocht. Het standaardgedrag
+is om te zoeken naar de ingevoerde tekst binnen de titeltekst.</p>
+<p>De inhoudscomponent maakt gebruik van een prefix om binnen de ID, Auteur of
+Inhoud te zoeken. Elk van die termen heeft een dubbele punt nodig maar mag in elke <em>Case</em> zijn, bijvoorbeeld <em>ID:19</em> of <em>Auteur:John</em> of <em>inhoud:lorem ipsum</em>.</p>
+<p>Om een zoekopdracht uit te voeren, voer een deel van de zoekterm in en selecteer het <strong>Zoeken</strong>
+pictogram (<span class="filter-search-bar__button-icon icon-search" aria-hidden="true"></span>).</p>
+<h3 id="4">Filteropties en Wissen</h3>
+<p>De knop <strong>Filteropties</strong> wordt gebruikt om de weergave van de verschillende filters in of uit te schakelen. Als er geen filters voor een component zijn, zal deze knop ontbreken.</p>
+<p>De knop <strong>Wissen</strong> wordt gebruikt om alle filters te wissen en de lijst terug te brengen naar de niet-gefilterde staat. Als er geen filters voor een component zijn, zal deze knop ontbreken.</p>
+<h3 id="5">Resultaatvolgorde</h3>
+<p>De volgorde waarin resultaten worden gepresenteerd kan door de gebruiker worden geselecteerd. Voor artikelen is
+de standaardvolgorde <em>ID Aflopend</em>, wat de meest recente artikelen bovenaan de lijst plaatst. Maar je kunt ervoor kiezen om te zoeken naar artikelen met de meeste hits tijdens <em>Hits aflopend</em>, of artikelen die binnenkort verdwijnen,
+<em>Beëindig publicatie oplopend</em>.</p>
+<p>De resultaatvolgorde kan worden gewijzigd door een volgorde-pictogram in de lijstkolomkoppen te selecteren. Het standaard <em>ID Aflopend</em> pictogram wordt weergegeven door een
+omlaag wijzende carre (<span class="ms-1 icon-caret-down" aria-hidden="true"></span>).
+Het verandert in een omhoog wijzende carre als de sorteervolgorde wordt omgekeerd, <em>ID Oplopend</em>.</p>
+<h3 id="6">Aantal Resultaten</h3>
+<p>Het aantal resultaten in een lijst wordt ingesteld op de Global Configuration-pagina, Site
+tabblad, veld Standaard lijstlimiet. De standaardwaarde voor een nieuwe installatie is 20.</p>
+<p>Er zijn gelegenheden waarop dit niet handig is. Je zou er bijvoorbeeld voor kunnen kiezen om <em>50</em> of
+<em>100</em> resultaten te zien. Wees voorzichtig als je <em>Alle</em> kiest. Het kan lang duren om
+de resultaten op te halen en de pagina weer te geven. De server kan door geheugen- of tijdoverlading een fatale fout veroorzaken. En je browser kan lange tijd nodig hebben om de pagina weer te geven.</p>
+<p>De standaardwaarde voor deze documentatieset is ingesteld op 5 omdat dat voldoende is voor illustratieve screenshots.</p>
+<h2 id="7">Hoe Filters te Gebruiken</h2>
+<p>Het doel van elk filter zou duidelijk moeten zijn uit het label van de niet-gefilterde selector. Bijvoorbeeld, het Artikelen <strong>- Selecteer Status -</strong> Filter biedt vijf keuzes: <em>Verwijderd</em>, <em>Niet-gepubliceerd</em>, <em>Gepubliceerd</em>, <em>Gearchiveerd</em> en <em>Alle</em>. De laatste is functioneel gelijk aan ongefilterd (<em>- Selecteer Status -</em>).</p>
+<p>Wanneer een filteroptie wordt gewijzigd, laadt de pagina automatisch opnieuw met de nieuwe resultaten gefilterd door de nieuwe filteroptie.</p>
+<h2 id="8">Kolommen Verbergen</h2>
+<p>Sommige componentenlijsten hebben veel kolommen en kunnen te breed zijn voor je scherm. Dit
+is vooral het geval bij sommige vertalingen van de kolomkoptekst. Het meest
+vervelende resultaat is dat de titels kunnen afbreken en moeilijk leesbaar zijn.</p>
+<p>Om meer ruimte voor de titel te maken kun je de lijst met Kolommen openen en
+minder belangrijke kolommen selecteren om te verbergen. Sluit daarna de lijst met Kolommen weer. Het
+effect is direct omdat JavaScript wordt gebruikt om de geselecteerde kolommen in de
+indeling te verbergen. Ze zijn nog steeds aanwezig op de pagina.</p>
+<p>Je instellingen worden door je browser opgeslagen en zullen worden gebruikt totdat je ze
+weer wijzigt, zelfs als je uitlogt en opnieuw inlogt.</p>
+<p><em>Vertaald door openai.com</em></p>
+
+                        </div>
+                
+            </div>
+        </body></html>

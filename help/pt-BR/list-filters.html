@@ -1,0 +1,46 @@
+<!DOCTYPE html><html lang='ptbr'><head><meta charset='UTF-8'><title>list-filters</title><style>body{font-family:sans-serif; padding:20px; max-width:900px; margin:auto; line-height:1.6;} img{max-width:100%; height:auto; display:block; margin: 1em 0;}</style></head><body>
+            <div class="row">
+                <div class="col document-title pb-1">
+                    
+                    <h2 id="document-title">
+                    Filtros de Listas                                        </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-9" id="document-panel" tabindex="0">
+                    <!-- Filename: Help6.x:List_Filters  / Display title: Filtros de Listas -->
+<h2 id="0">Propósito¶</h2>
+<p>A maioria dos componentes possui visualizações de lista que exibem itens do banco de dados. Pode haver centenas de itens, talvez milhares, ou até milhões. Portanto, os Filtros de Lista são usados para reduzir a lista exibida para aqueles que provavelmente contêm o item no qual você precisa trabalhar.</p>
+<p>Por exemplo, itens descartados geralmente não são exibidos por padrão. Se você quiser ver seus itens descartados, precisará definir o filtro <strong>- Selecionar Status -</strong> para <strong>Descartado</strong>. A captura de tela a seguir mostra os Filtros da página de Artigos.</p>
+<h2 id="1">Opções de Filtro da Lista de Artigos¶</h2>
+<p><picture class="responsive-image"><source type="image/webp" srcset="images/articles-list-filter-options_1200.webp 1200w, images/articles-list-filter-options_992.webp 992w, images/articles-list-filter-options_768.webp 768w, images/articles-list-filter-options_576.webp 576w"><source type="image/png" srcset="images/articles-list-filter-options_1200.png 1200w, images/articles-list-filter-options_992.png 992w, images/articles-list-filter-options_768.png 768w, images/articles-list-filter-options_576.png 576w"><img width="1440" height="345" decoding="async" loading="lazy" src="images/articles-list-filter-options.png" alt="Lista de artigos" class="screenshot"></source></source></picture></p>
+<p>Para <strong>exibir</strong> ou <strong>ocultar</strong> as Opções, selecione o botão <strong>Opções de Filtro</strong>. Note que as Opções são sempre exibidas ao retornar a qualquer página em que uma Opção tenha sido selecionada.</p>
+<p>O número de Opções exibidas varia com o componente. Até mesmo o componente de Conteúdo, que exibe a lista de Artigos, pode ter filtros adicionais. Por exemplo, um filtro <strong>- Selecionar Estágio -</strong> é exibido se o componente de Conteúdo tiver <strong>Fluxos de Trabalho</strong> habilitados.</p>
+<h2 id="2">A Barra de Pesquisa</h2>
+<h3 id="3">Pesquisa por Texto</h3>
+<p><em>Passe o cursor</em> ou <em>selecione</em> o campo de <em>Pesquisa</em> para ver uma <em>Dica de Ferramenta</em> ou ouvir um equivalente <em>Áudio</em> indicando quais campos serão pesquisados. O comportamento padrão é pesquisar o texto inserido dentro do texto do título.</p>
+<p>O componente de conteúdo permite um prefixo para pesquisar dentro do ID, Autor ou Conteúdo. Cada um desses termos precisa de dois pontos, mas pode estar em qualquer <em>Caixa</em>. Por exemplo, <em>ID:19</em> ou <em>Autor:João</em> ou <em>conteúdo:lorem ipsum</em>.</p>
+<p>Para realizar uma pesquisa, insira parte do termo de pesquisa e selecione o ícone <strong>Pesquisar</strong> (<span class="filter-search-bar__button-icon icon-search" aria-hidden="true"></span>).</p>
+<h3 id="4">Opções de Filtro e Limpar</h3>
+<p>O botão <strong>Opções de Filtro</strong> é usado para alternar a visualização dos vários filtros. Se não houver Filtros para um componente, esse botão estará ausente.</p>
+<p>O botão <strong>Limpar</strong> é usado para limpar todos os filtros e restaurar a lista ao seu estado não filtrado. Se não houver filtros para um componente, esse botão estará ausente.</p>
+<h3 id="5">Ordem dos Resultados</h3>
+<p>A ordem em que os resultados são apresentados é selecionável pelo usuário. Para artigos, a ordem padrão é <em>ID Decrescente</em>, o que coloca os artigos mais recentes no topo da lista. Mas você pode desejar pesquisar artigos por mais acessos, <em>Acessos decrescente</em>, ou artigos que em breve desaparecerão, <em>Fim da Publicação ascendente</em>.</p>
+<p>A ordem dos resultados pode ser alterada selecionando um ícone de ordem nos cabeçalhos das colunas da lista. O ícone padrão <em>ID Decrescente</em> é representado por um caractere de seta para baixo (<span class="ms-1 icon-caret-down" aria-hidden="true"></span>). Ele muda para uma seta para cima se a ordem de classificação for invertida, <em>ID Ascendente</em>.</p>
+<h3 id="6">Número de Resultados</h3>
+<p>O número de resultados em uma lista é definido na página de Configuração Global, aba Site, campo Limite Padrão da Lista. O valor padrão para uma nova instalação é 20.</p>
+<p>Há ocasiões em que isso não é conveniente. Você pode desejar ver <em>50</em> ou <em>100</em>. Tenha cuidado ao escolher <em>Todos</em>. Pode levar um longo tempo para recuperar os resultados e renderizar a página. O servidor pode ficar sem memória ou tempo e acionar um erro fatal. E seu navegador pode demorar muito para exibir a página.</p>
+<p>O valor padrão para este conjunto de documentação foi definido para 5 porque isso é suficiente para capturas de tela ilustrativas.</p>
+<h2 id="7">Como Usar Filtros</h2>
+<p>O propósito de cada filtro deve ser evidente a partir de seu rótulo de seletor não filtrado. Por exemplo, o filtro de Artigos <strong>- Selecionar Status -</strong> oferece cinco opções: <em>Excluído</em>, <em>Não Publicado</em>, <em>Publicado</em>, <em>Arquivado</em> e <em>Todos</em>. A última é funcionalmente equivalente ao não filtrado (<em>- Selecionar Status -</em>).</p>
+<p>Quando uma opção de filtro é alterada, a página recarrega automaticamente com os novos resultados filtrados pela nova opção de filtro.</p>
+<h2 id="8">Ocultar Colunas</h2>
+<p>Algumas listas de componentes têm muitas colunas e podem ser largas demais para a sua tela. Isso é especialmente verdadeiro em algumas traduções do texto dos cabeçalhos de coluna. O resultado mais irritante é que os Títulos podem quebrar e ser difíceis de ler.</p>
+<p>Para liberar mais espaço para o Título, você pode abrir a lista suspensa de Colunas e selecionar colunas menos importantes para ocultar. Em seguida, feche a lista de Colunas novamente. O efeito é imediato, pois usa JavaScript para ocultar as colunas selecionadas no layout. Elas ainda estão presentes na página.</p>
+<p>Suas configurações são salvas pelo seu navegador, então serão usadas até que você as altere novamente, mesmo que você saia e entre novamente.</p>
+<p><em>Traduzido por openai.com</em></p>
+
+                        </div>
+                
+            </div>
+        </body></html>
