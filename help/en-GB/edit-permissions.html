@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>edit-permissions</title><style>body{font-family:sans-serif; padding:20px; max-width:900px; margin:auto; line-height:1.6;} img{max-width:100%; height:auto; display:block; margin: 1em 0;}</style></head><body>
+            <div class="row">
+                <div class="col document-title pb-1">
+                    
+                    <h2 id="document-title">
+                    Edit Permissions                                        </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-9" id="document-panel" tabindex="0">
+                    <!-- Filename: Help4.x:Edit_Permissions / Display title: Edit Permissions -->
+<h2 id="0">Purpose</h2>
+<p>Many extensions have edit screens with a Permissions tab that is used to change
+the permissions allocated to User Groups. The number of User Groups may vary
+as custom User Groups can be added to use for special purposes. The
+number of Actions that can be altered also varies by extension. This article
+is a brief description of the permissions screens for such special
+purposes.</p>
+<p>Imagine there is a user who looks after Media (images and files) but
+is not allowed any other responsibilities. A group named Oddjob has been
+created and assigned to the Special access level. A user also named Oddjob has
+been created and assigned to the Oddjob group.</p>
+<p>For more detailed information on User Groups, Access Levels and Permissions
+there is a separate tutorial on <a href="/jdocmanual?article=user/users/access-control">Access Control</a>.</p>
+<h2 id="1">Global Configuration Permissions</h2>
+<p>In this example, users in the Oddjob group have been assigned Global
+permission to login to the Administrator interface but nothing else.</p>
+<p><picture class="responsive-image"><source type="image/webp" srcset="images/global-configuration-permissions-tab_1200.webp 1200w, images/global-configuration-permissions-tab_992.webp 992w, images/global-configuration-permissions-tab_768.webp 768w, images/global-configuration-permissions-tab_576.webp 576w"><source type="image/png" srcset="images/global-configuration-permissions-tab_1200.png 1200w, images/global-configuration-permissions-tab_992.png 992w, images/global-configuration-permissions-tab_768.png 768w, images/global-configuration-permissions-tab_576.png 576w"><img width="1440" height="1360" decoding="async" loading="lazy" src="images/global-configuration-permissions-tab.png" alt="Permissions Screenshot" class="screenshot"></source></source></picture></p>
+<h2 id="2">Component Configuration Permissions</h2>
+<p>To access a specific component permissions must be set in the component options.
+In this example the Media component options.</p>
+<p><picture class="responsive-image"><source type="image/webp" srcset="images/media-options-permissions-tab_1200.webp 1200w, images/media-options-permissions-tab_992.webp 992w, images/media-options-permissions-tab_768.webp 768w, images/media-options-permissions-tab_576.webp 576w"><source type="image/png" srcset="images/media-options-permissions-tab_1200.png 1200w, images/media-options-permissions-tab_992.png 992w, images/media-options-permissions-tab_768.png 768w, images/media-options-permissions-tab_576.png 576w"><img width="1440" height="870" decoding="async" loading="lazy" src="images/media-options-permissions-tab.png" alt="Media Screenshot" class="screenshot"></source></source></picture></p>
+<p>You will notice that this component has fewer Actions available and the Oddjob
+group is allowed just enough permissions to do the job.</p>
+<p>To change the permissions for this component:</p>
+<ul>
+<li>Select the Group by clicking its title located on the left.<br>
+Find the desired Action.
+<ul>
+<li>Delete. Users can delete this article.</li>
+<li>Edit. Users can edit this article.</li>
+<li>Edit State. User can change the published state and related information for this article.</li>
+</ul>
+</li>
+<li>Select the desired permission for the action you wish to change.
+<ul>
+<li>Inherited. Inherited for users in this Group from the Global Configuration, Articles Options, or Articles Category.</li>
+<li>Allowed. Allowed for users in this Group.Note: If this action is Denied at one of the higher levels, the Allowed permission here will not take effect. A Denied setting cannot be overridden.</li>
+<li>Denied. Denied for users in this Group.</li>
+</ul>
+</li>
+<li>Click Save in Toolbar at top. When the screen refreshes, the Calculated Setting column will show the effective permission for this Group and Action.</li>
+</ul>
+<h2 id="3">The User Experience</h2>
+<p>After login, a user in the Oddjob group will see whatever Home Dashboard
+modules have <strong>Special</strong> access set and a Menu item link to the Media component.</p>
+<p><picture class="responsive-image"><source type="image/webp" srcset="images/home-dashboard-for-oddjob_1200.webp 1200w, images/home-dashboard-for-oddjob_992.webp 992w, images/home-dashboard-for-oddjob_768.webp 768w, images/home-dashboard-for-oddjob_576.webp 576w"><source type="image/png" srcset="images/home-dashboard-for-oddjob_1200.png 1200w, images/home-dashboard-for-oddjob_992.png 992w, images/home-dashboard-for-oddjob_768.png 768w, images/home-dashboard-for-oddjob_576.png 576w"><img width="1440" height="640" decoding="async" loading="lazy" src="images/home-dashboard-for-oddjob.png" alt="Home Dashboard for Oddjob" class="screenshot"></source></source></picture></p>
+<p>And the Media screen for user Oddjob is as expected:</p>
+<p><picture class="responsive-image"><source type="image/webp" srcset="images/media-screen-for-oddjob_1200.webp 1200w, images/media-screen-for-oddjob_992.webp 992w, images/media-screen-for-oddjob_768.webp 768w, images/media-screen-for-oddjob_576.webp 576w"><source type="image/png" srcset="images/media-screen-for-oddjob_1200.png 1200w, images/media-screen-for-oddjob_992.png 992w, images/media-screen-for-oddjob_768.png 768w, images/media-screen-for-oddjob_576.png 576w"><img width="1440" height="430" decoding="async" loading="lazy" src="images/media-screen-for-oddjob.png" alt="Media screen for Oddjob" class="screenshot"></source></source></picture></p>
+
+                        </div>
+                
+            </div>
+        </body></html>
