@@ -25,7 +25,7 @@ use Joomla\Registry\Registry;
 /**
  * HTML Weblink View class for the Weblinks component
  *
- * @since  __DEPLOY_VERSION__
+ * @since  5.1.0
  */
 class HtmlView extends BaseHtmlView
 {
@@ -59,7 +59,7 @@ class HtmlView extends BaseHtmlView
      * @return  mixed  A string if successful, otherwise an Error object.
      *
      * @throws  \Exception
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      */
     public function display($tpl = null)
     {

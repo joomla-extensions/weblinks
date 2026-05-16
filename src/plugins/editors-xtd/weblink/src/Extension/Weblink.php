@@ -24,7 +24,7 @@ use Joomla\Event\DispatcherInterface;
 /**
  * Editor Web Link button
  *
- * @since  __DEPLOY_VERSION__
+ * @since  5.1.0
  */
 final class Weblink extends CMSPlugin
 {
@@ -32,7 +32,7 @@ final class Weblink extends CMSPlugin
      * Load the language file on instantiation.
      *
      * @var    boolean
-     * @since  __DEPLOY_VERSION__
+     * @since  5.1.0
      */
     protected $autoloadLanguage = true;
 
@@ -57,7 +57,7 @@ final class Weblink extends CMSPlugin
       *
       * @return  ?object  The button options as stdClass object or null
       *
-      * @since  __DEPLOY_VERSION__
+      * @since  5.1.0
       */
     public function onDisplay($name): ?object
     {

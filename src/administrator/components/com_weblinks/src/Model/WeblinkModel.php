@@ -47,7 +47,7 @@ class WeblinkModel extends AdminModel
      * The context used for the associations table
      *
      * @var    string
-     * @since  __DEPLOY_VERSION__
+     * @since  5.1.0
      */
     protected $associationsContext = 'com_weblinks.item';
 

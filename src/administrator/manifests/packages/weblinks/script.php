@@ -17,7 +17,7 @@ use Joomla\CMS\Installer\InstallerScript;
 /**
  * Installation class to perform additional changes during install/uninstall/update
  *
- * @since  __DEPLOY_VERSION__
+ * @since  5.1.0
  */
 class Pkg_WeblinksInstallerScript extends InstallerScript
 {
@@ -27,14 +27,14 @@ class Pkg_WeblinksInstallerScript extends InstallerScript
      * Use at your own risk as if there is a change in functionality people may wish to downgrade.
      *
      * @var    boolean
-     * @since  __DEPLOY_VERSION__
+     * @since  5.1.0
      */
     protected $allowDowngrades = true;
 
     /**
      * Extension script constructor.
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      */
     public function __construct()
     {

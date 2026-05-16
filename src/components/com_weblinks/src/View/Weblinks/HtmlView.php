@@ -24,7 +24,7 @@ use Joomla\Component\Weblinks\Administrator\Model\WeblinksModel;
 /**
  * View class for a list of weblinks.
  *
- * @since  __DEPLOY_VERSION__
+ * @since  5.1.0
  */
 class HtmlView extends BaseHtmlView
 {
@@ -67,7 +67,7 @@ class HtmlView extends BaseHtmlView
      * Is this view an Empty State
      *
      * @var  boolean
-     * @since  __DEPLOY_VERSION__
+     * @since  5.1.0
      */
     private $isEmptyState = false;
 
@@ -108,7 +108,7 @@ class HtmlView extends BaseHtmlView
      *
      * @return  void
      *
-     * @since  __DEPLOY_VERSION__
+     * @since  5.1.0
      */
     protected function addToolbar()
     {

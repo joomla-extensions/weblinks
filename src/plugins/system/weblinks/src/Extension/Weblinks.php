@@ -27,7 +27,7 @@ use Joomla\Event\SubscriberInterface;
 /**
  * System plugin for Joomla Web Links.
  *
- * @since  __DEPLOY_VERSION__
+ * @since  5.1.0
  */
 final class Weblinks extends CMSPlugin implements SubscriberInterface
 {
@@ -37,7 +37,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      * Supported Extensions
      *
      * @var    array
-     * @since  __DEPLOY_VERSION__
+     * @since  5.1.0
      */
     private $supportedExtensions = [
         'mod_stats',
@@ -63,7 +63,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      *
      * @return  array
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      */
     public static function getSubscribedEvents(): array
     {
@@ -80,7 +80,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      *
      * @return  void
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      */
     public function onGetStats(Event $event)
     {
@@ -124,7 +124,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      *
      * @return  void
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      */
     public function onAfterRender()
     {

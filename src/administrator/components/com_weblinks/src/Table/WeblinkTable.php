@@ -40,7 +40,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
      * Indicates that columns fully support the NULL value in the database
      *
      * @var    boolean
-     * @since  __DEPLOY_VERSION__
+     * @since  5.1.0
      */
 
     protected $_supportNullValue = true;

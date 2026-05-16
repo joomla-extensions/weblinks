@@ -23,7 +23,7 @@ use Joomla\Database\ParameterType;
 /**
  * Supports a modal weblink picker.
  *
- * @since  __DEPLOY_VERSION__
+ * @since  5.1.0
  */
 class WeblinkField extends FormField
 {
@@ -31,7 +31,7 @@ class WeblinkField extends FormField
      * The form field type.
      *
      * @var    string
-     * @since  __DEPLOY_VERSION__
+     * @since  5.1.0
      */
     protected $type = 'Modal_Weblink';
     /**
@@ -39,7 +39,7 @@ class WeblinkField extends FormField
          *
          * @return  string  The field input markup.
          *
-         * @since   __DEPLOY_VERSION__
+         * @since   5.1.0
          */
     protected function getInput()
     {
@@ -245,7 +245,7 @@ class WeblinkField extends FormField
      *
      * @return  string  The field label markup.
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      */
     protected function getLabel()
     {
