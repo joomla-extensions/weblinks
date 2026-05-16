@@ -10,10 +10,21 @@
             <item>Quickicon Plugin: Displays a Quickicon in the Dashboard</item>
         </addition>
         <change>
-			<item>Code clean</item>
-		</change>
+            <item>Code clean</item>
+        </change>
         <note>
             <item>Joomla 6 ready</item>
+        </note>
+    </changelog>
+    <changelog>
+        <element>pkg_weblinks</element>
+        <type>package</type>
+        <version>5.1.0</version>
+        <change>
+            <item>Code clean</item>
+        </change>
+        <note>
+            <item>Crowdin Language Files</item>
         </note>
     </changelog>
 </changelogs>

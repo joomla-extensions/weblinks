@@ -9,4 +9,13 @@
             <item>Quickicon for Weblinks available on Quickicons group "mod_quickicon"</item>
         </addition>
     </changelog>
+    <changelog>
+        <element>weblinks</element>
+        <type>plugin</type>
+        <version>5.1.0</version>
+         <folder>quickicon</folder>
+        <addition>
+            <item>Crowdin Language Files</item>
+        </addition>
+    </changelog>
 </changelogs>

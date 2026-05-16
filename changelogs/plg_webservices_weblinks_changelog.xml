@@ -10,4 +10,13 @@
             <item>Rate Limiting for public API requests</item>
         </addition>
     </changelog>
+    <changelog>
+        <element>weblinks</element>
+        <type>plugin</type>
+        <version>5.1.0</version>
+        <folder>webservices</folder>
+        <addition>
+            <item>Crowdin Language Files</item>
+        </addition>
+    </changelog>
 </changelogs>

@@ -9,4 +9,13 @@
             <item>Reset Weblink Hits</item>
         </addition>
     </changelog>
+    <changelog>
+        <element>com_weblinks</element>
+        <type>component</type>
+        <version>5.1.0</version>
+        <addition>
+            <item>Help Pages from github repository</item>
+            <item>Dashboard</item>
+        </addition>
+    </changelog>
 </changelogs>
