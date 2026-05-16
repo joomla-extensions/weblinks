@@ -65,7 +65,7 @@ class HtmlView extends BaseHtmlView
 
     /**
      * @var    User
-     * @since  __DEPLOY_VERSION__
+     * @since  5.1.0
      */
     protected $user;
 

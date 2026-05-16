@@ -35,7 +35,7 @@ class WeblinksHelper
      *
      * @return  array   Array containing all the weblinks.
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      **/
     public function getWeblinks($params, $app)
     {
@@ -88,7 +88,7 @@ class WeblinksHelper
      *
      * @return  \stdClass|null  An object representing the category tree, or null if the initial category is not found.
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      */
     private function getCategoryTree(int $catid, Registry $params, CMSApplicationInterface $app, int $level, int $maxLevel): ?\stdClass
     {
@@ -124,7 +124,7 @@ class WeblinksHelper
      *
      * @return  array  An array of weblink items.
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      */
     private function getCategoryWeblinks(int|array $catid, Registry $params, CMSApplicationInterface $app): array
     {

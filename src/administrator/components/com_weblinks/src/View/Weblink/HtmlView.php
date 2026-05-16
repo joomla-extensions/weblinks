@@ -90,7 +90,7 @@ class HtmlView extends BaseHtmlView
      *
      * @return  int
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      */
     public function getItemId(): int
     {

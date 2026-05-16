@@ -21,7 +21,7 @@ use Joomla\CMS\Language\Text;
  * Hits field for Weblinks.
  * Renders a read-only input for hits and a reset button.
  *
- * @since  __DEPLOY_VERSION__
+ * @since  5.1.0
  */
 class HitsField extends FormField
 {
@@ -29,7 +29,7 @@ class HitsField extends FormField
      * The form field type.
      *
      * @var    string
-     * @since  __DEPLOY_VERSION__
+     * @since  5.1.0
      */
     protected $type = 'Hits';
 
@@ -38,7 +38,7 @@ class HitsField extends FormField
      *
      * @return  string  The field input markup.
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      */
     protected function getInput()
     {

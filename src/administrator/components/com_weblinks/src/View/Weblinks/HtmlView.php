@@ -123,7 +123,7 @@ class HtmlView extends BaseHtmlView
      *
      * @return  array
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      */
     public function getItems(): array
     {
@@ -135,7 +135,7 @@ class HtmlView extends BaseHtmlView
      *
      * @return  Pagination
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      */
     public function getPagination(): Pagination
     {
@@ -147,7 +147,7 @@ class HtmlView extends BaseHtmlView
      *
      * @return  Registry
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      */
     public function getState(): Registry
     {

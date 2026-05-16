@@ -25,7 +25,7 @@ use Joomla\Database\DatabaseInterface;
 /**
  * Content associations helper.
  *
- * @since  __DEPLOY_VERSION__
+ * @since  5.1.0
  */
 class AssociationsHelper extends AssociationExtensionHelper
 {
@@ -34,7 +34,7 @@ class AssociationsHelper extends AssociationExtensionHelper
      *
      * @var     string $extension
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      */
     protected $extension = 'com_weblinks';
 
@@ -43,7 +43,7 @@ class AssociationsHelper extends AssociationExtensionHelper
      *
      * @var     array $itemTypes
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      */
     protected $itemTypes = ['weblink', 'category'];
 
@@ -52,7 +52,7 @@ class AssociationsHelper extends AssociationExtensionHelper
      *
      * @var     boolean $associationsSupport
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      */
     protected $associationsSupport = true;
 
@@ -79,7 +79,7 @@ class AssociationsHelper extends AssociationExtensionHelper
      *
      * @return  array
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      */
     public function getAssociations($typeName, $id)
     {
@@ -104,7 +104,7 @@ class AssociationsHelper extends AssociationExtensionHelper
      *
      * @return  Table|null
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      */
     public function getItem($typeName, $id)
     {
@@ -139,7 +139,7 @@ class AssociationsHelper extends AssociationExtensionHelper
      *
      * @return  array  Array of item types
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      */
     public function getType($typeName = '')
     {

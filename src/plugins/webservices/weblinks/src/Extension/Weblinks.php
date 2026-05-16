@@ -22,7 +22,7 @@ use Joomla\CMS\Router\ApiRouter;
 /**
  * Web Services adapter for com_weblinks.
  *
- * @since  __DEPLOY_VERSION__
+ * @since  5.1.0
  */
 class Weblinks extends CMSPlugin
 {
@@ -30,7 +30,7 @@ class Weblinks extends CMSPlugin
      * Load the language file on instantiation.
      *
      * @var    boolean
-     * @since  __DEPLOY_VERSION__
+     * @since  5.1.0
      */
     protected $autoloadLanguage = true;
 
@@ -41,7 +41,7 @@ class Weblinks extends CMSPlugin
      *
      * @return  void
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      */
     public function onBeforeApiRoute(&$router)
     {
@@ -72,7 +72,7 @@ class Weblinks extends CMSPlugin
      *
      * @return  void
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      */
     private function createFieldsRoutes(&$router, $isPublic)
     {
@@ -100,7 +100,7 @@ class Weblinks extends CMSPlugin
      *
      * @return void
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      */
     public function onAfterApiRoute()
     {
@@ -145,7 +145,7 @@ class Weblinks extends CMSPlugin
      *
      * @return  void
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      */
     private function applyNonPersistentRateLimit(string $userIp, int $maxRequests, int $windowSeconds): void
     {
@@ -204,7 +204,7 @@ class Weblinks extends CMSPlugin
      *
      * @return  void
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      */
     private function applyPersistentRateLimit(string $userIp, int $maxRequests, int $windowSeconds): void
     {
@@ -257,7 +257,7 @@ class Weblinks extends CMSPlugin
      *
      * @return  void
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      */
     private function handleRateLimitExceeded(int $retryAfterSeconds): void
     {
@@ -285,7 +285,7 @@ class Weblinks extends CMSPlugin
      *
      * @return  void
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.1.0
      */
     private function setRateLimitHeaders(int $remainingRequests, int $resetTime): void
     {
