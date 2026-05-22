@@ -23,7 +23,8 @@ export default defineConfig({
     scrollBehavior: 'center',
     browser: 'firefox',
     screenshotOnRunFailure: true,
-    video: false
+    video: false,
+    allowCypressEnv: false,
   },
   expose: {
       sitename: 'Joomla CMS Test',
