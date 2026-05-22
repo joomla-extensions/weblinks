@@ -9,7 +9,7 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs';
  * @returns null
  */
 function checkForLogs(config) {
-  const { logFile } = config.env;
+  const { logFile } = config.expose;
   if (!existsSync(logFile)) {
     return null;
   }
@@ -30,7 +30,7 @@ function checkForLogs(config) {
  * @returns null
  */
 function clearLogs(config) {
-  const { logFile } = config.env;
+  const { logFile } = config.expose;
   if (!existsSync(logFile)) {
     return null;
   }
