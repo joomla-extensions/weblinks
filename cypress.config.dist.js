@@ -27,11 +27,9 @@ export default defineConfig({
     allowCypressEnv: false,
   },
   expose: {
-      sitename: 'Joomla CMS Test',
-      name: 'jane doe',
-      username: 'ci-admin',
-    },
-  env: {
+    sitename: 'Joomla CMS Test',
+    name: 'jane doe',
+    username: 'ci-admin',
     password: 'joomla-17082005',
     db_type: process.env.DB_TYPE || 'MySQLi',
     db_host: process.env.DB_HOST || 'mysql',
