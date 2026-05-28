@@ -7,7 +7,7 @@ describe('Install Joomla and Weblinks package', () => {
     cy.db_enableExtension(0, 'plg_behaviour_compat');
     // Disable stats plugin
     cy.db_enableExtension(0, 'plg_system_stats');
-    cy.doAdministratorLogin(Cypress.env('username'), Cypress.env('password'), false)
+    cy.doAdministratorLogin(Cypress.expose('username'), Cypress.expose('password'), false)
     cy.cancelTour();
     cy.setErrorReportingToDevelopment()
     cy.doAdministratorLogout()

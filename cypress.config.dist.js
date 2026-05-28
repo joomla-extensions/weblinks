@@ -23,12 +23,12 @@ export default defineConfig({
     scrollBehavior: 'center',
     browser: 'firefox',
     screenshotOnRunFailure: true,
-    video: false
+    video: false,
+    allowCypressEnv: false,
   },
-  env: {
+  expose: {
     sitename: 'Joomla CMS Test',
     name: 'jane doe',
-    email: 'admin@example.com',
     username: 'ci-admin',
     password: 'joomla-17082005',
     db_type: process.env.DB_TYPE || 'MySQLi',
