@@ -1,16 +1,17 @@
 <?php
+
 namespace Joomla\Plugin\Console\Weblinks\CliCommand;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Filter\OutputFilter;
 use Joomla\Console\Command\AbstractCommand;
+use Joomla\Database\DatabaseAwareTrait;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Joomla\Database\DatabaseAwareTrait;
-use Joomla\CMS\Filter\OutputFilter;
 
 final class WeblinksCommand extends AbstractCommand
 {
@@ -24,12 +25,12 @@ final class WeblinksCommand extends AbstractCommand
         $this->setDescription('Allows exporting or importing data from com_weblinks via a CSV file.');
         $this->setHelp('Run this tool to back up your web links to a local file, or parse a modified CSV to import rows back into the application.');
         $this->addOption(
-                'action',
-                'a',
-                InputOption::VALUE_REQUIRED,
-                'Specify the operational task: "export" or "import".',
-                'export'
-            )
+            'action',
+            'a',
+            InputOption::VALUE_REQUIRED,
+            'Specify the operational task: "export" or "import".',
+            'export'
+        )
             ->addOption(
                 'file',
                 'f',
@@ -41,8 +42,8 @@ final class WeblinksCommand extends AbstractCommand
 
     protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
-        $action = strtolower($input->getOption('action'));
+        $io       = new SymfonyStyle($input, $output);
+        $action   = strtolower($input->getOption('action'));
         $filePath = $input->getOption('file');
 
         if ($action === 'export') {
@@ -51,7 +52,7 @@ final class WeblinksCommand extends AbstractCommand
             return $this->handleImport($io, $filePath);
         }
 
-        $io->error(sprintf('Invalid action style: "%s". Please explicitly specify either "--action=export" or "--action=import".', $action));
+        $io->error(\sprintf('Invalid action style: "%s". Please explicitly specify either "--action=export" or "--action=import".', $action));
         return Command::INVALID;
     }
 
@@ -62,7 +63,7 @@ final class WeblinksCommand extends AbstractCommand
     {
         $io->title('Starting com_weblinks Data Export to CSV');
 
-        $db = $this->getDatabase();
+        $db    = $this->getDatabase();
         $query = $db->getQuery(true);
 
         // Fetching relevant columns from com_weblinks, feel free to modify or select *
@@ -84,7 +85,7 @@ final class WeblinksCommand extends AbstractCommand
         }
 
         // Verify or create pathing directory validity
-        $directory = dirname($filePath);
+        $directory = \dirname($filePath);
         if (!is_dir($directory)) {
             mkdir($directory, 0755, true);
         }
@@ -98,7 +99,7 @@ final class WeblinksCommand extends AbstractCommand
         }
 
         // Add Byte Order Mark (BOM) to fix UTF-8 formatting anomalies inside MS Excel
-        fprintf($fileHandle, chr(0xEF).chr(0xBB).chr(0xBF));
+        fprintf($fileHandle, \chr(0xEF).\chr(0xBB).\chr(0xBF));
 
         // Inject Table Headers using first row keys array mapping
         fputcsv($fileHandle, array_keys($rows[0]), ',', '"', '');
@@ -110,7 +111,7 @@ final class WeblinksCommand extends AbstractCommand
 
         fclose($fileHandle);
 
-        $io->success(sprintf('Successfully exported %d links into file path: %s', count($rows), $filePath));
+        $io->success(\sprintf('Successfully exported %d links into file path: %s', \count($rows), $filePath));
 
         return Command::SUCCESS;
     }
@@ -123,7 +124,7 @@ final class WeblinksCommand extends AbstractCommand
         $io->title('Starting CSV Data Import into com_weblinks');
 
         if (!file_exists($filePath) || !is_readable($filePath)) {
-            $io->error(sprintf('The targeting CSV source file does not exist or cannot be parsed: %s', $filePath));
+            $io->error(\sprintf('The targeting CSV source file does not exist or cannot be parsed: %s', $filePath));
             return Command::FAILURE;
         }
 
@@ -135,7 +136,7 @@ final class WeblinksCommand extends AbstractCommand
 
         // Strip unexpected BOM characters if present (e.g., from Excel saves)
         $bom = fread($fileHandle, 3);
-        if ($bom !== chr(0xEF) . chr(0xBB) . chr(0xBF)) {
+        if ($bom !== \chr(0xEF) . \chr(0xBB) . \chr(0xBF)) {
             rewind($fileHandle);
         }
 
@@ -147,7 +148,7 @@ final class WeblinksCommand extends AbstractCommand
         }
 
         $db = $this->getDatabase();
-        
+
         // --- CATEGORY SAFETY PRE-CHECK ---
         // Fetch all valid active category IDs and aliases for com_weblinks
         $catQuery = $db->getQuery(true)
@@ -164,25 +165,25 @@ final class WeblinksCommand extends AbstractCommand
         if (!empty($categoriesList)) {
             foreach ($categoriesList as $cat) {
                 $validCategoryIds[] = (int) $cat->id;
-                
+
                 // Match the official Joomla "Uncategorised" alias
                 if ($cat->alias === 'uncategorized') {
                     $fallbackCatId = (int) $cat->id;
                 }
             }
-            
+
             // If explicit "Uncategorised" category is missing/renamed, use the first valid category as a fallback
             if ($fallbackCatId === null) {
                 $fallbackCatId = (int) $categoriesList[0]->id;
             }
         } else {
             // Ultimate fallback to Joomla's traditional default ID if no categories exist at all
-            $fallbackCatId = 2; 
+            $fallbackCatId = 2;
         }
         // ----------------------------------
 
         $importedCount = 0;
-        $updatedCount = 0;
+        $updatedCount  = 0;
 
         while (($row = fgetcsv($fileHandle)) !== false) {
             $data = array_combine($headers, $row);
@@ -203,12 +204,12 @@ final class WeblinksCommand extends AbstractCommand
             // --- CATEGORY VALIDATION LOGIC ---
             $csvCatId = !empty($data['catid']) ? (int)$data['catid'] : 0;
 
-            if (in_array($csvCatId, $validCategoryIds)) {
+            if (\in_array($csvCatId, $validCategoryIds)) {
                 $catid = $csvCatId;
             } else {
                 // The CSV ID is invalid or missing. Assign fallback and notify the operator via terminal.
                 $catid = $fallbackCatId;
-                $io->warning(sprintf('Category ID %d for link "%s" was not found or is unpublished. Fallback applied: Cat ID %d ("uncategorized").', $csvCatId, $title, $fallbackCatId));
+                $io->warning(\sprintf('Category ID %d for link "%s" was not found or is unpublished. Fallback applied: Cat ID %d ("uncategorized").', $csvCatId, $title, $fallbackCatId));
             }
             // ----------------------------------
 
@@ -249,7 +250,7 @@ final class WeblinksCommand extends AbstractCommand
                     $importedCount++;
                 }
             } catch (\Exception $e) {
-                $io->warning(sprintf('Skipped processing item ("%s") due to engine error: %s', $title, $e->getMessage()));
+                $io->warning(\sprintf('Skipped processing item ("%s") due to engine error: %s', $title, $e->getMessage()));
             }
         }
 
@@ -257,8 +258,8 @@ final class WeblinksCommand extends AbstractCommand
 
         $io->success([
             'Data synchronization run finalized completed successfully!',
-            sprintf('New Links Inserted: %d', $importedCount),
-            sprintf('Existing Links Modified: %d', $updatedCount)
+            \sprintf('New Links Inserted: %d', $importedCount),
+            \sprintf('Existing Links Modified: %d', $updatedCount),
         ]);
 
         return Command::SUCCESS;

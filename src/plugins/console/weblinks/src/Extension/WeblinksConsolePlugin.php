@@ -1,4 +1,5 @@
 <?php
+
 namespace Joomla\Plugin\Console\Weblinks\Extension;
 
 \defined('_JEXEC') or die;
