@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="plugin" group="console" method="upgrade">
     <name>plg_console_weblinks</name>
-    <author>Your Name</author>
-    <creationDate>June 2026</creationDate>
-    <version>1.0.0</version>
+    <author>Joomla! Project</author>
+    <creationDate>##DATE##</creationDate>
+	<copyright>(C) 2005 - ##YEAR## Open Source Matters. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<authorEmail>admin@joomla.org</authorEmail>
+	<authorUrl>www.joomla.org</authorUrl>
+	<version>##VERSION##</version>
     <description>Console plugin to export Joomla Weblinks (com_weblinks) to a CSV file.</description>
     <namespace path="src">Joomla\Plugin\Console\Weblinks</namespace>
     <files>
-        <!-- Services directory must be included -->
-        <folder plugin="weblinks">services</folder>
-        <!-- src directory for your plugin code -->
-        <folder>src</folder>
-        <folder>language</folder>
-    </files>
+		##FILES##
+	</files>
+	<languages folder="language">
+		##LANGUAGE_FILES##
+	</languages>
 </extension>
