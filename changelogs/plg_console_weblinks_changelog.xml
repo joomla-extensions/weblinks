@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<changelogs>
+    <changelog>
+        <element>weblinks</element>
+        <type>plugin</type>
+        <version>5.2.0</version>
+        <folder>console</folder>
+        <addition>
+            <item>Import Export fo weblinks</item>
+        </addition>
+    </changelog>
+</changelogs>
