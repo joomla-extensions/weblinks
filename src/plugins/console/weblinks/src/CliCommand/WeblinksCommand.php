@@ -1,8 +1,14 @@
 <?php
 
-namespace Joomla\Plugin\Console\Weblinks\CliCommand;
+/**
+ * @package     Joomla.Plugin
+ * @subpackage  Weblinks.console
+ *
+ * @copyright   (C) 2026 Open Source Matters, Inc. <https://www.joomla.org>
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
-\defined('_JEXEC') or die;
+namespace Joomla\Plugin\Console\Weblinks\CliCommand;
 
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\Console\Command\AbstractCommand;
@@ -12,6 +18,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+
+// phpcs:disable PSR1.Files.SideEffects
+\defined('_JEXEC') or die;
+// phpcs:enable PSR1.Files.SideEffects
 
 final class WeblinksCommand extends AbstractCommand
 {
@@ -99,7 +109,7 @@ final class WeblinksCommand extends AbstractCommand
         }
 
         // Add Byte Order Mark (BOM) to fix UTF-8 formatting anomalies inside MS Excel
-        fprintf($fileHandle, \chr(0xEF).\chr(0xBB).\chr(0xBF));
+        fprintf($fileHandle, \chr(0xEF) . \chr(0xBB) . \chr(0xBF));
 
         // Inject Table Headers using first row keys array mapping
         fputcsv($fileHandle, array_keys($rows[0]), ',', '"', '');
