@@ -11,6 +11,7 @@
 namespace Joomla\Plugin\Task\Weblinks\Extension;
 
 use Joomla\CMS\Access\Access;
+use Joomla\CMS\Mail\MailTemplate;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Table\Asset;
 use Joomla\Component\Scheduler\Administrator\Event\ExecuteTaskEvent;
@@ -19,8 +20,6 @@ use Joomla\Component\Scheduler\Administrator\Traits\TaskPluginTrait;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Event\SubscriberInterface;
 use Joomla\Http\HttpFactory;
-use Joomla\CMS\Mail\MailTemplate;
-use Joomla\CMS\Factory;
 use PHPMailer\PHPMailer\Exception as phpMailerException;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -112,20 +111,20 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
             return Status::OK;
         }
 
-        $broken = 0;
+        $broken  = 0;
         $checked = 0;
         $details = [];
-        
+
         /**
          * Create HTTP client using framework HttpFactory
-         * 
+         *
          * @var \Joomla\Http\Http
          */
         $http = (new HttpFactory())->getHttp();
 
         foreach ($links as $link) {
             $url = trim($link->url);
-            
+
             if (!str_starts_with($url, 'http')) {
                 $url = 'http://' . $url;
             }
@@ -134,30 +133,30 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
 
             if (!filter_var($url, FILTER_VALIDATE_URL)) {
                 $broken++;
-                $details[] = sprintf('ID %d [%s]: Malformed URL', $link->id, $link->title);
+                $details[] = \sprintf('ID %d [%s]: Malformed URL', $link->id, $link->title);
                 continue;
             }
 
             try {
-                $response = $http->head($url, [], 8);
+                $response   = $http->head($url, [], 8);
                 $statusCode = $response->getStatusCode();
 
                 if ($response === null || $response->getStatusCode() !== 200) {
                     $broken++;
-                    $details[] = sprintf('ID %d [%s]: HTTP %d', $link->id, $link->title, $statusCode);
+                    $details[] = \sprintf('ID %d [%s]: HTTP %d', $link->id, $link->title, $statusCode);
                 }
             } catch (\Exception $e) {
                 $broken++;
-                $details[] = sprintf('ID %d [%s]: %s', $link->id, $link->title, $e->getMessage());
+                $details[] = \sprintf('ID %d [%s]: %s', $link->id, $link->title, $e->getMessage());
             }
         }
 
         if ($broken === 0) {
-            $this->logTask(sprintf('Verified %d links - all operational', $checked));
+            $this->logTask(\sprintf('Verified %d links - all operational', $checked));
             return Status::OK;
         }
 
-        $summary = sprintf('Checked %d links, %d broken: %s', $checked, $broken, implode('; ', $details));
+        $summary = \sprintf('Checked %d links, %d broken: %s', $checked, $broken, implode('; ', $details));
         $this->logTask($summary);
 
         return $this->sendBrokenLinksEmail($broken, $checked, $details);
@@ -177,7 +176,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      * @since   1.0.0
      */
     private function sendBrokenLinksEmail(int $broken, int $checked, array $details): int
-    {        
+    {
         $superUsers = $this->getSuperUsers();
 
         if (empty($superUsers)) {
