@@ -232,7 +232,6 @@ return new class () implements ServiceProviderInterface {
                     } catch (\Exception $e) {
                         Factory::getApplication()->enqueueMessage('Error creating template_id ' . $templateId . ': ' . $e->getMessage(), 'error');
                     }
-
                 }
 
                 /**
