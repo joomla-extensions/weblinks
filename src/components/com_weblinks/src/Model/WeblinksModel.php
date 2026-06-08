@@ -161,7 +161,7 @@ class WeblinksModel extends ListModel
             $this->getState(
                 'list.select',
                 'a.id, a.title, a.alias, a.checked_out, a.checked_out_time, a.catid, a.created, a.created_by, ' .
-                'a.hits, a.state, a.access, a.ordering, a.language, a.publish_up, a.publish_down'
+                'a.hits, a.state, a.access, a.ordering, a.language, a.publish_up, a.publish_down, a.url'
             )
         );
         $query->from($db->quoteName('#__weblinks', 'a'));
