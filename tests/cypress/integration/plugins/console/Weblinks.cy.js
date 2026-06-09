@@ -116,7 +116,7 @@ describe('Test console command weblinks:sync-csv', () => {
   it('handles invalid category ID during import with fallback', () => {
     // Create CSV with invalid category ID and all required fields
     const csvContent = `"id","catid","title","alias","url","description","hits","state","checked_out","checked_out_time","ordering","access","params","language","created","created_by","created_by_alias","modified","modified_by","metakey","metadesc","metadata","featured","xreference","publish_up","publish_down","version","images"
-"","99999","Test Invalid Cat","test-invalid-cat","https://example.com","","0","1","","","0","1","","*","2025-01-01 00:00:00","990","","2025-01-01 00:00:00","990","","","","0","","","","1",""`;
+"","99999","automated test weblink - Test Invalid Cat","test-invalid-cat","https://example.com","","0","1","","","0","1","","*","2025-01-01 00:00:00","990","","2025-01-01 00:00:00","990","","","","0","","","","1",""`;
     cy.writeFile(csvImportPath, csvContent).then(() => {
       // Import with invalid category
       cy.exec(`php ${Cypress.expose('cmsPath')}/cli/joomla.php weblinks:sync-csv --action=import --file=${csvImportPath}`)
