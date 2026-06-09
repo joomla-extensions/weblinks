@@ -17,7 +17,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
-use Joomla\Event\DispatcherInterface;
 use Joomla\Plugin\EditorsXtd\Weblink\Extension\Weblink;
 
 return new class () implements ServiceProviderInterface {
@@ -32,7 +31,7 @@ return new class () implements ServiceProviderInterface {
      */
     public function register(Container $container)
     {
-         $container->set(
+        $container->set(
             PluginInterface::class,
             $container->lazy(Weblink::class, function (Container $container) {
                 $plugin     = new Weblink(
