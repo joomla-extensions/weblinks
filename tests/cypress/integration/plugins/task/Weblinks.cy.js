@@ -26,7 +26,7 @@ describe('Test weblinks task plugin', () => {
       });
       cy.get('joomla-dialog[type="inline"]').should('be.visible');
       cy.get('joomla-dialog[type="inline"]').within(() => {
-        cy.get('header.joomla-dialog-header').should('contain', `Run Task (ID: ${task.id})`);
+        cy.get('header.joomla-dialog-header').should('contain', `Test Task (ID: ${task.id})`);
         cy.get('div.scheduler-status').should('contain', 'Status: Completed');
       });
     });
@@ -53,7 +53,7 @@ describe('Test weblinks task plugin', () => {
       });
       cy.get('joomla-dialog[type="inline"]').should('be.visible');
       cy.get('joomla-dialog[type="inline"]').within(() => {
-        cy.get('header.joomla-dialog-header').should('contain', `Run Task (ID: ${task.id})`);
+        cy.get('header.joomla-dialog-header').should('contain', `Test Task (ID: ${task.id})`);
         cy.get('div.scheduler-status').should('contain', 'Status: Completed');
       });
       cy.task('getMails').then((mails) => {
