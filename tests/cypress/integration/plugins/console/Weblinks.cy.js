@@ -5,6 +5,7 @@ describe('Test console command weblinks:sync-csv', () => {
   beforeEach(() => {
     // Clean up any existing test files
     cy.exec(`rm -f ${csvExportPath} ${csvImportPath}`, { failOnNonZeroExit: false });
+    cy.db_enableExtension('1', 'plg_console_weblinks');
   });
 
   afterEach(() => {
@@ -12,6 +13,7 @@ describe('Test console command weblinks:sync-csv', () => {
     cy.exec(`rm -f ${csvExportPath} ${csvImportPath}`, { failOnNonZeroExit: false });
     // Clean up test weblinks
     cy.task('queryDB', "DELETE FROM #__weblinks WHERE title LIKE 'automated test weblink%'");
+    cy.db_enableExtension('0', 'plg_console_weblinks');
   });
 
   it('can export weblinks to CSV', () => {
