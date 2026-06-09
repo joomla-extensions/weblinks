@@ -32,18 +32,16 @@ return new class () implements ServiceProviderInterface {
      */
     public function register(Container $container)
     {
-        $container->set(
+         $container->set(
             PluginInterface::class,
-            function (Container $container) {
-                $app        = Factory::getApplication();
-                $dispatcher = $container->get(DispatcherInterface::class);
-
-                return new Weblink(
-                    $dispatcher,
-                    (array) PluginHelper::getPlugin('editors-xtd', 'weblink'),
-                    $app
+            $container->lazy(Weblink::class, function (Container $container) {
+                $plugin     = new Weblink(
+                    (array) PluginHelper::getPlugin('editors-xtd', 'weblink')
                 );
-            }
+                $plugin->setApplication(Factory::getApplication());
+
+                return $plugin;
+            })
         );
     }
 };
