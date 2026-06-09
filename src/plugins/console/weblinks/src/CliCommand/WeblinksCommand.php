@@ -203,33 +203,33 @@ final class WeblinksCommand extends AbstractCommand
                 continue;
             }
 
-            $id          = !empty($data['id']) ? (int)$data['id'] : null;
-            $title       = $data['title'] ?? 'Untitled Link';
-            $alias       = !empty($data['alias']) ? OutputFilter::stringURLSafe($data['alias']) : OutputFilter::stringURLSafe($title);
-            $url         = $data['url'] ?? '';
-            $description = $data['description'] ?? '';
-            $hits        = isset($data['hits']) ? (int)$data['hits'] : 0;
-            $state       = isset($data['state']) ? (int)$data['state'] : 1;
-            $checked_out = !empty($data['checked_out']) ? (int)$data['checked_out'] : null;
-            $checked_out_time = !empty($data['checked_out_time']) && $data['checked_out_time'] !== 'NULL' ? $data['checked_out_time'] : null;
-            $ordering    = isset($data['ordering']) ? (int)$data['ordering'] : 0;
-            $access       = isset($data['access']) ? (int)$data['access'] : 1;
-            $params       = $data['params'] ?? '';
-            $language     = $data['language'] ?? '*';            
-            $created     = !empty($data['created']) ? $data['created'] : date('Y-m-d H:i:s');
-            $createdBy   = !empty($data['created_by']) ? (int)$data['created_by'] : 990;
-            $createdByAlias = $data['created_by_alias'] ?? '';
-            $modified    = !empty($data['modified']) && $data['modified'] !== 'NULL' && $data['modified'] !== '0000-00-00 00:00:00' ? $data['modified'] : date('Y-m-d H:i:s');
-            $modifiedBy  = !empty($data['modified_by']) ? (int)$data['modified_by'] : $createdBy;
-            $metakey     = $data['metakey'] ?? '';
-            $metadesc    = $data['metadesc'] ?? '';
-            $metadata     = $data['metadata'] ?? '';
-            $featured      = isset($data['featured']) ? (int)$data['featured'] : 0;
-            $xreference      = $data['xreference'] ?? '';
-            $publish_up      = !empty($data['publish_up']) && $data['publish_up'] !== 'NULL' ? $data['publish_up'] : null;
+            $id                = !empty($data['id']) ? (int)$data['id'] : null;
+            $title             = $data['title'] ?? 'Untitled Link';
+            $alias             = !empty($data['alias']) ? OutputFilter::stringURLSafe($data['alias']) : OutputFilter::stringURLSafe($title);
+            $url               = $data['url'] ?? '';
+            $description       = $data['description'] ?? '';
+            $hits              = isset($data['hits']) ? (int)$data['hits'] : 0;
+            $state             = isset($data['state']) ? (int)$data['state'] : 1;
+            $checked_out       = !empty($data['checked_out']) ? (int)$data['checked_out'] : null;
+            $checked_out_time  = !empty($data['checked_out_time']) && $data['checked_out_time'] !== 'NULL' ? $data['checked_out_time'] : null;
+            $ordering          = isset($data['ordering']) ? (int)$data['ordering'] : 0;
+            $access            = isset($data['access']) ? (int)$data['access'] : 1;
+            $params            = $data['params'] ?? '';
+            $language          = $data['language'] ?? '*';
+            $created           = !empty($data['created']) ? $data['created'] : date('Y-m-d H:i:s');
+            $createdBy         = !empty($data['created_by']) ? (int)$data['created_by'] : 990;
+            $createdByAlias    = $data['created_by_alias'] ?? '';
+            $modified          = !empty($data['modified']) && $data['modified'] !== 'NULL' && $data['modified'] !== '0000-00-00 00:00:00' ? $data['modified'] : date('Y-m-d H:i:s');
+            $modifiedBy        = !empty($data['modified_by']) ? (int)$data['modified_by'] : $createdBy;
+            $metakey           = $data['metakey'] ?? '';
+            $metadesc          = $data['metadesc'] ?? '';
+            $metadata          = $data['metadata'] ?? '';
+            $featured          = isset($data['featured']) ? (int)$data['featured'] : 0;
+            $xreference        = $data['xreference'] ?? '';
+            $publish_up        = !empty($data['publish_up']) && $data['publish_up'] !== 'NULL' ? $data['publish_up'] : null;
             $publish_down      = !empty($data['publish_down']) && $data['publish_down'] !== 'NULL' ? $data['publish_down'] : null;
-            $version      = !empty($data['version']) ? (int)$data['version'] : 1;
-            $images     = $data['images'] ?? '';
+            $version           = !empty($data['version']) ? (int)$data['version'] : 1;
+            $images            = $data['images'] ?? '';
 
 
             // --- CATEGORY VALIDATION LOGIC ---
@@ -259,33 +259,33 @@ final class WeblinksCommand extends AbstractCommand
             if ($exists) {
                 $object->id = $id;
             }
-            $object->title        = $title;
-            $object->alias        = $alias;
-            $object->url          = $url;
-            $object->description  = $description;
-            $object->hits         = $hits;
-            $object->state        = $state;
-            $object->catid        = $catid;
-            $object->created      = $created;
-            $object->created_by   = $createdBy;
-            $object->checked_out = $checked_out;
+            $object->title            = $title;
+            $object->alias            = $alias;
+            $object->url              = $url;
+            $object->description      = $description;
+            $object->hits             = $hits;
+            $object->state            = $state;
+            $object->catid            = $catid;
+            $object->created          = $created;
+            $object->created_by       = $createdBy;
+            $object->checked_out      = $checked_out;
             $object->checked_out_time = $checked_out_time;
-            $object->ordering = $ordering;
-            $object->access = $access;
-            $object->params = $params;
-            $object->language = $language;
+            $object->ordering         = $ordering;
+            $object->access           = $access;
+            $object->params           = $params;
+            $object->language         = $language;
             $object->created_by_alias = $createdByAlias;
-            $object->modified = $modified;
-            $object->modified_by = $modifiedBy;
-            $object->metakey = $metakey;
-            $object->metadesc = $metadesc;
-            $object->metadata = $metadata;
-            $object->featured = $featured;
-            $object->xreference = $xreference;
-            $object->publish_up = $publish_up;
-            $object->publish_down = $publish_down;
-            $object->version = $version;
-            $object->images = $images;
+            $object->modified         = $modified;
+            $object->modified_by      = $modifiedBy;
+            $object->metakey          = $metakey;
+            $object->metadesc         = $metadesc;
+            $object->metadata         = $metadata;
+            $object->featured         = $featured;
+            $object->xreference       = $xreference;
+            $object->publish_up       = $publish_up;
+            $object->publish_down     = $publish_down;
+            $object->version          = $version;
+            $object->images           = $images;
             try {
                 if ($exists) {
                     $db->updateObject('#__weblinks', $object, 'id');
