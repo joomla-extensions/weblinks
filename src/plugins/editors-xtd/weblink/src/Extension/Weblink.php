@@ -69,7 +69,7 @@ final class Weblink extends CMSPlugin implements SubscriberInterface
             $subject->add($button);
         }
     }
-  
+
     /**
      * Display the button
       *
@@ -106,7 +106,7 @@ final class Weblink extends CMSPlugin implements SubscriberInterface
                     'name' => $this->_type . '_' . $this->_name,
                 ]
             );
-            return $button;            
-        }                    
+            return $button;
+        }
     }
 }
