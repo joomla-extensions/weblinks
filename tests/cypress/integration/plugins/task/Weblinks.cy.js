@@ -59,8 +59,8 @@ describe('Test weblinks task plugin', () => {
       cy.task('getMails').then((mails) => {
         // Ensure we actually got an array and it's not empty
         expect(mails).to.be.an('array').and.not.be.empty;
-
-        const latestMail = mails[1];
+        cy.wrap(mails).should('have.lengthOf', 1);
+        const latestMail = mails[0];
 
         // Assert against the properties directly using standard Chai
         expect(latestMail.headers.subject).to.include('Weblinks check results');
