@@ -34,6 +34,7 @@ describe('Test weblinks task plugin', () => {
   });
 
   it('can send email notification when broken links found', () => {
+    cy.task('queryDB', "UPDATE #__users SET sendEmail = 1");
     cy.db_createWeblink({ title: 'automated test weblink', url: 'http://example.com/broken-link', state: 1 });
     cy.db_createSchedulerTask({
       title: 'Check Weblinks with Notification',
