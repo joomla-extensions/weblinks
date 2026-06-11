@@ -6,6 +6,7 @@ describe('Test weblinks task plugin', () => {
   });
   afterEach(() => {
     cy.task('queryDB', "DELETE FROM #__weblinks WHERE title LIKE '%automated test weblink%'");
+    cy.task('queryDB', "DELETE FROM #__scheduler_tasks WHERE title LIKE '%Check Weblinks%'");
     cy.db_enableExtension('0', 'plg_task_weblinks');
   });
   it('can create and run weblinks check task', () => {
