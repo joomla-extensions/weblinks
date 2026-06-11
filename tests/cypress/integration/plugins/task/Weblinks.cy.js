@@ -40,7 +40,7 @@ describe('Test weblinks task plugin', () => {
       execution_rules: { 'rule-type': 'manual' },
       cron_rules: { type: 'manual', exp: '' },
       params: {
-        notifications: { success_mail: 1 },
+        notifications: { success_mail: 0 },
       },
     }).then((task) => {
       cy.visit('/administrator/index.php?option=com_scheduler&view=tasks&filter=');
