@@ -243,7 +243,7 @@ return new class () implements ServiceProviderInterface {
                 {
                     try {
                         $db          = Factory::getContainer()->get(DatabaseDriver::class);
-                        $templateId  = 'plg_contact_customreply.autoresponder';
+                        $templateId  = 'plg_task_weblinks.broken_links';
                         // Delete the template_id from the #__mail_templates table
                         $query = $db->getQuery(true);
                         $query->clear()
