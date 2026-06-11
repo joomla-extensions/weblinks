@@ -1,6 +1,21 @@
 describe('Test weblinks task plugin', () => {
+  let joomlaVersion;
+
+  const joomlaVersionRequest = () => {
+    return cy.request('administrator/manifests/files/joomla.xml').then((response) => {
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(response.body, "text/xml");
+      
+      // Store the version in our file-scoped variable
+      joomlaVersion = xmlDoc.getElementsByTagName("version")[0].childNodes[0].nodeValue;
+      
+      cy.log(`Global Joomla Version Initialized: ${joomlaVersion}`);
+    });
+  };
+
   beforeEach(() => {
     cy.task('clearEmails');
+    joomlaVersionRequest();
     cy.db_enableExtension('1', 'plg_task_weblinks');
     cy.doAdministratorLogin();
   });
@@ -25,9 +40,16 @@ describe('Test weblinks task plugin', () => {
         expect(interception.response.body.message).to.eq(null);
         expect(interception.response.body.success).to.eq(true);
       });
+      cy.log(`Joomla Version in Test: ${joomlaVersion}`);
+      let taskString; // Declare it here first
+      if (joomlaVersion.startsWith('5')) {
+        taskString = `Test task (ID: ${task.id})`;
+      } else {
+        taskString = `Run Task (ID: ${task.id})`;
+      }
       cy.get('joomla-dialog[type="inline"]').should('be.visible');
       cy.get('joomla-dialog[type="inline"]').within(() => {
-        cy.get('header.joomla-dialog-header').should('contain', `Test task (ID: ${task.id})`);
+        cy.get('header.joomla-dialog-header').should('contain', taskString);
         cy.get('div.scheduler-status').should('contain', 'Status: Completed');
       });
     });
@@ -56,9 +78,16 @@ describe('Test weblinks task plugin', () => {
         expect(interception.response.body.message).to.eq(null);
         expect(interception.response.body.success).to.eq(true);
       });
+      cy.log(`Joomla Version in Test: ${joomlaVersion}`);
+      let taskString; // Declare it here first
+      if (joomlaVersion.startsWith('5')) {
+        taskString = `Test task (ID: ${task.id})`;
+      } else {
+        taskString = `Run Task (ID: ${task.id})`;
+      }
       cy.get('joomla-dialog[type="inline"]').should('be.visible');
       cy.get('joomla-dialog[type="inline"]').within(() => {
-        cy.get('header.joomla-dialog-header').should('contain', `Test task (ID: ${task.id})`);
+        cy.get('header.joomla-dialog-header').should('contain', taskString);
         cy.get('div.scheduler-status').should('contain', 'Status: Completed');
       });
       cy.task('getMails').then((mails) => {
