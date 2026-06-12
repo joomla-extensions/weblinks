@@ -17,7 +17,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
-use Joomla\Event\DispatcherInterface;
 use Joomla\Plugin\EditorsXtd\Weblink\Extension\Weblink;
 
 return new class () implements ServiceProviderInterface {
@@ -34,16 +33,14 @@ return new class () implements ServiceProviderInterface {
     {
         $container->set(
             PluginInterface::class,
-            function (Container $container) {
-                $app        = Factory::getApplication();
-                $dispatcher = $container->get(DispatcherInterface::class);
-
-                return new Weblink(
-                    $dispatcher,
-                    (array) PluginHelper::getPlugin('editors-xtd', 'weblink'),
-                    $app
+            $container->lazy(Weblink::class, function (Container $container) {
+                $plugin     = new Weblink(
+                    (array) PluginHelper::getPlugin('editors-xtd', 'weblink')
                 );
-            }
+                $plugin->setApplication(Factory::getApplication());
+
+                return $plugin;
+            })
         );
     }
 };
