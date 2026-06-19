@@ -14,10 +14,13 @@ use Joomla\CMS\Access\Access;
 use Joomla\CMS\Mail\MailTemplate;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Table\Asset;
+use Joomla\CMS\Table\Table;
 use Joomla\Component\Scheduler\Administrator\Event\ExecuteTaskEvent;
+use Joomla\Component\Scheduler\Administrator\Table\TaskTable;
 use Joomla\Component\Scheduler\Administrator\Task\Status;
 use Joomla\Component\Scheduler\Administrator\Traits\TaskPluginTrait;
 use Joomla\Database\DatabaseAwareTrait;
+use Joomla\Database\ParameterType;
 use Joomla\Event\SubscriberInterface;
 use Joomla\Http\HttpFactory;
 use PHPMailer\PHPMailer\Exception as phpMailerException;
@@ -27,7 +30,7 @@ use PHPMailer\PHPMailer\Exception as phpMailerException;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
- * Task plugin for checking weblinks
+ * Task plugin for checking weblinks with WILL_RESUME batch support
  *
  * @since  1.0.0
  */
@@ -39,38 +42,89 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
     /**
      * Application object
      *
-     * @var    \Joomla\CMS\Application\CMSApplication
-     * @since  1.0.0
+     * @var \Joomla\CMS\Application\CMSApplication
+     * @since 1.0.0
      */
     protected $app;
 
     /**
-     * Load plugin language files automatically
+     * Auto-load plugin language files
      *
-     * @var    boolean
-     * @since  1.0.0
+     * @var boolean
+     * @since 1.0.0
      */
     protected $autoloadLanguage = true;
 
     /**
-     * Map of task types to handler methods
+     * Time limit for the current task session (seconds).
+     * Must be lower than PHP's max_execution_time.
      *
-     * @var    array
-     * @since  1.0.0
+     * @var int
+     * @since 1.0.0
+     */
+    private $timeLimit;
+
+    /**
+     * Snapshot key used in task parameters
+     *
+     * @var string
+     */
+    private const SNAPSHOT_KEY = 'snapshot';
+
+    /**
+     * Snapshot key for last processed ID
+     *
+     * @var string
+     */
+    private const SNAPSHOT_LASTID = 'lastId';
+
+    /**
+     * Snapshot key for broken links count
+     *
+     * @var string
+     */
+    private const SNAPSHOT_BROKEN = 'broken';
+
+    /**
+     * Snapshot key for checked links count
+     *
+     * @var string
+     */
+    private const SNAPSHOT_CHECKED = 'checked';
+
+    /**
+     * Snapshot key for details array
+     *
+     * @var string
+     */
+    private const SNAPSHOT_DETAILS = 'details';
+
+    /**
+     * Maximum number of details to store
+     *
+     * @var int
+     */
+    private const MAX_DETAILS = 1000;
+
+    /**
+     * Task routines map
+     *
+     * @var array
+     * @since 1.0.0
      */
     protected const TASKS_MAP = [
         'check.weblinks' => [
             'langConstPrefix' => 'PLG_TASK_WEBLINKS',
+            'form'            => 'weblinks_params',
             'method'          => 'checkWeblinks',
         ],
     ];
 
     /**
-     * Returns an array of events this subscriber will listen to
+     * Returns the subscribed events for this plugin
      *
-     * @return  array
-     *
-     * @since   1.0.0
+     * @return array
+     * @since 1.0.0
      */
     public static function getSubscribedEvents(): array
     {
@@ -82,97 +136,217 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
     }
 
     /**
-     * Check weblinks for broken URLs
+     * Clears the snapshot from the task parameters
      *
-     * Iterates through all published weblinks and performs HTTP HEAD requests
-     * to verify their availability. Uses Joomla\Http\HttpFactory from the framework.
+     * @param   object  $task    The task object
+     * @param   int     $taskId  The task ID
+     *
+     * @return  bool  True on success, false on failure
+     * @since   1.0.0
+     */    
+    private function clearSnapshot(object $task, int $taskId): bool
+    {   
+        if ($taskId === 0) {
+            return false;
+        }
+
+        try {
+            $taskTable = new TaskTable($this->getDatabase());
+            
+            if (!$taskTable->load($taskId)) {
+                return false;
+            }
+
+            $params = json_decode($taskTable->params, true) ?? [];
+            unset($params[self::SNAPSHOT_KEY]);
+            $taskTable->params = json_encode($params, JSON_UNESCAPED_UNICODE);
+            $taskTable->store();
+            
+            return true;
+        } catch (\Exception $e) {
+            $this->logTask('Snapshot deletion error: ' . $e->getMessage(), 'error');
+            return false;
+        }
+    }
+
+    /**
+     * Checks weblinks in batches with WILL_RESUME support.
+     *
+     * The snapshot persists between executions and contains:
+     *   - offset      : next record to read from the database
+     *   - broken      : broken links accumulated so far
+     *   - checked     : links checked so far
+     *   - details     : array of descriptive strings of broken links
      *
      * @param   ExecuteTaskEvent  $event  The task execution event
      *
-     * @return  integer  The task status code
-     *
+     * @return  int  Task status code (Status::OK, Status::KNOCKOUT, or Status::WILL_RESUME)
      * @since   1.0.0
      */
     protected function checkWeblinks(ExecuteTaskEvent $event): int
     {
-        try {
-            $model = $this->getApplication()->bootComponent('com_weblinks')
-                ->getMVCFactory()->createModel('Weblinks', 'Site', ['ignore_request' => true]);
+        $task        = $event->getArgument('subject');
+        $taskId      = $event->getTaskId();
+        $httpTimeout = (int) $event->getArgument('params')->http_timeout ?? 8;
+        $batchSize   = (int) $event->getArgument('params')->batch_size ?? 3;
+        $timelimit   = max(5, (int)ini_get('max_execution_time') - 10);
+        $startTime   = microtime(true);
 
-            $model->setState('filter.state', 1);
-            $links = $model->getItems();
+        // Restore previous state
+        $snapshot = $this->loadSnapshot($task, $taskId);
+        $lastId   = (int) ($snapshot[self::SNAPSHOT_LASTID] ?? 0);
+        $broken   = (int) ($snapshot[self::SNAPSHOT_BROKEN] ?? 0);
+        $checked  = (int) ($snapshot[self::SNAPSHOT_CHECKED] ?? 0);
+        $details  = (array) ($snapshot[self::SNAPSHOT_DETAILS] ?? []);
+
+        // Read current batch using lastId
+        $db    = $this->getDatabase();
+        $query = $db->getQuery(true)
+            ->select($db->quoteName(['id', 'title', 'url']))
+            ->from($db->quoteName('#__weblinks'))
+            ->where($db->quoteName('state') . ' = 1')
+            ->where($db->quoteName('id') . ' > :id' )
+            ->bind(':id', $lastId, ParameterType::INTEGER)
+            ->order($db->quoteName('id') . ' ASC')
+            ->setLimit($batchSize);
+
+        try {
+            $links = $db->setQuery($query)->loadObjectList();
         } catch (\Exception $e) {
-            $this->logTask('Failed to load weblinks: ' . $e->getMessage(), 'error');
+            $this->logTask('Weblinks query error: ' . $e->getMessage(), 'error');
+            $this->clearSnapshot($task, $taskId);
             return Status::KNOCKOUT;
         }
 
+        // No links → processing complete
         if (empty($links)) {
-            $this->logTask('No published web links found');
-            return Status::OK;
+            return $this->finalize($task, $broken, $checked, $details, $taskId);
         }
 
-        $broken  = 0;
-        $checked = 0;
-        $details = [];
-
-        /**
-         * Create HTTP client using framework HttpFactory
-         *
-         * @var \Joomla\Http\Http
-         */
+        // Process batch with timeout check
         $http = (new HttpFactory())->getHttp();
+        $processedInBatch = 0;
+        $acceptedCodes    = [200, 301, 302, 307, 308];
 
         foreach ($links as $link) {
-            $url = trim($link->url);
-
-            if (!str_starts_with($url, 'http')) {
-                $url = 'http://' . $url;
+            // Check time limit
+            if ((microtime(true) - $startTime) > $timelimit) {
+                break;
             }
 
-            $checked++;
+            $url = $this->normalizeUrl($link->url);
 
-            if (!filter_var($url, FILTER_VALIDATE_URL)) {
+            if ($url === null) {
                 $broken++;
-                $details[] = \sprintf('ID %d [%s]: Malformed URL', $link->id, $link->title);
+                $checked++;
+                $processedInBatch++;
+                $lastId = (int) $link->id;
+
+                $this->addDetail($details, sprintf('ID %d [%s]: Invalid URL', $link->id, $link->title));
                 continue;
             }
 
+            $checked++;
+            $processedInBatch++;
+            $lastId = (int) $link->id;
+
             try {
-                $response   = $http->head($url, [], 8);
+                $response = $http->head($url, [], $httpTimeout);
                 $statusCode = $response->getStatusCode();
 
-                if ($response === null || $response->getStatusCode() !== 200) {
+                if (!\in_array($statusCode, $acceptedCodes, true)) {
                     $broken++;
-                    $details[] = \sprintf('ID %d [%s]: HTTP %d', $link->id, $link->title, $statusCode);
+                    $this->addDetail($details, sprintf('ID %d [%s]: HTTP %d', $link->id, $link->title, $statusCode));
                 }
             } catch (\Exception $e) {
                 $broken++;
-                $details[] = \sprintf('ID %d [%s]: %s', $link->id, $link->title, $e->getMessage());
+                $this->addDetail($details, sprintf('ID %d [%s]: %s', $link->id, $link->title, $e->getMessage()));
             }
         }
 
-        if ($broken === 0) {
-            $this->logTask(\sprintf('Verified %d links - all operational', $checked));
-            return Status::OK;
+        // Check if there are more links (search for next ID after lastId)
+        $hasMoreQuery = $db->getQuery(true)
+            ->select($db->quoteName('id'))
+            ->from($db->quoteName('#__weblinks'))
+            ->where($db->quoteName('state') . ' = 1')
+            ->where($db->quoteName('id') . ' > :id' )
+            ->bind(':id', $lastId, ParameterType::INTEGER)
+            ->order($db->quoteName('id') . ' ASC')
+            ->setLimit(1);
+
+        try {
+            $nextId = $db->setQuery($hasMoreQuery)->loadResult();
+        } catch (\Exception $e) {
+            $this->logTask('Error checking for remaining weblinks: ' . $e->getMessage(), 'error');
+            $this->clearSnapshot($task, $taskId);
+            return Status::KNOCKOUT;
         }
 
-        $summary = \sprintf('Checked %d links, %d broken: %s', $checked, $broken, implode('; ', $details));
-        $this->logTask($summary);
+        // Remaining links → continue
+        if ($nextId !== null) {
+            $saved = $this->saveSnapshot($task, [
+                self::SNAPSHOT_LASTID  => $lastId,
+                self::SNAPSHOT_BROKEN  => $broken,
+                self::SNAPSHOT_CHECKED => $checked,
+                self::SNAPSHOT_DETAILS => $details,
+            ], $taskId);
 
-        return $this->sendBrokenLinksEmail($broken, $checked, $details);
+            if ($saved) {
+                $this->logTask(sprintf(
+                    'Batch: %d checked (%d broken), lastId=%d. Will resume shortly.',
+                    $checked,
+                    $broken,
+                    $lastId
+                ), 'info');
+            }
 
-        //return Status::OK;
+            return Status::WILL_RESUME;
+        }
+
+        // All links processed
+        return $this->finalize($task, $broken, $checked, $details, $taskId);
+        
     }
 
     /**
-     * Send email notification about broken links to site administrators
+     * Finalizes the task: resets snapshot, logs and sends email if needed.
      *
-     * @param   integer  $broken   Number of broken links found
-     * @param   integer  $checked  Total number of links checked
-     * @param   array    $details  Details of broken links
+     * @param   object  $task     Task object
+     * @param   int     $broken   Number of broken links
+     * @param   int     $checked  Number of checked links
+     * @param   array   $details  Broken links details
+     * @param   int     $taskId   The task ID
      *
-     * @return  integer  The task status code
+     * @return  int  Task status code
+     * @since   1.0.0
+     */
+    private function finalize(object $task, int $broken, int $checked, array $details, int $taskId): int
+    {
+        // Remove snapshot
+        $this->clearSnapshot($task, $taskId);
+
+        if ($broken === 0) {
+            $this->logTask(sprintf('Verification completed: %d links checked, all reachable.', $checked), 'info');
+            return Status::OK;
+        }
+
+        $this->logTask(sprintf(
+            'Verification completed: %d links checked, %d unreachable.',
+            $checked,
+            $broken
+        ), 'info');
+
+        return $this->sendBrokenLinksEmail($broken, $checked, $details);
+    }
+
+    /**
+     * Sends a summary email to Super Users.
      *
+     * @param   int    $broken   Number of broken links
+     * @param   int    $checked  Number of checked links
+     * @param   array  $details  Array of broken link details
+     *
+     * @return  int  Task status code
      * @since   1.0.0
      */
     private function sendBrokenLinksEmail(int $broken, int $checked, array $details): int
@@ -180,128 +354,194 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
         $superUsers = $this->getSuperUsers();
 
         if (empty($superUsers)) {
+            $this->logTask('No Super Users found for email notification.', 'error');
             return Status::KNOCKOUT;
         }
-
-        $sitename = $this->getApplication()->get('sitename');
 
         $substitutions = [
             'broken_count'  => $broken,
             'checked_count' => $checked,
             'details'       => implode("\n", $details),
-            'sitename'      => $sitename,
+            'sitename'      => $this->getApplication()->get('sitename'),
         ];
 
-
-        // Send the emails to the Super Users
         foreach ($superUsers as $superUser) {
             try {
                 $mailer = new MailTemplate('plg_task_weblinks.broken_links', $this->app->getLanguage()->getTag());
                 $mailer->addRecipient($superUser->email);
                 $mailer->addTemplateData($substitutions);
                 $mailer->send();
-            } catch (MailDisabledException | phpMailerException $exception) {
-                try {
-                    $this->logTask($exception->getMessage());
-                } catch (\RuntimeException) {
-                    return Status::KNOCKOUT;
-                }
+            } catch (\Joomla\CMS\Mail\Exception\MailDisabledException | phpMailerException $exception) {
+                $this->logTask($exception->getMessage(), 'error');
             }
         }
+
         return Status::OK;
     }
 
     /**
-     * Returns the Super Users email information. If you provide a comma separated $email list
-     * we will check that these emails do belong to Super Users and that they have not blocked
-     * system emails.
+     * Retrieves Super Users who have email notification enabled.
      *
-     * @param   null|string  $email  A list of Super Users to email
+     * @param   string|null  $email  Comma-separated email list (optional)
      *
-     * @return  array  The list of Super User emails
-     *
-     * @since   3.5
+     * @return  array  Array of user objects with id, username, and email
+     * @since   1.0.0
      */
-    private function getSuperUsers($email = null)
+    private function getSuperUsers(?string $email = null): array
     {
-        $db     = $this->getDatabase();
-        $emails = [];
-
-        // Convert the email list to an array
-        if (!empty($email)) {
-            $temp   = explode(',', $email);
-
-            foreach ($temp as $entry) {
-                $emails[] = trim($entry);
-            }
-
-            $emails = array_unique($emails);
-        }
-
-        // Get a list of groups which have Super User privileges
-        $ret = [];
+        $db = $this->getDatabase();
 
         try {
-            $table     = new Asset($db);
-            $rootId    = $table->getRootId();
-            $rules     = Access::getAssetRules($rootId)->getData();
-            $rawGroups = $rules['core.admin']->getData();
-            $groups    = [];
+            // Get groups with core.admin permission
+            $table = new Asset($db);
+            $rootId = $table->getRootId();
+            $rules = Access::getAssetRules($rootId)->getData();
+            $rawGroups = $rules['core.admin']->getData() ?? [];
 
-            if (empty($rawGroups)) {
-                return $ret;
+            $groups = array_keys(array_filter($rawGroups));
+
+            if (empty($groups)) {
+                return [];
             }
 
-            foreach ($rawGroups as $g => $enabled) {
-                if ($enabled) {
-                    $groups[] = $g;
+            // Unified query with JOIN
+            $query = $db->getQuery(true)
+                ->select($db->quoteName(['u.id', 'u.username', 'u.email']))
+                ->from($db->quoteName('#__users', 'u'))
+                ->innerJoin(
+                    $db->quoteName('#__user_usergroup_map', 'ug'),
+                    $db->quoteName('u.id') . ' = ' . $db->quoteName('ug.user_id')
+                )
+                ->whereIn($db->quoteName('ug.group_id'), $groups)
+                ->where($db->quoteName('u.block') . ' = 0')
+                ->where($db->quoteName('u.sendEmail') . ' = 1');
+
+            if (!empty($email)) {
+                $emails = array_filter(array_map('trim', explode(',', $email)));
+                if (!empty($emails)) {
+                    $quotedEmails = array_map(
+                        fn($e) => $db->quote(strtolower(trim($e))),
+                        $emails
+                    );
+                    $query->where('LOWER(' . $db->quoteName('u.email') . ') IN (' . implode(',', $quotedEmails) . ')');
                 }
             }
 
-            if (empty($groups)) {
-                return $ret;
-            }
-        } catch (\Exception $exc) {
-            return $ret;
+            return $db->setQuery($query)->loadObjectList();
+        } catch (\Exception $e) {
+            $this->logTask('getSuperUsers error: ' . $e->getMessage(), 'error');
+            return [];
+        }
+    }
+
+    /**
+     * Normalizes a URL: adds scheme if missing
+     *
+     * @param   string  $url  The URL to normalize
+     *
+     * @return  string|null  Normalized URL or null if invalid
+     * @since   1.0.0
+     */
+    private function normalizeUrl(string $url): ?string
+    {
+        $url = trim($url);
+        
+        // Block suspicious URLs
+        if (empty($url) || stripos($url, 'javascript:') === 0) {
+            return null;
         }
 
-        // Get the user IDs of users belonging to the SA groups
+        if (!str_starts_with(strtolower($url), 'http')) {
+            $url = 'http://' . $url;
+        }
+
+        return filter_var($url, FILTER_VALIDATE_URL) ? $url : null;
+    }    
+
+    /**
+     * Saves the snapshot in the task parameters using the Table class
+     *
+     * @param   object  $task     The task object
+     * @param   array   $data     The data to save
+     * @param   int     $taskId   The task ID
+     *
+     * @return  bool  True on success, false on failure
+     * @since   1.0.0
+     */ 
+    private function saveSnapshot(object $task, array $data, int $taskId): bool
+    {   
+        if ($taskId === 0) {
+            $this->logTask('Unable to get task ID to save snapshot', 'error');
+            return false;
+        }
+
         try {
-            $query = $db->createQuery()
-                ->select($db->quoteName('user_id'))
-                ->from($db->quoteName('#__user_usergroup_map'))
-                ->whereIn($db->quoteName('group_id'), $groups);
-
-            $db->setQuery($query);
-            $userIDs = $db->loadColumn(0);
-
-            if (empty($userIDs)) {
-                return $ret;
+            $taskTable = new TaskTable($this->getDatabase());
+            
+            if (!$taskTable->load($taskId)) {
+                $this->logTask('Task ID ' . $taskId . ' not found for saving', 'error');
+                return false;
             }
-        } catch (\Exception $exc) {
-            return $ret;
+
+            $params = json_decode($taskTable->params, true) ?? [];
+            $params[self::SNAPSHOT_KEY] = $data;
+            $taskTable->params = json_encode($params, JSON_UNESCAPED_UNICODE);
+            $taskTable->store();                        
+            return true;
+
+        } catch (\Exception $e) {
+            $this->logTask('Snapshot save error: ' . $e->getMessage(), 'error');
+            return false;
+        }
+    }
+    
+    /**
+     * Reads the snapshot from the task parameters using the Table class
+     *
+     * @param   object  $task    The task object
+     * @param   int     $taskId  The task ID
+     *
+     * @return  array  The snapshot data as an associative array
+     * @since   1.0.0
+     */
+    private function loadSnapshot(object $task, int $taskId): array
+    {   
+        if ($taskId === 0) {
+            $this->logTask('Unable to get task ID for snapshot', 'error');
+            return [];
         }
 
-        // Get the user information for the Super Administrator users
         try {
-            $query = $db->createQuery()
-                ->select($db->quoteName(['id', 'username', 'email']))
-                ->from($db->quoteName('#__users'))
-                ->whereIn($db->quoteName('id'), $userIDs)
-                ->where($db->quoteName('block') . ' = 0')
-                ->where($db->quoteName('sendEmail') . ' = 1');
-
-            if (!empty($emails)) {
-                $lowerCaseEmails = array_map('strtolower', $emails);
-                $query->whereIn('LOWER(' . $db->quoteName('email') . ')', $lowerCaseEmails, ParameterType::STRING);
+            $taskTable = new TaskTable($this->getDatabase());
+            
+            if (!$taskTable->load($taskId)) {
+                $this->logTask('Task ID ' . $taskId . ' not found', 'error');
+                return [];
             }
 
-            $db->setQuery($query);
-            $ret = $db->loadObjectList();
-        } catch (\Exception) {
-            return $ret;
+            $params = json_decode($taskTable->params, true) ?? [];
+            $snapshot = $params[self::SNAPSHOT_KEY] ?? [];
+            //$this->logTask('load snapshot: ' . isset($snapshot['lastId']) ? $snapshot['lastId'] : 0, 'info');
+            return is_array($snapshot) ? $snapshot : [];
+        } catch (\Exception $e) {
+            $this->logTask('Snapshot load error: ' . $e->getMessage(), 'error');
+            return [];
         }
+    }
 
-        return $ret;
+    /**
+     * Adds a detail to the list, limiting the maximum number
+     *
+     * @param   array   &$details  The details array (passed by reference)
+     * @param   string  $detail    The detail to add
+     *
+     * @return  void
+     * @since   1.0.0
+     */
+    private function addDetail(array &$details, string $detail): void
+    {
+        if (count($details) < self::MAX_DETAILS) {
+            $details[] = $detail;
+        }
     }
 }
