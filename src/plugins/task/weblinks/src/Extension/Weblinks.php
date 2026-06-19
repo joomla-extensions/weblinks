@@ -143,16 +143,16 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      *
      * @return  bool  True on success, false on failure
      * @since   1.0.0
-     */    
+     */
     private function clearSnapshot(object $task, int $taskId): bool
-    {   
+    {
         if ($taskId === 0) {
             return false;
         }
 
         try {
             $taskTable = new TaskTable($this->getDatabase());
-            
+
             if (!$taskTable->load($taskId)) {
                 return false;
             }
@@ -161,7 +161,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
             unset($params[self::SNAPSHOT_KEY]);
             $taskTable->params = json_encode($params, JSON_UNESCAPED_UNICODE);
             $taskTable->store();
-            
+
             return true;
         } catch (\Exception $e) {
             $this->logTask('Snapshot deletion error: ' . $e->getMessage(), 'error');
@@ -189,7 +189,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
         $taskId      = $event->getTaskId();
         $httpTimeout = (int) $event->getArgument('params')->http_timeout ?? 8;
         $batchSize   = (int) $event->getArgument('params')->batch_size ?? 3;
-        $timelimit   = max(5, (int)ini_get('max_execution_time') - 10);
+        $timelimit   = max(5, (int)\ini_get('max_execution_time') - 10);
         $startTime   = microtime(true);
 
         // Restore previous state
@@ -205,7 +205,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
             ->select($db->quoteName(['id', 'title', 'url']))
             ->from($db->quoteName('#__weblinks'))
             ->where($db->quoteName('state') . ' = 1')
-            ->where($db->quoteName('id') . ' > :id' )
+            ->where($db->quoteName('id') . ' > :id')
             ->bind(':id', $lastId, ParameterType::INTEGER)
             ->order($db->quoteName('id') . ' ASC')
             ->setLimit($batchSize);
@@ -224,7 +224,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
         }
 
         // Process batch with timeout check
-        $http = (new HttpFactory())->getHttp();
+        $http             = (new HttpFactory())->getHttp();
         $processedInBatch = 0;
         $acceptedCodes    = [200, 301, 302, 307, 308];
 
@@ -242,7 +242,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
                 $processedInBatch++;
                 $lastId = (int) $link->id;
 
-                $this->addDetail($details, sprintf('ID %d [%s]: Invalid URL', $link->id, $link->title));
+                $this->addDetail($details, \sprintf('ID %d [%s]: Invalid URL', $link->id, $link->title));
                 continue;
             }
 
@@ -251,16 +251,16 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
             $lastId = (int) $link->id;
 
             try {
-                $response = $http->head($url, [], $httpTimeout);
+                $response   = $http->head($url, [], $httpTimeout);
                 $statusCode = $response->getStatusCode();
 
                 if (!\in_array($statusCode, $acceptedCodes, true)) {
                     $broken++;
-                    $this->addDetail($details, sprintf('ID %d [%s]: HTTP %d', $link->id, $link->title, $statusCode));
+                    $this->addDetail($details, \sprintf('ID %d [%s]: HTTP %d', $link->id, $link->title, $statusCode));
                 }
             } catch (\Exception $e) {
                 $broken++;
-                $this->addDetail($details, sprintf('ID %d [%s]: %s', $link->id, $link->title, $e->getMessage()));
+                $this->addDetail($details, \sprintf('ID %d [%s]: %s', $link->id, $link->title, $e->getMessage()));
             }
         }
 
@@ -269,7 +269,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__weblinks'))
             ->where($db->quoteName('state') . ' = 1')
-            ->where($db->quoteName('id') . ' > :id' )
+            ->where($db->quoteName('id') . ' > :id')
             ->bind(':id', $lastId, ParameterType::INTEGER)
             ->order($db->quoteName('id') . ' ASC')
             ->setLimit(1);
@@ -292,7 +292,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
             ], $taskId);
 
             if ($saved) {
-                $this->logTask(sprintf(
+                $this->logTask(\sprintf(
                     'Batch: %d checked (%d broken), lastId=%d. Will resume shortly.',
                     $checked,
                     $broken,
@@ -305,7 +305,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
 
         // All links processed
         return $this->finalize($task, $broken, $checked, $details, $taskId);
-        
+
     }
 
     /**
@@ -326,11 +326,11 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
         $this->clearSnapshot($task, $taskId);
 
         if ($broken === 0) {
-            $this->logTask(sprintf('Verification completed: %d links checked, all reachable.', $checked), 'info');
+            $this->logTask(\sprintf('Verification completed: %d links checked, all reachable.', $checked), 'info');
             return Status::OK;
         }
 
-        $this->logTask(sprintf(
+        $this->logTask(\sprintf(
             'Verification completed: %d links checked, %d unreachable.',
             $checked,
             $broken
@@ -393,9 +393,9 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
 
         try {
             // Get groups with core.admin permission
-            $table = new Asset($db);
-            $rootId = $table->getRootId();
-            $rules = Access::getAssetRules($rootId)->getData();
+            $table     = new Asset($db);
+            $rootId    = $table->getRootId();
+            $rules     = Access::getAssetRules($rootId)->getData();
             $rawGroups = $rules['core.admin']->getData() ?? [];
 
             $groups = array_keys(array_filter($rawGroups));
@@ -420,7 +420,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
                 $emails = array_filter(array_map('trim', explode(',', $email)));
                 if (!empty($emails)) {
                     $quotedEmails = array_map(
-                        fn($e) => $db->quote(strtolower(trim($e))),
+                        fn ($e) => $db->quote(strtolower(trim($e))),
                         $emails
                     );
                     $query->where('LOWER(' . $db->quoteName('u.email') . ') IN (' . implode(',', $quotedEmails) . ')');
@@ -445,7 +445,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
     private function normalizeUrl(string $url): ?string
     {
         $url = trim($url);
-        
+
         // Block suspicious URLs
         if (empty($url) || stripos($url, 'javascript:') === 0) {
             return null;
@@ -456,7 +456,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
         }
 
         return filter_var($url, FILTER_VALIDATE_URL) ? $url : null;
-    }    
+    }
 
     /**
      * Saves the snapshot in the task parameters using the Table class
@@ -467,9 +467,9 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      *
      * @return  bool  True on success, false on failure
      * @since   1.0.0
-     */ 
+     */
     private function saveSnapshot(object $task, array $data, int $taskId): bool
-    {   
+    {
         if ($taskId === 0) {
             $this->logTask('Unable to get task ID to save snapshot', 'error');
             return false;
@@ -477,16 +477,16 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
 
         try {
             $taskTable = new TaskTable($this->getDatabase());
-            
+
             if (!$taskTable->load($taskId)) {
                 $this->logTask('Task ID ' . $taskId . ' not found for saving', 'error');
                 return false;
             }
 
-            $params = json_decode($taskTable->params, true) ?? [];
+            $params                     = json_decode($taskTable->params, true) ?? [];
             $params[self::SNAPSHOT_KEY] = $data;
-            $taskTable->params = json_encode($params, JSON_UNESCAPED_UNICODE);
-            $taskTable->store();                        
+            $taskTable->params          = json_encode($params, JSON_UNESCAPED_UNICODE);
+            $taskTable->store();
             return true;
 
         } catch (\Exception $e) {
@@ -494,7 +494,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
             return false;
         }
     }
-    
+
     /**
      * Reads the snapshot from the task parameters using the Table class
      *
@@ -505,7 +505,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      * @since   1.0.0
      */
     private function loadSnapshot(object $task, int $taskId): array
-    {   
+    {
         if ($taskId === 0) {
             $this->logTask('Unable to get task ID for snapshot', 'error');
             return [];
@@ -513,16 +513,16 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
 
         try {
             $taskTable = new TaskTable($this->getDatabase());
-            
+
             if (!$taskTable->load($taskId)) {
                 $this->logTask('Task ID ' . $taskId . ' not found', 'error');
                 return [];
             }
 
-            $params = json_decode($taskTable->params, true) ?? [];
+            $params   = json_decode($taskTable->params, true) ?? [];
             $snapshot = $params[self::SNAPSHOT_KEY] ?? [];
             //$this->logTask('load snapshot: ' . isset($snapshot['lastId']) ? $snapshot['lastId'] : 0, 'info');
-            return is_array($snapshot) ? $snapshot : [];
+            return \is_array($snapshot) ? $snapshot : [];
         } catch (\Exception $e) {
             $this->logTask('Snapshot load error: ' . $e->getMessage(), 'error');
             return [];
@@ -540,7 +540,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      */
     private function addDetail(array &$details, string $detail): void
     {
-        if (count($details) < self::MAX_DETAILS) {
+        if (\count($details) < self::MAX_DETAILS) {
             $details[] = $detail;
         }
     }
