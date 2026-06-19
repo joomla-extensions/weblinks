@@ -302,10 +302,8 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
 
             return Status::WILL_RESUME;
         }
-
         // All links processed
         return $this->finalize($task, $broken, $checked, $details, $taskId);
-
     }
 
     /**
@@ -488,7 +486,6 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
             $taskTable->params          = json_encode($params, JSON_UNESCAPED_UNICODE);
             $taskTable->store();
             return true;
-
         } catch (\Exception $e) {
             $this->logTask('Snapshot save error: ' . $e->getMessage(), 'error');
             return false;
