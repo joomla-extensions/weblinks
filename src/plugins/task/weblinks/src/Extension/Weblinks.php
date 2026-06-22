@@ -36,7 +36,7 @@ use PHPMailer\PHPMailer\Exception as phpMailerException;
  */
 final class Weblinks extends CMSPlugin implements SubscriberInterface
 {
-    use DatabaseAwareTrait;
+    use ADatabaseAwareTrait;
     use TaskPluginTrait;
 
     /**
