@@ -18,8 +18,8 @@
   },
   "require-dev": {
     "joomla-projects/jorobo": "^0.12.1",
-    "phpunit/phpunit": "^9.6.0",
-    "friendsofphp/php-cs-fixer": "^3.87.1",
+    "phpunit/phpunit": "^9.6.34",
+    "friendsofphp/php-cs-fixer": "^3.88.0",
     "squizlabs/php_codesniffer": "^3.13.4",
     "phpstan/phpstan": "^2.1.22",
     "phpstan/phpstan-deprecation-rules": "^2.0.3"
