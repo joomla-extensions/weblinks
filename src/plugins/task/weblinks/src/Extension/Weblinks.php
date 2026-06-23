@@ -144,7 +144,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      * @return  bool  True on success, false on failure
      * @since   1.0.0
      */
-    private function clearSnapshotZ(object $task, int $taskId): bool
+    private function clearSnapshot(object $task, int $taskId): bool
     {
         if ($taskId === 0) {
             return false;
