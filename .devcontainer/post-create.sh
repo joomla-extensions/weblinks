@@ -34,8 +34,9 @@ echo "--> Building extension..."
 
 # --- 4. Install Joomla ---
 echo "--> Installing Joomla..."
-rm -f $JOOMLA_ROOT/index.html
-cd $JOOMLA_ROOT
+rm -f "$JOOMLA_ROOT/index.html"
+rm -f "$JOOMLA_ROOT/configuration.php"
+cd "$JOOMLA_ROOT"
 curl -o joomla.tar.zst -L https://developer.joomla.org/download-nightly.php/stable/debug/full/joomla.tar.zst
 tar xfa joomla.tar.zst
 rm joomla.tar.zst
@@ -69,15 +70,20 @@ fi
 # --- 6. Download and prepare phpMyAdmin ---
 PMA_ROOT="/var/www/html/phpmyadmin"
 echo "--> Downloading phpMyAdmin into $PMA_ROOT..."
-PMA_VERSION=$(curl -s https://api.github.com/repos/phpmyadmin/phpmyadmin/releases/latest | grep '"tag_name":' | sed -E 's/.*"RELEASE_([^"]+)".*/\1/' | tr '_' '.')
+PMA_VERSION=$(curl -fsSL --retry 3 --retry-delay 2 -H "Accept: application/vnd.github+json" -H "User-Agent: weblinks-devcontainer" https://api.github.com/repos/phpmyadmin/phpmyadmin/releases/latest | grep -o '"tag_name": *"[^"]*"' | head -1 | sed -E 's/.*"([^"]+)".*/\1/' | sed -E 's/^RELEASE_//' | tr '_' '.')
+
+if [ -z "$PMA_VERSION" ]; then
+    echo "Unable to determine the latest phpMyAdmin release; falling back to version 5.2.3."
+    PMA_VERSION="5.2.3"
+fi
 
 echo "The current version is: $PMA_VERSION"
-mkdir -p $PMA_ROOT
-curl -o /tmp/phpmyadmin.tar.gz https://files.phpmyadmin.net/phpMyAdmin/${PMA_VERSION}/phpMyAdmin-${PMA_VERSION}-all-languages.tar.gz
-tar xf /tmp/phpmyadmin.tar.gz --strip-components=1 -C $PMA_ROOT
+mkdir -p "$PMA_ROOT"
+curl -fsSL -o /tmp/phpmyadmin.tar.gz "https://files.phpmyadmin.net/phpMyAdmin/${PMA_VERSION}/phpMyAdmin-${PMA_VERSION}-all-languages.tar.gz"
+tar xzf /tmp/phpmyadmin.tar.gz --strip-components=1 -C "$PMA_ROOT"
 rm /tmp/phpmyadmin.tar.gz
-cp $PMA_ROOT/config.sample.inc.php $PMA_ROOT/config.inc.php
-sed -i "/\['AllowNoPassword'\] = false/a \$cfg['Servers'][\$i]['host'] = 'mysql';" $PMA_ROOT/config.inc.php
+cp "$PMA_ROOT/config.sample.inc.php" "$PMA_ROOT/config.inc.php"
+sed -i "/\['AllowNoPassword'\] = false/a \$cfg['Servers'][\$i]['host'] = 'mysql';" "$PMA_ROOT/config.inc.php"
 
 # --- 7. Codespaces Fix ---
 echo "--> Applying Codespaces fix..."
