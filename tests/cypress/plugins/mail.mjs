@@ -1,66 +1,70 @@
-import mailTester from 'smtp-tester';
-
-// The mail server instance
-let mailServer = null;
-
-// The cached mails
-let cachedMails = [];
+// L'URL di Mailpit dipende dall'ambiente (CI o locale)
+const MAILPIT_URL = process.env.CI ? 'http://mailpit:8025' : 'http://127.0.0.1:8025';
 
 /**
- * Returns all cached mails. It waits for maximum 3 seconds till a mail arrives.
- *
- * @returns a promise which resolves the cached mails
+ * Recupera le mail da Mailpit con un meccanismo di retry (3 secondi)
+ * Usa la fetch nativa di Node.js
  */
 async function getMails() {
-  // Waiting here maximum 3 seconds to get a mail
   for (let i = 0; i < 3; i += 1) {
-    if (cachedMails.length !== 0) {
-      break;
+    try {
+      const response = await fetch(`${MAILPIT_URL}/api/v1/messages`);
+      
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      
+      const data = await response.json();
+      
+      if (data.messages && data.messages.length > 0) {
+        // Recuperiamo il dettaglio di ogni mail per avere il corpo del messaggio
+        const detailedMails = await Promise.all(
+          data.messages.map(async (msg) => {
+            const detailRes = await fetch(`${MAILPIT_URL}/api/v1/message/${msg.ID}`);
+            const detail = await detailRes.json();
+            
+            return {
+              id: msg.ID,
+              headers: {
+                subject: detail.Subject,
+                from: `${detail.From.Name} <${detail.From.Address}>`,
+                to: msg.To[0].Address
+              },
+              body: detail.Text,
+              html: detail.HTML
+            };
+          })
+        );
+        return detailedMails;
+      }
+    } catch (error) {
+      console.error('Errore Mailpit:', error.message);
     }
 
-    // Sleep for a second
-    /* eslint-disable no-await-in-loop */
-    await new Promise((r) => { setTimeout(r, 1000); });
-    /* eslint-enable no-await-in-loop */
+    // Aspetta 1 secondo prima del prossimo tentativo
+    await new Promise((r) => setTimeout(r, 1000));
   }
 
-  return new Promise((resolve) => { resolve(cachedMails); });
+  return [];
 }
 
 /**
- * Clears the cached mails.
- *
- * @returns null
+ * Cancella tutte le email presenti in Mailpit
  */
-function clearEmails() {
-  cachedMails = [];
-
+async function clearEmails() {
+  try {
+    await fetch(`${MAILPIT_URL}/api/v1/messages`, {
+      method: 'DELETE'
+    });
+  } catch (error) {
+    console.error('Errore durante la cancellazione:', error.message);
+  }
   return null;
 }
 
 /**
- * Starts the mail server.
- *
- * @returns null
+ * Non serve più avviare un server SMTP manuale con Mailpit
  */
-function startMailServer(config) {
-  // Check if the mail server is already started
-  if (mailServer !== null) {
-    return null;
-  }
-
-  // Start the mail server on the configured port
-  mailServer = mailTester.init(config.expose.smtp_port);
-
-  // Uncomment the next line when you want to see the incoming mails while writing the tests
-  // mailServer.module('logAll');
-
-  // Listen to incoming mails and add them to the internal cache
-  mailServer.bind((addr, id, email) => cachedMails.push(email));
-
-  // Reset the cached mails
-  cachedMails = [];
-
+function startMailServer() {
+  console.log('Mailpit è gestito via Docker.');
   return null;
 }
 

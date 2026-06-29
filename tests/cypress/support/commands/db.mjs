@@ -706,3 +706,37 @@ Cypress.Commands.add('db_createWeblink', (weblinkData) => {
       return weblink;
     });
 });
+
+/**
+ * Creates a scheduler task in the database with the given data. The task contains some default values when
+ * not all required fields are passed in the given data. The data of the inserted task is returned.
+ *
+ * @param {Object} taskData The task data to insert
+ *
+ * @returns Object
+ */
+Cypress.Commands.add('db_createSchedulerTask', (taskData) => {
+  const defaultTaskOptions = {
+    title: 'test task',
+    type: '',
+    execution_rules: {},
+    cron_rules: {},
+    state: 1,
+    params: {},
+    note: '',
+    created: '2023-01-01 20:00:00',
+  };
+  const task = { ...defaultTaskOptions, ...taskData };
+  ['execution_rules', 'cron_rules', 'params'].forEach((key) => {
+    if (typeof task[key] === 'object') {
+      task[key] = JSON.stringify(task[key]);
+    }
+  });
+
+  return cy.task('queryDB', createInsertQuery('scheduler_tasks', task))
+    .then(async (info) => {
+      task.id = info.insertId;
+
+      return task;
+    });
+});
