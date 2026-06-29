@@ -70,7 +70,7 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
         else :
             ?>
          <ul class="category list-unstyled">
-                <?php foreach ($this->items as $i => $item) :
+                <?php foreach ($this->items as $item) :
                     ?>
                     <?php
                     // Shouldn't this be only for users with admin rights?
