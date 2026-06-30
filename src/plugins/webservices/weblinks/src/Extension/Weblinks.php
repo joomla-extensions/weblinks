@@ -11,6 +11,7 @@
 namespace Joomla\Plugin\WebServices\Weblinks\Extension;
 
 use Joomla\CMS\Cache\CacheControllerFactoryInterface;
+use Joomla\CMS\Event\Application\BeforeApiRouteEvent;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Router\ApiRouter;
@@ -44,8 +45,9 @@ class Weblinks extends CMSPlugin implements SubscriberInterface
      *
      * @since   5.1.0
      */
-    public function onBeforeApiRoute(&$router)
+    public function onBeforeApiRoute(BeforeApiRouteEvent $event)
     {
+        $router   = $event->getRouter();
         $isPublic = $this->params->get('public', false);
 
         $router->createCRUDRoutes(
