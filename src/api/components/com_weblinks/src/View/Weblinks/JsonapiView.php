@@ -139,7 +139,7 @@ class JsonapiView extends BaseApiView
     protected function prepareItem($item)
     {
         foreach (FieldsHelper::getFields('com_weblinks.weblink', $item, true) as $field) {
-            $item->{$field->name} = isset($field->apivalue) ? $field->apivalue : $field->rawvalue;
+            $item->{$field->name} = $field->apivalue ?? $field->rawvalue;
         }
 
         return parent::prepareItem($item);
