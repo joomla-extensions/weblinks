@@ -19,7 +19,7 @@ use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
 if ($this->maxLevelcat != 0 && count($this->items[$this->parent->id]) > 0) :
     ?>
  <div class="com-content-categories__items">
-        <?php foreach ($this->items as $item) :
+        <?php foreach ($this->items[$this->parent->id] as $item) :
             ?>
             <?php if ($this->params->get('show_empty_categories_cat') || $item->numitems || count($item->getChildren())) :
                 ?>
