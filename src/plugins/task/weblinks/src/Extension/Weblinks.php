@@ -11,6 +11,8 @@
 namespace Joomla\Plugin\Task\Weblinks\Extension;
 
 use Joomla\CMS\Access\Access;
+use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Mail\Exception\MailDisabledException;
 use Joomla\CMS\Mail\MailTemplate;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Table\Asset;
@@ -42,7 +44,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
     /**
      * Application object
      *
-     * @var \Joomla\CMS\Application\CMSApplication
+     * @var CMSApplication
      * @since 1.0.0
      */
     protected $app;
@@ -157,7 +159,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
                 return false;
             }
 
-            $params = json_decode($taskTable->params, true) ?? [];
+            $params = json_decode((string) $taskTable->params, true) ?? [];
             unset($params[self::SNAPSHOT_KEY]);
             $taskTable->params = json_encode($params, JSON_UNESCAPED_UNICODE);
             $taskTable->store();
@@ -365,11 +367,11 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
 
         foreach ($superUsers as $superUser) {
             try {
-                $mailer = new MailTemplate('plg_task_weblinks.broken_links', $this->app->getLanguage()->getTag());
+                $mailer = new MailTemplate('plg_task_weblinks.broken_links', $this->getApplication()->getLanguage()->getTag());
                 $mailer->addRecipient($superUser->email);
                 $mailer->addTemplateData($substitutions);
                 $mailer->send();
-            } catch (\Joomla\CMS\Mail\Exception\MailDisabledException | phpMailerException $exception) {
+            } catch (MailDisabledException | phpMailerException $exception) {
                 $this->logTask($exception->getMessage(), 'error');
             }
         }
@@ -415,7 +417,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
                 ->where($db->quoteName('u.sendEmail') . ' = 1');
 
             if (!empty($email)) {
-                $emails = array_filter(array_map('trim', explode(',', $email)));
+                $emails = array_filter(array_map(trim(...), explode(',', $email)));
                 if (!empty($emails)) {
                     $quotedEmails = array_map(
                         fn ($e) => $db->quote(strtolower(trim($e))),
@@ -481,7 +483,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
                 return false;
             }
 
-            $params                     = json_decode($taskTable->params, true) ?? [];
+            $params                     = json_decode((string) $taskTable->params, true) ?? [];
             $params[self::SNAPSHOT_KEY] = $data;
             $taskTable->params          = json_encode($params, JSON_UNESCAPED_UNICODE);
             $taskTable->store();
@@ -516,7 +518,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
                 return [];
             }
 
-            $params   = json_decode($taskTable->params, true) ?? [];
+            $params   = json_decode((string) $taskTable->params, true) ?? [];
             $snapshot = $params[self::SNAPSHOT_KEY] ?? [];
             //$this->logTask('load snapshot: ' . isset($snapshot['lastId']) ? $snapshot['lastId'] : 0, 'info');
             return \is_array($snapshot) ? $snapshot : [];
