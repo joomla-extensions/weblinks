@@ -59,14 +59,6 @@ return new class () implements ServiceProviderInterface {
                 protected $minimumPhp = '8.1.0';
 
                 /**
-                 * The application object
-                 *
-                 * @var AdministratorApplication
-                 * @since  1.0.0
-                 */
-                private AdministratorApplication $app;
-
-                /**
                  * True when we have to update the searchable fields
                  *
                  * @var boolean
@@ -81,9 +73,14 @@ return new class () implements ServiceProviderInterface {
                  *
                  * @since  1.0.0
                  */
-                public function __construct(AdministratorApplication $app)
-                {
-                    $this->app = $app;
+                public function __construct(
+                    /**
+                     * The application object
+                     *
+                     * @since  1.0.0
+                     */
+                    private readonly AdministratorApplication $app
+                ) {
                 }
 
                 /**

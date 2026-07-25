@@ -19,7 +19,7 @@ use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
 if ($this->maxLevel != 0 && count($this->children[$this->category->id]) > 0) :
     ?>
    <ul class="com-weblinks-category__children list-group list-unstyled">
-        <?php foreach ($this->children[$this->category->id] as $id => $child) :
+        <?php foreach ($this->children[$this->category->id] as $child) :
             ?>
             <?php if ($this->params->get('show_empty_categories') || $child->numitems || count($child->getChildren())) :
                 ?>

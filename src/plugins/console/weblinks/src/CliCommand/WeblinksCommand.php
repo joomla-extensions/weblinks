@@ -53,12 +53,13 @@ final class WeblinksCommand extends AbstractCommand
     protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
         $io       = new SymfonyStyle($input, $output);
-        $action   = strtolower($input->getOption('action'));
+        $action   = strtolower((string) $input->getOption('action'));
         $filePath = $input->getOption('file');
-
         if ($action === 'export') {
             return $this->handleExport($io, $filePath);
-        } elseif ($action === 'import') {
+        }
+
+        if ($action === 'import') {
             return $this->handleImport($io, $filePath);
         }
 

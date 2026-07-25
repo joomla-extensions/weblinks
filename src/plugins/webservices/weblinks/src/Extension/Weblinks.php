@@ -11,9 +11,11 @@
 namespace Joomla\Plugin\WebServices\Weblinks\Extension;
 
 use Joomla\CMS\Cache\CacheControllerFactoryInterface;
+use Joomla\CMS\Event\Application\BeforeApiRouteEvent;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Router\ApiRouter;
+use Joomla\Event\SubscriberInterface;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -24,7 +26,7 @@ use Joomla\CMS\Router\ApiRouter;
  *
  * @since  5.1.0
  */
-class Weblinks extends CMSPlugin
+class Weblinks extends CMSPlugin implements SubscriberInterface
 {
     /**
      * Load the language file on instantiation.
@@ -43,8 +45,9 @@ class Weblinks extends CMSPlugin
      *
      * @since   5.1.0
      */
-    public function onBeforeApiRoute(&$router)
+    public function onBeforeApiRoute(BeforeApiRouteEvent $event)
     {
+        $router   = $event->getRouter();
         $isPublic = $this->params->get('public', false);
 
         $router->createCRUDRoutes(
@@ -110,7 +113,7 @@ class Weblinks extends CMSPlugin
 
         // Only apply to weblinks-related API requests for guest users
         if (
-            strpos($uri, '/weblinks') !== false
+            str_contains((string) $uri, '/weblinks')
             &&
             true !== $app->login(credentials: ['username' => ''], options: ['silent' => true, 'action' => 'core.login.api'])
             &&
@@ -291,5 +294,9 @@ class Weblinks extends CMSPlugin
     {
         header('X-RateLimit-Remaining: ' . max($remainingRequests, 0));
         header('X-RateLimit-Reset: ' . $resetTime - time());
+    }
+    public static function getSubscribedEvents(): array
+    {
+        return ['onBeforeApiRoute' => 'onBeforeApiRoute', 'onAfterApiRoute' => 'onAfterApiRoute'];
     }
 }

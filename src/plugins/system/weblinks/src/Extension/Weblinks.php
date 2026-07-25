@@ -150,8 +150,8 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
             ];
 
             foreach ($patterns as $pattern) {
-                if (preg_match($pattern, $body)) {
-                    $body     = preg_replace($pattern, $helpUrl, $body);
+                if (preg_match($pattern, (string) $body)) {
+                    $body     = preg_replace($pattern, $helpUrl, (string) $body);
                     $modified = true;
                 }
             }
@@ -169,8 +169,8 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
             ];
 
             foreach ($patterns as $pattern) {
-                if (preg_match($pattern, $body)) {
-                    $body     = preg_replace($pattern, $helpUrl, $body);
+                if (preg_match($pattern, (string) $body)) {
+                    $body     = preg_replace($pattern, $helpUrl, (string) $body);
                     $modified = true;
                 }
             }
@@ -187,8 +187,8 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
             ];
 
             foreach ($patterns as $pattern) {
-                if (preg_match($pattern, $body)) {
-                    $body     = preg_replace($pattern, $helpUrl, $body);
+                if (preg_match($pattern, (string) $body)) {
+                    $body     = preg_replace($pattern, $helpUrl, (string) $body);
                     $modified = true;
                 }
             }
@@ -206,8 +206,8 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
             ];
 
             foreach ($patterns as $pattern) {
-                if (preg_match($pattern, $body)) {
-                    $body     = preg_replace($pattern, $helpUrl, $body);
+                if (preg_match($pattern, (string) $body)) {
+                    $body     = preg_replace($pattern, $helpUrl, (string) $body);
                     $modified = true;
                 }
             }
