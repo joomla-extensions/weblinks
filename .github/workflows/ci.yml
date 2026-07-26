@@ -258,7 +258,7 @@ jobs:
           npx cypress run \
             --browser=chrome \
             --e2e \
-            --spec "tests/cypress/integration/administrator/components/com_weblinks/extension_update.cy.mjs" \
+            --spec "tests/cypress/integration/administrator/components/com_weblinks/extension_update.cy.js" \
             --config video=false --expose mailpitUrl=http://mailpit:8025,cmsPath=/tests/www/${{ matrix.db }},db_type=${{ matrix.db-type }},db_host=${{ matrix.db-host }},db_name=test_joomla,db_user=$DB_USER,db_password=$DB_PASS,db_prefix=${{ matrix.db-prefix }},logFile=/var/log/apache2/error.log --config baseUrl=http://localhost/${{ matrix.db }}
 
       - name: Upload Screenshots on Failure
