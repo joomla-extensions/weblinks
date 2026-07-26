@@ -8,7 +8,7 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
     // 1. Uninstall current PR version installed during environment setup
     // ------------------------------------------------------------------
     cy.visit('administrator/index.php?option=com_installer&view=manage');
-    cy.searchItem('pkg_weblinks');
+    cy.searchForItem('pkg_weblinks');
 
     cy.get('body').then(($body) => {
       if ($body.find('table tbody tr').length > 0) {
