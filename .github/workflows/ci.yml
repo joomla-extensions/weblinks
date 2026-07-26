@@ -243,7 +243,7 @@ jobs:
           npx cypress run \
             --browser=chrome \
             --e2e \
-            --config video=false,excludeSpecPattern="tests/cypress/integration/administrator/com_weblinks/extension_update.cy.*",baseUrl=http://localhost/${{ matrix.db }} \
+            --config video=false,excludeSpecPattern="tests/cypress/integration/administrator/components/com_weblinks/extension_update.cy.*",baseUrl=http://localhost/${{ matrix.db }} \
             --expose mailpitUrl=http://mailpit:8025,cmsPath=/tests/www/${{ matrix.db }},db_type=${{ matrix.db-type }},db_host=${{ matrix.db-host }},db_name=test_joomla,db_user=$DB_USER,db_password=$DB_PASS,db_prefix=${{ matrix.db-prefix }},logFile=/var/log/apache2/error.log
 
       - name: Debug spec file existence
