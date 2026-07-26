@@ -36,12 +36,12 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
     cy.get('#jform_title').type('Pre-Upgrade Test Link');
     cy.get('#jform_url').type('https://joomla.org');
     cy.clickToolbarButton('save');
-    cy.get('#system-message-container').should('contain', 'Weblink saved');
+    cy.get('#system-message-container').should('contain', 'Web link saved');
 
     // ------------------------------------------------------------------
     // 4. Upgrade using current PR Candidate package (n)
     // ------------------------------------------------------------------
-    const prCandidateUrl = `${Cypress.config('baseUrl')}/pkg-weblinks-current.zip`;
+    const prCandidateUrl = `${Cypress.config('baseUrl')}/pkg-weblinks-current.zip`; 
     cy.installExtensionFromUrl(prCandidateUrl);
     cy.get('#system-message-container').should('contain', 'Installation of the package was successful');
 
