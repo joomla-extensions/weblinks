@@ -16,17 +16,16 @@ namespace Joomla\Plugin\Finder\Weblinks\Extension;
 
 use Joomla\CMS\Categories\Categories;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Event\Finder as FinderEvent;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Table\Table;
 use Joomla\Component\Finder\Administrator\Indexer\Adapter;
 use Joomla\Component\Finder\Administrator\Indexer\Helper;
 use Joomla\Component\Finder\Administrator\Indexer\Indexer;
 use Joomla\Component\Finder\Administrator\Indexer\Result;
 use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
 use Joomla\Database\DatabaseAwareTrait;
-use Joomla\Database\DatabaseInterface;
 use Joomla\Database\DatabaseQuery;
-use Joomla\Event\DispatcherInterface;
+use Joomla\Event\SubscriberInterface;
 use Joomla\Registry\Registry;
 
 /**
@@ -34,7 +33,7 @@ use Joomla\Registry\Registry;
  *
  * @since  2.5
  */
-final class Weblinks extends Adapter
+final class Weblinks extends Adapter implements SubscriberInterface
 {
     use DatabaseAwareTrait;
 
@@ -87,17 +86,21 @@ final class Weblinks extends Adapter
     protected $autoloadLanguage = true;
 
     /**
-     * Constructor
+     * Returns an array of events this subscriber will listen to.
      *
-     * @param   DispatcherInterface  $dispatcher
-     * @param   array                $config
-     * @param   DatabaseInterface    $database
+     * @return  array
+     *
+     * @since   5.0.0
      */
-    public function __construct(DispatcherInterface $dispatcher, array $config, DatabaseInterface $database)
+    public static function getSubscribedEvents(): array
     {
-        parent::__construct($dispatcher, $config);
-
-        $this->setDatabase($database);
+        return array_merge(parent::getSubscribedEvents(), [
+            'onFinderCategoryChangeState' => 'onFinderCategoryChangeState',
+            'onFinderChangeState'         => 'onFinderChangeState',
+            'onFinderAfterDelete'         => 'onFinderAfterDelete',
+            'onFinderBeforeSave'          => 'onFinderBeforeSave',
+            'onFinderAfterSave'           => 'onFinderAfterSave',
+        ]);
     }
 
     /**
@@ -105,45 +108,45 @@ final class Weblinks extends Adapter
      * changed. This is fired when the item category is published or unpublished
      * from the list view.
      *
-     * @param   string   $extension  The extension whose category has been updated.
-     * @param   array    $pks        An array of primary key ids of the content that has changed state.
-     * @param   integer  $value      The value of the state that the content has been changed to.
+     * @param   FinderEvent\AfterCategoryChangeStateEvent   $event  The event instance.
      *
      * @return  void
      *
      * @since   2.5
      */
-    public function onFinderCategoryChangeState($extension, $pks, $value)
+    public function onFinderCategoryChangeState(FinderEvent\AfterCategoryChangeStateEvent $event): void
     {
         // Make sure we're handling com_weblinks categories.
-        if ($extension == 'com_weblinks') {
-            $this->categoryStateChange($pks, $value);
+        if ($event->getExtension() === 'com_weblinks') {
+            $this->categoryStateChange($event->getPks(), $event->getValue());
         }
     }
 
     /**
      * Method to remove the link information for items that have been deleted.
      *
-     * @param   string  $context  The context of the action being performed.
-     * @param   Table   $table    A JTable object containing the record to be deleted.
+     * @param   FinderEvent\AfterDeleteEvent   $event  The event instance.
      *
-     * @return  boolean  True on success.
+     * @return  void
      *
-     * @throws  \Exception on database error.
      * @since   2.5
+     * @throws  \Exception on database error.
      */
-    public function onFinderAfterDelete($context, $table)
+    public function onFinderAfterDelete(FinderEvent\AfterDeleteEvent $event): void
     {
-        if ($context == 'com_weblinks.weblink') {
+        $context = $event->getContext();
+        $table   = $event->getItem();
+
+        if ($context === 'com_weblinks.weblink') {
             $id = $table->id;
-        } elseif ($context == 'com_finder.index') {
+        } elseif ($context === 'com_finder.index') {
             $id = $table->link_id;
         } else {
-            return true;
+            return;
         }
 
         // Remove the item from the index.
-        return $this->remove($id);
+        $this->remove($id);
     }
 
     /**
@@ -152,19 +155,21 @@ final class Weblinks extends Adapter
      * It also makes adjustments if the access level of a weblink item or
      * the category to which it belongs has been changed.
      *
-     * @param   string   $context  The context of the content passed to the plugin.
-     * @param   Table    $row      A JTable object.
-     * @param   boolean  $isNew    True if the content has just been created.
+     * @param   FinderEvent\AfterSaveEvent   $event  The event instance.
      *
-     * @return  boolean  True on success.
+     * @return  void
      *
-     * @throws  \Exception on database error.
      * @since   2.5
+     * @throws  \Exception on database error.
      */
-    public function onFinderAfterSave($context, $row, $isNew)
+    public function onFinderAfterSave(FinderEvent\AfterSaveEvent $event): void
     {
+        $context = $event->getContext();
+        $row     = $event->getItem();
+        $isNew   = $event->getIsNew();
+
         // We only want to handle web links here. We need to handle front end and back end editing.
-        if ($context == 'com_weblinks.weblink' || $context == 'com_weblinks.form') {
+        if ($context === 'com_weblinks.weblink' || $context === 'com_weblinks.form') {
             // Check if the access levels are different.
             if (!$isNew && $this->old_access != $row->access) {
                 // Process the change.
@@ -176,33 +181,33 @@ final class Weblinks extends Adapter
         }
 
         // Check for access changes in the category.
-        if ($context == 'com_categories.category') {
+        if ($context === 'com_categories.category') {
             // Check if the access levels are different.
             if (!$isNew && $this->old_cataccess != $row->access) {
                 $this->categoryAccessChange($row);
             }
         }
-
-        return true;
     }
 
     /**
      * Smart Search before content save method.
      * This event is fired before the data is actually saved.
      *
-     * @param   string   $context  The context of the content passed to the plugin.
-     * @param   Table    $row      A JTable object.
-     * @param   boolean  $isNew    True if the content is just about to be created.
+     * @param   FinderEvent\BeforeSaveEvent   $event  The event instance.
      *
-     * @return  boolean  True on success.
+     * @return  void
      *
-     * @throws  \Exception on database error.
      * @since   2.5
+     * @throws  \Exception on database error.
      */
-    public function onFinderBeforeSave($context, $row, $isNew)
+    public function onFinderBeforeSave(FinderEvent\BeforeSaveEvent $event): void
     {
+        $context = $event->getContext();
+        $row     = $event->getItem();
+        $isNew   = $event->getIsNew();
+
         // We only want to handle web links here.
-        if ($context == 'com_weblinks.weblink' || $context == 'com_weblinks.form') {
+        if ($context === 'com_weblinks.weblink' || $context === 'com_weblinks.form') {
             // Query the database for the old access level if the item isn't new.
             if (!$isNew) {
                 $this->checkItemAccess($row);
@@ -210,14 +215,12 @@ final class Weblinks extends Adapter
         }
 
         // Check for access levels from the category.
-        if ($context == 'com_categories.category') {
+        if ($context === 'com_categories.category') {
             // Query the database for the old access level if the item isn't new.
             if (!$isNew) {
                 $this->checkCategoryAccess($row);
             }
         }
-
-        return true;
     }
 
     /**
@@ -225,23 +228,25 @@ final class Weblinks extends Adapter
      * from outside the edit screen. This is fired when the item is published,
      * unpublished, archived, or unarchived from the list view.
      *
-     * @param   string   $context  The context for the content passed to the plugin.
-     * @param   array    $pks      An array of primary key ids of the content that has changed state.
-     * @param   integer  $value    The value of the state that the content has been changed to.
+     * @param   FinderEvent\AfterChangeStateEvent   $event  The event instance.
      *
      * @return  void
      *
      * @since   2.5
      */
-    public function onFinderChangeState($context, $pks, $value)
+    public function onFinderChangeState(FinderEvent\AfterChangeStateEvent $event): void
     {
+        $context = $event->getContext();
+        $pks     = $event->getPks();
+        $value   = $event->getValue();
+
         // We only want to handle web links here.
-        if ($context == 'com_weblinks.weblink' || $context == 'com_weblinks.form') {
+        if ($context === 'com_weblinks.weblink' || $context === 'com_weblinks.form') {
             $this->itemStateChange($pks, $value);
         }
 
         // Handle when the plugin is disabled.
-        if ($context == 'com_plugins.plugin' && $value === 0) {
+        if ($context === 'com_plugins.plugin' && $value === 0) {
             $this->pluginDisable($pks);
         }
     }
