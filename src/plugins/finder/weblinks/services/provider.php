@@ -17,7 +17,6 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Database\DatabaseInterface;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
-use Joomla\Event\DispatcherInterface;
 use Joomla\Plugin\Finder\Weblinks\Extension\Weblinks;
 
 return new class () implements ServiceProviderInterface {
@@ -28,21 +27,19 @@ return new class () implements ServiceProviderInterface {
      *
      * @return  void
      *
-     * @since   5.1.0
+     * @since   __DEPLOY_VERSION__
      */
     public function register(Container $container)
     {
         $container->set(
             PluginInterface::class,
             function (Container $container) {
-                $dispatcher = $container->get(DispatcherInterface::class);
-                $database   = $container->get(DatabaseInterface::class);
-
-                return new Weblinks(
-                    $dispatcher,
-                    (array) PluginHelper::getPlugin('finder', 'weblinks'),
-                    $database
+                $plugin     = new Weblinks(
+                    (array) PluginHelper::getPlugin('finder', 'weblinks')
                 );
+                $plugin->setDatabase($container->get(DatabaseInterface::class));
+
+                return $plugin;
             }
         );
     }
