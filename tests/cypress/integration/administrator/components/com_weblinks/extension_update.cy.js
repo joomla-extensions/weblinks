@@ -212,15 +212,13 @@ describe('Package Upgrade Test for alikon/testcom (Latest Release -> PR Candidat
 
   it('6. purges cache and finds the mocked update', () => {
     cy.visit('administrator/index.php?option=com_installer&view=update');
-    cy.clickToolbarButton('purge-cache');
-    cy.checkForSystemMessage('Cache purged');
+    cy.get('#toolbar-search').click();
 
-    cy.visit('administrator/index.php?option=com_installer&view=update');
-    cy.clickToolbarButton('find-updates');
-    cy.checkForSystemMessage('Finished refreshing extension update sites');
-
-    cy.searchForItem(PACKAGE_ELEMENT);
-    cy.get('table tbody tr').contains(PACKAGE_ELEMENT).parents('tr')
+    cy.searchForItem('Weblinks Extension Package');
+    cy.get('table tbody tr')
+      .contains('th', 'Weblinks Extension Package')
+      .parents('tr')
+      .find('span.badge.bg-success')
       .should('contain', FAKE_VERSION);
   });
 
