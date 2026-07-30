@@ -20,10 +20,10 @@ Cypress.Commands.add('removeOrphanedUpdateSite', (packageName) => {
   const findOrphans = `
     SELECT us.update_site_id, us.location
     FROM #__update_sites us
-    LEFT JOIN #__update_sites_extensions use ON use.update_site_id = us.update_site_id
-    LEFT JOIN #__extensions ext ON ext.extension_id = use.extension_id
+    LEFT JOIN #__update_sites_extensions use ON usx.update_site_id = us.update_site_id
+    LEFT JOIN #__extensions ext ON ext.extension_id = usx.extension_id
     WHERE us.name = '${packageName}'
-       OR (use.extension_id IS NOT NULL AND ext.extension_id IS NULL)
+       OR (usx.extension_id IS NOT NULL AND ext.extension_id IS NULL)
   `;
 
   cy.task('queryDB', findOrphans).then((rows) => {
@@ -186,8 +186,8 @@ describe('Package Upgrade Test for alikon/testcom (Latest Release -> PR Candidat
     const findUpdateSiteId = `
       SELECT us.update_site_id
       FROM #__update_sites us
-      JOIN #__update_sites_extensions use ON use.update_site_id = us.update_site_id
-      JOIN #__extensions ext ON ext.extension_id = use.extension_id
+      JOIN #__update_sites_extensions usx ON usx.update_site_id = us.update_site_id
+      JOIN #__extensions ext ON ext.extension_id = usx.extension_id
       WHERE ext.element = '${PACKAGE_ELEMENT}' AND ext.type = 'package'
     `;
  
