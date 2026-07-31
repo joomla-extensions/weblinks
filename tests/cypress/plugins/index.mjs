@@ -1,5 +1,5 @@
 import { getMails, clearEmails, startMailServer } from './mail.mjs';
-import { writeRelativeFile, deleteRelativePath, copyRelativeFile } from './fs.mjs';
+import { writeRelativeFile, deleteRelativePath, copyRelativeFile, getRelativeFileSha512} from './fs.mjs';
 import { queryTestDB, deleteInsertedItems } from './db.mjs';
 import { checkForLogs, clearLogs } from './logs.mjs';
 
@@ -18,6 +18,7 @@ export default function setupPlugins(on, config) {
     writeRelativeFile: ({ path, content, mode }) => writeRelativeFile(path, content, config, mode),
     deleteRelativePath: (path) => deleteRelativePath(path, config),
     copyRelativeFile: ({ source, destination }) => copyRelativeFile(source, destination, config),
+		getRelativeFileSha512: (relativePath) => getRelativeFileSha512(relativePath, config),
     checkForLogs: () => checkForLogs(config),
     clearLogs: () => clearLogs(config),
     getMails: () => getMails(),
