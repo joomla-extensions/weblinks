@@ -1,61 +1,3 @@
-// tests/cypress/integration/.../Update_AlikonwebPackage.cy.js
-//
-// NOTE: this file defines `cy.removeOrphanedUpdateSite` inline via
-// Cypress.Commands.add so the spec is fully self-contained and runnable
-// as-is. If you already keep custom commands centralized in
-// cypress/support/commands.js, just cut the Cypress.Commands.add block
-// below and move it there instead.
-//
-// ASSUMPTION: this relies on a `queryDB` Cypress task (cy.task('queryDB', sql))
-// that runs raw SQL against whichever DB driver (mysql/mariadb/postgres) the
-// current CI matrix leg is using and returns rows. This mirrors the pattern
-// you already use elsewhere (querying the DB directly instead of trusting
-// UI/task return values, as you did for db_createMenuItem). If your actual
-// task has a different name/signature, tell me and I'll adjust the calls.
-
-Cypress.Commands.add('removeOrphanedUpdateSite', (packageName) => {
-  // 1. Find any update_sites rows whose location matches our fake update.xml
-  //    URL pattern (i.e. update sites created/edited by this test) OR whose
-  //    linked extension no longer exists in #__extensions.
-  const findOrphans = `
-    SELECT us.update_site_id, us.location
-    FROM #__update_sites us
-    LEFT JOIN #__update_sites_extensions use ON usx.update_site_id = us.update_site_id
-    LEFT JOIN #__extensions ext ON ext.extension_id = usx.extension_id
-    WHERE us.name = '${packageName}'
-       OR (usx.extension_id IS NOT NULL AND ext.extension_id IS NULL)
-  `;
-
-  cy.task('queryDB', findOrphans).then((rows) => {
-    if (!rows || rows.length === 0) {
-      cy.log('No orphaned update sites found — nothing to clean up');
-      return;
-    }
-
-    const ids = rows.map((r) => r.update_site_id);
-    cy.log(`Removing ${ids.length} orphaned update site row(s): ${ids.join(', ')}`);
-
-    const idList = ids.join(',');
-    const deleteExtLinks = `DELETE FROM #__update_sites_extensions WHERE update_site_id IN (${idList})`;
-    const deleteSites = `DELETE FROM #__update_sites WHERE update_site_id IN (${idList})`;
-    // Also clear any stale cached "update available" rows for extensions
-    // that no longer exist, since these are what PackageAdapter chokes on
-    // when it tries to resolve ->id on a null extension row.
-    // NOTE: written as a NOT EXISTS correlated subquery (not MySQL's
-    // multi-table DELETE...JOIN syntax) so it also runs on PostgreSQL.
-    const deleteStaleUpdates = `
-      DELETE FROM #__updates u
-      WHERE NOT EXISTS (
-        SELECT 1 FROM #__extensions ext WHERE ext.extension_id = u.extension_id
-      )
-    `;
-
-    cy.task('queryDB', deleteExtLinks);
-    cy.task('queryDB', deleteSites);
-    cy.task('queryDB', deleteStaleUpdates);
-  });
-});
-
 describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
   // Confermati dal manifest pkg_weblinks.xml
   const PACKAGE_ELEMENT = 'pkg_weblinks';
@@ -83,18 +25,13 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
     cy.doAdministratorLogin();
   });
 
-  // Se uno step fallisce, ripulisci subito eventuali update site orfani
-  // invece di lasciare Joomla in uno stato a metà: è proprio questo stato
-  // a metà che genera il warning PHP "Attempt to read property 'id' on null"
-  // in PackageAdapter.php durante l'afterEach originale.
   afterEach(function () {
     if (this.currentTest.state === 'failed') {
-      cy.log('Previous step failed — cleaning up any orphaned update site before aborting the chain');
-      //cy.removeOrphanedUpdateSite(PACKAGE_NAME);
+      cy.log('Previous step failed');
     }
   });
 
-  it('1. uninstalls any pre-existing pkg_weblinks package (cascades to subextensions)', () => {
+  it('1. uninstalls any pre-existing pkg_weblinks package', () => {
     cy.visit('administrator/index.php?option=com_installer&view=manage');
     cy.searchForItem(PACKAGE_NAME);
     cy.get('body').then(($body) => {
@@ -108,11 +45,6 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
         cy.checkForSystemMessage('was successful');
       }
     });
-
-    // Pulizia esplicita: rimuovi l'update site orfano lasciato dal package
-    // disinstallato, altrimenti com_installer&view=manage può incappare in
-    // un extension_id null durante la prossima "Find Updates"/render
-    //cy.removeOrphanedUpdateSite(PACKAGE_NAME);
   });
 
   it('2. installs latest stable package release from GitHub', () => {
@@ -147,7 +79,7 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
     cy.get('#system-message-container').should('contain', 'Installation of the package was successful');
   });
 
-  it('3. enables MagicLogin plugin (state that must survive the update)', () => {
+  it('3. enables system weblinks plugin (state that must survive the update)', () => {
     cy.db_enableExtension('0', 'plg_system_weblinks');
     cy.visit('administrator/index.php?option=com_plugins&view=plugins');
     cy.searchForItem(PLUGIN_NAME);
@@ -271,7 +203,7 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
     cy.get('#system-message-container').should('contain', 'Updating package was successful');
   });
 
-  it('8. verifies the package updated and MagicLogin kept its configuration', () => {
+  it('8. verifies the package updated and weblinks plugin kept its configuration', () => {
     cy.visit('administrator/index.php?option=com_plugins&view=plugins');
     cy.searchForItem(PLUGIN_NAME);
     cy.get('tbody tr').contains(PLUGIN_NAME).parents('tr')
