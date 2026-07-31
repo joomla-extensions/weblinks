@@ -168,9 +168,9 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
     cy.visit('administrator/index.php?option=com_installer&view=update');
     cy.get('#toolbar-search').click();
 
-    cy.searchForItem('Weblinks');
+    cy.searchForItem(PACKAGE_ELEMENT);
     cy.get('table tbody tr')
-      .contains('th', 'Weblinks')
+      .contains('th', PACKAGE_NAME)
       .parents('tr')
       .find('span.badge.bg-success')
       .should('contain', FAKE_VERSION);
