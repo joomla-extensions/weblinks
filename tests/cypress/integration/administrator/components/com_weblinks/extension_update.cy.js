@@ -170,6 +170,9 @@ describe('Package Upgrade Test for alikon/testcom (Latest Release -> PR Candidat
     <downloads>
       <downloadurl type="full" format="zip">${PR_ZIP_PUBLIC_URL}</downloadurl>
     </downloads>
+    <tags>
+      <tag>stable</tag>
+    </tags>
     <targetplatform name="joomla" version="(5|6)\\.\\d+\\.\\d+"/>
   </update>
 </updates>`;
