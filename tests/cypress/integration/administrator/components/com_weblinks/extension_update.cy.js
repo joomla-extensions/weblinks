@@ -232,6 +232,18 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
     });
   });
 
+  it('6. finds the mocked update', () => {
+    cy.visit('administrator/index.php?option=com_installer&view=update');
+    cy.get('#toolbar-search').click();
+
+    cy.searchForItem('Weblinks Extension Package');
+    cy.get('table tbody tr')
+      .contains('th', 'Weblinks Extension Package')
+      .parents('tr')
+      .find('span.badge.bg-success')
+      .should('contain', FAKE_VERSION);
+  });
+
   it('debug: check update_sites state in DB', () => {
     const query = `
       SELECT update_site_id, name, type, location, enabled, last_check_timestamp 
@@ -250,24 +262,13 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
       }
     });
   });
-  it('6. finds the mocked update', () => {
-    cy.visit('administrator/index.php?option=com_installer&view=update');
-    cy.get('#toolbar-search').click();
-
-    cy.searchForItem('Weblinks Extension Package');
-    cy.get('table tbody tr')
-      .contains('th', 'Weblinks Extension Package')
-      .parents('tr')
-      .find('span.badge.bg-success')
-      .should('contain', FAKE_VERSION);
-  });
 
   it('7. applies the update through the real Joomla flow', () => {
     cy.visit('administrator/index.php?option=com_installer&view=update');
     cy.searchForItem(PACKAGE_ELEMENT);
     cy.checkAllResults();
-    cy.clickToolbarButton('update');
-    cy.get('#system-message-container').should('contain', 'successfully updated');
+    cy.get('#toolbar-upload').click();
+    cy.get('#system-message-container').should('contain', 'Updating package was successful');
   });
 
   it('8. verifies the package updated and MagicLogin kept its configuration', () => {
