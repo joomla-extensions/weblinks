@@ -221,6 +221,17 @@ describe('Package Upgrade Test for alikon/testcom (Latest Release -> PR Candidat
     });
   });
 
+  it('debug: verifies update.xml is reachable via HTTP', () => {
+    cy.request({
+      url: FAKE_UPDATE_XML_PUBLIC_URL,
+      failOnStatusCode: false,
+    }).then((response) => {
+      expect(response.status, `HTTP status of ${FAKE_UPDATE_XML_PUBLIC_URL}`).to.eq(200);
+      expect(response.headers['content-type']).to.include('xml');
+      expect(response.body).to.include(PACKAGE_ELEMENT);
+    });
+  });
+  
   it('6. purges cache and finds the mocked update', () => {
     cy.visit('administrator/index.php?option=com_installer&view=update');
     cy.get('#toolbar-search').click();
