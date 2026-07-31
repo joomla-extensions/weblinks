@@ -158,7 +158,13 @@ describe('Package Upgrade Test for alikon/testcom (Latest Release -> PR Candidat
   });
 
   it('4. writes the fake update.xml for the package into the webroot', () => {
-    const fakeUpdateXml = `<?xml version="1.0" encoding="utf-8"?>
+    if (!CMS_PATH) {
+      throw new Error('Cypress.env("cmsPath") is not set — check cypress.config.js env block');
+    }
+
+    // Pass relative path to the Cypress task
+    cy.task('getRelativeFileSha512', 'pkg-weblinks-current.zip').then((sha512Hash) => {
+      const fakeUpdateXml = `<?xml version="1.0" encoding="utf-8"?>
 <updates>
   <update>
     <name>${PACKAGE_NAME}</name>
@@ -173,15 +179,13 @@ describe('Package Upgrade Test for alikon/testcom (Latest Release -> PR Candidat
     <tags>
       <tag>stable</tag>
     </tags>
+    <sha512>${sha512Hash}</sha512>
     <targetplatform name="joomla" version="(5|6)\\.\\d+\\.\\d+"/>
   </update>
 </updates>`;
 
-    if (!CMS_PATH) {
-      throw new Error('Cypress.env("cmsPath") is not set — check cypress.config.js env block');
-    }
-
-    cy.writeFile(`${CMS_PATH}/${FAKE_UPDATE_XML_RELATIVE}`, fakeUpdateXml);
+      cy.writeFile(`${CMS_PATH}/${FAKE_UPDATE_XML_RELATIVE}`, fakeUpdateXml);
+    });
   });
 
   it('5. points the package update site at the fake update.xml (via DB — the UI form does not allow editing location for this site type)', () => {
