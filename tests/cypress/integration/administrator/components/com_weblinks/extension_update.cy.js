@@ -56,7 +56,7 @@ Cypress.Commands.add('removeOrphanedUpdateSite', (packageName) => {
   });
 });
 
-describe('Package Upgrade Test for alikon/testcom (Latest Release -> PR Candidate, mocked update)', () => {
+describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
   // Confermati dal manifest pkg_weblinks.xml
   const PACKAGE_ELEMENT = 'pkg_weblinks';
   const PACKAGE_NAME = 'pkg_weblinks'; // <name> nel manifest, nessuna stringa di lingua da risolvere
@@ -189,7 +189,7 @@ describe('Package Upgrade Test for alikon/testcom (Latest Release -> PR Candidat
     });
   });
 
-  it('5. points the package update site at the fake update.xml (via DB — the UI form does not allow editing location for this site type)', () => {
+  it('5. points the package update site at the fake update.xml (via DB)', () => {
     // Find the update_site_id linked to our package extension.
     const findUpdateSiteId = `
       SELECT us.update_site_id
@@ -231,8 +231,26 @@ describe('Package Upgrade Test for alikon/testcom (Latest Release -> PR Candidat
       expect(response.body).to.include(PACKAGE_ELEMENT);
     });
   });
-  
-  it('6. purges cache and finds the mocked update', () => {
+
+  it('debug: check update_sites state in DB', () => {
+    const query = `
+      SELECT update_site_id, name, type, location, enabled, last_check_timestamp 
+      FROM #__update_sites 
+      WHERE location LIKE '%pr-build%' OR name = '${PACKAGE_NAME}'
+    `;
+
+    cy.task('queryDB', query).then((rows) => {
+      cy.log('Update Sites in DB:', JSON.stringify(rows, null, 2));
+    
+      if (rows && rows.length > 0) {
+        const site = rows[0];
+        expect(site.enabled).to.eq(1);
+        // If last_check_timestamp is still 0 after "Find Updates", Joomla never attempted the HTTP request
+        expect(site.last_check_timestamp, 'last_check_timestamp should be updated').to.be.greaterThan(0);
+      }
+    });
+  });
+  it('6. finds the mocked update', () => {
     cy.visit('administrator/index.php?option=com_installer&view=update');
     cy.get('#toolbar-search').click();
 
