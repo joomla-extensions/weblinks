@@ -172,6 +172,7 @@ describe('Package Upgrade Test for alikon/testcom (Latest Release -> PR Candidat
     <element>${PACKAGE_ELEMENT}</element>
     <type>package</type>
     <version>${FAKE_VERSION}</version>
+    <client>site</client>
     <infourl title="testcom">https://github.com/joomla-extensions/weblinks</infourl>
     <downloads>
       <downloadurl type="full" format="zip">${PR_ZIP_PUBLIC_URL}</downloadurl>
@@ -180,7 +181,7 @@ describe('Package Upgrade Test for alikon/testcom (Latest Release -> PR Candidat
       <tag>stable</tag>
     </tags>
     <sha512>${sha512Hash}</sha512>
-    <targetplatform name="joomla" version="(5|6)\\.\\d+\\.\\d+"/>
+    <targetplatform name="joomla" version=".*"/>
   </update>
 </updates>`;
 
@@ -212,8 +213,11 @@ describe('Package Upgrade Test for alikon/testcom (Latest Release -> PR Candidat
             last_check_timestamp = 0
         WHERE update_site_id = ${updateSiteId}
       `;
- 
+      const purgeCachedUpdates = `
+        DELETE FROM #__updates WHERE element = '${PACKAGE_ELEMENT}'
+      `;
       cy.task('queryDB', updateLocation);
+      cy.task('queryDB', purgeCachedUpdates);
     });
   });
 
