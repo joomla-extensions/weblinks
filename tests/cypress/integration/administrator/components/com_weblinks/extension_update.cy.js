@@ -204,22 +204,27 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
   });
 
   it('8. has new package installed matching version', () => {
+    const currentDate = Cypress.dayjs().format('YYYY-MM-DD');
     cy.visit('/administrator/index.php?option=com_installer&view=manage&filter=');
     cy.setFilter('core', 'Non-core Extensions');
     cy.setFilter('type', 'Package');
     cy.get('button[aria-label="Search"]').click();
     // Check if the row with "Web Links Component" exists
-    cy.get('#manageList tbody tr') // Target the table rows
-      //.contains('div', PACKAGE_ELEMENT) // Check the <div> in the row
-      .parents('tr') // Navigate to the parent row
-      .should('exist') // Confirm the row exists
-      // Verify other cells in the same row
-      .within(() => {
-        cy.get('td').eq(2).should('contain', 'Site'); // Location column
-        cy.get('td').eq(3).should('contain', 'Package'); // Type column
-        cy.get('td').eq(4).should('contain', FAKE_VERSION); // Version column
-        cy.get('td').eq(7).should('contain', 'N/A'); // Folder column
-      });
+    cy.get('#manageList tbody tr')
+    .contains('td', 'Web Links Extension Package') // Target the specific row containing your package name
+    .parents('tr')
+    .should('exist')
+    .within(() => {
+      cy.get('td').eq(2).should('contain', 'Site'); // Location
+      cy.get('td').eq(3).should('contain', 'Package'); // Type
+
+      // Check the version cell button specifically
+      cy.get('td.d-md-table-cell')
+        .find('button.btn-info')
+        .should('contain', '5.0.0-dev');
+      cy.get('td').eq(5).should('contain', currentDate);
+      cy.get('td').eq(7).should('contain', 'N/A'); // Folder
+    });
   });
 
   it('9. verifies the weblinks plugin kept its configuration', () => {
