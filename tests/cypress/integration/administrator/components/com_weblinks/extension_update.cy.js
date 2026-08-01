@@ -221,8 +221,8 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
       cy.get('td').eq(3).should('contain', 'Package'); // Type
 
       // Check the version cell button specifically
-      cy.get('td.d-md-table-cell')
-        .find('button.btn-info')
+      cy.get('td').eq(4)
+        .find('button')
         .should('contain', '5.0.0-dev');
       cy.get('td').eq(5).should('contain', currentDate);
       cy.get('td').eq(7).should('contain', 'N/A'); // Folder
