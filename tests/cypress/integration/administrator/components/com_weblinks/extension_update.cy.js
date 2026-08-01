@@ -1,14 +1,12 @@
 describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
-  // Confermati dal manifest pkg_weblinks.xml
+  // From manifest pkg_weblinks.xml
   const PACKAGE_ELEMENT = 'pkg_weblinks';
-  const PACKAGE_NAME = 'pkg_weblinks'; // <name> nel manifest, nessuna stringa di lingua da risolvere
+  const PACKAGE_NAME = 'pkg_weblinks';
 
-  // ATTENZIONE: l'element DB del plugin è "weblinks" (dal tag id=""),
-  // non "plg_system_weblinks" (quello è solo il nome del file zip)
   const PLUGIN_ELEMENT = 'weblinks';
-  const PLUGIN_NAME = 'System - Web Links'; // nome visualizzato in com_plugins
-  const PLUGIN_NAME_CONSOLE = 'Console - Weblinks'; // nome visualizzato in com_plugins
-  const PLUGIN_NAME_TASK = 'Weblinks Task'; // nome visualizzato in com_plugins
+  const PLUGIN_NAME = 'System - Web Links';
+  const PLUGIN_NAME_CONSOLE = 'Console - Weblinks';
+  const PLUGIN_NAME_TASK = 'Weblinks Task';
 
   const PR_ZIP_PUBLIC_URL = `${Cypress.config('baseUrl')}/pkg-weblinks-current.zip`;
   const CMS_PATH = Cypress.expose('cmsPath'); // es. /tests/www/mysql
@@ -16,9 +14,7 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
   const FAKE_UPDATE_XML_PUBLIC_URL = `${Cypress.config('baseUrl')}/${FAKE_UPDATE_XML_RELATIVE}`;
   const FAKE_VERSION = '99.99.99';
 
-  // Stato condiviso tra gli it() dello stesso describe (il server/DB persiste
-  // tra i test nello stesso describe, quindi possiamo far girare i vari step
-  // in sequenza invece che in un unico it() monolitico)
+  // State context
   const ctx = {
     latestZipUrl: null,
   };
@@ -59,9 +55,9 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
       const assets = response.body.assets || [];
       cy.log(`Found ${assets.length} release assets: ${assets.map((a) => a.name).join(', ')}`);
 
-      // FIX: il nome del file zip può usare l'underscore dell'element
-      // (pkg_weblinks-x.y.z.zip) invece del trattino usato in precedenza
-      // (pkg-weblinks...). Accettiamo entrambe le varianti.
+      // Accrpt both format
+      // (pkg_weblinks-x.y.z.zip)
+      // (pkg-weblinks...)
       const zipAsset = assets.find(
         (asset) => /^pkg[-_]weblinks.*\.zip$/i.test(asset.name)
       );
@@ -190,9 +186,10 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
     
       if (rows && rows.length > 0) {
         const site = rows[0];
-        expect(site.enabled).to.eq(1);
+        expect(Number(site.enabled)).to.eq(1);
         // If last_check_timestamp is still 0 after "Find Updates", Joomla never attempted the HTTP request
-        expect(site.last_check_timestamp, 'last_check_timestamp should be updated').to.be.greaterThan(0);
+        expect(Number(site.last_check_timestamp), 'last_check_timestamp should be updated')
+        .to.be.greaterThan(0);
       }
     });
   });
@@ -223,7 +220,7 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
       // Check the version cell button specifically
       cy.get('td').eq(4)
         .find('button')
-        .should('contain', '5.0.0-dev');
+        .should('contain', '5.0.0-dev');  // this is the version present in jorobo.dist.ini
       cy.get('td').eq(5).should('contain', currentDate);
       cy.get('td').eq(7).should('contain', 'N/A'); // Folder
     });
