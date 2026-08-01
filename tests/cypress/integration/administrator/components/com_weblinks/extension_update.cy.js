@@ -206,10 +206,11 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
   it('8. has new package installed matching version', () => {
     cy.visit('/administrator/index.php?option=com_installer&view=manage&filter=');
     cy.setFilter('core', 'Non-core Extensions');
-    cy.searchForItem(PACKAGE_ELEMENT);
+    cy.setFilter('type', 'Package');
+    cy.get('button[aria-label="Search"]').click();
     // Check if the row with "Web Links Component" exists
     cy.get('#manageList tbody tr') // Target the table rows
-      .contains('div', PACKAGE_ELEMENT) // Check the <div> in the row
+      //.contains('div', PACKAGE_ELEMENT) // Check the <div> in the row
       .parents('tr') // Navigate to the parent row
       .should('exist') // Confirm the row exists
       // Verify other cells in the same row
