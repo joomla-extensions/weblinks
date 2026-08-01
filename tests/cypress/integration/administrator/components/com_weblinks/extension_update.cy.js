@@ -7,6 +7,8 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
   // non "plg_system_weblinks" (quello è solo il nome del file zip)
   const PLUGIN_ELEMENT = 'weblinks';
   const PLUGIN_NAME = 'System - Web Links'; // nome visualizzato in com_plugins
+  const PLUGIN_NAME_CONSOLE = 'Console - Weblinks'; // nome visualizzato in com_plugins
+  const PLUGIN_NAME_TASK = 'Weblinks Task'; // nome visualizzato in com_plugins
 
   const PR_ZIP_PUBLIC_URL = `${Cypress.config('baseUrl')}/pkg-weblinks-current.zip`;
   const CMS_PATH = Cypress.expose('cmsPath'); // es. /tests/www/mysql
@@ -204,7 +206,7 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
   });
 
   it('8. has new package installed matching version', () => {
-    const currentDate = Cypress.dayjs().format('YYYY-MM-DD');
+    const currentDate = new Date().toISOString().split('T')[0];
     cy.visit('/administrator/index.php?option=com_installer&view=manage&filter=');
     cy.setFilter('core', 'Non-core Extensions');
     cy.setFilter('type', 'Package');
@@ -231,7 +233,20 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
     cy.visit('administrator/index.php?option=com_plugins&view=plugins');
     cy.searchForItem(PLUGIN_NAME);
     cy.get('tbody tr').contains(PLUGIN_NAME).parents('tr')
-      //.find('.badge-success')
+      .should('exist');
+  });
+
+  it('10. verifies the weblinks plugin console has been installed', () => {
+    cy.visit('administrator/index.php?option=com_plugins&view=plugins');
+    cy.searchForItem(PLUGIN_NAME_CONSOLE);
+    cy.get('tbody tr').contains(PLUGIN_NAME_CONSOLE).parents('tr')
+      .should('exist');
+  });
+
+  it('11. verifies the weblinks plugin task has been installed', () => {
+    cy.visit('administrator/index.php?option=com_plugins&view=plugins');
+    cy.searchForItem(PLUGIN_NAME_TASK);
+    cy.get('tbody tr').contains(PLUGIN_NAME_TASK).parents('tr')
       .should('exist');
   });
 });
