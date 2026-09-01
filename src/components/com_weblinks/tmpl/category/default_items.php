@@ -184,7 +184,7 @@ $listDirn   = $this->escape($this->state->get('list.direction'));
                             <?php if ($this->params->get('show_link_description') && ($item->description != '')) :
                                 ?>
                               <div class="mt-2 mb-2">
-                                    <?php $images = json_decode($item->images); ?>
+                                    <?php if (isset($images)) {$images = json_decode((string) $item->images);} ?>
                                     <?php if (!empty($images->image_first)) :
                                         ?>
                                         <?php $imgFloat = '';?>
