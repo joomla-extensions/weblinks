@@ -1,8 +1,9 @@
 import {
-  chmodSync, existsSync, writeFileSync, mkdirSync, rmSync, copyFileSync,
+  chmodSync, existsSync, writeFileSync, mkdirSync, rmSync, copyFileSync, readFileSync,
 } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { umask } from 'node:process';
+import { createHash } from 'node:crypto';
 
 /**
  * Synchronously deletes a file or folder, relative to cmsPath.
@@ -81,4 +82,24 @@ function copyRelativeFile(source, destination, config) {
   return null;
 }
 
-export { writeRelativeFile, deleteRelativePath, copyRelativeFile };
+/**
+ * Calculates the SHA-512 checksum of a file relative to the CMS root folder.
+ *
+ * @param {string} relativePath - The relative file path (e.g. 'pkg-weblinks-current.zip')
+ * @param {object} config - The Cypress configuration object
+ *
+ * @returns {string} - The SHA-512 hex string
+ */
+function getRelativeFileSha512(relativePath, config) {
+  const fullPath = join(config.expose.cmsPath, relativePath);
+
+  if (!existsSync(fullPath)) {
+    throw new Error(`File not found for SHA-512 calculation: ${fullPath}`);
+  }
+
+  const fileBuffer = readFileSync(fullPath);
+  return createHash('sha512').update(fileBuffer).digest('hex');
+}
+
+export { writeRelativeFile, deleteRelativePath, copyRelativeFile, getRelativeFileSha512 };
+
