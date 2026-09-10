@@ -8,6 +8,8 @@ Build Status
 
 ![Downloads](https://img.shields.io/github/downloads/joomla-extensions/weblinks/total)
 
+![Alt](https://repobeats.axiom.co/api/embed/5c1aa77f61b951860d0fd61d21496f280b2f8433.svg "Repobeats analytics image")
+
 Weblinks for Joomla! provides a component and accompanying extensions to create a directory of weblinks.
 
 # How to test a PR
