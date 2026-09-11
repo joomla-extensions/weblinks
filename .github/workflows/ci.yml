@@ -99,7 +99,7 @@ jobs:
           path: |
             dist/
             joomla.zip
-          retention-days: 1
+          retention-days: 7
 
   phpstan:
     runs-on: ubuntu-latest
