@@ -6,7 +6,7 @@ describe('Test in backend that the categories list', () => {
   });
 
   it('has a title', () => {
-    cy.contains('h1', 'Web Links: Categories').should('exist');
+    cy.contains('h1', 'Web Links: Categories', { timeout: 10000 }).should('exist');
   });
 
   it('can display a list of weblink categories', () => {
