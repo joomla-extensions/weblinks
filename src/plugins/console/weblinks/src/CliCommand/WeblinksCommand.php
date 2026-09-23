@@ -23,6 +23,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+/**
+ * CLI command for exporting and importing com_weblinks records as CSV data.
+ *
+ * @since  5.2.0
+ */
 final class WeblinksCommand extends AbstractCommand
 {
     use DatabaseAwareTrait;
@@ -30,6 +35,11 @@ final class WeblinksCommand extends AbstractCommand
     // Name configuration of the CLI action
     protected static $defaultName = 'weblinks:sync-csv';
 
+    /**
+     * Configures the command name, description, and available options.
+     *
+     * @return  void
+     */
     protected function configure(): void
     {
         $this->setDescription('Allows exporting or importing data from com_weblinks via a CSV file.');
@@ -50,6 +60,14 @@ final class WeblinksCommand extends AbstractCommand
             );
     }
 
+    /**
+     * Executes the CLI action selected by the user.
+     *
+     * @param   InputInterface   $input   The command input instance.
+     * @param   OutputInterface  $output  The command output instance.
+     *
+     * @return  int
+     */
     protected function doExecute(InputInterface $input, OutputInterface $output): int
     {
         $io       = new SymfonyStyle($input, $output);
@@ -68,7 +86,12 @@ final class WeblinksCommand extends AbstractCommand
     }
 
     /**
-     * Handles exporting logic from database to CSV
+     * Exports all weblinks rows from the database to a CSV file.
+     *
+     * @param   SymfonyStyle  $io        The Symfony IO helper for user feedback.
+     * @param   string        $filePath  The destination CSV file path.
+     *
+     * @return  int
      */
     private function handleExport(SymfonyStyle $io, string $filePath): int
     {
@@ -128,7 +151,12 @@ final class WeblinksCommand extends AbstractCommand
     }
 
     /**
-     * Handles parsing an external CSV file to import rows into database
+     * Imports rows from a CSV file into the com_weblinks database table.
+     *
+     * @param   SymfonyStyle  $io        The Symfony IO helper for user feedback.
+     * @param   string        $filePath  The source CSV file path.
+     *
+     * @return  int
      */
     private function handleImport(SymfonyStyle $io, string $filePath): int
     {
