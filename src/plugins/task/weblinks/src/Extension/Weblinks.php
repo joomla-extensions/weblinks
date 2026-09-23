@@ -34,7 +34,7 @@ use PHPMailer\PHPMailer\Exception as phpMailerException;
 /**
  * Task plugin for checking weblinks with WILL_RESUME batch support
  *
- * @since  1.0.0
+ * @since  __DEPLOY_VERSION__
  */
 final class Weblinks extends CMSPlugin implements SubscriberInterface
 {
@@ -45,7 +45,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      * Application object
      *
      * @var CMSApplication
-     * @since 1.0.0
+     * @since __DEPLOY_VERSION__
      */
     protected $app;
 
@@ -53,7 +53,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      * Auto-load plugin language files
      *
      * @var boolean
-     * @since 1.0.0
+     * @since __DEPLOY_VERSION__
      */
     protected $autoloadLanguage = true;
 
@@ -62,7 +62,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      * Must be lower than PHP's max_execution_time.
      *
      * @var int
-     * @since 1.0.0
+     * @since __DEPLOY_VERSION__
      */
     private $timeLimit;
 
@@ -112,7 +112,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      * Task routines map
      *
      * @var array
-     * @since 1.0.0
+     * @since __DEPLOY_VERSION__
      */
     protected const TASKS_MAP = [
         'check.weblinks' => [
@@ -126,7 +126,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      * Returns the subscribed events for this plugin
      *
      * @return array
-     * @since 1.0.0
+     * @since __DEPLOY_VERSION__
      */
     public static function getSubscribedEvents(): array
     {
@@ -144,7 +144,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      * @param   int     $taskId  The task ID
      *
      * @return  bool  True on success, false on failure
-     * @since   1.0.0
+     * @since   __DEPLOY_VERSION__
      */
     private function clearSnapshot(object $task, int $taskId): bool
     {
@@ -183,7 +183,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      * @param   ExecuteTaskEvent  $event  The task execution event
      *
      * @return  int  Task status code (Status::OK, Status::KNOCKOUT, or Status::WILL_RESUME)
-     * @since   1.0.0
+     * @since   __DEPLOY_VERSION__
      */
     protected function checkWeblinks(ExecuteTaskEvent $event): int
     {
@@ -318,7 +318,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      * @param   int     $taskId   The task ID
      *
      * @return  int  Task status code
-     * @since   1.0.0
+     * @since   __DEPLOY_VERSION__
      */
     private function finalize(object $task, int $broken, int $checked, array $details, int $taskId): int
     {
@@ -347,7 +347,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      * @param   array  $details  Array of broken link details
      *
      * @return  int  Task status code
-     * @since   1.0.0
+     * @since   __DEPLOY_VERSION__
      */
     private function sendBrokenLinksEmail(int $broken, int $checked, array $details): int
     {
@@ -385,7 +385,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      * @param   string|null  $email  Comma-separated email list (optional)
      *
      * @return  array  Array of user objects with id, username, and email
-     * @since   1.0.0
+     * @since   __DEPLOY_VERSION__
      */
     private function getSuperUsers(?string $email = null): array
     {
@@ -440,7 +440,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      * @param   string  $url  The URL to normalize
      *
      * @return  string|null  Normalized URL or null if invalid
-     * @since   1.0.0
+     * @since   __DEPLOY_VERSION__
      */
     private function normalizeUrl(string $url): ?string
     {
@@ -466,7 +466,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      * @param   int     $taskId   The task ID
      *
      * @return  bool  True on success, false on failure
-     * @since   1.0.0
+     * @since   __DEPLOY_VERSION__
      */
     private function saveSnapshot(object $task, array $data, int $taskId): bool
     {
@@ -501,7 +501,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      * @param   int     $taskId  The task ID
      *
      * @return  array  The snapshot data as an associative array
-     * @since   1.0.0
+     * @since   __DEPLOY_VERSION__
      */
     private function loadSnapshot(object $task, int $taskId): array
     {
@@ -535,7 +535,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      * @param   string  $detail    The detail to add
      *
      * @return  void
-     * @since   1.0.0
+     * @since   __DEPLOY_VERSION__
      */
     private function addDetail(array &$details, string $detail): void
     {
