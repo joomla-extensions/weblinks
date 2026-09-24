@@ -21,10 +21,20 @@ use Joomla\Plugin\Console\Weblinks\CliCommand\WeblinksCommand;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+/**
+ * Console plugin that registers the Weblinks CSV sync command with the Joomla application.
+ *
+ * @since  5.2.0
+ */
 class WeblinksConsolePlugin extends CMSPlugin implements SubscriberInterface
 {
     use DatabaseAwareTrait;
 
+    /**
+     * Returns the application events this plugin subscribes to.
+     *
+     * @return  array
+     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -32,6 +42,13 @@ class WeblinksConsolePlugin extends CMSPlugin implements SubscriberInterface
         ];
     }
 
+    /**
+     * Registers the Weblinks console command with the application.
+     *
+     * @param   ApplicationEvent  $event  The application event triggered before execution.
+     *
+     * @return  void
+     */
     public function registerCommands(ApplicationEvent $event): void
     {
         $command = new WeblinksCommand();
