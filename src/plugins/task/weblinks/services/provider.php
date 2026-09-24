@@ -20,15 +20,15 @@ use Joomla\DI\ServiceProviderInterface;
 use Joomla\Plugin\Task\Weblinks\Extension\Weblinks;
 
 return new class () implements ServiceProviderInterface {
-     /**
-     * Registers the service provider with a DI container.
-     *
-     * @param   Container  $container  The DI container.
-     *
-     * @return  void
-     *
-     * @since   __DEPLOY_VERSION__
-     */
+   /**
+    * Registers the service provider with a DI container.
+    *
+    * @param   Container  $container  The DI container.
+    *
+    * @return  void
+    *
+    * @since   __DEPLOY_VERSION__
+    */
     public function register(Container $container)
     {
         $container->set(
