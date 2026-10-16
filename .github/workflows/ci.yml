@@ -54,14 +54,21 @@ jobs:
           npm-cache: 'true'
       - uses: ./.github/actions/setup-cypress
 
+      - name: Install jq
+        run: |
+          if ! command -v jq &> /dev/null; then
+            apt-get update && apt-get install -y jq
+          fi
+
       - name: Determine Nightly URL for Joomla ${{ matrix.joomla-version }}
         id: joomla-info
         run: |
+          # Anchored pattern: avoids "5.4" matching "5.40" / "15.4" / etc.
           URL=$(curl -s "https://api.github.com/repos/joomla/joomla-cms/releases" | \
-                grep -oP '"browser_download_url":\s*"[^"]*'"${{ matrix.joomla-version }}"'[^"]*Full_Package\.zip"' | \
-                sed 's/"browser_download_url":\s*"//;s/"$//' | \
+                jq -r '.[] | .assets[] | .browser_download_url' | \
+                grep -E "Joomla_${{ matrix.joomla-version }}\.[0-9]+-.*Full_Package\.zip" | \
                 head -1)
-          
+
           if [ -z "$URL" ]; then
             echo "::error::Could not find URL for version ${{ matrix.joomla-version }} in joomla/joomla-cms releases."
             exit 1

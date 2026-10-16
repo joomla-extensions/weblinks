@@ -8,11 +8,13 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
-use Joomla\CMS\Factory;
+\defined('_JEXEC') or die;
+
+
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\Language\Multilanguage;
+use Joomla\CMS\Language\Text;
+
 $accessOptions = HTMLHelper::_('access.assetgroups');
 $categoryOptions = HTMLHelper::_('category.options', 'com_weblinks');
 $languageOptions = [];
