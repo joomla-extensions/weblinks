@@ -151,4 +151,21 @@
 		<sha512>2d961c640c4886c6d3b7117567237bdaac1dda9749e708e09bb21234902eb2170dd0ec1a3f2a8958f9663824eae681624b2115d96ad0724abc00e93a8ce707da</sha512>
 		<targetplatform name="joomla" version="5\.[01234]|6\.[012]" />
 	</update>
+	<update>
+		<name>Weblinks Extension Package</name>
+		<description>Joomla! CMS Weblinks Package</description>
+		<element>pkg_weblinks</element>
+		<type>package</type>
+		<version>5.2.0</version>
+		<client>site</client>
+		<infourl title="Weblinks Extension Package">https://github.com/joomla-extensions/weblinks/releases/tag/5.2.0</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://github.com/joomla-extensions/weblinks/releases/download/5.2.0/pkg-weblinks-5.2.0.zip</downloadurl>
+		</downloads>
+		<tags>
+            <tag>stable</tag>
+        </tags>
+		<sha512>4ab15f631b6e234b8cc5a2b56047e6b36dd211e6f0aad90e7995a3c72ef044903556588f22f3cdf5fd1644b3925ddcd7056011a64120e2cf3aa0a847c3ebd8fa</sha512>
+		<targetplatform name="joomla" version="5\.[01234]|6\.[012]" />
+	</update>
 </updates>
