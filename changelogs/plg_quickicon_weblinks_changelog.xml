@@ -18,4 +18,13 @@
             <item>Crowdin Language Files</item>
         </addition>
     </changelog>
+	<changelog>
+        <element>weblinks</element>
+        <type>plugin</type>
+        <version>5.2.0</version>
+         <folder>quickicon</folder>
+        <addition>
+            <item>Code clean</item>
+        </addition>
+    </changelog>
 </changelogs>
