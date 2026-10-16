@@ -27,4 +27,16 @@
             <item>Crowdin Language Files</item>
         </note>
     </changelog>
+	<changelog>
+        <element>pkg_weblinks</element>
+        <type>package</type>
+        <version>5.2.0</version>
+        <change>
+            <item>Code clean</item>
+        </change>
+        <addition>
+            <item>Console plugin import/export</item>
+			<item>Task plugin links check</item>
+        </addition>
+    </changelog>
 </changelogs>
