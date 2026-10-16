@@ -295,6 +295,14 @@ class Weblinks extends CMSPlugin implements SubscriberInterface
         header('X-RateLimit-Remaining: ' . max($remainingRequests, 0));
         header('X-RateLimit-Reset: ' . $resetTime - time());
     }
+
+    /**
+     * Returns the events this subscriber wants to listen to and their handlers.
+     *
+     * @return  array<string,string>  Associative array mapping event names to handler method names.
+     *
+     * @since   5.1.0
+     */
     public static function getSubscribedEvents(): array
     {
         return ['onBeforeApiRoute' => 'onBeforeApiRoute', 'onAfterApiRoute' => 'onAfterApiRoute'];
