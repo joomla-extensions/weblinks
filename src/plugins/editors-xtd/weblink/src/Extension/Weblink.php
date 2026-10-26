@@ -120,5 +120,8 @@ final class Weblink extends CMSPlugin implements SubscriberInterface
             );
             return $button;
         }
+
+        // Return null when the user does not have the required permissions.
+        return null;
     }
 }
