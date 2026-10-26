@@ -11,6 +11,8 @@
 	<description>PLG_TASK_WEBLINKS_XML_DESCRIPTION</description>
 	<namespace path="src">Joomla\Plugin\Task\Weblinks</namespace>
 	<changelogurl>https://raw.githubusercontent.com/joomla-extensions/weblinks/5.x-dev/changelogs/plg_task_weblinks_changelog.xml</changelogurl>
+	<!-- Scripts to run on installation -->
+	<scriptfile>script.php</scriptfile>
 	<files>
 		##FILES##
 	</files>
