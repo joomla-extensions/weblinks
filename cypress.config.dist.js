@@ -29,6 +29,7 @@ export default defineConfig({
   expose: {
     sitename: 'Joomla CMS Test',
     name: 'jane doe',
+    email: 'admin@example.com',
     username: 'ci-admin',
     password: 'joomla-17082005',
     db_type: process.env.DB_TYPE || 'MySQLi',
