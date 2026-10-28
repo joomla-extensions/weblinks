@@ -120,7 +120,7 @@ describe('Test weblinks task plugin', () => {
         cy.task('getMails').then((mails) => {
           if (mails.length > 0) {
             cy.wrap(mails[0].headers.subject).should('include', 'Weblinks check results');
-            cy.wrap(mails[0].headers.from).should('equal', `"${Cypress.expose('sitename')}" <${Cypress.expose('email')}>`);
+            cy.wrap(mails[0].headers.from).should('equal', `${Cypress.expose('sitename')} <${Cypress.expose('email')}>`);
           }
         });
       });

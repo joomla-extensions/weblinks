@@ -229,6 +229,10 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
         $http             = (new HttpFactory())->getHttp();
         $processedInBatch = 0;
         $acceptedCodes    = [200, 301, 302, 307, 308];
+        $headers          = [
+            'User-Agent' => 'Joomla/1.0 (contact: optimus4joomla@gmail.com)',
+            'Accept'     => 'text/html,application/xhtml+xml,*/*;q=0.8',
+        ];
 
         foreach ($links as $link) {
             // Check time limit
@@ -253,7 +257,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
             $lastId = (int) $link->id;
 
             try {
-                $response   = $http->head($url, [], $httpTimeout);
+                $response   = $http->head($url, $headers, $httpTimeout);
                 $statusCode = $response->getStatusCode();
 
                 if (!\in_array($statusCode, $acceptedCodes, true)) {
