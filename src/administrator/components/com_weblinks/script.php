@@ -12,6 +12,7 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Installer\InstallerScript;
@@ -40,6 +41,7 @@ return new class () implements ServiceProviderInterface {
             InstallerScriptInterface::class,
             new class ($container->get(DatabaseInterface::class)) extends InstallerScript implements InstallerScriptInterface {
                 private DatabaseInterface $db;
+                private CMSApplicationInterface $app;
 
                 /**
                  * Class constructor.
@@ -216,7 +218,7 @@ return new class () implements ServiceProviderInterface {
                       '/language/en-GB/en-GB.mod_weblinks.ini',
                       '/language/en-GB/en-GB.mod_weblinks.sys.ini',
                       '/language/en-GB/en-GB.pkg_weblinks.sys.ini',
-                      'language/de-DE/com_weblinks.sys.ini',
+                      '/language/de-DE/com_weblinks.sys.ini',
                       '/modules/mod_weblinks/helper.php',
                       '/modules/mod_weblinks/mod_weblinks.php',
                     ];
@@ -225,10 +227,6 @@ return new class () implements ServiceProviderInterface {
                         '/administrator/components/com_weblinks/helpers/html',
                         '/administrator/components/com_weblinks/sql/updates/sqlsrv',
                     ];
-
-                    if (empty($files)) {
-                        return;
-                    }
 
                     foreach ($files as $file) {
                         try {
