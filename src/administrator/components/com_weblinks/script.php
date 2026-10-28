@@ -12,6 +12,7 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Installer\InstallerScript;
@@ -40,6 +41,7 @@ return new class () implements ServiceProviderInterface {
             InstallerScriptInterface::class,
             new class ($container->get(DatabaseInterface::class)) extends InstallerScript implements InstallerScriptInterface {
                 private DatabaseInterface $db;
+                private CMSApplicationInterface $app;
 
                 /**
                  * Class constructor.
