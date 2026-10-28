@@ -228,10 +228,6 @@ return new class () implements ServiceProviderInterface {
                         '/administrator/components/com_weblinks/sql/updates/sqlsrv',
                     ];
 
-                    if (empty($files)) {
-                        return;
-                    }
-
                     foreach ($files as $file) {
                         try {
                             File::delete(JPATH_ROOT . $file);
