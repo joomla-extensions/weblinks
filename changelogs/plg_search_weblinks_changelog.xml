@@ -18,4 +18,22 @@
             <item>Crowdin Language Files</item>
         </note>
     </changelog>
+    <changelog>
+        <element>weblinks</element>
+        <type>plugin</type>
+        <version>5.2.0</version>
+         <folder>search</folder>
+         <note>
+            <item>Crowdin Language Files</item>
+        </note>
+    </changelog>
+    <changelog>
+        <element>weblinks</element>
+        <type>plugin</type>
+        <version>5.2.1</version>
+         <folder>search</folder>
+         <note>
+            <item>Crowdin Language Files</item>
+        </note>
+    </changelog>
 </changelogs>

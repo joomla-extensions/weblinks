@@ -18,7 +18,7 @@
             <item>Crowdin Language Files</item>
         </note>
     </changelog>
-	<changelog>
+    <changelog>
         <element>weblink</element>
         <type>plugin</type>
         <version>5.2.0</version>
@@ -26,5 +26,17 @@
         <note>
             <item>Code clean</item>
         </note>
+    </changelog>
+    <changelog>
+        <element>weblink</element>
+        <type>plugin</type>
+        <version>5.2.1</version>
+        <folder>editors-xtd</folder>
+        <fix>
+            <item>Code fixes</item>
+        </fix>
+        <language>
+            <item>More translations</item>
+        </language>
     </changelog>
 </changelogs>

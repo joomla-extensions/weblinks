@@ -9,4 +9,13 @@
             <item>Import Export for weblinks</item>
         </addition>
     </changelog>
+    <changelog>
+        <element>weblinks</element>
+        <type>plugin</type>
+        <version>5.2.1</version>
+        <folder>console</folder>
+        <language>
+            <item>More translations</item>
+        </language>
+    </changelog>
 </changelogs>

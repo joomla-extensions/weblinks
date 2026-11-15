@@ -18,12 +18,23 @@
             <item>Dashboard</item>
         </addition>
     </changelog>
-	 <changelog>
+    <changelog>
         <element>com_weblinks</element>
         <type>component</type>
         <version>5.2.0</version>
         <addition>            
             <item>Code clean</item>
         </addition>
+    </changelog>
+    <changelog>
+        <element>com_weblinks</element>
+        <type>component</type>
+        <version>5.2.1</version>
+        <fix>
+            <item>PHPStan issues</item>
+        </fix>
+        <language>
+            <item>More translations</item>
+        </language>
     </changelog>
 </changelogs>
