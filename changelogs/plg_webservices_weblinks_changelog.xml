@@ -19,7 +19,7 @@
             <item>Crowdin Language Files</item>
         </addition>
     </changelog>
-	<changelog>
+    <changelog>
         <element>weblinks</element>
         <type>plugin</type>
         <version>5.2.0</version>
@@ -27,5 +27,14 @@
         <addition>
             <item>Code clean</item>
         </addition>
+    </changelog>
+    <changelog>
+        <element>weblinks</element>
+        <type>plugin</type>
+        <version>5.2.1</version>
+        <folder>webservices</folder>
+        <language>
+            <item>More translations</item>
+        </language>
     </changelog>
 </changelogs>

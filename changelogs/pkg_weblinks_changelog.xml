@@ -36,7 +36,21 @@
         </change>
         <addition>
             <item>Console plugin import/export</item>
-			<item>Task plugin links check</item>
+            <item>Task plugin links check</item>
         </addition>
+    </changelog>
+    <changelog>
+        <element>pkg_weblinks</element>
+        <type>package</type>
+        <version>5.2.1</version>
+        <change>
+            <item>Code clean</item>
+        </change>
+        <fix>
+            <item>Task plugin installation</item>
+        </fix>
+        <language>
+            <item>More translations</item>
+        </language>
     </changelog>
 </changelogs>
