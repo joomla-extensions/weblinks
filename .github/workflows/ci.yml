@@ -252,6 +252,8 @@ jobs:
             --expose mailpitUrl=http://mailpit:8025,cmsPath=/tests/www/${{ matrix.db }},db_type=${{ matrix.db-type }},db_host=${{ matrix.db-host }},db_name=test_joomla,db_user=$DB_USER,db_password=$DB_PASS,db_prefix=${{ matrix.db-prefix }},logFile=/var/log/apache2/error.log
 
       - name: Run Extension Upgrade System Test
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           DB_USER=${{ matrix.db == 'pgsql' && 'root' || 'joomla_ut' }}
           DB_PASS=${{ matrix.db == 'pgsql' && 'root' || 'joomla_ut' }}
