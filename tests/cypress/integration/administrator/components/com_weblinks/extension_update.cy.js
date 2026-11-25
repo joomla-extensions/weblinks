@@ -14,11 +14,6 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
   const FAKE_UPDATE_XML_PUBLIC_URL = `${Cypress.config('baseUrl')}/${FAKE_UPDATE_XML_RELATIVE}`;
   const FAKE_VERSION = '99.99.99';
 
-  // State context
-  const ctx = {
-    latestZipUrl: null,
-  };
-
   beforeEach(() => {
     cy.doAdministratorLogin();
   });
@@ -46,32 +41,7 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
   });
 
   it('2. installs latest stable package release from GitHub', () => {
-    cy.request({
-      url: 'https://api.github.com/repos/joomla-extensions/weblinks/releases/latest',
-      failOnStatusCode: false,
-    }).then((response) => {
-      expect(response.status, 'GitHub releases/latest reachable').to.eq(200);
-
-      const assets = response.body.assets || [];
-      cy.log(`Found ${assets.length} release assets: ${assets.map((a) => a.name).join(', ')}`);
-
-      // Accrpt both format
-      // (pkg_weblinks-x.y.z.zip)
-      // (pkg-weblinks...)
-      const zipAsset = assets.find(
-        (asset) => /^pkg[-_]weblinks.*\.zip$/i.test(asset.name)
-      );
-
-      expect(
-        zipAsset,
-        `Latest package zip asset found (checked: ${assets.map((a) => a.name).join(', ') || 'none'})`
-      ).to.exist;
-
-      ctx.latestZipUrl = zipAsset.browser_download_url;
-      cy.wrap(ctx.latestZipUrl).as('latestZipUrl');
-    });
-
-    cy.get('@latestZipUrl').then((url) => {
+    cy.task('getLatestReleaseZipUrl').then((url) => {
       cy.installExtensionFromUrl(url);
     });
     cy.get('#system-message-container').should('contain', 'Installation of the package was successful');
@@ -92,7 +62,6 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
       throw new Error('Cypress.env("cmsPath") is not set — check cypress.config.js env block');
     }
 
-    // Pass relative path to the Cypress task
     cy.task('getRelativeFileSha512', 'pkg-weblinks-current.zip').then((sha512Hash) => {
       const fakeUpdateXml = `<?xml version="1.0" encoding="utf-8"?>
 <updates>
@@ -120,7 +89,6 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
   });
 
   it('5. points the package update site at the fake update.xml (via DB)', () => {
-    // Find the update_site_id linked to our package extension.
     const findUpdateSiteId = `
       SELECT us.update_site_id
       FROM #__update_sites us
@@ -128,14 +96,11 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
       JOIN #__extensions ext ON ext.extension_id = usx.extension_id
       WHERE ext.element = '${PACKAGE_ELEMENT}' AND ext.type = 'package'
     `;
- 
+
     cy.task('queryDB', findUpdateSiteId).then((rows) => {
       expect(rows && rows.length, `update site found for element "${PACKAGE_ELEMENT}"`).to.be.greaterThan(0);
       const updateSiteId = rows[0].update_site_id;
- 
-      // Point it at the fake update.xml, make sure it's enabled, and reset
-      // last_check_timestamp so the next "Find Updates" doesn't skip it as
-      // recently checked.
+
       const updateLocation = `
         UPDATE #__update_sites
         SET location = '${FAKE_UPDATE_XML_PUBLIC_URL}',
@@ -176,20 +141,19 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
 
   it('debug: check update_sites state in DB', () => {
     const query = `
-      SELECT update_site_id, name, type, location, enabled, last_check_timestamp 
-      FROM #__update_sites 
+      SELECT update_site_id, name, type, location, enabled, last_check_timestamp
+      FROM #__update_sites
       WHERE location LIKE '%pr-build%' OR name = '${PACKAGE_NAME}'
     `;
 
     cy.task('queryDB', query).then((rows) => {
       cy.log('Update Sites in DB:', JSON.stringify(rows, null, 2));
-    
+
       if (rows && rows.length > 0) {
         const site = rows[0];
         expect(Number(site.enabled)).to.eq(1);
-        // If last_check_timestamp is still 0 after "Find Updates", Joomla never attempted the HTTP request
         expect(Number(site.last_check_timestamp), 'last_check_timestamp should be updated')
-        .to.be.greaterThan(0);
+          .to.be.greaterThan(0);
       }
     });
   });
@@ -208,22 +172,19 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
     cy.setFilter('core', 'Non-core Extensions');
     cy.setFilter('type', 'Package');
     cy.get('button[aria-label="Search"]').click();
-    // Check if the row with "Web Links Component" exists
     cy.get('#manageList tbody tr')
-    .contains('td', 'Web Links Extension Package') // Target the specific row containing your package name
-    .parents('tr')
-    .should('exist')
-    .within(() => {
-      cy.get('td').eq(2).should('contain', 'Site'); // Location
-      cy.get('td').eq(3).should('contain', 'Package'); // Type
-
-      // Check the version cell button specifically
-      cy.get('td').eq(4)
-        .find('button')
-        .should('contain', '5.0.0-dev');  // this is the version present in jorobo.dist.ini
-      cy.get('td').eq(5).should('contain', currentDate);
-      cy.get('td').eq(7).should('contain', 'N/A'); // Folder
-    });
+      .contains('td', 'Web Links Extension Package')
+      .parents('tr')
+      .should('exist')
+      .within(() => {
+        cy.get('td').eq(2).should('contain', 'Site');
+        cy.get('td').eq(3).should('contain', 'Package');
+        cy.get('td').eq(4)
+          .find('button')
+          .should('contain', '5.0.0-dev');
+        cy.get('td').eq(5).should('contain', currentDate);
+        cy.get('td').eq(7).should('contain', 'N/A');
+      });
   });
 
   it('9. verifies the weblinks plugin kept its configuration', () => {
@@ -247,3 +208,4 @@ describe('Extension Upgrade Test (Latest Release -> PR Candidate)', () => {
       .should('exist');
   });
 });
+
