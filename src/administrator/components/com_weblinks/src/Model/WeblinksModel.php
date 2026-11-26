@@ -196,8 +196,8 @@ class WeblinksModel extends ListModel
 
         // Filter by access level.
         if ($access = $this->getState('filter.access')) {
-            $query->where($db->quoteName('a.access') . ' = :access')
-                ->bind(':access', $access, ParameterType::INTEGER);
+            $query->where($db->quoteName('a.access') . ' = :access');
+            $query->bind(':access', $access, ParameterType::INTEGER);
         }
 
         // Implement View Level Access
@@ -209,8 +209,8 @@ class WeblinksModel extends ListModel
         $published = (string) $this->getState('filter.published');
 
         if (is_numeric($published)) {
-            $query->where($db->quoteName('a.state') . ' = :state')
-                ->bind(':state', $published, ParameterType::INTEGER);
+            $query->where($db->quoteName('a.state') . ' = :state');
+            $query->bind(':state', $published, ParameterType::INTEGER);
         } elseif ($published === '') {
             $query->whereIn($db->quoteName('a.state'), [0, 1]);
         }
@@ -219,14 +219,14 @@ class WeblinksModel extends ListModel
         $categoryId = $this->getState('filter.category_id');
 
         if (is_numeric($categoryId)) {
-            $query->where($db->quoteName('a.catid') . ' = :catid')
-                ->bind(':catid', $categoryId, ParameterType::INTEGER);
+            $query->where($db->quoteName('a.catid') . ' = :catid');
+            $query->bind(':catid', $categoryId, ParameterType::INTEGER);
         }
 
         // Filter on the level.
         if ($level = $this->getState('filter.level')) {
-            $query->where($db->quoteName('c.level') . ' <= :level')
-                ->bind(':level', $level, ParameterType::INTEGER);
+            $query->where($db->quoteName('c.level') . ' <= :level');
+            $query->bind(':level', $level, ParameterType::INTEGER);
         }
 
         // Filter by search in title
@@ -235,20 +235,20 @@ class WeblinksModel extends ListModel
         if (!empty($search)) {
             if (stripos($search, 'id:') === 0) {
                 $search = substr($search, 3);
-                $query->where($db->quoteName('a.id') . ' = :id')
-                    ->bind(':id', $search, ParameterType::INTEGER);
+                $query->where($db->quoteName('a.id') . ' = :id');
+                $query->bind(':id', $search, ParameterType::INTEGER);
             } else {
                 $search = '%' . str_replace(' ', '%', $db->escape(trim($search), true) . '%');
-                $query->where('(' . $db->quoteName('a.title') . ' LIKE :title OR ' . $db->quoteName('a.alias') . ' LIKE :alias)')
-                    ->bind(':title', $search)
+                $query->where('(' . $db->quoteName('a.title') . ' LIKE :title OR ' . $db->quoteName('a.alias') . ' LIKE :alias)');
+                $query->bind(':title', $search)
                     ->bind(':alias', $search);
             }
         }
 
         // Filter on the language.
         if ($language = $this->getState('filter.language')) {
-            $query->where($db->quoteName('a.language') . ' = :language')
-                ->bind(':language', $language);
+            $query->where($db->quoteName('a.language') . ' = :language');
+            $query->bind(':language', $language);
         }
 
         $tagId = $this->getState('filter.tag');
