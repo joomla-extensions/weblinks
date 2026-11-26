@@ -152,6 +152,7 @@ class WeblinkModel extends AdminModel
      */
     protected function loadFormData()
     {
+        /** @var \Joomla\CMS\Application\CMSApplication $app */
         $app = Factory::getApplication();
 
         // Check the session for previously entered form data.
@@ -352,7 +353,7 @@ class WeblinkModel extends AdminModel
     /**
      * Allows preprocessing of the JForm object.
      *
-     * @param   \JForm  $form   The form object
+     * @param   Form    $form   The form object
      * @param   array   $data   The data to be merged into the form object
      * @param   string  $group  The plugin group to be executed
      *
@@ -368,7 +369,7 @@ class WeblinkModel extends AdminModel
 
         // Association weblinks items
         if (Associations::isEnabled()) {
-            $languages = LanguageHelper::getContentLanguages(false, false, null, 'ordering', 'asc');
+            $languages = LanguageHelper::getContentLanguages([], false, 'lang_code', 'ordering', 'asc');
 
             if (\count($languages) > 1) {
                 $addform = new \SimpleXMLElement('<form />');

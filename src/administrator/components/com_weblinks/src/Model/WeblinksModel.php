@@ -20,6 +20,7 @@ use Joomla\CMS\Language\Associations;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Database\ParameterType;
+use Joomla\Database\QueryInterface;
 
 /**
  * Methods supporting a list of weblink records.
@@ -145,7 +146,7 @@ class WeblinksModel extends ListModel
     /**
      * Build an SQL query to load the list data.
      *
-     * @return  \JDatabaseQuery
+     * @return  QueryInterface
      *
      * @since   1.6
      */
@@ -169,19 +170,19 @@ class WeblinksModel extends ListModel
         // Join over the language
         $query->select($db->quoteName('l.title', 'language_title'))
             ->select($db->quoteName('l.image', 'language_image'))
-            ->join('LEFT', $db->quoteName('#__languages', 'l') . ' ON ' . $db->qn('l.lang_code') . ' = ' . $db->qn('a.language'));
+            ->join('LEFT', $db->quoteName('#__languages', 'l') . ' ON ' . $db->quoteName('l.lang_code') . ' = ' . $db->quoteName('a.language'));
 
         // Join over the users for the checked out user.
         $query->select($db->quoteName('uc.name', 'editor'))
-            ->join('LEFT', $db->quoteName('#__users', 'uc') . ' ON ' . $db->qn('uc.id') . ' = ' . $db->qn('a.checked_out'));
+            ->join('LEFT', $db->quoteName('#__users', 'uc') . ' ON ' . $db->quoteName('uc.id') . ' = ' . $db->quoteName('a.checked_out'));
 
         // Join over the asset groups.
         $query->select($db->quoteName('ag.title', 'access_level'))
-            ->join('LEFT', $db->quoteName('#__viewlevels', 'ag') . ' ON ' . $db->qn('ag.id') . ' = ' . $db->qn('a.access'));
+            ->join('LEFT', $db->quoteName('#__viewlevels', 'ag') . ' ON ' . $db->quoteName('ag.id') . ' = ' . $db->quoteName('a.access'));
 
         // Join over the categories.
         $query->select('c.title AS category_title')
-            ->join('LEFT', $db->quoteName('#__categories', 'c') . ' ON ' . $db->qn('c.id') . ' = ' . $db->qn('a.catid'));
+            ->join('LEFT', $db->quoteName('#__categories', 'c') . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('a.catid'));
 
         // Join over the associations.
         $assoc = Associations::isEnabled();
@@ -195,8 +196,8 @@ class WeblinksModel extends ListModel
 
         // Filter by access level.
         if ($access = $this->getState('filter.access')) {
-            $query->where($db->quoteName('a.access') . ' = :access')
-                ->bind(':access', $access, ParameterType::INTEGER);
+            $query->where($db->quoteName('a.access') . ' = :access');
+            $query->bind(':access', $access, ParameterType::INTEGER);
         }
 
         // Implement View Level Access
@@ -208,8 +209,8 @@ class WeblinksModel extends ListModel
         $published = (string) $this->getState('filter.published');
 
         if (is_numeric($published)) {
-            $query->where($db->quoteName('a.state') . ' = :state')
-                ->bind(':state', $published, ParameterType::INTEGER);
+            $query->where($db->quoteName('a.state') . ' = :state');
+            $query->bind(':state', $published, ParameterType::INTEGER);
         } elseif ($published === '') {
             $query->whereIn($db->quoteName('a.state'), [0, 1]);
         }
@@ -218,14 +219,14 @@ class WeblinksModel extends ListModel
         $categoryId = $this->getState('filter.category_id');
 
         if (is_numeric($categoryId)) {
-            $query->where($db->quoteName('a.catid') . ' = :catid')
-                ->bind(':catid', $categoryId, ParameterType::INTEGER);
+            $query->where($db->quoteName('a.catid') . ' = :catid');
+            $query->bind(':catid', $categoryId, ParameterType::INTEGER);
         }
 
         // Filter on the level.
         if ($level = $this->getState('filter.level')) {
-            $query->where($db->quoteName('c.level') . ' <= :level')
-                ->bind(':level', $level, ParameterType::INTEGER);
+            $query->where($db->quoteName('c.level') . ' <= :level');
+            $query->bind(':level', $level, ParameterType::INTEGER);
         }
 
         // Filter by search in title
@@ -234,20 +235,20 @@ class WeblinksModel extends ListModel
         if (!empty($search)) {
             if (stripos($search, 'id:') === 0) {
                 $search = substr($search, 3);
-                $query->where($db->quoteName('a.id') . ' = :id')
-                    ->bind(':id', $search, ParameterType::INTEGER);
+                $query->where($db->quoteName('a.id') . ' = :id');
+                $query->bind(':id', $search, ParameterType::INTEGER);
             } else {
                 $search = '%' . str_replace(' ', '%', $db->escape(trim($search), true) . '%');
-                $query->where('(' . $db->quoteName('a.title') . ' LIKE :title OR ' . $db->quoteName('a.alias') . ' LIKE :alias)')
-                    ->bind(':title', $search)
+                $query->where('(' . $db->quoteName('a.title') . ' LIKE :title OR ' . $db->quoteName('a.alias') . ' LIKE :alias)');
+                $query->bind(':title', $search)
                     ->bind(':alias', $search);
             }
         }
 
         // Filter on the language.
         if ($language = $this->getState('filter.language')) {
-            $query->where($db->quoteName('a.language') . ' = :language')
-                ->bind(':language', $language);
+            $query->where($db->quoteName('a.language') . ' = :language');
+            $query->bind(':language', $language);
         }
 
         $tagId = $this->getState('filter.tag');
