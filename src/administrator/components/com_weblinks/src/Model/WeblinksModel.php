@@ -145,7 +145,7 @@ class WeblinksModel extends ListModel
     /**
      * Build an SQL query to load the list data.
      *
-     * @return  \JDatabaseQuery
+     * @return  QueryInterface
      *
      * @since   1.6
      */
