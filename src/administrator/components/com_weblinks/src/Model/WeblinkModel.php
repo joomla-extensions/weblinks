@@ -352,7 +352,7 @@ class WeblinkModel extends AdminModel
     /**
      * Allows preprocessing of the JForm object.
      *
-     * @param   \JForm  $form   The form object
+     * @param   Form    $form   The form object
      * @param   array   $data   The data to be merged into the form object
      * @param   string  $group  The plugin group to be executed
      *
