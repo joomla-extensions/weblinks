@@ -152,6 +152,7 @@ class WeblinkModel extends AdminModel
      */
     protected function loadFormData()
     {
+        /** @var \Joomla\CMS\Application\CMSApplication $app */
         $app = Factory::getApplication();
 
         // Check the session for previously entered form data.
