@@ -44,7 +44,7 @@ jobs:
     needs: npm
     strategy:
       matrix:
-        joomla-version: ['5.4', '6.1', '6.2']
+        joomla-version: ['5.4', '6.2', '6.3']
     container:
       image: joomlaprojects/docker-images:cypress8.5
     steps:
@@ -113,7 +113,7 @@ jobs:
     needs: prepare_tests
     strategy:
       matrix:
-        joomla-version: ['5.4', '6.1', '6.2']
+        joomla-version: ['5.4', '6.2', '6.3']
     container:
       image: joomlaprojects/docker-images:php8.5
     steps:
@@ -135,7 +135,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        joomla-version: ['5.4', '6.1', '6.2']
+        joomla-version: ['5.4', '6.2', '6.3']
         php-version: ['8.2', '8.3', '8.4', '8.5']
         db: [mysql, mariadb, pgsql]
         include:
@@ -159,15 +159,15 @@ jobs:
             db-prefix: pgsql_
             image: postgres:12-alpine
             alter-user-cmd: "apt-get update && apt-get install -y postgresql-client"
-          - joomla-version: '6.1'
+          - joomla-version: '6.2'
             db: mariadb
             image: mariadb:10.6
         exclude:
           - joomla-version: '5.4'
             php-version: '8.5'
-          - joomla-version: '6.1'
-            php-version: '8.2'
           - joomla-version: '6.2'
+            php-version: '8.2'
+          - joomla-version: '6.3'
             php-version: '8.2'
 
     container:
@@ -252,6 +252,8 @@ jobs:
             --expose mailpitUrl=http://mailpit:8025,cmsPath=/tests/www/${{ matrix.db }},db_type=${{ matrix.db-type }},db_host=${{ matrix.db-host }},db_name=test_joomla,db_user=$DB_USER,db_password=$DB_PASS,db_prefix=${{ matrix.db-prefix }},logFile=/var/log/apache2/error.log
 
       - name: Run Extension Upgrade System Test
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           DB_USER=${{ matrix.db == 'pgsql' && 'root' || 'joomla_ut' }}
           DB_PASS=${{ matrix.db == 'pgsql' && 'root' || 'joomla_ut' }}
