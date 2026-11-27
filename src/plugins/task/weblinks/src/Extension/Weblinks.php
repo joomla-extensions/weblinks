@@ -375,7 +375,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
                 $mailer->addRecipient($superUser->email);
                 $mailer->addTemplateData($substitutions);
                 $mailer->send();
-            } catch (MailDisabledException | phpMailerException $exception) {
+            } catch (MailDisabledException | phpMailerException | \Exception $exception) {
                 $this->logTask($exception->getMessage(), 'error');
             }
         }
