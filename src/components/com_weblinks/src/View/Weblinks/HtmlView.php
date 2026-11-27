@@ -121,7 +121,7 @@ class HtmlView extends BaseHtmlView
         ToolbarHelper::title(Text::_('COM_WEBLINKS_MANAGER_WEBLINKS'), 'link weblinks');
 
         if ($canDo->get('core.create') || \count($user->getAuthorisedCategories('com_weblinks', 'core.create')) > 0) {
-            ToolbarHelper::addNew('weblink.add');
+            $toolbar->addNew('weblink.add');
         }
 
         if (!$this->isEmptyState && $canDo->get('core.edit.state')) {
@@ -168,6 +168,6 @@ class HtmlView extends BaseHtmlView
                 ->listCheck(true);
         }
 
-        ToolbarHelper::help('Components_Weblinks_Links');
+        $toolbar->help('Components_Weblinks_Links');
     }
 }
