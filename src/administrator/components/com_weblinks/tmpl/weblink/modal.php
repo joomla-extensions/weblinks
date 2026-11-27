@@ -22,7 +22,7 @@ HTMLHelper::_('bootstrap.tooltip', '.hasTooltip', ['placement' => 'bottom']);
 $function  = Factory::getApplication()->getInput()->getCmd('function', 'jEditWeblink_' . $this->getItemId());
 
 // Function to update input title when changed
-$wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+$wa = $this->getDocument()->getWebAssetManager();
 $script = <<<JS
 	function jEditWeblinkModal() {
 		if (window.parent && document.formvalidator.isValid(document.getElementById("weblink-form"))) {
