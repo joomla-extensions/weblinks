@@ -39,7 +39,7 @@ class WeblinksController extends AdminController
         return parent::getModel($name, $prefix, $config);
     }
     /**
-     * Method to get the JSON-encoded amount of published articles
+     * Method to get the JSON-encoded amount of published weblinks
      *
      * @return  void
      *
@@ -51,13 +51,8 @@ class WeblinksController extends AdminController
 
         $model->setState('filter.published', 1);
 
-        $amount = 0;
-        if ($model) {
-            $amount = (int) $model->getTotal();
-        }
-
         $responseData = [
-            'amount' => $amount,
+            'amount' => (int) $model->getTotal(),
         ];
 
         echo new JsonResponse($responseData);
