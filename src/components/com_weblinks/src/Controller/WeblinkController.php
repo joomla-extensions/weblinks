@@ -343,7 +343,7 @@ class WeblinkController extends FormController
         // Redirect to the URL
         if ($link->url) {
             $modelLink->hit($id);
-            $this->app->redirect($link->url, 301);
+            $this->app->redirect($link->url);
         }
 
         throw new \Exception(Text::_('COM_WEBLINKS_ERROR_WEBLINK_URL_INVALID'), 404);
