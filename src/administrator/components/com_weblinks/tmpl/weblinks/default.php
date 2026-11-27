@@ -23,7 +23,6 @@ use Joomla\CMS\Router\Route;
 
 HTMLHelper::_('behavior.multiselect');
 $user      = Factory::getApplication()->getIdentity();
-$userId    = $user->get('id');
 $listOrder = $this->escape($this->getState()->get('list.ordering'));
 $listDirn  = $this->escape($this->getState()->get('list.direction'));
 $saveOrder = $listOrder == 'a.ordering';
@@ -100,7 +99,6 @@ if ($saveOrder && !empty($this->getItems())) {
                                endif; ?>>
                         <?php foreach ($this->getItems() as $i => $item) :
                             ?>
-                            <?php $item->cat_link = Route::_('index.php?option=com_categories&extension=com_weblinks&task=edit&type=other&cid[]=' . $item->catid); ?>
                             <?php $canCreate      = $user->authorise('core.create', 'com_weblinks.category.' . $item->catid); ?>
                             <?php $canEdit        = $user->authorise('core.edit', 'com_weblinks.category.' . $item->catid); ?>
                             <?php $canCheckin     = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $user->id || !$item->checked_out; ?>
