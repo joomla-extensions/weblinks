@@ -48,7 +48,7 @@ return new class () implements ServiceProviderInterface {
                  * @var    string
                  * @since  1.0.0
                  */
-                protected $minimumJoomla = '5.0.0';
+                protected $minimumJoomla = '5.2.0';
 
                 /**
                  * Minimum PHP version to check
