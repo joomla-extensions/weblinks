@@ -11,7 +11,6 @@
 namespace Joomla\Plugin\System\Weblinks\Extension;
 
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Database\DatabaseAwareTrait;
@@ -128,14 +127,14 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      */
     public function onAfterRender()
     {
-        $input     = Factory::getApplication()->getInput();
+        $input     = $this->getApplication()->getInput();
         $option    = $input->get('option');
         $view      = $input->get('view');
         $layout    = $input->get('layout');
         $component = $input->get('component');
         $extension = $input->get('extension');
-        $body      = Factory::getApplication()->getBody();
-        $lang      = Factory::getLanguage()->getTag();
+        $body      = $this->getApplication()->getBody();
+        $lang      = $this->getApplication()->getLanguage()->getTag();
         $modified  = false;
 
         // 1. Handle com_categories for weblinks
@@ -215,7 +214,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
 
         // Set the modified body back if changes were made
         if ($modified) {
-            Factory::getApplication()->setBody($body);
+            $this->getApplication()->setBody($body);
         }
 
         return true;
