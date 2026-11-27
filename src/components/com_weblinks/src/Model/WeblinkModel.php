@@ -388,7 +388,7 @@ class WeblinkModel extends AdminModel
                     $field->addAttribute('new', 'true');
                     $field->addAttribute('edit', 'true');
                     $field->addAttribute('clear', 'true');
-                    $field->addAttribute('addfieldprefix', 'Joomla\\Component\\Weblinks\\Site\\Field');
+                    $field->addAttribute('addfieldprefix', 'Joomla\\Component\\Weblinks\\Administrator\\Field');
                 }
 
                 $form->load($addform, false);
