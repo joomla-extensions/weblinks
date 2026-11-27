@@ -12,6 +12,7 @@ namespace Joomla\Component\Weblinks\Site\View\Weblink;
 
 use Joomla\CMS\Event\Content;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -70,6 +71,10 @@ class HtmlView extends BaseHtmlView
         $this->item   = $model->getItem();
         $this->state  = $model->getState();
         $this->params = $this->state->get('params');
+
+        if ($this->item === false) {
+            throw new \Exception(Text::_('COM_WEBLINKS_ERROR_WEBLINK_NOT_FOUND'), 404);
+        }
 
         $errors = $model->getErrors();
 
