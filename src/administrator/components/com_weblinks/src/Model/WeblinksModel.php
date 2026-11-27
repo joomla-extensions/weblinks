@@ -265,8 +265,8 @@ class WeblinksModel extends ListModel
         }
 
         // Add the list ordering clause.
-        $orderCol  = $this->state->get('list.ordering', 'a.title');
-        $orderDirn = $this->state->get('list.direction', 'ASC');
+        $orderCol  = $this->getState('list.ordering', 'a.title');
+        $orderDirn = $this->getState('list.direction', 'ASC');
 
         if ($orderCol == 'a.ordering' || $orderCol == 'category_title') {
             $orderCol = 'c.title ' . $orderDirn . ', a.ordering';
