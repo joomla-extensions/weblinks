@@ -229,10 +229,12 @@ return new class () implements ServiceProviderInterface {
                     ];
 
                     foreach ($files as $file) {
-                        try {
-                            File::delete(JPATH_ROOT . $file);
-                        } catch (FilesystemException $e) {
-                            echo Text::sprintf('FILES_JOOMLA_ERROR_FILE_FOLDER', $file) . '<br>';
+                        if (is_file(JPATH_ROOT . $file)) {
+                            try {
+                                File::delete(JPATH_ROOT . $file);
+                            } catch (FilesystemException $e) {
+                                echo Text::sprintf('FILES_JOOMLA_ERROR_FILE_FOLDER', $file) . '<br>';
+                            }
                         }
                     }
 
