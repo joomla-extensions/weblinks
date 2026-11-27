@@ -81,6 +81,11 @@ final class Weblink extends CMSPlugin implements SubscriberInterface
       */
     public function onDisplay($name): ?object
     {
+        // The weblinks selection modal is only available in the administrator
+        if (!$this->getApplication()->isClient('administrator')) {
+            return null;
+        }
+
         $user = $this->getApplication()->getIdentity();
 
         if (
