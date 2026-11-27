@@ -71,10 +71,9 @@ $wa->registerAndUseStyle('toolbar', 'com_weblinks/toolbar.css');
                 </thead>
                 <tbody>
                     <?php foreach ($this->items as $i => $item) :
-                        $canEdit = $user->authorise('core.edit', 'com_weblinks.weblink.' . $item->id);
-                        $canEditOwn = $user->authorise('core.edit.own', 'com_weblinks.weblink.' . $item->id) && $item->created_by == $userId;
+                        $canEdit    = $user->authorise('core.edit', 'com_weblinks.category.' . $item->catid);
+                        $canEditOwn = $user->authorise('core.edit.own', 'com_weblinks.category.' . $item->catid) && $item->created_by == $userId;
                         $canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $userId || !$item->checked_out;
-                        $canEditOwn = $user->authorise('core.edit.own', 'com_weblinks') && $item->created_by == $userId;
                         $canChange  = $user->authorise('core.edit.state', 'com_weblinks.category.' . $item->catid) && $canCheckin;
                         ?>
                         <tr class="row<?php echo $i % 2; ?>">
