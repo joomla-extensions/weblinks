@@ -189,8 +189,9 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
     {
         $task        = $event->getArgument('subject');
         $taskId      = $event->getTaskId();
-        $httpTimeout = (int) $event->getArgument('params')->http_timeout ?? 8;
-        $batchSize   = (int) $event->getArgument('params')->batch_size ?? 3;
+        $params      = $event->getArgument('params');
+        $httpTimeout = max(1, (int) ($params->http_timeout ?? 8));
+        $batchSize   = max(1, (int) ($params->batch_size ?? 3));
         $timelimit   = max(5, (int)\ini_get('max_execution_time') - 10);
         $startTime   = microtime(true);
 
