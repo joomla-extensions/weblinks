@@ -120,8 +120,9 @@ final class WeblinksCommand extends AbstractCommand
 
         // Verify or create pathing directory validity
         $directory = \dirname($filePath);
-        if (!is_dir($directory)) {
-            mkdir($directory, 0755, true);
+        if (!is_dir($directory) && !mkdir($directory, 0755, true) && !is_dir($directory)) {
+            $io->error('Unable to create the target directory: ' . $directory);
+            return Command::FAILURE;
         }
 
         // Open file pointer for writing
