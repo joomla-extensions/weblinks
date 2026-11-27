@@ -400,7 +400,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
             $table     = new Asset($db);
             $rootId    = $table->getRootId();
             $rules     = Access::getAssetRules($rootId)->getData();
-            $rawGroups = $rules['core.admin']->getData() ?? [];
+            $rawGroups = isset($rules['core.admin']) ? $rules['core.admin']->getData() : [];
 
             $groups = array_keys(array_filter($rawGroups));
 
