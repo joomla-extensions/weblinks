@@ -59,10 +59,9 @@ $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=c
         <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'images', Text::_('JGLOBAL_FIELDSET_IMAGE_OPTIONS', true)); ?>
       <div class="row">
           <div class="col-12">
-               <fieldset id="fieldset-image; ?>" class="options-form">
+               <fieldset id="fieldset-image" class="options-form">
                     <legend><?php echo Text::_('JGLOBAL_FIELDSET_IMAGE_OPTIONS'); ?></legend>
                   <div>
-                        <?php echo $this->form->renderField('imaJGLOBAL_FIELDSET_IMAGE_OPTIONSges'); ?>
                         <?php foreach ($this->form->getGroup('images') as $field) :
                             ?>
                             <?php echo $field->renderField(); ?>
