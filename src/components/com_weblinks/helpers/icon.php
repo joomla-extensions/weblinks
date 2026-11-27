@@ -15,6 +15,9 @@
  * Weblink Component HTML Helper.
  *
  * @since  1.5
+ *
+ * @deprecated  __DEPLOY_VERSION__ will be removed in 7.0
+ *              Use \Joomla\Component\Weblinks\Administrator\Service\HTML\Icon instead
  */
 class JHtmlIcon
 {
