@@ -1,4 +1,4 @@
 #toolbar{
-    display: flexbox;
+    display: flex;
     gap: 1rem;
 }
