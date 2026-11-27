@@ -75,7 +75,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
             ],
         ];
 
-        if ($this->params->get('show_count', 1)) {
+        if ($this->params->get('show_count', 0)) {
             $iconDefinition[0]['ajaxurl'] = 'index.php?option=com_weblinks&task=weblinks.getQuickiconContent&format=json';
         } else {
             unset($iconDefinition[0]['ajaxurl']);
