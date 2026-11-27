@@ -16,6 +16,9 @@
  * Weblinks helper.
  *
  * @since  1.6
+ *
+ * @deprecated  __DEPLOY_VERSION__ will be removed in 7.0
+ *              Use \Joomla\Component\Weblinks\Administrator\Helper\WeblinksHelper instead
  */
 class WeblinksHelper extends \Joomla\Component\Weblinks\Administrator\Helper\WeblinksHelper
 {

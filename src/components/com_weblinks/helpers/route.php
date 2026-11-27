@@ -17,6 +17,9 @@ use Joomla\Component\Weblinks\Site\Helper\RouteHelper;
  * Weblinks Component Route Helper.
  *
  * @since  1.5
+ *
+ * @deprecated  __DEPLOY_VERSION__ will be removed in 7.0
+ *              Use \Joomla\Component\Weblinks\Site\Helper\RouteHelper instead
  */
 abstract class WeblinksHelperRoute extends RouteHelper
 {
