@@ -118,6 +118,13 @@
 		/>
 
 		<field
+			name="contenthistory"
+			type="contenthistory"
+			label="JTOOLBAR_VERSIONS"
+			data-typeAlias="com_weblinks.weblink"
+		/>
+
+		<field
 			name="created"
 			type="calendar"
 			label="JGLOBAL_FIELD_CREATED_LABEL"
