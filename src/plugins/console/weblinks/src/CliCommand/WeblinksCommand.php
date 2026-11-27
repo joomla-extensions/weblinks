@@ -54,7 +54,7 @@ final class WeblinksCommand extends AbstractCommand
             ->addOption(
                 'file',
                 'f',
-                InputOption::VALUE_OPTIONAL,
+                InputOption::VALUE_REQUIRED,
                 'Target absolute pathway for the CSV data asset file.',
                 JPATH_ROOT . '/tmp/weblinks_export.csv'
             );
