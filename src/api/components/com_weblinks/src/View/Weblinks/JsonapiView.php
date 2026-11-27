@@ -106,7 +106,7 @@ class JsonapiView extends BaseApiView
             $this->fieldsToRenderList[] = $field->name;
         }
 
-        return parent::displayList();
+        return parent::displayList($items);
     }
 
     /**
@@ -124,7 +124,7 @@ class JsonapiView extends BaseApiView
             $this->fieldsToRenderItem[] = $field->name;
         }
 
-        return parent::displayItem();
+        return parent::displayItem($item);
     }
 
     /**
