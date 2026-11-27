@@ -245,10 +245,10 @@ final class WeblinksCommand extends AbstractCommand
             $access            = isset($data['access']) ? (int)$data['access'] : 1;
             $params            = $data['params'] ?? '';
             $language          = $data['language'] ?? '*';
-            $created           = !empty($data['created']) ? $data['created'] : date('Y-m-d H:i:s');
+            $created           = !empty($data['created']) ? $data['created'] : gmdate('Y-m-d H:i:s');
             $createdBy         = !empty($data['created_by']) ? (int)$data['created_by'] : 990;
             $createdByAlias    = $data['created_by_alias'] ?? '';
-            $modified          = !empty($data['modified']) && $data['modified'] !== 'NULL' && $data['modified'] !== '0000-00-00 00:00:00' ? $data['modified'] : date('Y-m-d H:i:s');
+            $modified          = !empty($data['modified']) && $data['modified'] !== 'NULL' && $data['modified'] !== '0000-00-00 00:00:00' ? $data['modified'] : gmdate('Y-m-d H:i:s');
             $modifiedBy        = !empty($data['modified_by']) ? (int)$data['modified_by'] : $createdBy;
             $metakey           = $data['metakey'] ?? '';
             $metadesc          = $data['metadesc'] ?? '';
