@@ -65,7 +65,7 @@ return new class () implements ServiceProviderInterface {
                  */
                 public function install(InstallerAdapter $parent): bool
                 {
-                    $this->app->getLanguage()->load('com_weblinks', JPATH_ADMINISTRATOR, 'en-GB', false, true);
+                    $this->app->getLanguage()->load('com_weblinks', JPATH_ADMINISTRATOR);
                     $this->createCategory();
                     $this->addDashboardMenu('weblink', 'weblink');
                     $this->app->enqueueMessage(Text::_('COM_WEBLINKS_SUCCESS_INSTALL'));
@@ -82,7 +82,7 @@ return new class () implements ServiceProviderInterface {
                  */
                 public function update(InstallerAdapter $parent): bool
                 {
-                    $this->app->getLanguage()->load('com_weblinks', JPATH_ADMINISTRATOR, 'en-GB', false, true);
+                    $this->app->getLanguage()->load('com_weblinks', JPATH_ADMINISTRATOR);
                     $this->app->enqueueMessage(Text::_('COM_WEBLINKS_SUCCESS_UPDATE'));
                     $this->addDashboardMenu('weblink', 'weblink');
                     return true;
@@ -97,7 +97,7 @@ return new class () implements ServiceProviderInterface {
                  */
                 public function uninstall(InstallerAdapter $parent): bool
                 {
-                    $this->app->getLanguage()->load('com_weblinks', JPATH_ADMINISTRATOR, 'en-GB', false, true);
+                    $this->app->getLanguage()->load('com_weblinks', JPATH_ADMINISTRATOR);
                     $this->app->enqueueMessage(Text::_('COM_WEBLINKS_SUCCESS_UNINSTALL'));
 
                     return true;
