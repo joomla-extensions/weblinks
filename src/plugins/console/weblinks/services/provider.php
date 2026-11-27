@@ -12,6 +12,7 @@
 
 use Joomla\CMS\Extension\PluginInterface;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Database\DatabaseInterface;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
@@ -39,7 +40,7 @@ return new class () implements ServiceProviderInterface {
                 );
 
                 // Inject the Database driver into the plugin
-                $plugin->setDatabase($container->get('DatabaseDriver'));
+                $plugin->setDatabase($container->get(DatabaseInterface::class));
 
                 return $plugin;
             }

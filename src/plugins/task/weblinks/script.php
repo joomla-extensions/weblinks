@@ -16,7 +16,7 @@ use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Installer\InstallerScriptInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
-use Joomla\Database\DatabaseDriver;
+use Joomla\Database\DatabaseInterface;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 
@@ -199,7 +199,7 @@ return new class () implements ServiceProviderInterface {
                 private function createTable(): void
                 {
                     try {
-                        $db = Factory::getContainer()->get(DatabaseDriver::class);
+                        $db = Factory::getContainer()->get(DatabaseInterface::class);
 
                         $templateId  = 'plg_task_weblinks.broken_links';
                         $extension   = 'plg_task_weblinks';
@@ -239,7 +239,7 @@ return new class () implements ServiceProviderInterface {
                 private function dropTable(): void
                 {
                     try {
-                        $db          = Factory::getContainer()->get(DatabaseDriver::class);
+                        $db          = Factory::getContainer()->get(DatabaseInterface::class);
                         $templateId  = 'plg_task_weblinks.broken_links';
                         // Delete the template_id from the #__mail_templates table
                         $query = $db->getQuery(true);

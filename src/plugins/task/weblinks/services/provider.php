@@ -15,6 +15,7 @@
 use Joomla\CMS\Extension\PluginInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Database\DatabaseInterface;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Plugin\Task\Weblinks\Extension\Weblinks;
@@ -39,7 +40,7 @@ return new class () implements ServiceProviderInterface {
                 );
 
                 $plugin->setApplication(Factory::getApplication());
-                $plugin->setDatabase($container->get('DatabaseDriver'));
+                $plugin->setDatabase($container->get(DatabaseInterface::class));
 
                 return $plugin;
             }
