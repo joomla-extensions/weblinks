@@ -144,6 +144,6 @@ class WeblinksComponent extends MVCComponent implements
      */
     protected function getStateColumnForSection(?string $section = null)
     {
-        return 'state';
+        return $section === 'category' ? 'published' : 'state';
     }
 }
