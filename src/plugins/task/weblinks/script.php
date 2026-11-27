@@ -21,7 +21,7 @@ use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 
 /**
- * Installer service provider of plg_contact_customreply plugin.
+ * Installer service provider of the plg_task_weblinks plugin.
  *
  * @since  1.0.0
  */
@@ -186,8 +186,6 @@ return new class () implements ServiceProviderInterface {
                     // Auto-publish plugin
                     $adapter->extension->enabled = 1;
                     $adapter->extension->store();
-
-                    echo Text::_('PLG_CONTACT_CUSTOMREPLY_INSTALLERSCRIPT_POSTFLIGHT_INSTALL');
 
                     return true;
                 }
