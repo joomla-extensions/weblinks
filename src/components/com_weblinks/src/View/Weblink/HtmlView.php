@@ -12,6 +12,7 @@ namespace Joomla\Component\Weblinks\Site\View\Weblink;
 
 use Joomla\CMS\Event\Content;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Helper\TagsHelper;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -85,6 +86,10 @@ class HtmlView extends BaseHtmlView
         $item->params = clone $app->getParams();
         $item->params->merge($registry);
         $offset = $this->state->get('list.offset');
+
+        // Load the tags of the weblink for display.
+        $item->tags = new TagsHelper();
+        $item->tags->getItemTags('com_weblinks.weblink', $item->id);
 
         $dispatcher = $this->getDispatcher();
 
