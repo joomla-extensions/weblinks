@@ -237,7 +237,7 @@ class WeblinksModel extends ListModel
                 $query->where($db->quoteName('a.id') . ' = :id')
                     ->bind(':id', $search, ParameterType::INTEGER);
             } else {
-                $search = '%' . str_replace(' ', '%', $db->escape(trim($search), true) . '%');
+                $search = '%' . str_replace(' ', '%', trim($search)) . '%';
                 $query->where('(' . $db->quoteName('a.title') . ' LIKE :title OR ' . $db->quoteName('a.alias') . ' LIKE :alias)')
                     ->bind(':title', $search)
                     ->bind(':alias', $search);
