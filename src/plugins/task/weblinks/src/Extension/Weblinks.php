@@ -11,7 +11,6 @@
 namespace Joomla\Plugin\Task\Weblinks\Extension;
 
 use Joomla\CMS\Access\Access;
-use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Mail\Exception\MailDisabledException;
 use Joomla\CMS\Mail\MailTemplate;
 use Joomla\CMS\Plugin\CMSPlugin;
@@ -40,14 +39,6 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
 {
     use DatabaseAwareTrait;
     use TaskPluginTrait;
-
-    /**
-     * Application object
-     *
-     * @var CMSApplication
-     * @since __DEPLOY_VERSION__
-     */
-    protected $app;
 
     /**
      * Auto-load plugin language files
