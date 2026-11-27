@@ -251,15 +251,15 @@ class WeblinkModel extends AdminModel
                 $max = $db->loadResult();
 
                 $table->ordering = $max + 1;
-            } else {
-                // Set the values
-                $table->modified    = $date->toSql();
-                $table->modified_by = $user->id;
             }
+        } else {
+            // Set the values
+            $table->modified    = $date->toSql();
+            $table->modified_by = $user->id;
         }
 
         // Increment the weblink version number.
-        (int) $table->version++;
+        $table->version++;
     }
 
     /**
