@@ -210,6 +210,10 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
          * frontend editing where we don't show all the fields or using some kind of API
          */
         if (!$this->id) {
+            if (!isset($this->description)) {
+                $this->description = '';
+            }
+
             if (!isset($this->xreference)) {
                 $this->xreference = '';
             }
