@@ -18,6 +18,9 @@ use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
+use Joomla\Database\DatabaseAwareInterface;
+use Joomla\Database\DatabaseAwareTrait;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 /**
@@ -25,8 +28,10 @@ use Joomla\Registry\Registry;
  *
  * @since  1.5
  */
-class WeblinksHelper
+class WeblinksHelper implements DatabaseAwareInterface
 {
+    use DatabaseAwareTrait;
+
     /**
      * Retrieve list of weblinks
      *
@@ -45,7 +50,7 @@ class WeblinksHelper
         if ($params->get('groupby')) {
             // Get all category objects for the selected IDs
             $allSelectedCategories = [];
-            $categoriesFactory     = Factory::getApplication()->bootComponent('com_weblinks')->getCategory();
+            $categoriesFactory     = $app->bootComponent('com_weblinks')->getCategory();
             foreach ($catidArray as $id) {
                 $category = $categoriesFactory->get($id);
                 if ($category) {
@@ -92,7 +97,7 @@ class WeblinksHelper
      */
     private function getCategoryTree(int $catid, Registry $params, CMSApplicationInterface $app, int $level, int $maxLevel): ?\stdClass
     {
-        $categories = Factory::getApplication()->bootComponent('com_weblinks')->getCategory();
+        $categories = $app->bootComponent('com_weblinks')->getCategory();
         $category   = $categories->get($catid);
         $tree       = null;
 
@@ -158,7 +163,7 @@ class WeblinksHelper
         $model->setState('category.direction', $params->get('groupby_direction', 'ASC'));
 
         // Create query object
-        $db    = $model->getDbo();
+        $db    = $this->getDatabase();
         $query = $db->getQuery(true);
 
         $case_when1 = ' CASE WHEN ';
@@ -222,6 +227,9 @@ class WeblinksHelper
      **/
     public static function getList($params, $app)
     {
-        return (new self())->getWeblinks($params, $app);
+        $helper = new self();
+        $helper->setDatabase(Factory::getContainer()->get(DatabaseInterface::class));
+
+        return $helper->getWeblinks($params, $app);
     }
 }
