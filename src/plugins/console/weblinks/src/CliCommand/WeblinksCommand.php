@@ -227,10 +227,12 @@ final class WeblinksCommand extends AbstractCommand
 
         // FIXED: Explicitly passed default length, separator, enclosure, and escape character
         while (($row = fgetcsv($fileHandle, 0, ',', '"', '\\')) !== false) {
-            $data = array_combine($headers, $row);
-            if (!$data) {
+            // Skip empty lines and rows that don't match the header
+            if (\count($row) !== \count($headers)) {
                 continue;
             }
+
+            $data = array_combine($headers, $row);
 
             $id                = !empty($data['id']) ? (int)$data['id'] : null;
             $title             = $data['title'] ?? 'Untitled Link';
