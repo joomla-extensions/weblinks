@@ -17,10 +17,10 @@
     "cypress:run": "cypress run"
   },
   "devDependencies": {
-    "cypress": "^15.15.0",
+    "cypress": "^15.21.2",
     "joomla-cypress": "^2.0.0",
-    "mysql2": "^3.19.1",
-    "pg": "^8.16.3",
+    "mysql2": "^3.24.6",
+    "pg": "^8.23.1",
     "smtp-tester": "^2.1.0"
   }
 }
