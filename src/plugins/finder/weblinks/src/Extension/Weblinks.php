@@ -393,7 +393,7 @@ final class Weblinks extends Adapter implements SubscriberInterface
         // Build an SQL query based on the modified time.
         $db    = $this->getDatabase();
         $query = $db->getQuery(true)
-            ->where('a.date >= ' . $db->quote($time));
+            ->where($db->quoteName('a.modified') . ' >= ' . $db->quote($time));
 
         return $query;
     }
