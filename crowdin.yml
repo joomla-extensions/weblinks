@@ -57,16 +57,6 @@ files:
     translation: /src/plugins/finder/weblinks/language/%locale%/plg_finder_weblinks.sys.ini
     type: joomla
     update_option: update_as_unapproved
-  - source: /src/plugins/search/weblinks/language/en-GB/plg_search_weblinks.ini
-    dest: 'Weblinks/plugins/search/weblinks/language/plg_search_weblinks.ini'
-    translation: /src/plugins/search/weblinks/language/%locale%/plg_search_weblinks.ini
-    type: joomla
-    update_option: update_as_unapproved
-  - source: /src/plugins/search/weblinks/language/en-GB/plg_search_weblinks.sys.ini
-    dest: 'Weblinks/plugins/search/weblinks/language/plg_search_weblinks.sys.ini'
-    translation: /src/plugins/search/weblinks/language/%locale%/plg_search_weblinks.sys.ini
-    type: joomla
-    update_option: update_as_unapproved
   - source: /src/plugins/system/weblinks/language/en-GB/plg_system_weblinks.ini
     dest: 'Weblinks/plugins/system/weblinks/language/plg_system_weblinks.ini'
     translation: /src/plugins/system/weblinks/language/%locale%/plg_system_weblinks.ini
