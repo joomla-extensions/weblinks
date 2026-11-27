@@ -13,7 +13,6 @@ namespace Joomla\Component\Weblinks\Administrator\Extension;
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Association\AssociationServiceInterface;
 use Joomla\CMS\Association\AssociationServiceTrait;
 use Joomla\CMS\Categories\CategoryServiceInterface;
@@ -78,7 +77,7 @@ class WeblinksComponent extends MVCComponent implements
             )
         );
 
-        $this->getRegistry()->register('weblinkicon', new Icon($container->get(SiteApplication::class)));
+        $this->getRegistry()->register('weblinkicon', new Icon());
     }
 
     /**
