@@ -52,7 +52,7 @@ return new class () implements ServiceProviderInterface {
                 {
                     $this->app           = Factory::getApplication();
                     $this->db            = $db;
-                    $this->minimumJoomla = '5.0.0';
+                    $this->minimumJoomla = '5.2.0';
                     $this->minimumPhp    = '8.1.0';
                 }
 
