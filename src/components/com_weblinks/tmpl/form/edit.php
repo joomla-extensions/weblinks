@@ -55,7 +55,7 @@ $params = $this->state->get('params');
         <div class="main-card">
             <?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', ['active' => 'details']); ?>
 
-            <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'details', empty($this->item->id) ? Text::_('COM_WEBLINKS_NEW_WEBLINK', true) : Text::_('COM_WEBLINKS_EDIT_WEBLINK', true)); ?>
+            <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'details', empty($this->item->id) ? Text::_('COM_WEBLINKS_NEW_WEBLINK') : Text::_('COM_WEBLINKS_EDIT_WEBLINK')); ?>
             <div class="row">
                 <div class="col-md-8">
                     <div class="form-vertical">
@@ -73,7 +73,7 @@ $params = $this->state->get('params');
             </div>
             <?php echo HTMLHelper::_('uitab.endTab'); ?>
 
-            <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'images', Text::_('JGLOBAL_FIELDSET_IMAGE_OPTIONS', true)); ?>
+            <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'images', Text::_('JGLOBAL_FIELDSET_IMAGE_OPTIONS')); ?>
             <div class="row">
                 <div class="col-12">
                     <fieldset id="fieldset-image; ?>" class="options-form">
@@ -92,7 +92,7 @@ $params = $this->state->get('params');
 
             <?php echo HTMLHelper::_('uitab.endTab'); ?>
 
-            <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'publishing', Text::_('JGLOBAL_FIELDSET_PUBLISHING', true)); ?>
+            <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'publishing', Text::_('JGLOBAL_FIELDSET_PUBLISHING')); ?>
             <div class="row">
                 <div class="col-12 col-lg-6">
                     <fieldset id="fieldset-publishingdata" class="options-form">
