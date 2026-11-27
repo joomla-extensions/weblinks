@@ -76,10 +76,9 @@ $params = $this->state->get('params');
             <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'images', Text::_('JGLOBAL_FIELDSET_IMAGE_OPTIONS', true)); ?>
             <div class="row">
                 <div class="col-12">
-                    <fieldset id="fieldset-image; ?>" class="options-form">
+                    <fieldset id="fieldset-image" class="options-form">
                         <legend><?php echo Text::_('JGLOBAL_FIELDSET_IMAGE_OPTIONS'); ?></legend>
                         <div>
-                            <?php echo $this->form->renderField('JGLOBAL_FIELDSET_IMAGE_OPTIONS'); ?>
                             <?php foreach ($this->form->getGroup('images') as $field) :
                                 ?>
                                 <?php echo $field->renderField(); ?>
