@@ -26,7 +26,7 @@ if ($app->isClient('site')) {
 }
 
 HTMLHelper::_('behavior.multiselect');
-$this->document->getWebAssetManager()
+$this->getDocument()->getWebAssetManager()
     ->registerAndUseScript('com_weblinks.admin-weblinks-modal', 'media/com_weblinks/js/admin-weblinks-modal.js', [], ['defer' => true], ['core']);
 $function  = $app->getInput()->getCmd('function', 'jSelectWeblink');
 $editor    = $app->getInput()->getCmd('editor', '');
@@ -36,7 +36,7 @@ $onclick   = $this->escape($function);
 $multilang = Multilanguage::isEnabled();
 if (!empty($editor)) {
 // This view is used also in com_menus. Load the xtd script only if the editor is set!
-    $this->document->addScriptOptions('xtd-weblinks', ['editor' => $editor]);
+    $this->getDocument()->addScriptOptions('xtd-weblinks', ['editor' => $editor]);
     $onclick = "jSelectWeblink";
 }
 
