@@ -58,15 +58,6 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
     protected $autoloadLanguage = true;
 
     /**
-     * Time limit for the current task session (seconds).
-     * Must be lower than PHP's max_execution_time.
-     *
-     * @var int
-     * @since __DEPLOY_VERSION__
-     */
-    private $timeLimit;
-
-    /**
      * Snapshot key used in task parameters
      *
      * @var string
@@ -191,7 +182,9 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
         $taskId      = $event->getTaskId();
         $httpTimeout = (int) $event->getArgument('params')->http_timeout ?? 8;
         $batchSize   = (int) $event->getArgument('params')->batch_size ?? 3;
-        $timelimit   = max(5, (int)\ini_get('max_execution_time') - 10);
+        $maxExecTime = (int) \ini_get('max_execution_time');
+        // Stay below PHP's max_execution_time; 0 means there is no limit (e.g. on the CLI)
+        $timelimit   = $maxExecTime > 0 ? max(5, $maxExecTime - 10) : PHP_INT_MAX;
         $startTime   = microtime(true);
 
         // Restore previous state
