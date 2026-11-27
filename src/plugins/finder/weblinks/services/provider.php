@@ -13,6 +13,7 @@
 // phpcs:enable PSR1.Files.SideEffects
 
 use Joomla\CMS\Extension\PluginInterface;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Database\DatabaseInterface;
 use Joomla\DI\Container;
@@ -37,6 +38,7 @@ return new class () implements ServiceProviderInterface {
                 $plugin     = new Weblinks(
                     (array) PluginHelper::getPlugin('finder', 'weblinks')
                 );
+                $plugin->setApplication(Factory::getApplication());
                 $plugin->setDatabase($container->get(DatabaseInterface::class));
 
                 return $plugin;
