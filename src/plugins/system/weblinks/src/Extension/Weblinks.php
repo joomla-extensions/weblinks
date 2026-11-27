@@ -128,6 +128,11 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
      */
     public function onAfterRender()
     {
+        // The help links only exist in the administrator HTML pages
+        if (!Factory::getApplication()->isClient('administrator') || Factory::getApplication()->getDocument()?->getType() !== 'html') {
+            return true;
+        }
+
         $input     = Factory::getApplication()->getInput();
         $option    = $input->get('option');
         $view      = $input->get('view');
