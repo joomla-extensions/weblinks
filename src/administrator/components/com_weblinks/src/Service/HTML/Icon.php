@@ -36,7 +36,7 @@ class Icon
     /**
      * The application
      *
-     * @var    CMSApplication
+     * @var    ?CMSApplication
      *
      * @since  4.0.0
      */
@@ -45,13 +45,25 @@ class Icon
     /**
      * Service constructor
      *
-     * @param   CMSApplication  $application  The application
+     * @param   ?CMSApplication  $application  The application, the current application is used when not given
      *
      * @since   4.0.0
      */
-    public function __construct(CMSApplication $application)
+    public function __construct(?CMSApplication $application = null)
     {
         $this->application = $application;
+    }
+
+    /**
+     * Get the application, falls back to the current application
+     *
+     * @return  CMSApplication
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function getApplication(): CMSApplication
+    {
+        return $this->application ?? Factory::getApplication();
     }
 
     /**
@@ -99,8 +111,7 @@ class Icon
      */
     public function edit($weblink, $params, $attribs = [], $legacy = false)
     {
-        $user = $this->application->getIdentity();
-        $uri  = Uri::getInstance();
+        $uri = Uri::getInstance();
         // Ignore if in a popup window.
         if ($params && $params->get('popup')) {
             return '';
@@ -116,7 +127,7 @@ class Icon
             property_exists($weblink, 'checked_out')
             && property_exists($weblink, 'checked_out_time')
             && $weblink->checked_out
-            && $weblink->checked_out !== $this->application->getIdentity()->id
+            && $weblink->checked_out !== $this->getApplication()->getIdentity()->id
         ) {
             $checkoutUser = $this->getUserFactory()->loadUserById($weblink->checked_out);
             $date         = HTMLHelper::_('date', $weblink->checked_out_time);
