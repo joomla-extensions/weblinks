@@ -98,7 +98,7 @@ final class WeblinksCommand extends AbstractCommand
         $io->title('Starting com_weblinks Data Export to CSV');
 
         $db    = $this->getDatabase();
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
 
         // Fetching all columns from com_weblinks
         $query->select('*')
@@ -191,7 +191,7 @@ final class WeblinksCommand extends AbstractCommand
 
         // --- CATEGORY SAFETY PRE-CHECK ---
         // Fetch all valid active category IDs and aliases for com_weblinks
-        $catQuery = $db->getQuery(true)
+        $catQuery = $db->createQuery()
             ->select($db->quoteName(['id', 'alias']))
             ->from($db->quoteName('#__categories'))
             ->where($db->quoteName('extension') . ' = ' . $db->quote('com_weblinks'))
@@ -276,7 +276,7 @@ final class WeblinksCommand extends AbstractCommand
             // Check if record already exists to determine update vs insert operations
             $exists = false;
             if ($id) {
-                $checkQuery = $db->getQuery(true)
+                $checkQuery = $db->createQuery()
                     ->select('COUNT(*)')
                     ->from($db->quoteName('#__weblinks'))
                     ->where($db->quoteName('id') . ' = ' . $id);

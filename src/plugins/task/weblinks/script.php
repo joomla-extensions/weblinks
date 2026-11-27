@@ -210,7 +210,7 @@ return new class () implements ServiceProviderInterface {
                         $attachments = '';
                         $params      = '{"tags":["broken_count","checked_count","details","sitename"]}';
 
-                        $query = $db->getQuery(true);
+                        $query = $db->createQuery();
                         $query->clear()
                             ->insert($db->quoteName('#__mail_templates'))
                             ->columns($db->quoteName(['template_id', 'extension', 'language', 'subject', 'body', 'htmlbody', 'attachments', 'params']))
@@ -242,7 +242,7 @@ return new class () implements ServiceProviderInterface {
                         $db          = Factory::getContainer()->get(DatabaseDriver::class);
                         $templateId  = 'plg_task_weblinks.broken_links';
                         // Delete the template_id from the #__mail_templates table
-                        $query = $db->getQuery(true);
+                        $query = $db->createQuery();
                         $query->clear()
                             ->delete($db->quoteName('#__mail_templates'))
                             ->where($db->quoteName('template_id') . ' = :templateid')

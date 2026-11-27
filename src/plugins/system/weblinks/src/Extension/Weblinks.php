@@ -97,7 +97,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
         }
 
         $db       = $this->getDatabase();
-        $query    = $db->getQuery(true)
+        $query    = $db->createQuery()
             ->select('COUNT(id) AS count_links')
             ->from('#__weblinks')
             ->where('state = 1');

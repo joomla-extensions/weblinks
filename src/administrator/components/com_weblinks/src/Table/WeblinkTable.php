@@ -155,7 +155,7 @@ class WeblinkTable extends Table implements VersionableTableInterface, TaggableT
 
         // Check for existing name
         $db    = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__weblinks'))
             ->where($db->quoteName('title') . ' = :title')

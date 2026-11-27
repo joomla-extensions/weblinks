@@ -96,7 +96,7 @@ class WeblinkField extends FormField
         $urlNew    = $linkWeblink . '&amp;task=weblink.add';
         if ($value) {
             $db    = $this->getDatabase();
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName('title'))
                 ->from($db->quoteName('#__weblinks'))
                 ->where($db->quoteName('id') . ' = :id')

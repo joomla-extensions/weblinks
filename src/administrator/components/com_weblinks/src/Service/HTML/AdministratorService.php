@@ -65,7 +65,7 @@ class AdministratorService
 
             // Get the associated contact items
             $db    = $this->getDatabase();
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select([
                         $db->quoteName('c.id'),
                         $db->quoteName('c.title', 'title'),

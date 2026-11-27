@@ -203,7 +203,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
 
         // Read current batch using lastId
         $db    = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName(['id', 'title', 'url']))
             ->from($db->quoteName('#__weblinks'))
             ->where($db->quoteName('state') . ' = 1')
@@ -271,7 +271,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
         }
 
         // Check if there are more links (search for next ID after lastId)
-        $hasMoreQuery = $db->getQuery(true)
+        $hasMoreQuery = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__weblinks'))
             ->where($db->quoteName('state') . ' = 1')
@@ -409,7 +409,7 @@ final class Weblinks extends CMSPlugin implements SubscriberInterface
             }
 
             // Unified query with JOIN
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName(['u.id', 'u.username', 'u.email']))
                 ->from($db->quoteName('#__users', 'u'))
                 ->innerJoin(

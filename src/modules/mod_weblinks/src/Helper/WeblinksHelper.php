@@ -159,7 +159,7 @@ class WeblinksHelper
 
         // Create query object
         $db    = $model->getDbo();
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
 
         $case_when1 = ' CASE WHEN ';
         $case_when1 .= $query->charLength('a.alias', '!=', '0');

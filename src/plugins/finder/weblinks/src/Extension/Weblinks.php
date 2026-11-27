@@ -347,7 +347,7 @@ final class Weblinks extends Adapter implements SubscriberInterface
         $db = $this->getDatabase();
 
         // Check if we can use the supplied SQL query.
-        $query = $query instanceof DatabaseQuery ? $query : $db->getQuery(true)
+        $query = $query instanceof DatabaseQuery ? $query : $db->createQuery()
             ->select('a.id, a.catid, a.title, a.alias, a.url AS link, a.description AS summary')
             ->select('a.metakey, a.metadesc, a.metadata, a.language, a.access, a.ordering')
             ->select('a.created_by_alias, a.modified, a.modified_by')
@@ -392,7 +392,7 @@ final class Weblinks extends Adapter implements SubscriberInterface
     {
         // Build an SQL query based on the modified time.
         $db    = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->where('a.date >= ' . $db->quote($time));
 
         return $query;
