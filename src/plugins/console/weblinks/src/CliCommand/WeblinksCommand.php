@@ -246,7 +246,7 @@ final class WeblinksCommand extends AbstractCommand
             $params            = $data['params'] ?? '';
             $language          = $data['language'] ?? '*';
             $created           = !empty($data['created']) ? $data['created'] : date('Y-m-d H:i:s');
-            $createdBy         = !empty($data['created_by']) ? (int)$data['created_by'] : 990;
+            $createdBy         = !empty($data['created_by']) ? (int)$data['created_by'] : 0;
             $createdByAlias    = $data['created_by_alias'] ?? '';
             $modified          = !empty($data['modified']) && $data['modified'] !== 'NULL' && $data['modified'] !== '0000-00-00 00:00:00' ? $data['modified'] : date('Y-m-d H:i:s');
             $modifiedBy        = !empty($data['modified_by']) ? (int)$data['modified_by'] : $createdBy;
