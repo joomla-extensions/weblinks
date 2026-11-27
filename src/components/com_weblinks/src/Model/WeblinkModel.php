@@ -259,7 +259,7 @@ class WeblinkModel extends AdminModel
         }
 
         // Increment the weblink version number.
-        (int) str_increment($table->version);
+        $table->version++;
     }
 
     /**
