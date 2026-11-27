@@ -46,7 +46,6 @@ class WeblinksComponent extends MVCComponent implements
     BootableExtensionInterface,
     FieldsServiceInterface
 {
-    use CategoryServiceTrait;
     use AssociationServiceTrait;
     use HTMLRegistryAwareTrait;
     use RouterServiceTrait;
