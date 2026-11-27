@@ -274,7 +274,7 @@ class WeblinkModel extends AdminModel
     protected function getReorderConditions($table)
     {
         $condition   = [];
-        $condition[] = 'catid = ' . (int) $table->catid;
+        $condition[] = $this->getDatabase()->quoteName('catid') . ' = ' . (int) $table->catid;
 
         return $condition;
     }
