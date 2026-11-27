@@ -303,8 +303,8 @@ class CategoryModel extends ListModel
             $params = $this->getState('params', new Registry());
 
             $options               = [];
-            $options['countItems'] = $params->get('show_cat_num_links_cat', 1)
-                || $params->get('show_empty_categories', 0);
+            $options['countItems'] = $params->get('show_cat_num_links', 1)
+                || !$params->get('show_empty_categories', 0);
 
             $component   = Factory::getApplication()->bootComponent('com_weblinks');
             $categories  = $component->getCategory($options);
