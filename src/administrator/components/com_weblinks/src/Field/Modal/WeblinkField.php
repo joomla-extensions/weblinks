@@ -71,7 +71,7 @@ class WeblinkField extends FormField
                 $wa->addInlineScript(
                     "
 				window.jSelectWeblink_" . $this->id . " = function (id, title, catid, object, url, language) {
-					window.processModalSelect('Article', '" . $this->id . "', id, title, catid, object, url, language);
+					window.processModalSelect('Weblink', '" . $this->id . "', id, title, catid, object, url, language);
 				}",
                     [],
                     ['type' => 'module']
@@ -92,7 +92,7 @@ class WeblinkField extends FormField
         }
 
         $urlSelect = $linkWeblinks . '&amp;function=jSelectWeblink_' . $this->id;
-        $urlEdit   = $linkWeblink . '&amp;task=weblink.edit&amp;id=\' + document.getElementById("' . $this->id . '_id").value + \'';
+        $urlEdit   = $linkWeblink . '&amp;task=weblink.edit&amp;id=\' + document.getElementById(&quot;' . $this->id . '_id&quot;).value + \'';
         $urlNew    = $linkWeblink . '&amp;task=weblink.add';
         if ($value) {
             $db    = $this->getDatabase();
