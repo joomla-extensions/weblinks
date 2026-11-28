@@ -110,6 +110,7 @@ return new class () implements ServiceProviderInterface {
                  */
                 public function update(InstallerAdapter $adapter): bool
                 {
+                    $this->createTable();
                     return true;
                 }
 
@@ -209,6 +210,19 @@ return new class () implements ServiceProviderInterface {
                         $htmlbody    = 'PLG_TASK_WEBLINKS_EMAIL_HTMLBODY';
                         $attachments = '';
                         $params      = '{"tags":["broken_count","checked_count","details","sitename"]}';
+
+                        // Don't create the template twice, e.g. on a reinstall or an update
+                        $query = $db->getQuery(true)
+                            ->select('COUNT(*)')
+                            ->from($db->quoteName('#__mail_templates'))
+                            ->where($db->quoteName('template_id') . ' = :templateid')
+                            ->where($db->quoteName('language') . ' = :language')
+                            ->bind(':templateid', $templateId)
+                            ->bind(':language', $language);
+
+                        if ((int) $db->setQuery($query)->loadResult() > 0) {
+                            return;
+                        }
 
                         $query = $db->getQuery(true);
                         $query->clear()
