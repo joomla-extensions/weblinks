@@ -27,7 +27,7 @@ CREATE TABLE "#__weblinks" (
   "id" serial NOT NULL,
   "catid" bigint DEFAULT 0 NOT NULL,
   "title" varchar(250) DEFAULT '' NOT NULL,
-  "alias" varchar(255) DEFAULT '' NOT NULL,
+  "alias" varchar(400) DEFAULT '' NOT NULL,
   "url" varchar(250) DEFAULT '' NOT NULL,
   "description" text NOT NULL,
   "hits" bigint DEFAULT 0 NOT NULL,
